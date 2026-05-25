@@ -1,0 +1,516 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Objects (objects)
+  description: Runloop objects capability covering one Runloop business surface. 9 operations.
+  tags:
+  - Runloop
+  - Objects
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: objects-objects
+    baseUri: https://api.runloop.ai
+    description: Runloop objects business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-objects
+      path: /v1/objects
+      operations:
+      - name: createObject
+        method: POST
+        description: Create an Object.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listObjects
+        method: GET
+        description: List Objects.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: name
+          in: query
+          type: string
+          description: Filter storage objects by name (partial match supported).
+          required: false
+        - name: content_type
+          in: query
+          type: string
+          description: Filter storage objects by content type.
+          required: false
+        - name: state
+          in: query
+          type: string
+          description: Filter storage objects by state.
+          required: false
+        - name: search
+          in: query
+          type: string
+          description: Search by object ID or name.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-objects-list-public
+      path: /v1/objects/list_public
+      operations:
+      - name: listPublicObjects
+        method: GET
+        description: List Public Objects.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: name
+          in: query
+          type: string
+          description: Filter storage objects by name (partial match supported).
+          required: false
+        - name: content_type
+          in: query
+          type: string
+          description: Filter storage objects by content type.
+          required: false
+        - name: state
+          in: query
+          type: string
+          description: Filter storage objects by state.
+          required: false
+        - name: search
+          in: query
+          type: string
+          description: Search by object ID or name.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-objects-metadata-keys
+      path: /v1/objects/metadata/keys
+      operations:
+      - name: getObjectMetadataKeys
+        method: GET
+        description: List available object metadata keys.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: _
+          in: query
+          type: string
+          description: ''
+          required: false
+    - name: v1-objects-metadata-keys-key-values
+      path: /v1/objects/metadata/keys/{key}/values
+      operations:
+      - name: getObjectMetadataValues
+        method: GET
+        description: List values for a specific object metadata key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The metadata key to get values for.
+          required: true
+    - name: v1-objects-id
+      path: /v1/objects/{id}
+      operations:
+      - name: getObject
+        method: GET
+        description: Get an Object.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the Object to retrieve.
+          required: true
+    - name: v1-objects-id-complete
+      path: /v1/objects/{id}/complete
+      operations:
+      - name: completeObject
+        method: POST
+        description: Complete Object Upload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the Object to complete.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-objects-id-delete
+      path: /v1/objects/{id}/delete
+      operations:
+      - name: deleteObject
+        method: POST
+        description: Delete an Object.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the Object to delete.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-objects-id-download
+      path: /v1/objects/{id}/download
+      operations:
+      - name: generateDownloadUrl
+        method: GET
+        description: Generate Download URL for Object.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the Object to generate download URL for.
+          required: true
+        - name: duration_seconds
+          in: query
+          type: integer
+          description: 'Duration in seconds for the presigned URL validity (default: 3600).'
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: objects-objects-rest
+    port: 8080
+    description: REST adapter for Runloop objects. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/objects
+      name: v1-objects
+      description: REST surface for v1-objects.
+      operations:
+      - method: POST
+        name: createObject
+        description: Create an Object.
+        call: objects-objects.createObject
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listObjects
+        description: List Objects.
+        call: objects-objects.listObjects
+        with:
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          name: rest.params.name
+          content_type: rest.params.content_type
+          state: rest.params.state
+          search: rest.params.search
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/list_public
+      name: v1-objects-list-public
+      description: REST surface for v1-objects-list-public.
+      operations:
+      - method: GET
+        name: listPublicObjects
+        description: List Public Objects.
+        call: objects-objects.listPublicObjects
+        with:
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          name: rest.params.name
+          content_type: rest.params.content_type
+          state: rest.params.state
+          search: rest.params.search
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/metadata/keys
+      name: v1-objects-metadata-keys
+      description: REST surface for v1-objects-metadata-keys.
+      operations:
+      - method: GET
+        name: getObjectMetadataKeys
+        description: List available object metadata keys.
+        call: objects-objects.getObjectMetadataKeys
+        with:
+          _: rest.params._
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/metadata/keys/{key}/values
+      name: v1-objects-metadata-keys-key-values
+      description: REST surface for v1-objects-metadata-keys-key-values.
+      operations:
+      - method: GET
+        name: getObjectMetadataValues
+        description: List values for a specific object metadata key.
+        call: objects-objects.getObjectMetadataValues
+        with:
+          key: rest.params.key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/{id}
+      name: v1-objects-id
+      description: REST surface for v1-objects-id.
+      operations:
+      - method: GET
+        name: getObject
+        description: Get an Object.
+        call: objects-objects.getObject
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/{id}/complete
+      name: v1-objects-id-complete
+      description: REST surface for v1-objects-id-complete.
+      operations:
+      - method: POST
+        name: completeObject
+        description: Complete Object Upload.
+        call: objects-objects.completeObject
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/{id}/delete
+      name: v1-objects-id-delete
+      description: REST surface for v1-objects-id-delete.
+      operations:
+      - method: POST
+        name: deleteObject
+        description: Delete an Object.
+        call: objects-objects.deleteObject
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/objects/{id}/download
+      name: v1-objects-id-download
+      description: REST surface for v1-objects-id-download.
+      operations:
+      - method: GET
+        name: generateDownloadUrl
+        description: Generate Download URL for Object.
+        call: objects-objects.generateDownloadUrl
+        with:
+          id: rest.params.id
+          duration_seconds: rest.params.duration_seconds
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: objects-objects-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop objects. One tool per consumed operation.
+    tools:
+    - name: runloop-objects-objects-createObject
+      description: Create an Object.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: objects-objects.createObject
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-listObjects
+      description: List Objects.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.listObjects
+      with:
+        limit: tools.limit
+        starting_after: tools.starting_after
+        name: tools.name
+        content_type: tools.content_type
+        state: tools.state
+        search: tools.search
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-listPublicObjects
+      description: List Public Objects.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.listPublicObjects
+      with:
+        limit: tools.limit
+        starting_after: tools.starting_after
+        name: tools.name
+        content_type: tools.content_type
+        state: tools.state
+        search: tools.search
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-getObjectMetadataKeys
+      description: List available object metadata keys.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.getObjectMetadataKeys
+      with:
+        _: tools._
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-getObjectMetadataValues
+      description: List values for a specific object metadata key.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.getObjectMetadataValues
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-getObject
+      description: Get an Object.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.getObject
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-completeObject
+      description: Complete Object Upload.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: objects-objects.completeObject
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-deleteObject
+      description: Delete an Object.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: objects-objects.deleteObject
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-objects-objects-generateDownloadUrl
+      description: Generate Download URL for Object.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: objects-objects.generateDownloadUrl
+      with:
+        id: tools.id
+        duration_seconds: tools.duration_seconds
+      outputParameters:
+      - type: object
+        mapping: $.

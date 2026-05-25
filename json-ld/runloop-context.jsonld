@@ -1,0 +1,94 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://runloop.ai/vocab#",
+    "schema": "https://schema.org/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "runloop": "https://runloop.ai/vocab#",
+
+    "id": "@id",
+    "type": "@type",
+    "name": "schema:name",
+    "description": "schema:description",
+    "created_at": { "@id": "schema:dateCreated", "@type": "schema:DateTime" },
+    "modified_at": { "@id": "schema:dateModified", "@type": "schema:DateTime" },
+    "status": "schema:status",
+
+    "Devbox": "runloop:Devbox",
+    "devbox_id": { "@id": "runloop:devboxId", "@type": "@id" },
+    "blueprint_id": { "@id": "runloop:blueprintId", "@type": "@id" },
+    "snapshot_id": { "@id": "runloop:snapshotId", "@type": "@id" },
+    "launch_parameters": "runloop:launchParameters",
+    "machine_size": "runloop:machineSize",
+    "architecture": "runloop:architecture",
+    "tunnels": { "@id": "runloop:tunnels", "@container": "@list" },
+    "ssh_keys": { "@id": "runloop:sshKeys", "@container": "@list" },
+    "shutdown_timeout_seconds": "runloop:shutdownTimeoutSeconds",
+    "idle_timeout_seconds": "runloop:idleTimeoutSeconds",
+
+    "Blueprint": "runloop:Blueprint",
+    "dockerfile": "runloop:dockerfile",
+    "system_setup_commands": { "@id": "runloop:systemSetupCommands", "@container": "@list" },
+    "code_mounts": { "@id": "runloop:codeMounts", "@container": "@list" },
+    "available_ports": { "@id": "runloop:availablePorts", "@container": "@list" },
+
+    "Snapshot": "runloop:Snapshot",
+    "parent_devbox_id": { "@id": "runloop:parentDevboxId", "@type": "@id" },
+    "is_public": "runloop:isPublic",
+
+    "Execution": "runloop:Execution",
+    "command": "runloop:command",
+    "stdout": "runloop:stdout",
+    "stderr": "runloop:stderr",
+    "exit_status": "runloop:exitStatus",
+    "shell_name": "runloop:shellName",
+    "working_dir": "runloop:workingDir",
+
+    "Benchmark": "runloop:Benchmark",
+    "BenchmarkRun": "runloop:BenchmarkRun",
+    "scenarios": { "@id": "runloop:scenarios", "@container": "@list" },
+    "scoring_contract": "runloop:scoringContract",
+
+    "Scenario": "runloop:Scenario",
+    "ScenarioRun": "runloop:ScenarioRun",
+    "input_context": "runloop:inputContext",
+    "scorer": "runloop:scorer",
+    "score": "runloop:score",
+    "passed": "runloop:passed",
+
+    "Agent": "runloop:Agent",
+    "source_type": "runloop:sourceType",
+    "source_uri": { "@id": "runloop:sourceUri", "@type": "@id" },
+    "version": "schema:version",
+    "install_commands": { "@id": "runloop:installCommands", "@container": "@list" },
+
+    "Axon": "runloop:Axon",
+    "AxonEvent": "runloop:AxonEvent",
+    "broker_url": { "@id": "runloop:brokerUrl", "@type": "@id" },
+    "event_type": "runloop:eventType",
+    "payload": "runloop:payload",
+    "sequence": "runloop:sequence",
+
+    "Object": "runloop:Object",
+    "content_type": "schema:encodingFormat",
+    "size_bytes": { "@id": "schema:contentSize", "@type": "schema:Integer" },
+    "download_url": { "@id": "schema:contentUrl", "@type": "@id" },
+
+    "Secret": "runloop:Secret",
+    "GatewayConfig": "runloop:GatewayConfig",
+    "McpConfig": "runloop:McpConfig",
+    "NetworkPolicy": "runloop:NetworkPolicy",
+    "ApiKey": "runloop:ApiKey",
+    "RestrictedKey": "runloop:RestrictedKey",
+
+    "Tunnel": "runloop:Tunnel",
+    "port": "runloop:port",
+    "url": { "@id": "schema:url", "@type": "@id" },
+
+    "metadata": "runloop:metadata",
+    "labels": "runloop:labels",
+    "tags": { "@id": "schema:keywords", "@container": "@set" },
+    "Provider": "schema:Organization"
+  }
+}

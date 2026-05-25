@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-devbox-schema.json",
+  "title": "Runloop Devbox",
+  "description": "A Devbox represents a virtual development environment. It is an isolated sandbox that can be given to agents and used to run arbitrary code such as AI generated code.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the Devbox."
+    },
+    "name": {
+      "type": "string",
+      "nullable": true,
+      "description": "The name of the Devbox."
+    },
+    "status": {
+      "$ref": "#/$defs/DevboxViewStatus",
+      "description": "The current status of the Devbox."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time of the Devbox (Unix timestamp milliseconds)."
+    },
+    "end_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "The time the Devbox finished execution (Unix timestamp milliseconds). Present if the Devbox is in a terminal state."
+    },
+    "initiator_type": {
+      "$ref": "#/$defs/InitiatorType",
+      "description": "The type of initiator that created the Devbox."
+    },
+    "initiator_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The ID of the initiator that created the Devbox."
+    },
+    "blueprint_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The Blueprint ID used in creation of the Devbox, if the devbox was created from a Blueprint."
+    },
+    "snapshot_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The Snapshot ID used in creation of the Devbox, if the devbox was created from a Snapshot."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "The user defined Devbox metadata."
+    },
+    "failure_reason": {
+      "$ref": "#/$defs/DevboxViewFailureReason",
+      "nullable": true,
+      "description": "The failure reason if the Devbox failed, if the Devbox has a 'failure' status."
+    },
+    "shutdown_reason": {
+      "$ref": "#/$defs/DevboxViewShutdownReason",
+      "nullable": true,
+      "description": "The shutdown reason if the Devbox shutdown, if the Devbox has a 'shutdown' status."
+    },
+    "launch_parameters": {
+      "$ref": "#/$defs/LaunchParameters",
+      "description": "The launch parameters used to create the Devbox."
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DevboxCapabilities"
+      },
+      "description": "A list of capability groups this devbox has access to."
+    },
+    "state_transitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DevboxStateTransition"
+      },
+      "description": "A list of state transitions in order with durations"
+    },
+    "tunnel": {
+      "$ref": "#/$defs/TunnelView",
+      "nullable": true,
+      "description": "V2 tunnel information if a tunnel was created at launch time or via the createTunnel API."
+    },
+    "gateway_specs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/GatewaySpecView"
+      },
+      "nullable": true,
+      "description": "Gateway specifications configured for this devbox. Map key is the environment variable prefix (e.g., 'GWS_ANTHROPIC')."
+    },
+    "mcp_specs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/McpSpecView"
+      },
+      "nullable": true,
+      "description": "[Beta] MCP specifications configured for this devbox. Map key is the environment variable name for the MCP token envelope. Each spec links an MCP config to a secret for MCP server access through the MCP hub."
+    }
+  },
+  "required": [
+    "id",
+    "status",
+    "create_time_ms",
+    "end_time_ms",
+    "metadata",
+    "launch_parameters",
+    "capabilities",
+    "state_transitions"
+  ],
+  "$defs": {
+    "DevboxViewStatus": {
+      "type": "string",
+      "enum": [
+        "provisioning",
+        "initializing",
+        "running",
+        "suspending",
+        "suspended",
+        "resuming",
+        "failure",
+        "shutdown"
+      ],
+      "description": "The status of the Devbox.\n\nprovisioning: Runloop is allocating and booting the necessary infrastructure resources.\ninitializing: Runloop defined boot scripts are running to enable the environment for interaction.\nrunning: The Devbox is ready for interaction.\nsuspending: The Devbox disk is being snapshotted as part of suspension.\nsuspended: The Devbox disk is saved and no more active compute is being used for the Devbox.\nresuming: The Devbox disk is being loaded as part of booting a suspended Devbox.\nfailure: The Devbox failed as part of booting or running user requested actions.\nshutdown: The Devbox was successfully shutdown and no more active compute is being used.\n",
+      "x-enum-descriptions": {
+        "provisioning": "Runloop is allocating and booting the necessary infrastructure resources.",
+        "initializing": "Runloop defined boot scripts are running to enable the environment for interaction.",
+        "running": "The Devbox is ready for interaction.",
+        "suspending": "The Devbox disk is being snapshotted as part of suspension.",
+        "suspended": "The Devbox disk is saved and no more active compute is being used for the Devbox.",
+        "resuming": "The Devbox disk is being loaded as part of booting a suspended Devbox.",
+        "failure": "The Devbox failed as part of booting or running user requested actions.",
+        "shutdown": "The Devbox was successfully shutdown and no more active compute is being used."
+      }
+    },
+    "InitiatorType": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "api",
+        "scenario",
+        "scoring_validation"
+      ]
+    },
+    "DevboxViewFailureReason": {
+      "type": "string",
+      "enum": [
+        "out_of_memory",
+        "out_of_disk",
+        "execution_failed",
+        "health_check_failed"
+      ],
+      "description": "The category of failure experienced by the Devbox.\n\nout_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.\nout_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.\nexecution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.\nhealth_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size.\n",
+      "x-enum-descriptions": {
+        "out_of_memory": "The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.",
+        "out_of_disk": "The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.",
+        "execution_failed": "The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.",
+        "health_check_failed": "The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size."
+      }
+    },
+    "DevboxViewShutdownReason": {
+      "type": "string",
+      "enum": [
+        "api_shutdown",
+        "keep_alive_timeout",
+        "entrypoint_exit",
+        "idle",
+        "ttl_expired"
+      ],
+      "description": "The reason that caused the transition of the Devbox to the shutown state.\n\napi_shutdown: The Devbox shutdown due to API request.\nentrypoint_exit: The Devbox entrypoint program completed.\nidle: The Devbox shutdown due to configured action on idle configuration.\nttl_expired: The Devbox shutdown due to TTL expiration.\n",
+      "x-enum-descriptions": {
+        "api_shutdown": "The Devbox shutdown due to API request.",
+        "entrypoint_exit": "The Devbox entrypoint program completed.",
+        "idle": "The Devbox shutdown due to configured action on idle configuration.",
+        "ttl_expired": "The Devbox shutdown due to TTL expiration."
+      }
+    },
+    "ResourceSize": {
+      "type": "string",
+      "enum": [
+        "X_SMALL",
+        "SMALL",
+        "MEDIUM",
+        "LARGE",
+        "X_LARGE",
+        "XX_LARGE",
+        "CUSTOM_SIZE"
+      ],
+      "description": "The size of the Devbox resources for Runloop to allocate.\n\nX_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk\nSMALL: 1 cpu x 2GiB memory x 4GiB disk\nMEDIUM: 2 cpu x 4GiB memory x 8GiB disk\nLARGE: 2 cpu x 8GiB memory x 16GiB disk\nX_LARGE: 4 cpu x 16GiB memory x 16GiB disk\nXX_LARGE: 8 cpu x 32GiB memory x 16GiB disk\nCUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.\n",
+      "x-enum-descriptions": {
+        "X_SMALL": "0.5 cpu x 1GiB memory x 4GiB disk",
+        "SMALL": "1 cpu x 2GiB memory x 4GiB disk",
+        "MEDIUM": "2 cpu x 4GiB memory x 8GiB disk",
+        "LARGE": "2 cpu x 8GiB memory x 16GiB disk",
+        "X_LARGE": "4 cpu x 16GiB memory x 16GiB disk",
+        "XX_LARGE": "8 cpu x 32GiB memory x 16GiB disk",
+        "CUSTOM_SIZE": "To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive."
+      }
+    },
+    "IdleAction": {
+      "type": "string",
+      "enum": [
+        "shutdown",
+        "suspend"
+      ],
+      "description": "Action to take after Devbox idle timer is triggered.\n\nshutdown: Shutdown the Devbox.\nsuspend: Suspend the Devbox.\n",
+      "x-enum-descriptions": {
+        "shutdown": "Shutdown the Devbox.",
+        "suspend": "Suspend the Devbox."
+      }
+    },
+    "IdleConfigurationParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "idle_time_seconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "After idle_time_seconds, on_idle action will be taken."
+        },
+        "on_idle": {
+          "$ref": "#/$defs/IdleAction",
+          "description": "Action to take after Devbox becomes idle."
+        }
+      },
+      "required": [
+        "idle_time_seconds",
+        "on_idle"
+      ]
+    },
+    "Architecture": {
+      "type": "string",
+      "enum": [
+        "x86_64",
+        "arm64"
+      ]
+    },
+    "UserParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Configuration for the Linux user in the Devbox environment.",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username for the Linux user."
+        },
+        "uid": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User ID (UID) for the Linux user. Must be a non-negative integer."
+        }
+      },
+      "required": [
+        "username",
+        "uid"
+      ]
+    },
+    "ResumeTriggers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Triggers that can resume a suspended Devbox.",
+      "properties": {
+        "http": {
+          "type": "boolean",
+          "nullable": true,
+          "description": "When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume."
+        },
+        "axon_event": {
+          "type": "boolean",
+          "nullable": true,
+          "description": "When true, axon events targeting a suspended Devbox will trigger a resume."
+        }
+      }
+    },
+    "LifecycleConfigurationParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.",
+      "properties": {
+        "after_idle": {
+          "$ref": "#/$defs/IdleConfigurationParameters",
+          "nullable": true,
+          "description": "Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations."
+        },
+        "resume_triggers": {
+          "$ref": "#/$defs/ResumeTriggers",
+          "nullable": true,
+          "description": "Triggers that can resume a suspended Devbox."
+        }
+      }
+    },
+    "LaunchParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "LaunchParameters enable you to customize the resources available to your Devbox as well as the environment set up that should be completed before the Devbox is marked as 'running'.",
+      "properties": {
+        "launch_commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Set of commands to be run at launch time, before the entrypoint process is run."
+        },
+        "resource_size_request": {
+          "$ref": "#/$defs/ResourceSize",
+          "nullable": true,
+          "description": "Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL: 0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk. LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM, 16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size."
+        },
+        "available_ports": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nullable": true,
+          "description": "[Deprecated] A list of ports to make available on the Devbox. This field is ignored."
+        },
+        "keep_alive_time_seconds": {
+          "type": "integer",
+          "format": "int64",
+          "nullable": true,
+          "description": "Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours (172800 seconds)."
+        },
+        "after_idle": {
+          "$ref": "#/$defs/IdleConfigurationParameters",
+          "nullable": true,
+          "description": "Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds. If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead."
+        },
+        "custom_cpu_cores": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16."
+        },
+        "custom_gb_memory": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB."
+        },
+        "custom_disk_size": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB."
+        },
+        "architecture": {
+          "$ref": "#/$defs/Architecture",
+          "nullable": true,
+          "description": "The target architecture for the Devbox. If unset, defaults to x86_64."
+        },
+        "user_parameters": {
+          "$ref": "#/$defs/UserParameters",
+          "nullable": true,
+          "description": "Specify the user for execution on Devbox. If not set, default `user` will be used."
+        },
+        "required_services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService must be specified in Blueprint to be started."
+        },
+        "network_policy_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "(Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden."
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/LifecycleConfigurationParameters",
+          "nullable": true,
+          "description": "Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers."
+        }
+      }
+    },
+    "DevboxCapabilities": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "docker_in_docker"
+      ]
+    },
+    "Number": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "DevboxStateTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/DevboxViewStatus"
+        },
+        "transition_time_ms": {
+          "$ref": "#/$defs/Number",
+          "description": "The time the status change occurred"
+        }
+      }
+    },
+    "TunnelAuthModeView": {
+      "type": "string",
+      "enum": [
+        "open",
+        "authenticated"
+      ]
+    },
+    "TunnelView": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.\nUsage: https://{port}-{tunnel_key}.tunnel.runloop.ai",
+      "properties": {
+        "tunnel_key": {
+          "type": "string",
+          "description": "The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}"
+        },
+        "auth_mode": {
+          "$ref": "#/$defs/TunnelAuthModeView",
+          "description": "The authentication mode for the tunnel."
+        },
+        "auth_token": {
+          "type": "string",
+          "nullable": true,
+          "description": "Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'."
+        },
+        "create_time_ms": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Creation time of the tunnel (Unix timestamp milliseconds)."
+        },
+        "http_keep_alive": {
+          "type": "boolean",
+          "description": "When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer."
+        },
+        "wake_on_http": {
+          "type": "boolean",
+          "description": "When true, HTTP traffic to a suspended devbox will automatically trigger a resume."
+        }
+      },
+      "required": [
+        "tunnel_key",
+        "auth_mode",
+        "create_time_ms",
+        "http_keep_alive",
+        "wake_on_http"
+      ]
+    },
+    "GatewaySpecView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "gateway_config_id": {
+          "type": "string",
+          "description": "The ID of the gateway config (e.g., gwc_123abc)."
+        },
+        "secret_id": {
+          "type": "string",
+          "description": "The ID of the secret containing the credential."
+        }
+      },
+      "required": [
+        "gateway_config_id",
+        "secret_id"
+      ]
+    },
+    "McpSpecView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mcp_config_id": {
+          "type": "string",
+          "description": "The ID of the MCP config (e.g., mcp_123abc)."
+        },
+        "secret_id": {
+          "type": "string",
+          "description": "The ID of the secret containing the credential."
+        }
+      },
+      "required": [
+        "mcp_config_id",
+        "secret_id"
+      ]
+    }
+  }
+}

@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Runloop API Keys API
+  version: '0.1'
+  description: Create and manage Runloop API Keys at the account scope. Used for SDK and REST API authentication.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: apikeys
+- name: restricted_keys
+paths:
+  /v1/apikeys:
+    post:
+      tags:
+      - apikeys
+      summary: Create API Key.
+      description: Create a new API key for the authenticated account. Use a standard API key (ak_) or a restricted key (rk_)
+        with RESOURCE_TYPE_ACCOUNT write scope.
+      operationId: createAPIKey
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyCreatedView'
+      deprecated: false
+  /v1/restricted_keys:
+    post:
+      tags:
+      - restricted_keys
+      summary: Create a restricted API key.
+      description: Create a restricted API key with specific resource scopes. Use a standard API key (ak_) or a restricted
+        key (rk_) with RESOURCE_TYPE_ACCOUNT write scope.
+      operationId: createRestrictedKey
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestrictedKeyCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestrictedKeyCreatedView'
+        '400':
+          description: Invalid scopes.
+      deprecated: false
+components:
+  schemas:
+    ApiAccessLevel:
+      type: string
+      enum:
+      - ACCESS_LEVEL_NONE
+      - ACCESS_LEVEL_READ
+      - ACCESS_LEVEL_WRITE
+    ApiKeyCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+    ApiKeyCreatedView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        key_secret:
+          type: string
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+    ApiResourceType:
+      type: string
+      enum:
+      - RESOURCE_TYPE_DEVBOXES
+      - RESOURCE_TYPE_BLUEPRINTS
+      - RESOURCE_TYPE_SNAPSHOTS
+      - RESOURCE_TYPE_BENCHMARKS
+      - RESOURCE_TYPE_SCENARIOS
+      - RESOURCE_TYPE_REPO_CONNECTIONS
+      - RESOURCE_TYPE_AGENTS
+      - RESOURCE_TYPE_OBJECTS
+      - RESOURCE_TYPE_ACCOUNT
+    RestrictedKeyCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeEntryView'
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+    RestrictedKeyCreatedView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        key_secret:
+          type: string
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeEntryView'
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+    ScopeEntryView:
+      type: object
+      additionalProperties: false
+      properties:
+        resource_type:
+          $ref: '#/components/schemas/ApiResourceType'
+        access_level:
+          $ref: '#/components/schemas/ApiAccessLevel'
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

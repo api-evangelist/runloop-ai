@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://api.runloop.ai/v1/axons/axn_8e1b9c/subscribe/sse",
+    "headers": {
+      "Authorization": "Bearer $RUNLOOP_API_KEY",
+      "Accept": "text/event-stream"
+    }
+  },
+  "response": {
+    "status": 200,
+    "contentType": "text/event-stream",
+    "body": "event: axon.event\ndata: {\"sequence\":1,\"event_type\":\"agent.turn.started\",\"payload\":{\"agent_id\":\"agt_claude_code_4_7\",\"prompt\":\"fix CI failure on main\"}}\n\nevent: axon.event\ndata: {\"sequence\":2,\"event_type\":\"agent.tool.call\",\"payload\":{\"tool\":\"bash\",\"args\":\"pytest -q\"}}\n\nevent: axon.event\ndata: {\"sequence\":3,\"event_type\":\"agent.turn.completed\",\"payload\":{\"summary\":\"5 passing tests; opened PR #421\"}}\n"
+  }
+}

@@ -1,0 +1,277 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Gateway Configs (gateway-configs)
+  description: Runloop gateway-configs capability covering one Runloop business surface. 5 operations.
+  tags:
+  - Runloop
+  - Gateway-Configs
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gateway-configs-gateway-configs
+    baseUri: https://api.runloop.ai
+    description: Runloop gateway-configs business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-gateway-configs
+      path: /v1/gateway-configs
+      operations:
+      - name: createGatewayConfig
+        method: POST
+        description: Create a GatewayConfig.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listGatewayConfigs
+        method: GET
+        description: List GatewayConfigs.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter by name (partial match supported).
+          required: false
+        - name: id
+          in: query
+          type: string
+          description: Filter by ID.
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-gateway-configs-id
+      path: /v1/gateway-configs/{id}
+      operations:
+      - name: getGatewayConfig
+        method: GET
+        description: Get a GatewayConfig.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the GatewayConfig.
+          required: true
+      - name: updateGatewayConfig
+        method: POST
+        description: Update a GatewayConfig.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the GatewayConfig to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-gateway-configs-id-delete
+      path: /v1/gateway-configs/{id}/delete
+      operations:
+      - name: deleteGatewayConfig
+        method: POST
+        description: Delete a GatewayConfig.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the GatewayConfig to delete.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: gateway-configs-gateway-configs-rest
+    port: 8080
+    description: REST adapter for Runloop gateway-configs. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/gateway-configs
+      name: v1-gateway-configs
+      description: REST surface for v1-gateway-configs.
+      operations:
+      - method: POST
+        name: createGatewayConfig
+        description: Create a GatewayConfig.
+        call: gateway-configs-gateway-configs.createGatewayConfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listGatewayConfigs
+        description: List GatewayConfigs.
+        call: gateway-configs-gateway-configs.listGatewayConfigs
+        with:
+          name: rest.params.name
+          id: rest.params.id
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/gateway-configs/{id}
+      name: v1-gateway-configs-id
+      description: REST surface for v1-gateway-configs-id.
+      operations:
+      - method: GET
+        name: getGatewayConfig
+        description: Get a GatewayConfig.
+        call: gateway-configs-gateway-configs.getGatewayConfig
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateGatewayConfig
+        description: Update a GatewayConfig.
+        call: gateway-configs-gateway-configs.updateGatewayConfig
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/gateway-configs/{id}/delete
+      name: v1-gateway-configs-id-delete
+      description: REST surface for v1-gateway-configs-id-delete.
+      operations:
+      - method: POST
+        name: deleteGatewayConfig
+        description: Delete a GatewayConfig.
+        call: gateway-configs-gateway-configs.deleteGatewayConfig
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gateway-configs-gateway-configs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop gateway-configs. One tool per consumed operation.
+    tools:
+    - name: runloop-gateway-configs-gateway-configs-createGatewayConfig
+      description: Create a GatewayConfig.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: gateway-configs-gateway-configs.createGatewayConfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-gateway-configs-gateway-configs-listGatewayConfigs
+      description: List GatewayConfigs.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gateway-configs-gateway-configs.listGatewayConfigs
+      with:
+        name: tools.name
+        id: tools.id
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-gateway-configs-gateway-configs-getGatewayConfig
+      description: Get a GatewayConfig.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gateway-configs-gateway-configs.getGatewayConfig
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-gateway-configs-gateway-configs-updateGatewayConfig
+      description: Update a GatewayConfig.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: gateway-configs-gateway-configs.updateGatewayConfig
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-gateway-configs-gateway-configs-deleteGatewayConfig
+      description: Delete a GatewayConfig.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: gateway-configs-gateway-configs.deleteGatewayConfig
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.runloop.ai/v1/benchmark_runs",
+    "headers": {
+      "Authorization": "Bearer $RUNLOOP_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "benchmark_id": "bnch_swebench_verified",
+      "agent_id": "agt_claude_code_4_7",
+      "metadata": {
+        "model": "claude-opus-4-7",
+        "harness_version": "0.3.1"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "brun_3a91fd",
+      "status": "running",
+      "benchmark_id": "bnch_swebench_verified",
+      "started_at": "2026-05-25T03:30:00Z",
+      "scenario_run_count": 500
+    }
+  }
+}

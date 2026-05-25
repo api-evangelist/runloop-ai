@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-gateway-config-schema.json",
+  "title": "Runloop Gateway Config",
+  "description": "A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies the target endpoint and how credentials should be applied.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the GatewayConfig."
+    },
+    "account_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The account ID that owns this config."
+    },
+    "name": {
+      "type": "string",
+      "description": "The human-readable name of the GatewayConfig. Unique per account (or globally for system configs)."
+    },
+    "endpoint": {
+      "type": "string",
+      "description": "The target endpoint URL (e.g., 'https://api.anthropic.com')."
+    },
+    "auth_mechanism": {
+      "$ref": "#/$defs/AuthMechanismView",
+      "description": "How credentials should be applied to proxied requests."
+    },
+    "description": {
+      "type": "string",
+      "nullable": true,
+      "description": "Optional description for this gateway configuration."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time of the GatewayConfig (Unix timestamp in milliseconds)."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "endpoint",
+    "auth_mechanism",
+    "create_time_ms"
+  ],
+  "$defs": {
+    "AuthMechanismView": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Defines how credentials are applied to HTTP requests when proxying through the gateway.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of authentication mechanism: 'header', 'bearer'."
+        },
+        "key": {
+          "type": "string",
+          "nullable": true,
+          "description": "For 'header' type: the header name (e.g., 'x-api-key')."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-restricted-key-schema.json",
+  "title": "Runloop Restricted Key",
+  "description": "JSON Schema for the Runloop restricted-key resource, derived from the Runloop OpenAPI schema RestrictedKeyCreatedView.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "key_secret": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ScopeEntryView"
+      }
+    },
+    "expires_at_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true
+    }
+  },
+  "$defs": {
+    "ApiResourceType": {
+      "type": "string",
+      "enum": [
+        "RESOURCE_TYPE_DEVBOXES",
+        "RESOURCE_TYPE_BLUEPRINTS",
+        "RESOURCE_TYPE_SNAPSHOTS",
+        "RESOURCE_TYPE_BENCHMARKS",
+        "RESOURCE_TYPE_SCENARIOS",
+        "RESOURCE_TYPE_REPO_CONNECTIONS",
+        "RESOURCE_TYPE_AGENTS",
+        "RESOURCE_TYPE_OBJECTS",
+        "RESOURCE_TYPE_ACCOUNT"
+      ]
+    },
+    "ApiAccessLevel": {
+      "type": "string",
+      "enum": [
+        "ACCESS_LEVEL_NONE",
+        "ACCESS_LEVEL_READ",
+        "ACCESS_LEVEL_WRITE"
+      ]
+    },
+    "ScopeEntryView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "resource_type": {
+          "$ref": "#/$defs/ApiResourceType"
+        },
+        "access_level": {
+          "$ref": "#/$defs/ApiAccessLevel"
+        }
+      }
+    }
+  }
+}

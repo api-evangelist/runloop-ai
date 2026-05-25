@@ -1,0 +1,133 @@
+finops:
+  framework: FOCUS
+  version: 1.0
+provider:
+  id: runloop-ai
+  name: Runloop
+  website: https://runloop.ai
+  pricing: https://runloop.ai/pricing
+  modified: 2026-05-25
+
+billing:
+  model: subscription + usage
+  currency: USD
+  invoicePeriod: monthly
+  minimums: none
+
+services:
+  - id: devbox-compute
+    name: Devbox Compute
+    serviceCategory: Compute
+    serviceSubcategory: Sandbox
+    chargeCategory: Usage
+    pricingModel: pay-per-use
+    units:
+      - id: cpu-hour
+        unit: CPU-hour
+        unitPrice: 0.108
+        currency: USD
+      - id: gb-hour
+        unit: GB-hour
+        unitPrice: 0.0252
+        currency: USD
+    metering:
+      granularity: second
+      perSecond:
+        cpu: 0.00003
+        gb: 0.000007
+    description: Per-CPU and per-GB Devbox compute, billed per second. Suspended Devboxes do not accrue compute.
+
+  - id: blueprint-build
+    name: Blueprint Build
+    serviceCategory: Compute
+    serviceSubcategory: Image Build
+    chargeCategory: Usage
+    units:
+      - id: cpu-hour
+        unit: CPU-hour
+        unitPrice: 0.108
+        currency: USD
+    description: CPU time consumed while building a Blueprint image.
+
+  - id: storage
+    name: Storage
+    serviceCategory: Storage
+    chargeCategory: Usage
+    units:
+      - id: devbox-storage
+        label: Devbox storage
+        unit: GB-hour
+        unitPrice: 0.00034236
+        currency: USD
+      - id: blueprint-storage
+        label: Blueprint image storage
+        unit: GB-hour
+        unitPrice: 0.000072
+        currency: USD
+      - id: snapshot-storage
+        label: Snapshot storage
+        unit: GB-hour
+        unitPrice: 0.000072
+        currency: USD
+      - id: object-storage
+        label: Storage Object storage
+        unit: GB-hour
+        unitPrice: 0.000072
+        currency: USD
+    description: Four distinct storage SKUs depending on the resource. All metered hourly with per-second pricing.
+
+  - id: axon-coordination
+    name: Axon Agent Coordination
+    serviceCategory: Networking
+    serviceSubcategory: Event Stream
+    chargeCategory: Usage
+    units:
+      - id: active-axon-hour
+        unit: axon-hour
+        unitPrice: 0.006
+        currency: USD
+      - id: inactive-axon-storage
+        unit: GB-month
+        unitPrice: 0.20
+        currency: USD
+    description: Active Axons billed per axon-hour; inactive Axons billed for retained event-stream storage per GB-month.
+
+  - id: plan-subscription
+    name: Plan Subscription
+    serviceCategory: Subscription
+    chargeCategory: Recurring
+    units:
+      - id: pro-monthly
+        unit: month
+        unitPrice: 250.0
+        currency: USD
+        plan: pro
+    description: Recurring monthly subscription for Pro plan. Basic is free; Enterprise is custom-priced.
+
+allocations:
+  tags:
+    - Devbox
+    - Blueprint
+    - Snapshot
+    - Axon
+    - Object
+    - Benchmark
+    - Scenario
+  notes: Use metadata.keys and the labels surface on Devboxes, Blueprints, Snapshots, and Objects to drive showback/chargeback to teams, projects, or agent workflows.
+
+credits:
+  trial:
+    amount: 50.0
+    currency: USD
+    expiresOnConvert: false
+    description: $50 trial credit; not auto-charged at the end of the trial.
+
+freeTier:
+  basic:
+    storage_gb: 100
+  pro:
+    storage_gb: 1024
+
+commitments:
+  available: false
+  notes: Volume discounts and SLA-backed commitments are handled through Enterprise contracts (contact sales).

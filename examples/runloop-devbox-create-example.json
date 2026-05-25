@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.runloop.ai/v1/devboxes",
+    "headers": {
+      "Authorization": "Bearer $RUNLOOP_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "claude-code-session-001",
+      "blueprint_name": "runloop-ubuntu-2404-base",
+      "launch_parameters": {
+        "available_ports": [3000, 8080],
+        "resource_size_request": "SMALL",
+        "keep_alive_time_seconds": 1800
+      },
+      "metadata": {
+        "team": "api-evangelist",
+        "purpose": "exploration"
+      },
+      "code_mounts": [
+        {
+          "repo_name": "api-evangelist-mcp",
+          "repo_owner": "api-evangelist",
+          "token": "ghp_***"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "dbx_2c1c8a9e",
+      "status": "provisioning",
+      "create_time_ms": 1748150400000,
+      "blueprint_id": "bpt_7f2a91",
+      "name": "claude-code-session-001"
+    }
+  }
+}

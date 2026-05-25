@@ -1,0 +1,78 @@
+apiCommonsRateLimits: 0.1
+provider:
+  id: runloop-ai
+  name: Runloop
+  website: https://runloop.ai
+  documentation: https://docs.runloop.ai
+  modified: 2026-05-25
+
+scope:
+  description: >
+    Runloop enforces account-scoped resource quotas during the Pro Trial and exposes
+    plan-tier resource ceilings through the platform. The REST API itself does not
+    publish per-endpoint HTTP rate limits in the OpenAPI spec; clients should
+    implement exponential backoff on 429 responses. Concurrency and resource
+    counts are the effective limit surface.
+
+quotas:
+  - id: trial-running-devboxes
+    plan: trial
+    resource: running Devboxes
+    limit: 3
+    period: concurrent
+
+  - id: trial-blueprints
+    plan: trial
+    resource: Blueprints
+    limit: 5
+    period: account
+
+  - id: trial-snapshots
+    plan: trial
+    resource: Snapshots
+    limit: 10
+    period: account
+
+  - id: trial-objects
+    plan: trial
+    resource: Storage Objects
+    limit: 3
+    period: account
+
+  - id: basic-storage
+    plan: basic
+    resource: Free Storage
+    limit: 100
+    unit: GB
+    period: account
+
+  - id: pro-storage
+    plan: pro
+    resource: Free Storage
+    limit: 1024
+    unit: GB
+    period: account
+
+  - id: parallel-sandboxes
+    plan: pro
+    resource: Parallel Devboxes (marketed maximum)
+    limit: 10000
+    period: concurrent
+    description: Marketing claim — "Run 10k+ parallel sandboxes". Effective limit depends on plan and approval.
+
+retries:
+  recommendation:
+    backoff: exponential
+    initialDelayMs: 500
+    maxDelayMs: 30000
+    maxAttempts: 5
+    onStatuses:
+      - 429
+      - 502
+      - 503
+      - 504
+
+notes:
+  - Devbox lifecycle endpoints (create, snapshot, suspend) are heavier than read endpoints; expect lower effective throughput.
+  - PTY sessions enforce a single-attach contract at WebSocket upgrade time; a second concurrent attach is rejected.
+  - Suspended Devboxes do not consume compute quotas — only storage.

@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.runloop.ai/v1/devboxes/dbx_2c1c8a9e/execute_sync",
+    "headers": {
+      "Authorization": "Bearer $RUNLOOP_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "command": "pytest -q",
+      "shell_name": "default",
+      "working_dir": "/workspace/api-evangelist-mcp"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "execution_id": "exe_91ab3f",
+      "exit_status": 0,
+      "stdout": ".....                                                  [100%]\n5 passed in 0.42s\n",
+      "stderr": "",
+      "shell_name": "default"
+    }
+  }
+}

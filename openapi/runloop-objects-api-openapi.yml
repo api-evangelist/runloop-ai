@@ -1,0 +1,551 @@
+openapi: 3.0.3
+info:
+  title: Runloop Objects API
+  version: '0.1'
+  description: "Upload and manage Storage Objects \u2014 managed files with presigned download URLs that can be mounted into\
+    \ Devboxes or shared between agent runs."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: objects
+paths:
+  /v1/objects:
+    post:
+      tags:
+      - objects
+      summary: Create an Object.
+      description: Create a new Object with content and metadata. The Object will be assigned a unique ID.
+      operationId: createObject
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: Object created successfully. Returns the Object with metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectView'
+        '400':
+          description: Bad request. Invalid content or parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    get:
+      tags:
+      - objects
+      summary: List Objects.
+      description: List all Objects for the authenticated account with pagination support.
+      operationId: listObjects
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter storage objects by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: content_type
+        in: query
+        description: Filter storage objects by content type.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ContentType'
+      - name: state
+        in: query
+        description: Filter storage objects by state.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ObjectState'
+      - name: search
+        in: query
+        description: Search by object ID or name.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of Objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/objects/list_public:
+    get:
+      tags:
+      - objects
+      summary: List Public Objects.
+      description: List all public Objects with pagination support.
+      operationId: listPublicObjects
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter storage objects by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: content_type
+        in: query
+        description: Filter storage objects by content type.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ContentType'
+      - name: state
+        in: query
+        description: Filter storage objects by state.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ObjectState'
+      - name: search
+        in: query
+        description: Search by object ID or name.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of public Objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/objects/metadata/keys:
+    get:
+      tags:
+      - objects
+      summary: List available object metadata keys.
+      description: Returns a list of all available metadata keys that can be used for filtering objects.
+      operationId: getObjectMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/objects/metadata/keys/{key}/values:
+    get:
+      tags:
+      - objects
+      summary: List values for a specific object metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all objects.
+      operationId: getObjectMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/objects/{id}:
+    get:
+      tags:
+      - objects
+      summary: Get an Object.
+      description: Retrieve a specific Object by its unique identifier.
+      operationId: getObject
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Object to retrieve.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Object retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Object not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/objects/{id}/complete:
+    post:
+      tags:
+      - objects
+      summary: Complete Object Upload.
+      description: Mark an Object's upload as complete, transitioning it from UPLOADING to READ-only state.
+      operationId: completeObject
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Object to complete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyRecord'
+        required: false
+      responses:
+        '200':
+          description: Object upload completed successfully. Returns the Object with updated state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Object not found.
+        '409':
+          description: Object is not in UPLOADING state.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/objects/{id}/delete:
+    post:
+      tags:
+      - objects
+      summary: Delete an Object.
+      description: Delete an existing Object by ID. This action is irreversible and will remove the Object and all its metadata.
+      operationId: deleteObject
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Object to delete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyRecord'
+        required: false
+      responses:
+        '200':
+          description: Object deleted successfully. Returns the deleted Object metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Object not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/objects/{id}/download:
+    get:
+      tags:
+      - objects
+      summary: Generate Download URL for Object.
+      description: Generate a presigned download URL for an Object. The URL will be valid for the specified duration.
+      operationId: generateDownloadUrl
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Object to generate download URL for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: duration_seconds
+        in: query
+        description: 'Duration in seconds for the presigned URL validity (default: 3600).'
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Download URL generated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectDownloadUrlView'
+        '400':
+          description: Bad request. Object is in deleted state or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Object not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+components:
+  schemas:
+    ContentType:
+      type: string
+      enum:
+      - unspecified
+      - text
+      - binary
+      - gzip
+      - tar
+      - tgz
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    ObjectCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new Object.
+      properties:
+        name:
+          type: string
+          description: The name of the Object.
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the object for organization.
+        ttl_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Optional lifetime of the object in milliseconds, after which the object is automatically deleted. Time
+            starts ticking after the object is created.
+      required:
+      - name
+      - content_type
+    ObjectDownloadUrlView:
+      type: object
+      additionalProperties: false
+      description: A response containing a presigned download URL for an Object.
+      properties:
+        download_url:
+          type: string
+          description: The presigned download URL for the Object.
+      required:
+      - download_url
+    ObjectListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of Objects.
+      properties:
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectView'
+          description: List of Object entities.
+        has_more:
+          type: boolean
+          description: True if there are more results available beyond this page.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total number of Objects across all pages.
+      required:
+      - objects
+      - has_more
+    ObjectState:
+      type: string
+      enum:
+      - UPLOADING
+      - READ_ONLY
+      - DELETED
+      - ERROR
+    ObjectView:
+      type: object
+      additionalProperties: false
+      description: An Object represents a stored data entity with metadata.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the Object.
+        name:
+          type: string
+          description: The name of the Object.
+        state:
+          $ref: '#/components/schemas/ObjectState'
+          description: The current state of the Object.
+        size_bytes:
+          type: integer
+          format: int64
+          nullable: true
+          description: The size of the Object content in bytes (null until uploaded).
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the Object in milliseconds since epoch.
+        delete_after_time_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: The time after which the Object will be deleted in milliseconds since epoch.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the Object for organization.
+        upload_url:
+          type: string
+          nullable: true
+          description: Presigned URL for uploading content to S3 (only present on create).
+      required:
+      - id
+      - name
+      - state
+      - content_type
+      - create_time_ms
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

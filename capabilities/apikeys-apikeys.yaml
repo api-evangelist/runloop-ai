@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Apikeys (apikeys)
+  description: Runloop apikeys capability covering one Runloop business surface. 1 operations.
+  tags:
+  - Runloop
+  - Apikeys
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: apikeys-apikeys
+    baseUri: https://api.runloop.ai
+    description: Runloop apikeys business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-apikeys
+      path: /v1/apikeys
+      operations:
+      - name: createAPIKey
+        method: POST
+        description: Create API Key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: apikeys-apikeys-rest
+    port: 8080
+    description: REST adapter for Runloop apikeys. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/apikeys
+      name: v1-apikeys
+      description: REST surface for v1-apikeys.
+      operations:
+      - method: POST
+        name: createAPIKey
+        description: Create API Key.
+        call: apikeys-apikeys.createAPIKey
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: apikeys-apikeys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop apikeys. One tool per consumed operation.
+    tools:
+    - name: runloop-apikeys-apikeys-createAPIKey
+      description: Create API Key.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apikeys-apikeys.createAPIKey
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

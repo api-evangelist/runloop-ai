@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-agent-schema.json",
+  "title": "Runloop Agent",
+  "description": "An Agent represents a registered AI agent entity.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the Agent."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Agent."
+    },
+    "version": {
+      "type": "string",
+      "nullable": true,
+      "description": "Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Omitted for object sources or when not provided."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The creation time of the Agent (Unix timestamp milliseconds)."
+    },
+    "is_public": {
+      "type": "boolean",
+      "description": "Whether the Agent is publicly accessible."
+    },
+    "source": {
+      "$ref": "#/$defs/AgentSource",
+      "nullable": true,
+      "description": "The source configuration for the Agent."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "create_time_ms",
+    "is_public"
+  ],
+  "$defs": {
+    "NpmSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NPM-based agent source configuration.",
+      "properties": {
+        "package_name": {
+          "type": "string",
+          "description": "NPM package name"
+        },
+        "registry_url": {
+          "type": "string",
+          "nullable": true,
+          "description": "NPM registry URL"
+        },
+        "agent_setup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Setup commands to run after installation"
+        }
+      },
+      "required": [
+        "package_name"
+      ]
+    },
+    "PipSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Pip-based agent source configuration.",
+      "properties": {
+        "package_name": {
+          "type": "string",
+          "description": "Pip package name"
+        },
+        "registry_url": {
+          "type": "string",
+          "nullable": true,
+          "description": "Pip registry URL"
+        },
+        "agent_setup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Setup commands to run after installation"
+        }
+      },
+      "required": [
+        "package_name"
+      ]
+    },
+    "ObjectSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Object store agent source configuration.",
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "description": "Object ID"
+        },
+        "agent_setup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Setup commands to run after unpacking"
+        }
+      },
+      "required": [
+        "object_id"
+      ]
+    },
+    "GitSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Git-based agent source configuration.",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "description": "Git repository URL"
+        },
+        "ref": {
+          "type": "string",
+          "nullable": true,
+          "description": "Optional Git ref (branch/tag/commit), defaults to main/HEAD"
+        },
+        "agent_setup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Setup commands to run after cloning"
+        }
+      },
+      "required": [
+        "repository"
+      ]
+    },
+    "AgentSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Agent source configuration.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Source type: npm, pip, object, or git"
+        },
+        "npm": {
+          "$ref": "#/$defs/NpmSource",
+          "nullable": true,
+          "description": "NPM source configuration"
+        },
+        "pip": {
+          "$ref": "#/$defs/PipSource",
+          "nullable": true,
+          "description": "Pip source configuration"
+        },
+        "object": {
+          "$ref": "#/$defs/ObjectSource",
+          "nullable": true,
+          "description": "Object store source configuration"
+        },
+        "git": {
+          "$ref": "#/$defs/GitSource",
+          "nullable": true,
+          "description": "Git source configuration"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-structure.org/draft-00/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-structure/runloop-devbox-structure.json",
+  "title": "Runloop Devbox JSON Structure",
+  "description": "Logical structure of a Runloop Devbox resource, capturing the identifying, lifecycle, networking, and observability dimensions used across the Runloop API surface.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "description": "Server-assigned Devbox identifier (dbx_*)." },
+    "name": { "type": "string", "description": "Human-friendly name for this Devbox." },
+    "status": {
+      "type": "string",
+      "enum": ["provisioning", "running", "suspending", "suspended", "resuming", "shutting_down", "shutdown", "failure"],
+      "description": "Current Devbox lifecycle status."
+    },
+    "blueprint_id": { "type": "string", "description": "Blueprint used to launch this Devbox." },
+    "create_time_ms": { "type": "integer", "description": "Devbox creation timestamp in milliseconds since epoch." },
+    "launch_parameters": {
+      "type": "object",
+      "description": "Resource sizing, ports, idle timeouts, code mounts, network policy, and agent gateway selections.",
+      "properties": {
+        "resource_size_request": { "type": "string", "enum": ["X_SMALL", "SMALL", "MEDIUM", "LARGE", "X_LARGE", "XX_LARGE", "CUSTOM_SIZE"] },
+        "available_ports": { "type": "array", "items": { "type": "integer" } },
+        "keep_alive_time_seconds": { "type": "integer" },
+        "architecture": { "type": "string", "enum": ["x86_64", "arm64"] }
+      }
+    },
+    "tunnels": {
+      "type": "array",
+      "description": "HTTPS tunnels exposed for this Devbox.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "port": { "type": "integer" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "User-defined key/value tags used for cost allocation, discovery, and policy."
+    }
+  },
+  "required": ["id", "status"]
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-snapshot-schema.json",
+  "title": "Runloop Snapshot",
+  "description": "JSON Schema for the Runloop snapshot resource, derived from the Runloop OpenAPI schema DevboxDiskSnapshotView.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the snapshot."
+    },
+    "name": {
+      "type": "string",
+      "nullable": true,
+      "description": "(Optional) The custom name of the snapshot."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time of the Snapshot (Unix timestamp milliseconds)."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "User defined metadata associated with the snapshot."
+    },
+    "source_devbox_id": {
+      "type": "string",
+      "description": "The source Devbox ID this snapshot was created from."
+    },
+    "source_blueprint_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "(Optional) The source Blueprint ID this snapshot was created from."
+    },
+    "commit_message": {
+      "type": "string",
+      "nullable": true,
+      "description": "(Optional) The commit message of the snapshot (max 1000 characters)."
+    },
+    "size_bytes": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "(Optional) The size of the snapshot in bytes, relative to the base blueprint."
+    }
+  },
+  "required": [
+    "id",
+    "create_time_ms",
+    "metadata",
+    "source_devbox_id"
+  ],
+  "$defs": {}
+}

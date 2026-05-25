@@ -1,0 +1,355 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Benchmark Runs (benchmark)
+  description: Runloop benchmark-runs capability covering one Runloop business surface. 6 operations.
+  tags:
+  - Runloop
+  - Benchmark-Runs
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: benchmark-benchmark-runs
+    baseUri: https://api.runloop.ai
+    description: Runloop benchmark-runs business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-benchmark-runs
+      path: /v1/benchmark_runs
+      operations:
+      - name: listBenchmarkRuns
+        method: GET
+        description: List BenchmarkRuns.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter by name
+          required: false
+        - name: benchmark_id
+          in: query
+          type: string
+          description: The Benchmark ID to filter by.
+          required: false
+        - name: state
+          in: query
+          type: string
+          description: Filter by state
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-benchmark-runs-id
+      path: /v1/benchmark_runs/{id}
+      operations:
+      - name: getBenchmarkRun
+        method: GET
+        description: Get a previously created BenchmarkRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The BenchmarkRun ID.
+          required: true
+    - name: v1-benchmark-runs-id-cancel
+      path: /v1/benchmark_runs/{id}/cancel
+      operations:
+      - name: cancelBenchmarkRun
+        method: POST
+        description: Cancel a currently running Benchmark run.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The BenchmarkRun ID.
+          required: true
+    - name: v1-benchmark-runs-id-complete
+      path: /v1/benchmark_runs/{id}/complete
+      operations:
+      - name: completeBenchmarkRun
+        method: POST
+        description: Complete a BenchmarkRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The BenchmarkRun ID.
+          required: true
+    - name: v1-benchmark-runs-id-download-logs
+      path: /v1/benchmark_runs/{id}/download_logs
+      operations:
+      - name: downloadBenchmarkRunLogs
+        method: POST
+        description: Download logs for a Benchmark run.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The BenchmarkRun ID.
+          required: true
+    - name: v1-benchmark-runs-id-scenario-runs
+      path: /v1/benchmark_runs/{id}/scenario_runs
+      operations:
+      - name: listBenchmarkRunScenarioRuns
+        method: GET
+        description: List started scenario runs for a benchmark run.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The BenchmarkRun ID.
+          required: true
+        - name: state
+          in: query
+          type: string
+          description: Filter by Scenario Run state
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: benchmark-benchmark-runs-rest
+    port: 8080
+    description: REST adapter for Runloop benchmark-runs. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/benchmark_runs
+      name: v1-benchmark-runs
+      description: REST surface for v1-benchmark-runs.
+      operations:
+      - method: GET
+        name: listBenchmarkRuns
+        description: List BenchmarkRuns.
+        call: benchmark-benchmark-runs.listBenchmarkRuns
+        with:
+          name: rest.params.name
+          benchmark_id: rest.params.benchmark_id
+          state: rest.params.state
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/benchmark_runs/{id}
+      name: v1-benchmark-runs-id
+      description: REST surface for v1-benchmark-runs-id.
+      operations:
+      - method: GET
+        name: getBenchmarkRun
+        description: Get a previously created BenchmarkRun.
+        call: benchmark-benchmark-runs.getBenchmarkRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/benchmark_runs/{id}/cancel
+      name: v1-benchmark-runs-id-cancel
+      description: REST surface for v1-benchmark-runs-id-cancel.
+      operations:
+      - method: POST
+        name: cancelBenchmarkRun
+        description: Cancel a currently running Benchmark run.
+        call: benchmark-benchmark-runs.cancelBenchmarkRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/benchmark_runs/{id}/complete
+      name: v1-benchmark-runs-id-complete
+      description: REST surface for v1-benchmark-runs-id-complete.
+      operations:
+      - method: POST
+        name: completeBenchmarkRun
+        description: Complete a BenchmarkRun.
+        call: benchmark-benchmark-runs.completeBenchmarkRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/benchmark_runs/{id}/download_logs
+      name: v1-benchmark-runs-id-download-logs
+      description: REST surface for v1-benchmark-runs-id-download-logs.
+      operations:
+      - method: POST
+        name: downloadBenchmarkRunLogs
+        description: Download logs for a Benchmark run.
+        call: benchmark-benchmark-runs.downloadBenchmarkRunLogs
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/benchmark_runs/{id}/scenario_runs
+      name: v1-benchmark-runs-id-scenario-runs
+      description: REST surface for v1-benchmark-runs-id-scenario-runs.
+      operations:
+      - method: GET
+        name: listBenchmarkRunScenarioRuns
+        description: List started scenario runs for a benchmark run.
+        call: benchmark-benchmark-runs.listBenchmarkRunScenarioRuns
+        with:
+          id: rest.params.id
+          state: rest.params.state
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: benchmark-benchmark-runs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop benchmark-runs. One tool per consumed operation.
+    tools:
+    - name: runloop-benchmark-benchmark-runs-listBenchmarkRuns
+      description: List BenchmarkRuns.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: benchmark-benchmark-runs.listBenchmarkRuns
+      with:
+        name: tools.name
+        benchmark_id: tools.benchmark_id
+        state: tools.state
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-benchmark-benchmark-runs-getBenchmarkRun
+      description: Get a previously created BenchmarkRun.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: benchmark-benchmark-runs.getBenchmarkRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-benchmark-benchmark-runs-cancelBenchmarkRun
+      description: Cancel a currently running Benchmark run.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: benchmark-benchmark-runs.cancelBenchmarkRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-benchmark-benchmark-runs-completeBenchmarkRun
+      description: Complete a BenchmarkRun.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: benchmark-benchmark-runs.completeBenchmarkRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-benchmark-benchmark-runs-downloadBenchmarkRunLogs
+      description: Download logs for a Benchmark run.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: benchmark-benchmark-runs.downloadBenchmarkRunLogs
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-benchmark-benchmark-runs-listBenchmarkRunScenarioRun
+      description: List started scenario runs for a benchmark run.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: benchmark-benchmark-runs.listBenchmarkRunScenarioRuns
+      with:
+        id: tools.id
+        state: tools.state
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.runloop.ai/v1/devboxes/dbx_2c1c8a9e/snapshot_disk",
+    "headers": {
+      "Authorization": "Bearer $RUNLOOP_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "post-passing-tests",
+      "metadata": {
+        "branch": "main",
+        "commit": "abc123"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "ds_7c4ed1",
+      "status": "ready",
+      "create_time_ms": 1748150700000,
+      "source_devbox_id": "dbx_2c1c8a9e",
+      "name": "post-passing-tests"
+    }
+  }
+}

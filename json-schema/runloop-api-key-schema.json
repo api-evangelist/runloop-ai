@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-api-key-schema.json",
+  "title": "Runloop Api Key",
+  "description": "JSON Schema for the Runloop api-key resource, derived from the Runloop OpenAPI schema ApiKeyCreatedView.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "key_secret": {
+      "type": "string"
+    },
+    "expires_at_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true
+    }
+  },
+  "$defs": {}
+}

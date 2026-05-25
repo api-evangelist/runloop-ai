@@ -1,0 +1,533 @@
+aid: runloop-ai
+url: https://raw.githubusercontent.com/api-evangelist/runloop-ai/refs/heads/main/apis.yml
+apis:
+- aid: runloop-ai:runloop-devbox-api
+  name: Runloop Devbox API
+  tags:
+  - AI
+  - AI Agents
+  - Sandboxes
+  - Devboxes
+  - Coding Agents
+  humanURL: https://docs.runloop.ai/docs/devboxes/overview
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/overview
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/lifecycle
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/execute-commands
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/files
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/named-shells
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/snapshots
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/start-stop
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/devboxes/tunnels
+    type: Documentation
+  - url: openapi/runloop-devbox-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-devbox-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-execution-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-snapshot-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-tunnel-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-launch-parameters-schema.json
+    type: JSONSchema
+  - url: json-structure/runloop-devbox-structure.json
+    type: JSONStructure
+  - url: json-ld/runloop-context.jsonld
+    type: JSONLD
+  - url: examples/runloop-devbox-create-example.json
+    type: Example
+  - url: examples/runloop-devbox-exec-example.json
+    type: Example
+  - url: examples/runloop-snapshot-create-example.json
+    type: Example
+  - url: capabilities/devbox-devboxes.yaml
+    type: NaftikoCapability
+  - url: capabilities/devbox-pty.yaml
+    type: NaftikoCapability
+  description: >
+    Create, configure, and operate Devboxes — isolated Linux microVM-backed sandbox environments
+    purpose-built for AI coding agents. The Devbox API covers the full lifecycle (create, suspend,
+    resume, snapshot, shutdown), synchronous and asynchronous command execution, named shell
+    sessions, file I/O, code-repo mounts, agent and storage object mounts, network tunnels with
+    HTTPS URLs, SSH key issuance, and rich observability (executions, metrics, logs). Includes
+    the PTY control-plane for interactive WebSocket shell sessions.
+
+- aid: runloop-ai:runloop-blueprint-api
+  name: Runloop Blueprint API
+  tags:
+  - AI
+  - AI Agents
+  - Blueprints
+  - Container Images
+  - Devboxes
+  humanURL: https://docs.runloop.ai/docs/devboxes/blueprints/overview
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/blueprints/overview
+    type: Documentation
+  - url: openapi/runloop-blueprint-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-blueprint-schema.json
+    type: JSONSchema
+  - url: capabilities/blueprint-blueprints.yaml
+    type: NaftikoCapability
+  description: >
+    Build, preview, list, and manage Blueprints — Dockerfile-based container image templates that
+    Devboxes launch from. Blueprints capture pre-installed system packages, language runtimes,
+    code mounts, ports, and agent tooling so a fresh Devbox starts in seconds. Supports private
+    blueprints, public discovery, metadata-keyed search, and creation from RepositoryConnection
+    inspection.
+
+- aid: runloop-ai:runloop-benchmark-api
+  name: Runloop Benchmark API
+  tags:
+  - AI
+  - AI Agents
+  - Benchmarks
+  - Evaluation
+  - SWE-Bench
+  humanURL: https://docs.runloop.ai/docs/benchmarks/overview
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/benchmarks/overview
+    type: Documentation
+  - url: openapi/runloop-benchmark-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-benchmark-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-benchmark-run-schema.json
+    type: JSONSchema
+  - url: examples/runloop-benchmark-run-example.json
+    type: Example
+  - url: capabilities/benchmark-benchmarks.yaml
+    type: NaftikoCapability
+  - url: capabilities/benchmark-benchmark-runs.yaml
+    type: NaftikoCapability
+  - url: capabilities/benchmark-benchmark-jobs.yaml
+    type: NaftikoCapability
+  description: >
+    Define, configure, and run Benchmarks against your agents. Runloop ships SWE-Bench Verified
+    and SWE-smith out of the box; the Benchmark API also supports custom benchmarks built from
+    your own scenarios and scorers. Resources include benchmarks, benchmark runs (with start,
+    cancel, complete lifecycle), benchmark jobs, scenario runs, and downloadable run logs.
+
+- aid: runloop-ai:runloop-scenario-api
+  name: Runloop Scenario API
+  tags:
+  - AI
+  - AI Agents
+  - Scenarios
+  - Evaluation
+  humanURL: https://docs.runloop.ai/docs/benchmarks/scenarios
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/benchmarks/overview
+    type: Documentation
+  - url: openapi/runloop-scenario-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-scenario-schema.json
+    type: JSONSchema
+  - url: capabilities/scenario-scenarios.yaml
+    type: NaftikoCapability
+  description: >
+    Author and run individual evaluation Scenarios — the atomic test unit for AI coding agents.
+    Each Scenario captures input context, environment setup, an agent invocation, and one or
+    more Scenario Scorers that produce pass/fail signals plus structured scores. Used standalone
+    or composed into Benchmarks.
+
+- aid: runloop-ai:runloop-agents-api
+  name: Runloop Agents API
+  tags:
+  - AI
+  - AI Agents
+  - Agent Registry
+  humanURL: https://docs.runloop.ai/docs/devboxes/agents/using-agents-api
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/agents/using-agents-api
+    type: Documentation
+  - url: openapi/runloop-agents-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-agent-schema.json
+    type: JSONSchema
+  - url: capabilities/agents-agents.yaml
+    type: NaftikoCapability
+  description: >
+    Register and version Agents — packaged agent definitions sourced from Git, npm, pip, or
+    pre-packaged storage objects. Once registered, an Agent can be mounted to any Devbox at
+    create time for fast, reproducible installs. Includes public agent listings and per-agent
+    Devbox-count reporting.
+
+- aid: runloop-ai:runloop-axons-api
+  name: Runloop Axons API
+  tags:
+  - AI
+  - AI Agents
+  - Event Streams
+  - Axon
+  - Broker
+  - ACP
+  humanURL: https://docs.runloop.ai/docs/axons/overview
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/axons/overview
+    type: Documentation
+  - url: https://docs.runloop.ai/docs/axons/broker
+    type: Documentation
+  - url: openapi/runloop-axons-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-axon-schema.json
+    type: JSONSchema
+  - url: examples/runloop-axon-subscribe-example.json
+    type: Example
+  - url: capabilities/axons-axons.yaml
+    type: NaftikoCapability
+  - url: capabilities/axons-devboxes.yaml
+    type: NaftikoCapability
+  description: >
+    Create and operate Axons — Runloop's distributed event streams for sequencing, recording,
+    and observing agent interactions. Each Axon supports event publish, SSE subscription, SQL
+    queries and batch operations over event history, and a Broker bridge that connects an Axon
+    to agents running inside Devboxes using ACP or Claude agent client protocols.
+
+- aid: runloop-ai:runloop-objects-api
+  name: Runloop Storage Objects API
+  tags:
+  - AI
+  - AI Agents
+  - Storage
+  - Objects
+  humanURL: https://docs.runloop.ai/docs/storage-objects/overview
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/storage-objects/overview
+    type: Documentation
+  - url: openapi/runloop-objects-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-object-schema.json
+    type: JSONSchema
+  - url: capabilities/objects-objects.yaml
+    type: NaftikoCapability
+  description: >
+    Upload and manage Storage Objects — managed files with presigned download URLs that can be
+    mounted into Devboxes or shared between agent runs. Two-step upload (create -> complete),
+    public listings, metadata-keyed search, and download presign.
+
+- aid: runloop-ai:runloop-secrets-api
+  name: Runloop Secrets API
+  tags:
+  - AI
+  - AI Agents
+  - Secrets
+  - Credentials
+  humanURL: https://docs.runloop.ai/docs/devboxes/configuration/account-secrets
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/configuration/account-secrets
+    type: Documentation
+  - url: openapi/runloop-secrets-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-secret-schema.json
+    type: JSONSchema
+  - url: capabilities/secrets-secrets.yaml
+    type: NaftikoCapability
+  description: >
+    Securely manage account-level Secrets (API keys, tokens, credentials) that Runloop injects
+    into Devboxes at runtime. Raw secret values are never exposed to agent code or to the
+    Devbox shell environment after creation — they are referenced by name.
+
+- aid: runloop-ai:runloop-network-policies-api
+  name: Runloop Network Policies API
+  tags:
+  - AI
+  - AI Agents
+  - Network Policy
+  - Security
+  humanURL: https://docs.runloop.ai/docs/network-policies
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/network-policies
+    type: Documentation
+  - url: openapi/runloop-network-policies-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-network-policy-schema.json
+    type: JSONSchema
+  - url: capabilities/network-policies-network-policies.yaml
+    type: NaftikoCapability
+  description: >
+    Define and manage egress Network Policies that restrict outbound network access from
+    Devboxes. Allow/deny rules at account scope, attachable per Devbox at launch.
+
+- aid: runloop-ai:runloop-gateway-configs-api
+  name: Runloop Gateway Configs API
+  tags:
+  - AI
+  - AI Agents
+  - Agent Gateways
+  - Credential Proxy
+  humanURL: https://docs.runloop.ai/docs/devboxes/agent-gateways
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/agent-gateways
+    type: Documentation
+  - url: openapi/runloop-gateway-configs-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-gateway-config-schema.json
+    type: JSONSchema
+  - url: capabilities/gateway-configs-gateway-configs.yaml
+    type: NaftikoCapability
+  description: >
+    Configure Agent Gateways — proxy configurations that let Devbox-resident agents call
+    external AI provider APIs (OpenAI, Anthropic, etc.) without exposing the raw provider
+    credentials to agent code. Implements the Credential Gateway / opaque token-injection
+    security pattern.
+
+- aid: runloop-ai:runloop-mcp-configs-api
+  name: Runloop MCP Configs API
+  tags:
+  - AI
+  - AI Agents
+  - MCP
+  - Model Context Protocol
+  humanURL: https://docs.runloop.ai/docs/devboxes/mcp
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/tools/ai-tools
+    type: Documentation
+  - url: openapi/runloop-mcp-configs-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-mcp-config-schema.json
+    type: JSONSchema
+  - url: capabilities/mcp-configs-mcp-configs.yaml
+    type: NaftikoCapability
+  description: >
+    Configure and manage Model Context Protocol (MCP) server bindings for Devboxes. Each MCP
+    Config is a declarative mount that Runloop wires into Devbox agent runtimes so the agent
+    can call MCP tools without bespoke setup.
+
+- aid: runloop-ai:runloop-apikeys-api
+  name: Runloop API Keys API
+  tags:
+  - AI
+  - AI Agents
+  - API Keys
+  - Authentication
+  humanURL: https://docs.runloop.ai/api-reference/apikeys/create-api-key
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/api-reference/apikeys/create-api-key
+    type: Documentation
+  - url: openapi/runloop-apikeys-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/runloop-api-key-schema.json
+    type: JSONSchema
+  - url: json-schema/runloop-restricted-key-schema.json
+    type: JSONSchema
+  - url: capabilities/apikeys-apikeys.yaml
+    type: NaftikoCapability
+  - url: capabilities/apikeys-restricted-keys.yaml
+    type: NaftikoCapability
+  description: >
+    Create and manage Runloop account API keys and Restricted Keys (scoped, narrower-permission
+    tokens). API keys are the standard auth credential for SDK and REST API access; Restricted
+    Keys are intended for embedded use in Devbox-resident agents.
+
+- aid: runloop-ai:runloop-executions-api
+  name: Runloop Executions Streaming API
+  tags:
+  - AI
+  - AI Agents
+  - Executions
+  - Streaming
+  humanURL: https://docs.runloop.ai/docs/devboxes/execution-logs
+  baseURL: https://api.runloop.ai
+  properties:
+  - url: https://docs.runloop.ai/docs/devboxes/execution-logs
+    type: Documentation
+  - url: openapi/runloop-executions-api-openapi.yml
+    type: OpenAPI
+  description: >
+    Stream stdout and stderr updates from in-flight Devbox executions in real time. Use alongside
+    the Devbox execute endpoints for long-running command output capture.
+
+name: Runloop
+description: >
+  Runloop is the AI Agent Accelerator — secure code sandboxes (Devboxes), evaluation
+  infrastructure (Benchmarks, Scenarios), and production-grade orchestration for AI coding
+  agents at enterprise scale. The platform provides a single REST API and matched
+  Python/TypeScript SDKs covering Devbox lifecycle, Blueprint image building, Snapshot
+  branching, Agent registry, Axon event streams with Broker bridges, Storage Objects,
+  Secrets, Network Policies, Agent Gateways, MCP Configs, and a turnkey eval framework
+  (SWE-Bench Verified, SWE-smith, custom benchmarks). Runloop runs on a custom bare-metal
+  hypervisor with microVM-level isolation and is SOC 2 Type II, HIPAA, and GDPR compliant,
+  with VPC deployment available for regulated workloads. Founded 2023 by Jonathan Wall
+  (Google File System lead, Google Wallet co-founder, Index CTO acquired by Stripe).
+tags:
+- AI
+- AI Agents
+- Coding Agents
+- Sandboxes
+- Devboxes
+- Code Execution
+- Evaluation
+- Benchmarks
+- SWE-Bench
+- MCP
+- Snapshots
+- microVM
+- Enterprise
+- SOC 2
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+created: '2026-05-25'
+modified: '2026-05-25'
+common:
+- type: Website
+  url: https://runloop.ai
+- type: Documentation
+  url: https://docs.runloop.ai
+- type: APIReference
+  url: https://docs.runloop.ai/api-reference
+- type: Portal
+  url: https://docs.runloop.ai
+- type: SignUp
+  url: https://platform.runloop.ai/signup
+- type: Pricing
+  url: https://runloop.ai/pricing
+- type: Plans
+  url: plans/runloop-ai-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/runloop-ai-rate-limits.yml
+- type: FinOps
+  url: finops/runloop-ai-finops.yml
+- type: Vocabulary
+  url: vocabulary/runloop-ai-vocabulary.yml
+- type: SpectralRules
+  url: rules/runloop-ai-rules.yml
+- type: JSONLD
+  url: json-ld/runloop-context.jsonld
+- type: StatusPage
+  url: https://status.runloop.ai
+- type: Security
+  url: https://runloop.ai/security
+- type: Compliance
+  url: https://runloop.ai/security
+- type: Careers
+  url: https://runloop.ai/careers
+- type: About
+  url: https://runloop.ai/about
+- type: Blog
+  url: https://runloop.ai/blog
+- type: Media
+  url: https://runloop.ai/in-the-media
+- type: ContactSales
+  url: https://runloop.ai/contact
+- type: GitHub
+  url: https://github.com/runloopai
+- type: Documentation
+  name: llms.txt
+  url: https://docs.runloop.ai/llms.txt
+- type: Documentation
+  name: Quickstart
+  url: https://docs.runloop.ai/docs/tutorials/quickstart
+- type: Documentation
+  name: Features
+  url: https://docs.runloop.ai/docs/overview/runloop-features
+- type: Documentation
+  name: What is Runloop?
+  url: https://docs.runloop.ai/docs/overview/what-is-runloop
+- type: Tutorials
+  url: https://docs.runloop.ai/docs/tutorials/overview
+- type: SDK
+  name: Python SDK
+  url: https://github.com/runloopai/api-client-python
+- type: SDK
+  name: Python SDK Docs
+  url: https://runloopai.github.io/api-client-python/
+- type: PythonPackage
+  name: runloop-api-client
+  url: https://pypi.org/project/runloop-api-client/
+- type: SDK
+  name: TypeScript SDK
+  url: https://github.com/runloopai/api-client-ts
+- type: SDK
+  name: TypeScript SDK Docs
+  url: https://runloopai.github.io/api-client-ts/
+- type: NPMPackage
+  name: '@runloop/api-client'
+  url: https://www.npmjs.com/package/@runloop/api-client
+- type: CLI
+  name: rl-cli
+  url: https://github.com/runloopai/rl-cli
+- type: CLI
+  name: rl-cli docs
+  url: https://docs.runloop.ai/docs/tools/rl-cli
+- type: Homebrew
+  url: https://github.com/runloopai/homebrew-tap
+- type: SDK
+  name: Remote Agents SDK (Axon broker clients)
+  url: https://github.com/runloopai/remote-agents-sdk
+- type: Tools
+  name: Runloop Examples (cookbook)
+  url: https://github.com/runloopai/runloop-examples
+- type: Tools
+  name: deploy-agent GitHub Action
+  url: https://github.com/runloopai/deploy-agent
+- type: Tools
+  name: code-execution-agent
+  url: https://github.com/runloopai/code-execution-agent
+- type: Tools
+  name: AI Agent App Template
+  url: https://github.com/runloopai/ai-agent-app-template
+- type: Tools
+  name: Cursor Rules (Python)
+  url: https://docs.runloop.ai/static/files/runloop-python-client.mdc
+- type: Tools
+  name: Cursor Rules (TypeScript)
+  url: https://docs.runloop.ai/static/files/runloop-typescript-client.mdc
+- type: Tools
+  name: ComputeSDK (open-source code execution toolkit)
+  url: https://github.com/runloopai/computesdk
+- type: Tools
+  name: deepagents
+  url: https://github.com/runloopai/deepagents
+- type: Tools
+  name: codex-tax-man (Codex + W&B Weave starter)
+  url: https://github.com/runloopai/codex-tax-man
+- type: Integration
+  name: OpenAI Agents SDK + Runloop tutorial
+  url: https://docs.runloop.ai/docs/tutorials/openai-agentssdk-runloop
+- type: Integration
+  name: OpenCode on Runloop
+  url: https://docs.runloop.ai/docs/tutorials/opencode-runloop
+- type: Integration
+  name: Axon + ACP with OpenCode
+  url: https://docs.runloop.ai/docs/tutorials/axon-acp-broker
+- type: Integration
+  name: GitHub Actions for agent deployment
+  url: https://docs.runloop.ai/docs/devboxes/agents/deploying-with-github-actions
+- type: MCP
+  name: Runloop MCP Server / AI Tools
+  url: https://docs.runloop.ai/docs/tools/ai-tools
+- type: LinkedIn
+  url: https://www.linkedin.com/company/runloopai
+- type: Twitter
+  url: https://twitter.com/runloopai
+- type: ContactInfo
+  name: support@runloop.ai
+  url: mailto:support@runloop.ai
+maintainers:
+- FN: Runloop, Inc.
+  url: https://runloop.ai
+  email: support@runloop.ai

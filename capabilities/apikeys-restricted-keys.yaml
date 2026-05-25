@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Restricted Keys (apikeys)
+  description: Runloop restricted-keys capability covering one Runloop business surface. 1 operations.
+  tags:
+  - Runloop
+  - Restricted-Keys
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: apikeys-restricted-keys
+    baseUri: https://api.runloop.ai
+    description: Runloop restricted-keys business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-restricted-keys
+      path: /v1/restricted_keys
+      operations:
+      - name: createRestrictedKey
+        method: POST
+        description: Create a restricted API key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: apikeys-restricted-keys-rest
+    port: 8080
+    description: REST adapter for Runloop restricted-keys. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/restricted_keys
+      name: v1-restricted-keys
+      description: REST surface for v1-restricted-keys.
+      operations:
+      - method: POST
+        name: createRestrictedKey
+        description: Create a restricted API key.
+        call: apikeys-restricted-keys.createRestrictedKey
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: apikeys-restricted-keys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop restricted-keys. One tool per consumed operation.
+    tools:
+    - name: runloop-apikeys-restricted-keys-createRestrictedKey
+      description: Create a restricted API key.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apikeys-restricted-keys.createRestrictedKey
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

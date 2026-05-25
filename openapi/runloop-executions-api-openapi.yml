@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Runloop Executions API
+  version: '0.1'
+  description: Stream stdout and stderr updates from in-flight Devbox executions in real time. Use alongside the Devbox execute
+    endpoints for long-running command output capture.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: executions
+paths:
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates:
+    get:
+      tags:
+      - executions
+      - streaming
+      summary: Tails the stderr logs for the given execution with SSE streaming
+      description: Tails the stderr logs for the given execution with SSE streaming
+      operationId: streamStdErrUpdates
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The ID of the devbox.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The ID of the execution.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecUpdateChunkView'
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates:
+    get:
+      tags:
+      - executions
+      - streaming
+      summary: Tails the stdout logs for the given execution with SSE streaming
+      description: Tails the stdout logs for the given execution with SSE streaming
+      operationId: streamStdOutUpdates
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The ID of the devbox.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The ID of the execution.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecUpdateChunkView'
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+      deprecated: false
+components:
+  schemas:
+    ExecUpdateChunkView:
+      type: object
+      additionalProperties: false
+      properties:
+        offset:
+          type: integer
+          format: int64
+          description: The byte offset of this chunk of log stream.
+        output:
+          type: string
+          description: The latest log stream chunk.
+      required:
+      - output
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

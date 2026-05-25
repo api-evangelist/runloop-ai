@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-network-policy-schema.json",
+  "title": "Runloop Network Policy",
+  "description": "A NetworkPolicy defines egress network access rules for devboxes. Policies can be applied to blueprints, devboxes, and snapshot resumes.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the NetworkPolicy."
+    },
+    "name": {
+      "type": "string",
+      "description": "The human-readable name of the NetworkPolicy. Unique per account."
+    },
+    "description": {
+      "type": "string",
+      "nullable": true,
+      "description": "Optional description of the NetworkPolicy."
+    },
+    "egress": {
+      "$ref": "#/$defs/EgressRulesView",
+      "description": "The egress rules for this policy."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The creation time of the NetworkPolicy (Unix timestamp in milliseconds)."
+    },
+    "update_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Last update time of the NetworkPolicy (Unix timestamp in milliseconds)."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "egress",
+    "create_time_ms",
+    "update_time_ms"
+  ],
+  "$defs": {
+    "EgressRulesView": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Egress (outbound) network rules for a NetworkPolicy.",
+      "properties": {
+        "allow_all": {
+          "type": "boolean",
+          "description": "If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies."
+        },
+        "allow_devbox_to_devbox": {
+          "type": "boolean",
+          "description": "If true, allows traffic between the account's own devboxes via tunnels."
+        },
+        "allowed_hostnames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "DNS-based allow list with wildcard support. Examples: ['github.com', '*.npmjs.org', 'api.openai.com']. Empty list with allow_all=false means no network access (DENY_ALL behavior)."
+        },
+        "allow_agent_gateway": {
+          "type": "boolean",
+          "description": "If true, allows devbox egress to the agent gateway for credential proxying."
+        },
+        "allow_mcp_gateway": {
+          "type": "boolean",
+          "description": "If true, allows devbox egress to the MCP hub for MCP server access."
+        }
+      },
+      "required": [
+        "allow_all",
+        "allow_devbox_to_devbox",
+        "allowed_hostnames",
+        "allow_agent_gateway",
+        "allow_mcp_gateway"
+      ]
+    }
+  }
+}

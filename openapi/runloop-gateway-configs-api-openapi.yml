@@ -1,0 +1,351 @@
+openapi: 3.0.3
+info:
+  title: Runloop Gateway Configs API
+  version: '0.1'
+  description: "Configure Agent Gateways \u2014 proxy configurations that allow Devbox agents to call external AI APIs (OpenAI,\
+    \ Anthropic, etc.) without exposing raw provider credentials to agent code."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: gateway-configs
+paths:
+  /v1/gateway-configs:
+    post:
+      tags:
+      - gateway-configs
+      summary: Create a GatewayConfig.
+      description: Create a new GatewayConfig to proxy API requests through the agent gateway. The config specifies the target
+        endpoint and how credentials should be applied.
+      operationId: createGatewayConfig
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayConfigCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: GatewayConfig created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayConfigView'
+        '400':
+          description: Bad request. Name already exists or is invalid.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    get:
+      tags:
+      - gateway-configs
+      summary: List GatewayConfigs.
+      description: List all GatewayConfigs for the authenticated account, including system-provided configs like 'anthropic'
+        and 'openai'.
+      operationId: listGatewayConfigs
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of GatewayConfigs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayConfigListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/gateway-configs/{id}:
+    get:
+      tags:
+      - gateway-configs
+      summary: Get a GatewayConfig.
+      description: Get a specific GatewayConfig by its unique identifier.
+      operationId: getGatewayConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the GatewayConfig.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved the GatewayConfig.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayConfigView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: GatewayConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    post:
+      tags:
+      - gateway-configs
+      summary: Update a GatewayConfig.
+      description: Update an existing GatewayConfig. All fields are optional.
+      operationId: updateGatewayConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the GatewayConfig to update.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayConfigUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: GatewayConfig updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayConfigView'
+        '400':
+          description: Bad request. Invalid parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: GatewayConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/gateway-configs/{id}/delete:
+    post:
+      tags:
+      - gateway-configs
+      summary: Delete a GatewayConfig.
+      description: Delete an existing GatewayConfig. This action is irreversible.
+      operationId: deleteGatewayConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the GatewayConfig to delete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyRecord'
+        required: false
+      responses:
+        '200':
+          description: GatewayConfig deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayConfigView'
+        '400':
+          description: Bad request. Config is in use by active devboxes.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: GatewayConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+components:
+  schemas:
+    AuthMechanismView:
+      type: object
+      additionalProperties: false
+      description: Defines how credentials are applied to HTTP requests when proxying through the gateway.
+      properties:
+        type:
+          type: string
+          description: 'The type of authentication mechanism: ''header'', ''bearer''.'
+        key:
+          type: string
+          nullable: true
+          description: 'For ''header'' type: the header name (e.g., ''x-api-key'').'
+      required:
+      - type
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    GatewayConfigCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new GatewayConfig.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the GatewayConfig. Must be unique within your account.
+        endpoint:
+          type: string
+          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: How credentials should be applied to proxied requests. Specify the type ('header', 'bearer') and optional
+            key field.
+        description:
+          type: string
+          nullable: true
+          description: Optional description for this gateway configuration.
+      required:
+      - name
+      - endpoint
+      - auth_mechanism
+    GatewayConfigListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of GatewayConfigs.
+      properties:
+        gateway_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayConfigView'
+          description: The list of GatewayConfigs.
+        has_more:
+          type: boolean
+          description: Whether there are more results available beyond this page.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total count of GatewayConfigs that match the query.
+      required:
+      - gateway_configs
+      - has_more
+    GatewayConfigUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will
+        be updated.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: New name for the GatewayConfig. Must be unique within your account.
+        endpoint:
+          type: string
+          nullable: true
+          description: New target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          nullable: true
+          description: New authentication mechanism for applying credentials to proxied requests.
+        description:
+          type: string
+          nullable: true
+          description: New description for this gateway configuration.
+    GatewayConfigView:
+      type: object
+      additionalProperties: false
+      description: A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies
+        the target endpoint and how credentials should be applied.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the GatewayConfig.
+        account_id:
+          type: string
+          nullable: true
+          description: The account ID that owns this config.
+        name:
+          type: string
+          description: The human-readable name of the GatewayConfig. Unique per account (or globally for system configs).
+        endpoint:
+          type: string
+          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: How credentials should be applied to proxied requests.
+        description:
+          type: string
+          nullable: true
+          description: Optional description for this gateway configuration.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the GatewayConfig (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - endpoint
+      - auth_mechanism
+      - create_time_ms
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

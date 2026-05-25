@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-tunnel-schema.json",
+  "title": "Runloop Tunnel",
+  "description": "A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.\nUsage: https://{port}-{tunnel_key}.tunnel.runloop.ai",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "tunnel_key": {
+      "type": "string",
+      "description": "The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}"
+    },
+    "auth_mode": {
+      "$ref": "#/$defs/TunnelAuthModeView",
+      "description": "The authentication mode for the tunnel."
+    },
+    "auth_token": {
+      "type": "string",
+      "nullable": true,
+      "description": "Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time of the tunnel (Unix timestamp milliseconds)."
+    },
+    "http_keep_alive": {
+      "type": "boolean",
+      "description": "When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer."
+    },
+    "wake_on_http": {
+      "type": "boolean",
+      "description": "When true, HTTP traffic to a suspended devbox will automatically trigger a resume."
+    }
+  },
+  "required": [
+    "tunnel_key",
+    "auth_mode",
+    "create_time_ms",
+    "http_keep_alive",
+    "wake_on_http"
+  ],
+  "$defs": {
+    "TunnelAuthModeView": {
+      "type": "string",
+      "enum": [
+        "open",
+        "authenticated"
+      ]
+    }
+  }
+}

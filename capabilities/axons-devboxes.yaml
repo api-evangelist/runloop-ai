@@ -1,0 +1,150 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Devboxes (axons)
+  description: Runloop devboxes capability covering one Runloop business surface. 2 operations.
+  tags:
+  - Runloop
+  - Devboxes
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: axons-devboxes
+    baseUri: https://api.runloop.ai
+    description: Runloop devboxes business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-devboxes-devbox-id-executions-execution-id-stream-stderr-updates
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates
+      operations:
+      - name: streamStdErrUpdates
+        method: GET
+        description: Tails the stderr logs for the given execution with SSE streaming
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The ID of the devbox.
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The ID of the execution.
+          required: true
+        - name: offset
+          in: query
+          type: string
+          description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+          required: false
+    - name: v1-devboxes-devbox-id-executions-execution-id-stream-stdout-updates
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates
+      operations:
+      - name: streamStdOutUpdates
+        method: GET
+        description: Tails the stdout logs for the given execution with SSE streaming
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The ID of the devbox.
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The ID of the execution.
+          required: true
+        - name: offset
+          in: query
+          type: string
+          description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: axons-devboxes-rest
+    port: 8080
+    description: REST adapter for Runloop devboxes. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates
+      name: v1-devboxes-devbox-id-executions-execution-id-stream-stderr-updates
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id-stream-stderr-updates.
+      operations:
+      - method: GET
+        name: streamStdErrUpdates
+        description: Tails the stderr logs for the given execution with SSE streaming
+        call: axons-devboxes.streamStdErrUpdates
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          offset: rest.params.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates
+      name: v1-devboxes-devbox-id-executions-execution-id-stream-stdout-updates
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id-stream-stdout-updates.
+      operations:
+      - method: GET
+        name: streamStdOutUpdates
+        description: Tails the stdout logs for the given execution with SSE streaming
+        call: axons-devboxes.streamStdOutUpdates
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          offset: rest.params.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: axons-devboxes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop devboxes. One tool per consumed operation.
+    tools:
+    - name: runloop-axons-devboxes-streamStdErrUpdates
+      description: Tails the stderr logs for the given execution with SSE streaming
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: axons-devboxes.streamStdErrUpdates
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-axons-devboxes-streamStdOutUpdates
+      description: Tails the stdout logs for the given execution with SSE streaming
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: axons-devboxes.streamStdOutUpdates
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.

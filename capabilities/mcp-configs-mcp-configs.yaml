@@ -1,0 +1,277 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Mcp Configs (mcp-configs)
+  description: Runloop mcp-configs capability covering one Runloop business surface. 5 operations.
+  tags:
+  - Runloop
+  - Mcp-Configs
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: mcp-configs-mcp-configs
+    baseUri: https://api.runloop.ai
+    description: Runloop mcp-configs business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-mcp-configs
+      path: /v1/mcp-configs
+      operations:
+      - name: createMcpConfig
+        method: POST
+        description: '[Beta] Create an McpConfig.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listMcpConfigs
+        method: GET
+        description: '[Beta] List McpConfigs.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter by name (prefix match supported).
+          required: false
+        - name: id
+          in: query
+          type: string
+          description: Filter by ID.
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-mcp-configs-id
+      path: /v1/mcp-configs/{id}
+      operations:
+      - name: getMcpConfig
+        method: GET
+        description: '[Beta] Get an McpConfig.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the McpConfig.
+          required: true
+      - name: updateMcpConfig
+        method: POST
+        description: '[Beta] Update an McpConfig.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the McpConfig to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-mcp-configs-id-delete
+      path: /v1/mcp-configs/{id}/delete
+      operations:
+      - name: deleteMcpConfig
+        method: POST
+        description: '[Beta] Delete an McpConfig.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The unique identifier of the McpConfig to delete.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: mcp-configs-mcp-configs-rest
+    port: 8080
+    description: REST adapter for Runloop mcp-configs. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/mcp-configs
+      name: v1-mcp-configs
+      description: REST surface for v1-mcp-configs.
+      operations:
+      - method: POST
+        name: createMcpConfig
+        description: '[Beta] Create an McpConfig.'
+        call: mcp-configs-mcp-configs.createMcpConfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listMcpConfigs
+        description: '[Beta] List McpConfigs.'
+        call: mcp-configs-mcp-configs.listMcpConfigs
+        with:
+          name: rest.params.name
+          id: rest.params.id
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mcp-configs/{id}
+      name: v1-mcp-configs-id
+      description: REST surface for v1-mcp-configs-id.
+      operations:
+      - method: GET
+        name: getMcpConfig
+        description: '[Beta] Get an McpConfig.'
+        call: mcp-configs-mcp-configs.getMcpConfig
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateMcpConfig
+        description: '[Beta] Update an McpConfig.'
+        call: mcp-configs-mcp-configs.updateMcpConfig
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mcp-configs/{id}/delete
+      name: v1-mcp-configs-id-delete
+      description: REST surface for v1-mcp-configs-id-delete.
+      operations:
+      - method: POST
+        name: deleteMcpConfig
+        description: '[Beta] Delete an McpConfig.'
+        call: mcp-configs-mcp-configs.deleteMcpConfig
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: mcp-configs-mcp-configs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop mcp-configs. One tool per consumed operation.
+    tools:
+    - name: runloop-mcp-configs-mcp-configs-createMcpConfig
+      description: '[Beta] Create an McpConfig.'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: mcp-configs-mcp-configs.createMcpConfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-mcp-configs-mcp-configs-listMcpConfigs
+      description: '[Beta] List McpConfigs.'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: mcp-configs-mcp-configs.listMcpConfigs
+      with:
+        name: tools.name
+        id: tools.id
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-mcp-configs-mcp-configs-getMcpConfig
+      description: '[Beta] Get an McpConfig.'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: mcp-configs-mcp-configs.getMcpConfig
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-mcp-configs-mcp-configs-updateMcpConfig
+      description: '[Beta] Update an McpConfig.'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: mcp-configs-mcp-configs.updateMcpConfig
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-mcp-configs-mcp-configs-deleteMcpConfig
+      description: '[Beta] Delete an McpConfig.'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: mcp-configs-mcp-configs.deleteMcpConfig
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

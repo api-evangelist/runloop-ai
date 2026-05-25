@@ -1,0 +1,126 @@
+apiCommonsPlans: 0.1
+provider:
+  id: runloop-ai
+  name: Runloop
+  website: https://runloop.ai
+  pricingUrl: https://runloop.ai/pricing
+  currency: USD
+  modified: 2026-05-25
+
+plans:
+  - id: trial
+    name: Pro Trial
+    description: Time-bounded $50 credit Pro trial with no credit card required. Trial sandbox limits — 3 running Devboxes, 5 Blueprints, 10 Snapshots, 3 Objects — lift on upgrade.
+    price:
+      amount: 0
+      currency: USD
+      period: trial
+    credits:
+      amount: 50
+      currency: USD
+      description: $50 in usage credits applied to compute, storage, and Axon coordination.
+    features:
+      - All Pro features
+      - 3 running Devboxes (limit lifts on upgrade)
+      - 5 Blueprints (limit lifts on upgrade)
+      - 10 Snapshots (limit lifts on upgrade)
+      - 3 Storage Objects (limit lifts on upgrade)
+      - No credit card required
+
+  - id: basic
+    name: Basic
+    description: Free subscription with usage-based compute billing. Includes the Runloop public benchmark suite (SWE-Bench Verified, SWE-smith).
+    price:
+      amount: 0
+      currency: USD
+      period: month
+    storage:
+      free_tier_gb: 100
+    features:
+      - Devboxes and Blueprints
+      - Snapshots
+      - Access to public benchmarks (SWE-Bench Verified, SWE-smith)
+      - Email support
+      - Usage-based compute billing
+
+  - id: pro
+    name: Pro
+    description: Recommended plan for teams running agents in production. Adds suspend/resume, repo connections, custom benchmarks, and beta-feature access.
+    price:
+      amount: 250
+      currency: USD
+      period: month
+    storage:
+      free_tier_gb: 1024
+    features:
+      - Everything in Basic
+      - Suspend and Resume
+      - Repository Connections
+      - Custom Benchmarks
+      - Access to Beta Features
+      - Slack support
+
+  - id: enterprise
+    name: Enterprise
+    description: For regulated industries and high-volume workloads. Adds RFT, priority support, VPC deployment, and custom storage allowances.
+    price:
+      amount: null
+      currency: USD
+      period: contact
+      contactSalesUrl: https://runloop.ai/contact
+    features:
+      - Everything in Pro
+      - Reinforcement Fine-Tuning (RFT)
+      - Priority support
+      - Deploy to customer VPC
+      - Custom free storage allowance
+      - SOC 2 Type II, HIPAA, GDPR compliance documentation
+      - Multi-region support
+
+usage:
+  notes: All plans are billed for actual compute and storage consumption on top of the subscription. No minimums.
+  meters:
+    - id: devbox-cpu
+      label: Devbox CPU
+      hourly: 0.108
+      perSecond: 0.00003
+      unit: CPU-hour
+    - id: devbox-memory
+      label: Devbox Memory
+      hourly: 0.0252
+      perSecond: 0.000007
+      unit: GB-hour
+    - id: blueprint-build
+      label: Blueprint Build
+      hourly: 0.108
+      perSecond: 0.00003
+      unit: CPU-hour
+    - id: devbox-storage
+      label: Devbox Storage
+      hourly: 0.00034236
+      perSecond: 0.0000000951
+      unit: GB-hour
+    - id: blueprint-storage
+      label: Blueprint Storage
+      hourly: 0.000072
+      perSecond: 0.00000002
+      unit: GB-hour
+    - id: snapshot-storage
+      label: Snapshot Storage
+      hourly: 0.000072
+      perSecond: 0.00000002
+      unit: GB-hour
+    - id: object-storage
+      label: Object Storage
+      hourly: 0.000072
+      perSecond: 0.00000002
+      unit: GB-hour
+    - id: active-axon
+      label: Active Axon
+      hourly: 0.006
+      perSecond: 0.0000016667
+      unit: axon-hour
+    - id: inactive-axon-storage
+      label: Inactive Axon Storage
+      monthly: 0.20
+      unit: GB-month

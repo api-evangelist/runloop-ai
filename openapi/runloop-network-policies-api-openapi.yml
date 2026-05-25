@@ -1,0 +1,390 @@
+openapi: 3.0.3
+info:
+  title: Runloop Network Policies API
+  version: '0.1'
+  description: "Define and manage egress Network Policies that restrict outbound network access from Devboxes \u2014 per-policy\
+    \ allow/deny rules at the account scope."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: network-policies
+paths:
+  /v1/network-policies:
+    post:
+      tags:
+      - network-policies
+      summary: Create a NetworkPolicy.
+      description: Create a new NetworkPolicy with the specified egress rules. The policy can then be applied to blueprints,
+        devboxes, or snapshot resumes.
+      operationId: createNetworkPolicy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkPolicyCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: NetworkPolicy created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPolicyView'
+        '400':
+          description: Bad request. Name already exists or is invalid.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    get:
+      tags:
+      - network-policies
+      summary: List NetworkPolicies.
+      description: List all NetworkPolicies for the authenticated account.
+      operationId: listNetworkPolicies
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of NetworkPolicies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPolicyListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/network-policies/{id}:
+    get:
+      tags:
+      - network-policies
+      summary: Get a NetworkPolicy.
+      description: Get a specific NetworkPolicy by its unique identifier.
+      operationId: getNetworkPolicy
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the NetworkPolicy.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved the NetworkPolicy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPolicyView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: NetworkPolicy not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    post:
+      tags:
+      - network-policies
+      summary: Update a NetworkPolicy.
+      description: Update an existing NetworkPolicy. All fields are optional.
+      operationId: updateNetworkPolicy
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the NetworkPolicy to update.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkPolicyUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: NetworkPolicy updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPolicyView'
+        '400':
+          description: Bad request. Invalid parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: NetworkPolicy not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/network-policies/{id}/delete:
+    post:
+      tags:
+      - network-policies
+      summary: Delete a NetworkPolicy.
+      description: Delete an existing NetworkPolicy. This action is irreversible.
+      operationId: deleteNetworkPolicy
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the NetworkPolicy to delete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyRecord'
+        required: false
+      responses:
+        '200':
+          description: NetworkPolicy deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkPolicyView'
+        '400':
+          description: Bad request. Policy is in use by active devboxes.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: NetworkPolicy not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+components:
+  schemas:
+    EgressRulesView:
+      type: object
+      additionalProperties: false
+      description: Egress (outbound) network rules for a NetworkPolicy.
+      properties:
+        allow_all:
+          type: boolean
+          description: If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies.
+        allow_devbox_to_devbox:
+          type: boolean
+          description: If true, allows traffic between the account's own devboxes via tunnels.
+        allowed_hostnames:
+          type: array
+          items:
+            type: string
+          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com''].
+            Empty list with allow_all=false means no network access (DENY_ALL behavior).'
+        allow_agent_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the agent gateway for credential proxying.
+        allow_mcp_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the MCP hub for MCP server access.
+      required:
+      - allow_all
+      - allow_devbox_to_devbox
+      - allowed_hostnames
+      - allow_agent_gateway
+      - allow_mcp_gateway
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    NetworkPolicyCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new NetworkPolicy.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the NetworkPolicy. Must be unique within the account.
+        description:
+          type: string
+          nullable: true
+          description: Optional description for the NetworkPolicy.
+        allow_all:
+          type: boolean
+          nullable: true
+          description: (Optional) If true, all egress traffic is allowed (ALLOW_ALL policy). Defaults to false.
+        allow_devbox_to_devbox:
+          type: boolean
+          nullable: true
+          description: (Optional) If true, allows traffic between the account's own devboxes via tunnels. Defaults to false.
+            If allow_all is true, this is automatically set to true.
+        allowed_hostnames:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: '(Optional) DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
+        allow_agent_gateway:
+          type: boolean
+          nullable: true
+          description: (Optional) If true, allows devbox egress to the agent gateway for credential proxying. Defaults to
+            false.
+        allow_mcp_gateway:
+          type: boolean
+          nullable: true
+          description: (Optional) If true, allows devbox egress to the MCP hub for MCP server access. Defaults to false.
+      required:
+      - name
+    NetworkPolicyListView:
+      type: object
+      additionalProperties: false
+      description: A list of NetworkPolicies with pagination information.
+      properties:
+        network_policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkPolicyView'
+          description: The list of NetworkPolicies.
+        has_more:
+          type: boolean
+          description: Whether there are more results available.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total count of items in this response.
+      required:
+      - network_policies
+      - has_more
+    NetworkPolicyUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing NetworkPolicy. All fields are optional.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: Updated human-readable name for the NetworkPolicy.
+        description:
+          type: string
+          nullable: true
+          description: Updated description for the NetworkPolicy.
+        allow_all:
+          type: boolean
+          nullable: true
+          description: If true, all egress traffic is allowed (ALLOW_ALL policy).
+        allow_devbox_to_devbox:
+          type: boolean
+          nullable: true
+          description: If true, allows traffic between the account's own devboxes via tunnels.
+        allowed_hostnames:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: 'Updated DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
+        allow_agent_gateway:
+          type: boolean
+          nullable: true
+          description: If true, allows devbox egress to the agent gateway.
+        allow_mcp_gateway:
+          type: boolean
+          nullable: true
+          description: If true, allows devbox egress to the MCP hub.
+    NetworkPolicyView:
+      type: object
+      additionalProperties: false
+      description: A NetworkPolicy defines egress network access rules for devboxes. Policies can be applied to blueprints,
+        devboxes, and snapshot resumes.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the NetworkPolicy.
+        name:
+          type: string
+          description: The human-readable name of the NetworkPolicy. Unique per account.
+        description:
+          type: string
+          nullable: true
+          description: Optional description of the NetworkPolicy.
+        egress:
+          $ref: '#/components/schemas/EgressRulesView'
+          description: The egress rules for this policy.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the NetworkPolicy (Unix timestamp in milliseconds).
+        update_time_ms:
+          type: integer
+          format: int64
+          description: Last update time of the NetworkPolicy (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - egress
+      - create_time_ms
+      - update_time_ms
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

@@ -1,0 +1,564 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-blueprint-schema.json",
+  "title": "Runloop Blueprint",
+  "description": "Blueprints are ways to create customized starting points for Devboxes. They allow you to define custom starting points for Devboxes such that environment set up can be cached to improve Devbox boot times.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The id of the Blueprint."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Blueprint."
+    },
+    "status": {
+      "$ref": "#/$defs/BlueprintBuildStatus",
+      "description": "The status of the Blueprint build."
+    },
+    "state": {
+      "$ref": "#/$defs/BlueprintState",
+      "description": "The state of the Blueprint."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time of the Blueprint (Unix timestamp milliseconds)."
+    },
+    "build_finish_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "Build completion time of the Blueprint (Unix timestamp milliseconds)."
+    },
+    "parameters": {
+      "$ref": "#/$defs/BlueprintBuildParameters",
+      "description": "The parameters used to create Blueprint."
+    },
+    "failure_reason": {
+      "$ref": "#/$defs/BlueprintBuildFailureReason",
+      "nullable": true,
+      "description": "The failure reason if the Blueprint build failed, if any."
+    },
+    "base_blueprint_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The ID of the base Blueprint."
+    },
+    "containerized_services": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ContainerizedServiceView"
+      },
+      "nullable": true,
+      "description": "List of ContainerizedServices available in the Blueprint. Services can be explicitly started when creating a Devbox."
+    },
+    "is_public": {
+      "type": "boolean",
+      "description": "Whether this Blueprint is publicly accessible to all users."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "nullable": true,
+      "description": "User defined metadata associated with the blueprint."
+    },
+    "devbox_capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DevboxCapabilities"
+      },
+      "nullable": true,
+      "description": "Capabilities that will be available on Devbox."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "status",
+    "state",
+    "create_time_ms",
+    "parameters"
+  ],
+  "$defs": {
+    "BlueprintBuildStatus": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "provisioning",
+        "building",
+        "failed",
+        "build_complete"
+      ],
+      "description": "The status of the Blueprint build.\n\nqueued: Blueprint is queued waiting for build capacity to become available.\nprovisioning: Allocating and booting the necessary infrastructure resources to create the Blueprint image.\nbuilding: Building the Blueprint image.\nfailed: Blueprint image failed to build. See the logs on the dashboard.\nbuild_complete: Blueprint image completed build. You can now use the ID to create Devboxes.\n",
+      "x-enum-descriptions": {
+        "queued": "Blueprint is queued waiting for build capacity to become available.",
+        "provisioning": "Allocating and booting the necessary infrastructure resources to create the Blueprint image.",
+        "building": "Building the Blueprint image.",
+        "failed": "Blueprint image failed to build. See the logs on the dashboard.",
+        "build_complete": "Blueprint image completed build. You can now use the ID to create Devboxes."
+      }
+    },
+    "BlueprintState": {
+      "type": "string",
+      "enum": [
+        "created",
+        "deleted"
+      ]
+    },
+    "CodeMountParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repo_name": {
+          "type": "string",
+          "description": "The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}."
+        },
+        "repo_owner": {
+          "type": "string",
+          "description": "The owner of the repo."
+        },
+        "install_command": {
+          "type": "string",
+          "nullable": true,
+          "description": "Installation command to install and setup repository."
+        },
+        "git_ref": {
+          "type": "string",
+          "nullable": true,
+          "description": "Optional git ref (branch or tag) to checkout. Defaults to the repository default branch."
+        },
+        "token": {
+          "type": "string",
+          "nullable": true,
+          "description": "The authentication token necessary to pull repo."
+        }
+      },
+      "required": [
+        "repo_name",
+        "repo_owner"
+      ]
+    },
+    "ResourceSize": {
+      "type": "string",
+      "enum": [
+        "X_SMALL",
+        "SMALL",
+        "MEDIUM",
+        "LARGE",
+        "X_LARGE",
+        "XX_LARGE",
+        "CUSTOM_SIZE"
+      ],
+      "description": "The size of the Devbox resources for Runloop to allocate.\n\nX_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk\nSMALL: 1 cpu x 2GiB memory x 4GiB disk\nMEDIUM: 2 cpu x 4GiB memory x 8GiB disk\nLARGE: 2 cpu x 8GiB memory x 16GiB disk\nX_LARGE: 4 cpu x 16GiB memory x 16GiB disk\nXX_LARGE: 8 cpu x 32GiB memory x 16GiB disk\nCUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.\n",
+      "x-enum-descriptions": {
+        "X_SMALL": "0.5 cpu x 1GiB memory x 4GiB disk",
+        "SMALL": "1 cpu x 2GiB memory x 4GiB disk",
+        "MEDIUM": "2 cpu x 4GiB memory x 8GiB disk",
+        "LARGE": "2 cpu x 8GiB memory x 16GiB disk",
+        "X_LARGE": "4 cpu x 16GiB memory x 16GiB disk",
+        "XX_LARGE": "8 cpu x 32GiB memory x 16GiB disk",
+        "CUSTOM_SIZE": "To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive."
+      }
+    },
+    "IdleAction": {
+      "type": "string",
+      "enum": [
+        "shutdown",
+        "suspend"
+      ],
+      "description": "Action to take after Devbox idle timer is triggered.\n\nshutdown: Shutdown the Devbox.\nsuspend: Suspend the Devbox.\n",
+      "x-enum-descriptions": {
+        "shutdown": "Shutdown the Devbox.",
+        "suspend": "Suspend the Devbox."
+      }
+    },
+    "IdleConfigurationParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "idle_time_seconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "After idle_time_seconds, on_idle action will be taken."
+        },
+        "on_idle": {
+          "$ref": "#/$defs/IdleAction",
+          "description": "Action to take after Devbox becomes idle."
+        }
+      },
+      "required": [
+        "idle_time_seconds",
+        "on_idle"
+      ]
+    },
+    "Architecture": {
+      "type": "string",
+      "enum": [
+        "x86_64",
+        "arm64"
+      ]
+    },
+    "UserParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Configuration for the Linux user in the Devbox environment.",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username for the Linux user."
+        },
+        "uid": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User ID (UID) for the Linux user. Must be a non-negative integer."
+        }
+      },
+      "required": [
+        "username",
+        "uid"
+      ]
+    },
+    "ResumeTriggers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Triggers that can resume a suspended Devbox.",
+      "properties": {
+        "http": {
+          "type": "boolean",
+          "nullable": true,
+          "description": "When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume."
+        },
+        "axon_event": {
+          "type": "boolean",
+          "nullable": true,
+          "description": "When true, axon events targeting a suspended Devbox will trigger a resume."
+        }
+      }
+    },
+    "LifecycleConfigurationParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.",
+      "properties": {
+        "after_idle": {
+          "$ref": "#/$defs/IdleConfigurationParameters",
+          "nullable": true,
+          "description": "Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations."
+        },
+        "resume_triggers": {
+          "$ref": "#/$defs/ResumeTriggers",
+          "nullable": true,
+          "description": "Triggers that can resume a suspended Devbox."
+        }
+      }
+    },
+    "LaunchParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "LaunchParameters enable you to customize the resources available to your Devbox as well as the environment set up that should be completed before the Devbox is marked as 'running'.",
+      "properties": {
+        "launch_commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "Set of commands to be run at launch time, before the entrypoint process is run."
+        },
+        "resource_size_request": {
+          "$ref": "#/$defs/ResourceSize",
+          "nullable": true,
+          "description": "Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL: 0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk. LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM, 16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size."
+        },
+        "available_ports": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nullable": true,
+          "description": "[Deprecated] A list of ports to make available on the Devbox. This field is ignored."
+        },
+        "keep_alive_time_seconds": {
+          "type": "integer",
+          "format": "int64",
+          "nullable": true,
+          "description": "Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours (172800 seconds)."
+        },
+        "after_idle": {
+          "$ref": "#/$defs/IdleConfigurationParameters",
+          "nullable": true,
+          "description": "Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds. If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead."
+        },
+        "custom_cpu_cores": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16."
+        },
+        "custom_gb_memory": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB."
+        },
+        "custom_disk_size": {
+          "type": "integer",
+          "format": "int32",
+          "nullable": true,
+          "description": "Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB."
+        },
+        "architecture": {
+          "$ref": "#/$defs/Architecture",
+          "nullable": true,
+          "description": "The target architecture for the Devbox. If unset, defaults to x86_64."
+        },
+        "user_parameters": {
+          "$ref": "#/$defs/UserParameters",
+          "nullable": true,
+          "description": "Specify the user for execution on Devbox. If not set, default `user` will be used."
+        },
+        "required_services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService must be specified in Blueprint to be started."
+        },
+        "network_policy_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "(Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden."
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/LifecycleConfigurationParameters",
+          "nullable": true,
+          "description": "Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers."
+        }
+      }
+    },
+    "Credentials": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The username of the container service."
+        },
+        "password": {
+          "type": "string",
+          "description": "The password of the container service."
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "ContainerizedServiceView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the container service."
+        },
+        "image": {
+          "type": "string",
+          "description": "The image of the container service."
+        },
+        "credentials": {
+          "$ref": "#/$defs/Credentials",
+          "nullable": true,
+          "description": "The credentials of the container service."
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "The environment variables of the container service."
+        },
+        "port_mappings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "The port mappings of the container service. Port mappings are in the format of <host_port>:<container_port>."
+        },
+        "options": {
+          "type": "string",
+          "nullable": true,
+          "description": "Additional Docker container create options."
+        }
+      },
+      "required": [
+        "name",
+        "image"
+      ]
+    },
+    "ObjectContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A build context backed by an Object.",
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "description": "The ID of an object, whose contents are to be used as a build context."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "object"
+          ],
+          "default": "object"
+        }
+      },
+      "required": [
+        "object_id",
+        "type"
+      ]
+    },
+    "BuildContext": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ObjectContext"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "type",
+        "mapping": {
+          "object": "#/components/schemas/ObjectContext"
+        }
+      }
+    },
+    "BlueprintBuildParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Blueprint."
+        },
+        "dockerfile": {
+          "type": "string",
+          "nullable": true,
+          "description": "Dockerfile contents to be used to build the Blueprint."
+        },
+        "system_setup_commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "A list of commands to run to set up your system."
+        },
+        "code_mounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CodeMountParameters"
+          },
+          "nullable": true,
+          "description": "A list of code mounts to be included in the Blueprint."
+        },
+        "launch_parameters": {
+          "$ref": "#/$defs/LaunchParameters",
+          "nullable": true,
+          "description": "Parameters to configure your Devbox at launch time."
+        },
+        "file_mounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "(Optional) Map of paths and file contents to write before setup."
+        },
+        "base_blueprint_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "(Optional) ID of previously built blueprint to use as a base blueprint for this build."
+        },
+        "base_blueprint_name": {
+          "type": "string",
+          "nullable": true,
+          "description": "(Optional) Name of previously built blueprint to use as a base blueprint for this build. When set, this will load the latest successfully built Blueprint with the given name. Only one of (base_blueprint_id, base_blueprint_name) should be specified."
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ContainerizedServiceView"
+          },
+          "nullable": true,
+          "description": "(Optional) List of containerized services to include in the Blueprint. These services will be pre-pulled during the build phase for optimized startup performance."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "(Optional) User defined metadata for the Blueprint."
+        },
+        "build_args": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "(Optional) Arbitrary Docker build args to pass during build."
+        },
+        "secrets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "nullable": true,
+          "description": "(Optional) Map of mount IDs/environment variable names to secret names. Secrets will be available to commands during the build. Secrets are NOT stored in the blueprint image. Example: {\"DB_PASS\": \"DATABASE_PASSWORD\"} makes the secret 'DATABASE_PASSWORD' available as environment variable 'DB_PASS'."
+        },
+        "build_context": {
+          "$ref": "#/$defs/BuildContext",
+          "nullable": true,
+          "description": "(Optional) Build context to be attached to the Blueprint build. This context is the source of COPY and ADD directives."
+        },
+        "network_policy_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "(Optional) ID of the network policy to apply during blueprint build. This restricts network access during the build process. This does not affect devboxes created from this blueprint; if you want devboxes created from this blueprint to inherit the network policy, set the network_policy_id on the blueprint launch parameters."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "BlueprintBuildFailureReason": {
+      "type": "string",
+      "enum": [
+        "out_of_memory",
+        "out_of_disk",
+        "build_failed"
+      ],
+      "description": "The cause of the failure of the Blueprint build.\n\nout_of_memory: The build has run out of memory. Contact support if this is unexpected.\nout_of_disk: The build has run out of disk. Contact support if this is unexpected.\nbuild_failed: The build has failed. Use the dashboard to look at Blueprint build logs for more info.\n",
+      "x-enum-descriptions": {
+        "out_of_memory": "The build has run out of memory. Contact support if this is unexpected.",
+        "out_of_disk": "The build has run out of disk. Contact support if this is unexpected.",
+        "build_failed": "The build has failed. Use the dashboard to look at Blueprint build logs for more info."
+      }
+    },
+    "DevboxCapabilities": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "docker_in_docker"
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-benchmark-run-schema.json",
+  "title": "Runloop Benchmark Run",
+  "description": "A BenchmarkRunView represents a run of a complete set of Scenarios, organized under a Benchmark or created by a BenchmarkJob.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the BenchmarkRun."
+    },
+    "benchmark_id": {
+      "type": "string",
+      "nullable": true,
+      "description": "The ID of the Benchmark definition. Present if run was created from a benchmark definition."
+    },
+    "name": {
+      "type": "string",
+      "nullable": true,
+      "description": "The name of the BenchmarkRun."
+    },
+    "start_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The time the benchmark run execution started (Unix timestamp milliseconds)."
+    },
+    "duration_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "The duration for the BenchmarkRun to complete."
+    },
+    "state": {
+      "$ref": "#/$defs/BenchmarkRunState",
+      "description": "The state of the BenchmarkRun."
+    },
+    "score": {
+      "type": "number",
+      "format": "float",
+      "nullable": true,
+      "description": "The final score across the BenchmarkRun, present once completed. Calculated as sum of scenario scores / number of scenario runs."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "User defined metadata to attach to the benchmark run for organization."
+    },
+    "purpose": {
+      "type": "string",
+      "nullable": true,
+      "description": "Purpose of the run."
+    },
+    "environment_variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "nullable": true,
+      "description": "Environment variables used to run the benchmark."
+    },
+    "secrets_provided": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "nullable": true,
+      "description": "User secrets used to run the benchmark. Example: {\"DB_PASS\": \"DATABASE_PASSWORD\"} would set the environment variable 'DB_PASS' on all scenario devboxes to the value of the secret 'DATABASE_PASSWORD'."
+    }
+  },
+  "required": [
+    "id",
+    "start_time_ms",
+    "state",
+    "metadata"
+  ],
+  "$defs": {
+    "BenchmarkRunState": {
+      "type": "string",
+      "enum": [
+        "running",
+        "canceled",
+        "completed",
+        "failed"
+      ]
+    }
+  }
+}

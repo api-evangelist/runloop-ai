@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-object-schema.json",
+  "title": "Runloop Object",
+  "description": "An Object represents a stored data entity with metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the Object."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the Object."
+    },
+    "state": {
+      "$ref": "#/$defs/ObjectState",
+      "description": "The current state of the Object."
+    },
+    "size_bytes": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "The size of the Object content in bytes (null until uploaded)."
+    },
+    "content_type": {
+      "$ref": "#/$defs/ContentType",
+      "description": "The content type of the Object."
+    },
+    "create_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The creation time of the Object in milliseconds since epoch."
+    },
+    "delete_after_time_ms": {
+      "type": "integer",
+      "format": "int64",
+      "nullable": true,
+      "description": "The time after which the Object will be deleted in milliseconds since epoch."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "nullable": true,
+      "description": "User defined metadata to attach to the Object for organization."
+    },
+    "upload_url": {
+      "type": "string",
+      "nullable": true,
+      "description": "Presigned URL for uploading content to S3 (only present on create)."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "state",
+    "content_type",
+    "create_time_ms"
+  ],
+  "$defs": {
+    "ObjectState": {
+      "type": "string",
+      "enum": [
+        "UPLOADING",
+        "READ_ONLY",
+        "DELETED",
+        "ERROR"
+      ]
+    },
+    "ContentType": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "text",
+        "binary",
+        "gzip",
+        "tar",
+        "tgz"
+      ]
+    }
+  }
+}

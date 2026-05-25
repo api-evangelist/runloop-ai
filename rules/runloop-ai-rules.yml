@@ -1,0 +1,111 @@
+extends:
+  - spectral:oas
+
+functions: []
+
+rules:
+  # Runloop convention: bearer auth via RUNLOOP_API_KEY
+  runloop-bearer-auth-required:
+    description: All Runloop operations require the bearerAuth security scheme.
+    message: 'Operation must declare bearerAuth security (RUNLOOP_API_KEY).'
+    severity: warn
+    given:
+      - $.paths[*][get,post,put,patch,delete]
+    then:
+      - field: security
+        function: truthy
+
+  # Path prefix: /v1/<resource>
+  runloop-v1-prefix:
+    description: Public Runloop endpoints live under /v1/.
+    message: 'Path "{{path}}" should begin with /v1/ (or be the /pty/ control plane).'
+    severity: warn
+    given: $.paths
+    then:
+      function: pattern
+      functionOptions:
+        match: '^/(v1/|pty/)'
+
+  # Snake_case identifiers in path parameters
+  runloop-snake-case-path-params:
+    description: Runloop uses snake_case for path parameter names.
+    message: 'Path parameter "{{value}}" should be snake_case (e.g. devbox_id).'
+    severity: warn
+    given: $.paths[*][*].parameters[?(@.in == "path")].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-z0-9_]*$'
+
+  # Snake_case for query parameters too
+  runloop-snake-case-query-params:
+    description: Runloop uses snake_case for query parameter names.
+    severity: warn
+    given: $.paths[*][*].parameters[?(@.in == "query")].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-z0-9_]*$'
+
+  # operationId required (Stainless-generated SDKs depend on this)
+  runloop-operation-id-required:
+    description: Every operation must have an operationId so SDK generators can produce method names.
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: operationId
+      function: truthy
+
+  # Title Case summaries (project-wide convention)
+  runloop-title-case-summary:
+    description: Operation summaries use Title Case.
+    severity: hint
+    given: $.paths[*][get,post,put,patch,delete].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z]'
+
+  # Tags should be drawn from the canonical Runloop tag set
+  runloop-canonical-tags:
+    description: Use canonical Runloop tags.
+    severity: hint
+    given: $.paths[*][get,post,put,patch,delete].tags[*]
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+          - Devbox
+          - Devbox-Lifecycle
+          - Devbox-FileTools
+          - Devbox-ShellTools
+          - Devbox-NetworkTools
+          - Devbox-ObservabilityTools
+          - Devbox-PersistenceTools
+          - Blueprint
+          - Blueprint-Lifecycle
+          - Blueprint-ObservabilityTools
+          - Benchmark
+          - Scenario
+          - ScenarioScorer
+          - agents
+          - axons
+          - executions
+          - objects
+          - secrets
+          - apikeys
+          - restricted_keys
+          - gateway-configs
+          - mcp-configs
+          - network-policies
+          - streaming
+
+  # Server should be api.runloop.ai
+  runloop-canonical-server:
+    description: Servers list must include https://api.runloop.ai.
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://api\\.runloop\\.ai'

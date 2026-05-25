@@ -1,0 +1,2008 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Devboxes (devbox)
+  description: Runloop devboxes capability covering one Runloop business surface. 40 operations.
+  tags:
+  - Runloop
+  - Devboxes
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: devbox-devboxes
+    baseUri: https://api.runloop.ai
+    description: Runloop devboxes business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-devboxes
+      path: /v1/devboxes
+      operations:
+      - name: createDevbox
+        method: POST
+        description: Create a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listDevboxes
+        method: GET
+        description: List Devboxes.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter by status
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-devboxes-disk-snapshots
+      path: /v1/devboxes/disk_snapshots
+      operations:
+      - name: getDevboxDiskSnapshotList
+        method: GET
+        description: List disk snapshots of a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: query
+          type: string
+          description: Devbox ID to filter by.
+          required: false
+        - name: source_blueprint_id
+          in: query
+          type: string
+          description: Source Blueprint ID to filter snapshots by.
+          required: false
+        - name: metadata[key]
+          in: query
+          type: string
+          description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+          required: false
+        - name: metadata[key][in]
+          in: query
+          type: string
+          description: Filter snapshots by metadata key with multiple possible values (OR condition).
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-devboxes-disk-snapshots-list-public
+      path: /v1/devboxes/disk_snapshots/list_public
+      operations:
+      - name: listPublicSnapshots
+        method: GET
+        description: List public disk snapshots.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: query
+          type: string
+          description: Devbox ID to filter by.
+          required: false
+        - name: source_blueprint_id
+          in: query
+          type: string
+          description: Source Blueprint ID to filter snapshots by.
+          required: false
+        - name: metadata[key]
+          in: query
+          type: string
+          description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+          required: false
+        - name: metadata[key][in]
+          in: query
+          type: string
+          description: Filter snapshots by metadata key with multiple possible values (OR condition).
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-devboxes-disk-snapshots-metadata-keys
+      path: /v1/devboxes/disk_snapshots/metadata/keys
+      operations:
+      - name: getSnapshotMetadataKeys
+        method: GET
+        description: List available snapshot metadata keys.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: _
+          in: query
+          type: string
+          description: ''
+          required: false
+    - name: v1-devboxes-disk-snapshots-metadata-keys-key-values
+      path: /v1/devboxes/disk_snapshots/metadata/keys/{key}/values
+      operations:
+      - name: getSnapshotMetadataValues
+        method: GET
+        description: List values for a specific snapshot metadata key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The metadata key to get values for.
+          required: true
+    - name: v1-devboxes-disk-snapshots-public-metadata-keys
+      path: /v1/devboxes/disk_snapshots/public/metadata/keys
+      operations:
+      - name: getPublicSnapshotMetadataKeys
+        method: GET
+        description: List available public snapshot metadata keys.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: _
+          in: query
+          type: string
+          description: ''
+          required: false
+    - name: v1-devboxes-disk-snapshots-public-metadata-keys-key-values
+      path: /v1/devboxes/disk_snapshots/public/metadata/keys/{key}/values
+      operations:
+      - name: getPublicSnapshotMetadataValues
+        method: GET
+        description: List values for a specific public snapshot metadata key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The metadata key to get values for from public snapshots.
+          required: true
+    - name: v1-devboxes-disk-snapshots-id
+      path: /v1/devboxes/disk_snapshots/{id}
+      operations:
+      - name: updateDiskSnapshot
+        method: POST
+        description: Update metadata of Disk Snapshot.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Snapshot ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-disk-snapshots-id-delete
+      path: /v1/devboxes/disk_snapshots/{id}/delete
+      operations:
+      - name: deleteSnapshot
+        method: POST
+        description: Delete a disk snapshot of a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ID of the snapshot.
+          required: true
+    - name: v1-devboxes-disk-snapshots-id-status
+      path: /v1/devboxes/disk_snapshots/{id}/status
+      operations:
+      - name: queryDiskSnapshotAsync
+        method: GET
+        description: Query the status of an asynchronous disk snapshot.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Snapshot ID.
+          required: true
+    - name: v1-devboxes-metadata-keys
+      path: /v1/devboxes/metadata/keys
+      operations:
+      - name: getDevboxMetadataKeys
+        method: GET
+        description: List available devbox metadata keys.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: _
+          in: query
+          type: string
+          description: ''
+          required: false
+    - name: v1-devboxes-metadata-keys-key-values
+      path: /v1/devboxes/metadata/keys/{key}/values
+      operations:
+      - name: getDevboxMetadataValues
+        method: GET
+        description: List values for a specific devbox metadata key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The metadata key to get values for.
+          required: true
+    - name: v1-devboxes-devbox-id-executions-execution-id
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}
+      operations:
+      - name: queryAsyncCommand
+        method: GET
+        description: Get status of an asynchronous execution on a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The Devbox ID
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The Execution ID
+          required: true
+        - name: last_n
+          in: query
+          type: string
+          description: 'Last n lines of standard error / standard out to return (default: 100)'
+          required: false
+    - name: v1-devboxes-devbox-id-executions-execution-id-kill
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}/kill
+      operations:
+      - name: killAsyncExecution
+        method: POST
+        description: Kill an asynchronous execution currently running on a devbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The Async Execution ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-devbox-id-executions-execution-id-send-std-in
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}/send_std_in
+      operations:
+      - name: sendStdIn
+        method: POST
+        description: Send Content to Std In for a running execution.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The Async Execution ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-devbox-id-executions-execution-id-wait-for-status
+      path: /v1/devboxes/{devbox_id}/executions/{execution_id}/wait_for_status
+      operations:
+      - name: waitForCommandCompletion
+        method: POST
+        description: Wait for an asynchronous execution to reach a specific status.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: devbox_id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: execution_id
+          in: path
+          type: string
+          description: The Async Execution ID.
+          required: true
+        - name: last_n
+          in: query
+          type: string
+          description: 'Last n lines of standard error / standard out to return (default: 100)'
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id
+      path: /v1/devboxes/{id}
+      operations:
+      - name: updateDevbox
+        method: POST
+        description: Update a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: getDevbox
+        method: GET
+        description: Get Devbox details.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-create-pty-tunnel
+      path: /v1/devboxes/{id}/create_pty_tunnel
+      operations:
+      - name: createDevboxPtyTunnel
+        method: POST
+        description: Create an ephemeral PTY tunnel for a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-create-ssh-key
+      path: /v1/devboxes/{id}/create_ssh_key
+      operations:
+      - name: createDevboxSshKey
+        method: POST
+        description: Create an SSH key for a Devbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-download-file
+      path: /v1/devboxes/{id}/download_file
+      operations:
+      - name: devboxDownloadFile
+        method: POST
+        description: Download binary file contents from Devbox filesystem.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-enable-tunnel
+      path: /v1/devboxes/{id}/enable_tunnel
+      operations:
+      - name: enableDevboxTunnel
+        method: POST
+        description: Enable a tunnel for a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-execute
+      path: /v1/devboxes/{id}/execute
+      operations:
+      - name: executeCommand
+        method: POST
+        description: Execute a command with a known ID, optimistically waiting for completion
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: last_n
+          in: query
+          type: string
+          description: 'Last n lines of standard error / standard out to return (default: 100)'
+          required: false
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-execute-async
+      path: /v1/devboxes/{id}/execute_async
+      operations:
+      - name: execAsyncCommand
+        method: POST
+        description: Asynchronously execute a command via the Devbox shell
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-execute-sync
+      path: /v1/devboxes/{id}/execute_sync
+      operations:
+      - name: execSyncCommand
+        method: POST
+        description: (Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-keep-alive
+      path: /v1/devboxes/{id}/keep_alive
+      operations:
+      - name: keepAliveDevbox
+        method: POST
+        description: Reset the idle timer of a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-logs
+      path: /v1/devboxes/{id}/logs
+      operations:
+      - name: listDevboxLogs
+        method: GET
+        description: Get Devbox logs.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: execution_id
+          in: query
+          type: string
+          description: ID of execution to filter logs by.
+          required: false
+        - name: shell_name
+          in: query
+          type: string
+          description: Shell Name to filter logs by.
+          required: false
+    - name: v1-devboxes-id-logs-tail
+      path: /v1/devboxes/{id}/logs/tail
+      operations:
+      - name: tailDevboxLogs
+        method: GET
+        description: Live Tail Devbox Logs.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: execution_id
+          in: query
+          type: string
+          description: ID of execution to filter logs by.
+          required: false
+        - name: shell_name
+          in: query
+          type: string
+          description: Shell Name to filter logs by.
+          required: false
+    - name: v1-devboxes-id-read-file-contents
+      path: /v1/devboxes/{id}/read_file_contents
+      operations:
+      - name: devboxReadFileContents
+        method: POST
+        description: Read text file contents from Devbox filesystem.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-remove-tunnel
+      path: /v1/devboxes/{id}/remove_tunnel
+      operations:
+      - name: removeDevboxTunnel
+        method: POST
+        description: Remove a tunnel from the Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-resume
+      path: /v1/devboxes/{id}/resume
+      operations:
+      - name: resumeDevbox
+        method: POST
+        description: Resume a suspended Devbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-shutdown
+      path: /v1/devboxes/{id}/shutdown
+      operations:
+      - name: shutdownDevbox
+        method: POST
+        description: Shutdown a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: force
+          in: query
+          type: string
+          description: If true, force shutdown even if snapshots are in progress. Defaults to false.
+          required: false
+    - name: v1-devboxes-id-snapshot-disk
+      path: /v1/devboxes/{id}/snapshot_disk
+      operations:
+      - name: createDiskSnapshot
+        method: POST
+        description: Synchronously create a disk snapshot of a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-snapshot-disk-async
+      path: /v1/devboxes/{id}/snapshot_disk_async
+      operations:
+      - name: createDiskSnapshotAsync
+        method: POST
+        description: Start an asynchronous disk snapshot of a running Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-suspend
+      path: /v1/devboxes/{id}/suspend
+      operations:
+      - name: suspendDevbox
+        method: POST
+        description: Suspend a running Devbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-upload-file
+      path: /v1/devboxes/{id}/upload_file
+      operations:
+      - name: devboxUploadFile
+        method: POST
+        description: Upload binary file contents to Devbox filesystem.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-usage
+      path: /v1/devboxes/{id}/usage
+      operations:
+      - name: getDevboxResourceUsage
+        method: GET
+        description: Get resource usage for a Devbox.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+    - name: v1-devboxes-id-wait-for-status
+      path: /v1/devboxes/{id}/wait_for_status
+      operations:
+      - name: waitForDevboxStatus
+        method: POST
+        description: Wait for a Devbox to reach one of the specified statuses.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-devboxes-id-write-file-contents
+      path: /v1/devboxes/{id}/write_file_contents
+      operations:
+      - name: devboxWriteFileContents
+        method: POST
+        description: Write text file contents to Devbox filesystem.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Devbox ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: devbox-devboxes-rest
+    port: 8080
+    description: REST adapter for Runloop devboxes. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/devboxes
+      name: v1-devboxes
+      description: REST surface for v1-devboxes.
+      operations:
+      - method: POST
+        name: createDevbox
+        description: Create a Devbox.
+        call: devbox-devboxes.createDevbox
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listDevboxes
+        description: List Devboxes.
+        call: devbox-devboxes.listDevboxes
+        with:
+          status: rest.params.status
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots
+      name: v1-devboxes-disk-snapshots
+      description: REST surface for v1-devboxes-disk-snapshots.
+      operations:
+      - method: GET
+        name: getDevboxDiskSnapshotList
+        description: List disk snapshots of a Devbox.
+        call: devbox-devboxes.getDevboxDiskSnapshotList
+        with:
+          devbox_id: rest.params.devbox_id
+          source_blueprint_id: rest.params.source_blueprint_id
+          metadata[key]: rest.params.metadata[key]
+          metadata[key][in]: rest.params.metadata[key][in]
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/list_public
+      name: v1-devboxes-disk-snapshots-list-public
+      description: REST surface for v1-devboxes-disk-snapshots-list-public.
+      operations:
+      - method: GET
+        name: listPublicSnapshots
+        description: List public disk snapshots.
+        call: devbox-devboxes.listPublicSnapshots
+        with:
+          devbox_id: rest.params.devbox_id
+          source_blueprint_id: rest.params.source_blueprint_id
+          metadata[key]: rest.params.metadata[key]
+          metadata[key][in]: rest.params.metadata[key][in]
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/metadata/keys
+      name: v1-devboxes-disk-snapshots-metadata-keys
+      description: REST surface for v1-devboxes-disk-snapshots-metadata-keys.
+      operations:
+      - method: GET
+        name: getSnapshotMetadataKeys
+        description: List available snapshot metadata keys.
+        call: devbox-devboxes.getSnapshotMetadataKeys
+        with:
+          _: rest.params._
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/metadata/keys/{key}/values
+      name: v1-devboxes-disk-snapshots-metadata-keys-key-values
+      description: REST surface for v1-devboxes-disk-snapshots-metadata-keys-key-values.
+      operations:
+      - method: GET
+        name: getSnapshotMetadataValues
+        description: List values for a specific snapshot metadata key.
+        call: devbox-devboxes.getSnapshotMetadataValues
+        with:
+          key: rest.params.key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/public/metadata/keys
+      name: v1-devboxes-disk-snapshots-public-metadata-keys
+      description: REST surface for v1-devboxes-disk-snapshots-public-metadata-keys.
+      operations:
+      - method: GET
+        name: getPublicSnapshotMetadataKeys
+        description: List available public snapshot metadata keys.
+        call: devbox-devboxes.getPublicSnapshotMetadataKeys
+        with:
+          _: rest.params._
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/public/metadata/keys/{key}/values
+      name: v1-devboxes-disk-snapshots-public-metadata-keys-key-values
+      description: REST surface for v1-devboxes-disk-snapshots-public-metadata-keys-key-values.
+      operations:
+      - method: GET
+        name: getPublicSnapshotMetadataValues
+        description: List values for a specific public snapshot metadata key.
+        call: devbox-devboxes.getPublicSnapshotMetadataValues
+        with:
+          key: rest.params.key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/{id}
+      name: v1-devboxes-disk-snapshots-id
+      description: REST surface for v1-devboxes-disk-snapshots-id.
+      operations:
+      - method: POST
+        name: updateDiskSnapshot
+        description: Update metadata of Disk Snapshot.
+        call: devbox-devboxes.updateDiskSnapshot
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/{id}/delete
+      name: v1-devboxes-disk-snapshots-id-delete
+      description: REST surface for v1-devboxes-disk-snapshots-id-delete.
+      operations:
+      - method: POST
+        name: deleteSnapshot
+        description: Delete a disk snapshot of a Devbox.
+        call: devbox-devboxes.deleteSnapshot
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/disk_snapshots/{id}/status
+      name: v1-devboxes-disk-snapshots-id-status
+      description: REST surface for v1-devboxes-disk-snapshots-id-status.
+      operations:
+      - method: GET
+        name: queryDiskSnapshotAsync
+        description: Query the status of an asynchronous disk snapshot.
+        call: devbox-devboxes.queryDiskSnapshotAsync
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/metadata/keys
+      name: v1-devboxes-metadata-keys
+      description: REST surface for v1-devboxes-metadata-keys.
+      operations:
+      - method: GET
+        name: getDevboxMetadataKeys
+        description: List available devbox metadata keys.
+        call: devbox-devboxes.getDevboxMetadataKeys
+        with:
+          _: rest.params._
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/metadata/keys/{key}/values
+      name: v1-devboxes-metadata-keys-key-values
+      description: REST surface for v1-devboxes-metadata-keys-key-values.
+      operations:
+      - method: GET
+        name: getDevboxMetadataValues
+        description: List values for a specific devbox metadata key.
+        call: devbox-devboxes.getDevboxMetadataValues
+        with:
+          key: rest.params.key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}
+      name: v1-devboxes-devbox-id-executions-execution-id
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id.
+      operations:
+      - method: GET
+        name: queryAsyncCommand
+        description: Get status of an asynchronous execution on a Devbox.
+        call: devbox-devboxes.queryAsyncCommand
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          last_n: rest.params.last_n
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}/kill
+      name: v1-devboxes-devbox-id-executions-execution-id-kill
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id-kill.
+      operations:
+      - method: POST
+        name: killAsyncExecution
+        description: Kill an asynchronous execution currently running on a devbox
+        call: devbox-devboxes.killAsyncExecution
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}/send_std_in
+      name: v1-devboxes-devbox-id-executions-execution-id-send-std-in
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id-send-std-in.
+      operations:
+      - method: POST
+        name: sendStdIn
+        description: Send Content to Std In for a running execution.
+        call: devbox-devboxes.sendStdIn
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{devbox_id}/executions/{execution_id}/wait_for_status
+      name: v1-devboxes-devbox-id-executions-execution-id-wait-for-status
+      description: REST surface for v1-devboxes-devbox-id-executions-execution-id-wait-for-status.
+      operations:
+      - method: POST
+        name: waitForCommandCompletion
+        description: Wait for an asynchronous execution to reach a specific status.
+        call: devbox-devboxes.waitForCommandCompletion
+        with:
+          devbox_id: rest.params.devbox_id
+          execution_id: rest.params.execution_id
+          last_n: rest.params.last_n
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}
+      name: v1-devboxes-id
+      description: REST surface for v1-devboxes-id.
+      operations:
+      - method: POST
+        name: updateDevbox
+        description: Update a Devbox.
+        call: devbox-devboxes.updateDevbox
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getDevbox
+        description: Get Devbox details.
+        call: devbox-devboxes.getDevbox
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/create_pty_tunnel
+      name: v1-devboxes-id-create-pty-tunnel
+      description: REST surface for v1-devboxes-id-create-pty-tunnel.
+      operations:
+      - method: POST
+        name: createDevboxPtyTunnel
+        description: Create an ephemeral PTY tunnel for a running Devbox.
+        call: devbox-devboxes.createDevboxPtyTunnel
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/create_ssh_key
+      name: v1-devboxes-id-create-ssh-key
+      description: REST surface for v1-devboxes-id-create-ssh-key.
+      operations:
+      - method: POST
+        name: createDevboxSshKey
+        description: Create an SSH key for a Devbox
+        call: devbox-devboxes.createDevboxSshKey
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/download_file
+      name: v1-devboxes-id-download-file
+      description: REST surface for v1-devboxes-id-download-file.
+      operations:
+      - method: POST
+        name: devboxDownloadFile
+        description: Download binary file contents from Devbox filesystem.
+        call: devbox-devboxes.devboxDownloadFile
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/enable_tunnel
+      name: v1-devboxes-id-enable-tunnel
+      description: REST surface for v1-devboxes-id-enable-tunnel.
+      operations:
+      - method: POST
+        name: enableDevboxTunnel
+        description: Enable a tunnel for a running Devbox.
+        call: devbox-devboxes.enableDevboxTunnel
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/execute
+      name: v1-devboxes-id-execute
+      description: REST surface for v1-devboxes-id-execute.
+      operations:
+      - method: POST
+        name: executeCommand
+        description: Execute a command with a known ID, optimistically waiting for completion
+        call: devbox-devboxes.executeCommand
+        with:
+          id: rest.params.id
+          last_n: rest.params.last_n
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/execute_async
+      name: v1-devboxes-id-execute-async
+      description: REST surface for v1-devboxes-id-execute-async.
+      operations:
+      - method: POST
+        name: execAsyncCommand
+        description: Asynchronously execute a command via the Devbox shell
+        call: devbox-devboxes.execAsyncCommand
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/execute_sync
+      name: v1-devboxes-id-execute-sync
+      description: REST surface for v1-devboxes-id-execute-sync.
+      operations:
+      - method: POST
+        name: execSyncCommand
+        description: (Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox
+        call: devbox-devboxes.execSyncCommand
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/keep_alive
+      name: v1-devboxes-id-keep-alive
+      description: REST surface for v1-devboxes-id-keep-alive.
+      operations:
+      - method: POST
+        name: keepAliveDevbox
+        description: Reset the idle timer of a running Devbox.
+        call: devbox-devboxes.keepAliveDevbox
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/logs
+      name: v1-devboxes-id-logs
+      description: REST surface for v1-devboxes-id-logs.
+      operations:
+      - method: GET
+        name: listDevboxLogs
+        description: Get Devbox logs.
+        call: devbox-devboxes.listDevboxLogs
+        with:
+          id: rest.params.id
+          execution_id: rest.params.execution_id
+          shell_name: rest.params.shell_name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/logs/tail
+      name: v1-devboxes-id-logs-tail
+      description: REST surface for v1-devboxes-id-logs-tail.
+      operations:
+      - method: GET
+        name: tailDevboxLogs
+        description: Live Tail Devbox Logs.
+        call: devbox-devboxes.tailDevboxLogs
+        with:
+          id: rest.params.id
+          execution_id: rest.params.execution_id
+          shell_name: rest.params.shell_name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/read_file_contents
+      name: v1-devboxes-id-read-file-contents
+      description: REST surface for v1-devboxes-id-read-file-contents.
+      operations:
+      - method: POST
+        name: devboxReadFileContents
+        description: Read text file contents from Devbox filesystem.
+        call: devbox-devboxes.devboxReadFileContents
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/remove_tunnel
+      name: v1-devboxes-id-remove-tunnel
+      description: REST surface for v1-devboxes-id-remove-tunnel.
+      operations:
+      - method: POST
+        name: removeDevboxTunnel
+        description: Remove a tunnel from the Devbox.
+        call: devbox-devboxes.removeDevboxTunnel
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/resume
+      name: v1-devboxes-id-resume
+      description: REST surface for v1-devboxes-id-resume.
+      operations:
+      - method: POST
+        name: resumeDevbox
+        description: Resume a suspended Devbox
+        call: devbox-devboxes.resumeDevbox
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/shutdown
+      name: v1-devboxes-id-shutdown
+      description: REST surface for v1-devboxes-id-shutdown.
+      operations:
+      - method: POST
+        name: shutdownDevbox
+        description: Shutdown a running Devbox.
+        call: devbox-devboxes.shutdownDevbox
+        with:
+          id: rest.params.id
+          force: rest.params.force
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/snapshot_disk
+      name: v1-devboxes-id-snapshot-disk
+      description: REST surface for v1-devboxes-id-snapshot-disk.
+      operations:
+      - method: POST
+        name: createDiskSnapshot
+        description: Synchronously create a disk snapshot of a running Devbox.
+        call: devbox-devboxes.createDiskSnapshot
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/snapshot_disk_async
+      name: v1-devboxes-id-snapshot-disk-async
+      description: REST surface for v1-devboxes-id-snapshot-disk-async.
+      operations:
+      - method: POST
+        name: createDiskSnapshotAsync
+        description: Start an asynchronous disk snapshot of a running Devbox.
+        call: devbox-devboxes.createDiskSnapshotAsync
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/suspend
+      name: v1-devboxes-id-suspend
+      description: REST surface for v1-devboxes-id-suspend.
+      operations:
+      - method: POST
+        name: suspendDevbox
+        description: Suspend a running Devbox
+        call: devbox-devboxes.suspendDevbox
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/upload_file
+      name: v1-devboxes-id-upload-file
+      description: REST surface for v1-devboxes-id-upload-file.
+      operations:
+      - method: POST
+        name: devboxUploadFile
+        description: Upload binary file contents to Devbox filesystem.
+        call: devbox-devboxes.devboxUploadFile
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/usage
+      name: v1-devboxes-id-usage
+      description: REST surface for v1-devboxes-id-usage.
+      operations:
+      - method: GET
+        name: getDevboxResourceUsage
+        description: Get resource usage for a Devbox.
+        call: devbox-devboxes.getDevboxResourceUsage
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/wait_for_status
+      name: v1-devboxes-id-wait-for-status
+      description: REST surface for v1-devboxes-id-wait-for-status.
+      operations:
+      - method: POST
+        name: waitForDevboxStatus
+        description: Wait for a Devbox to reach one of the specified statuses.
+        call: devbox-devboxes.waitForDevboxStatus
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/devboxes/{id}/write_file_contents
+      name: v1-devboxes-id-write-file-contents
+      description: REST surface for v1-devboxes-id-write-file-contents.
+      operations:
+      - method: POST
+        name: devboxWriteFileContents
+        description: Write text file contents to Devbox filesystem.
+        call: devbox-devboxes.devboxWriteFileContents
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: devbox-devboxes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop devboxes. One tool per consumed operation.
+    tools:
+    - name: runloop-devbox-devboxes-createDevbox
+      description: Create a Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.createDevbox
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-listDevboxes
+      description: List Devboxes.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.listDevboxes
+      with:
+        status: tools.status
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getDevboxDiskSnapshotList
+      description: List disk snapshots of a Devbox.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getDevboxDiskSnapshotList
+      with:
+        devbox_id: tools.devbox_id
+        source_blueprint_id: tools.source_blueprint_id
+        metadata[key]: tools.metadata[key]
+        metadata[key][in]: tools.metadata[key][in]
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-listPublicSnapshots
+      description: List public disk snapshots.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.listPublicSnapshots
+      with:
+        devbox_id: tools.devbox_id
+        source_blueprint_id: tools.source_blueprint_id
+        metadata[key]: tools.metadata[key]
+        metadata[key][in]: tools.metadata[key][in]
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getSnapshotMetadataKeys
+      description: List available snapshot metadata keys.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getSnapshotMetadataKeys
+      with:
+        _: tools._
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getSnapshotMetadataValues
+      description: List values for a specific snapshot metadata key.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getSnapshotMetadataValues
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getPublicSnapshotMetadataKeys
+      description: List available public snapshot metadata keys.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getPublicSnapshotMetadataKeys
+      with:
+        _: tools._
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getPublicSnapshotMetadataValues
+      description: List values for a specific public snapshot metadata key.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getPublicSnapshotMetadataValues
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-updateDiskSnapshot
+      description: Update metadata of Disk Snapshot.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.updateDiskSnapshot
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-deleteSnapshot
+      description: Delete a disk snapshot of a Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.deleteSnapshot
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-queryDiskSnapshotAsync
+      description: Query the status of an asynchronous disk snapshot.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.queryDiskSnapshotAsync
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getDevboxMetadataKeys
+      description: List available devbox metadata keys.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getDevboxMetadataKeys
+      with:
+        _: tools._
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getDevboxMetadataValues
+      description: List values for a specific devbox metadata key.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getDevboxMetadataValues
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-queryAsyncCommand
+      description: Get status of an asynchronous execution on a Devbox.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.queryAsyncCommand
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        last_n: tools.last_n
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-killAsyncExecution
+      description: Kill an asynchronous execution currently running on a devbox
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.killAsyncExecution
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-sendStdIn
+      description: Send Content to Std In for a running execution.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.sendStdIn
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-waitForCommandCompletion
+      description: Wait for an asynchronous execution to reach a specific status.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.waitForCommandCompletion
+      with:
+        devbox_id: tools.devbox_id
+        execution_id: tools.execution_id
+        last_n: tools.last_n
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-updateDevbox
+      description: Update a Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.updateDevbox
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getDevbox
+      description: Get Devbox details.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getDevbox
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-createDevboxPtyTunnel
+      description: Create an ephemeral PTY tunnel for a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.createDevboxPtyTunnel
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-createDevboxSshKey
+      description: Create an SSH key for a Devbox
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.createDevboxSshKey
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-devboxDownloadFile
+      description: Download binary file contents from Devbox filesystem.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.devboxDownloadFile
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-enableDevboxTunnel
+      description: Enable a tunnel for a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.enableDevboxTunnel
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-executeCommand
+      description: Execute a command with a known ID, optimistically waiting for completion
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.executeCommand
+      with:
+        id: tools.id
+        last_n: tools.last_n
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-execAsyncCommand
+      description: Asynchronously execute a command via the Devbox shell
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.execAsyncCommand
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-execSyncCommand
+      description: (Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.execSyncCommand
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-keepAliveDevbox
+      description: Reset the idle timer of a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.keepAliveDevbox
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-listDevboxLogs
+      description: Get Devbox logs.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.listDevboxLogs
+      with:
+        id: tools.id
+        execution_id: tools.execution_id
+        shell_name: tools.shell_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-tailDevboxLogs
+      description: Live Tail Devbox Logs.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.tailDevboxLogs
+      with:
+        id: tools.id
+        execution_id: tools.execution_id
+        shell_name: tools.shell_name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-devboxReadFileContents
+      description: Read text file contents from Devbox filesystem.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.devboxReadFileContents
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-removeDevboxTunnel
+      description: Remove a tunnel from the Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.removeDevboxTunnel
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-resumeDevbox
+      description: Resume a suspended Devbox
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.resumeDevbox
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-shutdownDevbox
+      description: Shutdown a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.shutdownDevbox
+      with:
+        id: tools.id
+        force: tools.force
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-createDiskSnapshot
+      description: Synchronously create a disk snapshot of a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.createDiskSnapshot
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-createDiskSnapshotAsync
+      description: Start an asynchronous disk snapshot of a running Devbox.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.createDiskSnapshotAsync
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-suspendDevbox
+      description: Suspend a running Devbox
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.suspendDevbox
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-devboxUploadFile
+      description: Upload binary file contents to Devbox filesystem.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.devboxUploadFile
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-getDevboxResourceUsage
+      description: Get resource usage for a Devbox.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: devbox-devboxes.getDevboxResourceUsage
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-waitForDevboxStatus
+      description: Wait for a Devbox to reach one of the specified statuses.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.waitForDevboxStatus
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-devbox-devboxes-devboxWriteFileContents
+      description: Write text file contents to Devbox filesystem.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: devbox-devboxes.devboxWriteFileContents
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

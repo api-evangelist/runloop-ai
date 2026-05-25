@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/runloop-ai/main/json-schema/runloop-axon-schema.json",
+  "title": "Runloop Axon",
+  "description": "JSON Schema for the Runloop axon resource, derived from the Runloop OpenAPI schema AxonView.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The axon identifier."
+    },
+    "name": {
+      "type": "string",
+      "nullable": true,
+      "description": "The name of the axon."
+    },
+    "created_at_ms": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Creation time in milliseconds since epoch."
+    }
+  },
+  "required": [
+    "id",
+    "created_at_ms"
+  ],
+  "$defs": {}
+}

@@ -1,0 +1,670 @@
+openapi: 3.0.3
+info:
+  title: Runloop Axons API
+  version: '0.1'
+  description: "Create and operate Axons \u2014 distributed event streams for sequencing, recording, and observing agent interactions.\
+    \ Supports SSE subscriptions, publish, SQL query/batch over event history, and broker bridging to agents running in Devboxes."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: axons
+- name: streaming
+paths:
+  /v1/axons:
+    post:
+      tags:
+      - axons
+      summary: '[Beta] Create an axon.'
+      description: '[Beta] Create a new axon.'
+      operationId: createAxon
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AxonCreateParams'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AxonView'
+      deprecated: false
+    get:
+      tags:
+      - axons
+      summary: '[Beta] List active axons.'
+      description: '[Beta] List all active axons.'
+      operationId: listActiveAxons
+      parameters:
+      - name: name
+        in: query
+        description: Filter by axon name (prefix match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by axon ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AxonListView'
+      deprecated: false
+  /v1/axons/{id}:
+    get:
+      tags:
+      - axons
+      summary: '[Beta] Get an axon.'
+      description: '[Beta] Get an axon given ID.'
+      operationId: getAxon
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AxonView'
+      deprecated: false
+  /v1/axons/{id}/events:
+    get:
+      tags:
+      - axons
+      summary: '[Beta] List events for an axon.'
+      description: '[Beta] List events from an axon''s event stream, ordered by sequence descending.'
+      operationId: listAxonEvents
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AxonEventListView'
+      deprecated: false
+  /v1/axons/{id}/publish:
+    post:
+      tags:
+      - axons
+      summary: '[Beta] Publish an event to an axon.'
+      description: '[Beta] Publish an event to a specified axon.'
+      operationId: publishToAxon
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishParams'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishResultView'
+      deprecated: false
+  /v1/axons/{id}/sql/batch:
+    post:
+      tags:
+      - axons
+      summary: '[Beta] Execute a batch of SQL statements against an axon''s database.'
+      description: '[Beta] Execute multiple SQL statements atomically within a single transaction against an axon''s SQLite
+        database.'
+      operationId: axonSqlBatch
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SqlBatchParams'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlBatchResultView'
+      deprecated: false
+  /v1/axons/{id}/sql/query:
+    post:
+      tags:
+      - axons
+      summary: '[Beta] Execute a SQL query against an axon''s database.'
+      description: '[Beta] Execute a single parameterized SQL statement against an axon''s SQLite database.'
+      operationId: axonSqlQuery
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SqlStatementParams'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlQueryResultView'
+      deprecated: false
+  /v1/axons/{id}/subscribe/sse:
+    get:
+      tags:
+      - axons
+      summary: '[Beta] Subscribe to an axon event stream via SSE.'
+      description: '[Beta] Subscribe to an axon event stream via server-sent events.'
+      operationId: subscribeToAxonSse
+      parameters:
+      - name: id
+        in: path
+        description: The axon identifier.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: after_sequence
+        in: query
+        description: Sequence number after which to start streaming. Events with sequence > this value are returned. If unset,
+          replay from the beginning.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AxonEventView'
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates:
+    get:
+      tags:
+      - executions
+      - streaming
+      summary: Tails the stderr logs for the given execution with SSE streaming
+      description: Tails the stderr logs for the given execution with SSE streaming
+      operationId: streamStdErrUpdates
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The ID of the devbox.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The ID of the execution.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecUpdateChunkView'
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates:
+    get:
+      tags:
+      - executions
+      - streaming
+      summary: Tails the stdout logs for the given execution with SSE streaming
+      description: Tails the stdout logs for the given execution with SSE streaming
+      operationId: streamStdOutUpdates
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The ID of the devbox.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The ID of the execution.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecUpdateChunkView'
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+      deprecated: false
+components:
+  schemas:
+    AxonCreateParams:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: (Optional) Name for the axon.
+    AxonEventListView:
+      type: object
+      additionalProperties: false
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxonEventView'
+          description: List of axon events.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - events
+      - has_more
+    AxonEventOrigin:
+      type: string
+      enum:
+      - EXTERNAL_EVENT
+      - AGENT_EVENT
+      - USER_EVENT
+      - SYSTEM_EVENT
+    AxonEventView:
+      type: object
+      additionalProperties: false
+      properties:
+        sequence:
+          type: integer
+          format: int64
+          description: Monotonic sequence number.
+        axon_id:
+          type: string
+          description: The axon identifier.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Timestamp in milliseconds since epoch.
+        origin:
+          $ref: '#/components/schemas/AxonEventOrigin'
+          description: Event origin.
+        source:
+          type: string
+          description: Event source (e.g. github, slack).
+        event_type:
+          type: string
+          description: Event type (e.g. push, pull_request).
+        payload:
+          type: string
+          description: JSON-encoded event payload.
+      required:
+      - sequence
+      - axon_id
+      - timestamp_ms
+      - origin
+      - source
+      - event_type
+      - payload
+    AxonListView:
+      type: object
+      additionalProperties: false
+      properties:
+        axons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxonView'
+          description: List of active axons.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - axons
+      - has_more
+    AxonView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The axon identifier.
+        name:
+          type: string
+          nullable: true
+          description: The name of the axon.
+        created_at_ms:
+          type: integer
+          format: int64
+          description: Creation time in milliseconds since epoch.
+      required:
+      - id
+      - created_at_ms
+    ExecUpdateChunkView:
+      type: object
+      additionalProperties: false
+      properties:
+        offset:
+          type: integer
+          format: int64
+          description: The byte offset of this chunk of log stream.
+        output:
+          type: string
+          description: The latest log stream chunk.
+      required:
+      - output
+    PublishEventOrigin:
+      type: string
+      enum:
+      - EXTERNAL_EVENT
+      - AGENT_EVENT
+      - USER_EVENT
+    PublishParams:
+      type: object
+      additionalProperties: false
+      properties:
+        source:
+          type: string
+          description: The source of the event (e.g. github, slack).
+        event_type:
+          type: string
+          description: The event type (e.g. push, pull_request).
+        origin:
+          $ref: '#/components/schemas/PublishEventOrigin'
+          description: Event origin.
+        payload:
+          type: string
+          description: Event payload.
+      required:
+      - source
+      - event_type
+      - origin
+      - payload
+    PublishResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        sequence:
+          type: integer
+          format: int64
+          description: Assigned sequence number.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Timestamp in milliseconds since epoch.
+      required:
+      - sequence
+      - timestamp_ms
+    SqlBatchParams:
+      type: object
+      additionalProperties: false
+      properties:
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlStatementParams'
+          description: The SQL statements to execute atomically within a transaction.
+      required:
+      - statements
+    SqlBatchResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlStepResultView'
+          description: One result per statement, in order.
+      required:
+      - results
+    SqlColumnMetaView:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Column name or alias.
+        type:
+          type: string
+          description: Declared type (TEXT, INTEGER, REAL, BLOB, or empty).
+      required:
+      - name
+      - type
+    SqlQueryResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlColumnMetaView'
+          description: Column metadata.
+        rows:
+          type: array
+          items:
+            type: object
+          description: Result rows (empty for non-SELECT statements).
+        meta:
+          $ref: '#/components/schemas/SqlResultMetaView'
+          description: Execution metadata.
+      required:
+      - columns
+      - rows
+      - meta
+    SqlResultMetaView:
+      type: object
+      additionalProperties: false
+      properties:
+        duration_ms:
+          type: number
+          format: double
+          description: Execution time in milliseconds.
+        changes:
+          type: integer
+          format: int64
+          description: Rows modified by INSERT/UPDATE/DELETE.
+        rows_read_limit_reached:
+          type: boolean
+          description: True when result was truncated at the row limit.
+      required:
+      - duration_ms
+      - changes
+      - rows_read_limit_reached
+    SqlStatementParams:
+      type: object
+      additionalProperties: false
+      properties:
+        sql:
+          type: string
+          description: SQL query with ?-style positional placeholders.
+        params:
+          type: array
+          items:
+            type: object
+          description: Positional parameter bindings for ? placeholders.
+      required:
+      - sql
+    SqlStepErrorView:
+      type: object
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Error message.
+      required:
+      - message
+    SqlStepResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        success:
+          $ref: '#/components/schemas/SqlQueryResultView'
+          nullable: true
+          description: Result on success.
+        error:
+          $ref: '#/components/schemas/SqlStepErrorView'
+          nullable: true
+          description: Error on failure.
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

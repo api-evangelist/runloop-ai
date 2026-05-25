@@ -1,0 +1,1044 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Runloop Scenarios (scenario)
+  description: Runloop scenarios capability covering one Runloop business surface. 21 operations.
+  tags:
+  - Runloop
+  - Scenarios
+  - AI Agents
+  - Sandboxes
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    RUNLOOP_API_KEY: RUNLOOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: scenario-scenarios
+    baseUri: https://api.runloop.ai
+    description: Runloop scenarios business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-scenarios
+      path: /v1/scenarios
+      operations:
+      - name: createScenario
+        method: POST
+        description: Create a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listScenarios
+        method: GET
+        description: List Scenarios.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Query for Scenarios with a given name.
+          required: false
+        - name: benchmark_id
+          in: query
+          type: string
+          description: Filter scenarios by benchmark ID.
+          required: false
+        - name: validation_type
+          in: query
+          type: string
+          description: Filter by validation type
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-scenarios-list-public
+      path: /v1/scenarios/list_public
+      operations:
+      - name: listPublicScenarios
+        method: GET
+        description: List Public Scenarios.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Query for Scenarios with a given name.
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-scenarios-metadata-keys
+      path: /v1/scenarios/metadata/keys
+      operations:
+      - name: getScenarioMetadataKeys
+        method: GET
+        description: List available scenario metadata keys.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: _
+          in: query
+          type: string
+          description: ''
+          required: false
+    - name: v1-scenarios-metadata-keys-key-values
+      path: /v1/scenarios/metadata/keys/{key}/values
+      operations:
+      - name: getScenarioMetadataValues
+        method: GET
+        description: List values for a specific scenario metadata key.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The metadata key to get values for.
+          required: true
+    - name: v1-scenarios-runs
+      path: /v1/scenarios/runs
+      operations:
+      - name: listScenarioRuns
+        method: GET
+        description: List ScenarioRuns.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter by name
+          required: false
+        - name: state
+          in: query
+          type: string
+          description: Filter by state
+          required: false
+        - name: benchmark_run_id
+          in: query
+          type: string
+          description: Filter by benchmark run ID
+          required: false
+        - name: scenario_id
+          in: query
+          type: string
+          description: Filter runs associated to Scenario given ID
+          required: false
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-scenarios-runs-id
+      path: /v1/scenarios/runs/{id}
+      operations:
+      - name: getScenarioRun
+        method: GET
+        description: Get a previously created ScenarioRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ScenarioRun ID.
+          required: true
+    - name: v1-scenarios-runs-id-cancel
+      path: /v1/scenarios/runs/{id}/cancel
+      operations:
+      - name: cancelScenarioRun
+        method: POST
+        description: Cancel a Scenario run.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scenario Run ID.
+          required: true
+    - name: v1-scenarios-runs-id-complete
+      path: /v1/scenarios/runs/{id}/complete
+      operations:
+      - name: completeScenarioRun
+        method: POST
+        description: Complete a ScenarioRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ScenarioRun ID.
+          required: true
+    - name: v1-scenarios-runs-id-download-logs
+      path: /v1/scenarios/runs/{id}/download_logs
+      operations:
+      - name: downloadScenarioRunLogs
+        method: POST
+        description: Download logs for a Scenario run.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ScenarioRun ID.
+          required: true
+    - name: v1-scenarios-runs-id-score
+      path: /v1/scenarios/runs/{id}/score
+      operations:
+      - name: scoreScenarioRun
+        method: POST
+        description: Score a ScenarioRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ScenarioRun ID.
+          required: true
+    - name: v1-scenarios-scorers
+      path: /v1/scenarios/scorers
+      operations:
+      - name: createCustomScorer
+        method: POST
+        description: Create a custom scenario scorer.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listScenarioScorers
+        method: GET
+        description: List Scenario Scorers.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-scenarios-scorers-id
+      path: /v1/scenarios/scorers/{id}
+      operations:
+      - name: updateCustomScorer
+        method: POST
+        description: Update a custom scenario scorer.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scorer ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: retrieveScenarioScorers
+        method: GET
+        description: Retrieve Scenario Scorer.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scorer ID.
+          required: true
+    - name: v1-scenarios-start-run
+      path: /v1/scenarios/start_run
+      operations:
+      - name: startScenarioRun
+        method: POST
+        description: Start a new ScenarioRun.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-scenarios-id
+      path: /v1/scenarios/{id}
+      operations:
+      - name: updateScenario
+        method: POST
+        description: Update a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scenario ID.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: getScenario
+        method: GET
+        description: Get a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scenario ID.
+          required: true
+    - name: v1-scenarios-id-archive
+      path: /v1/scenarios/{id}/archive
+      operations:
+      - name: archiveScenario
+        method: POST
+        description: Archive a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ID of the Scenario to archive.
+          required: true
+    - name: v1-scenarios-id-runs
+      path: /v1/scenarios/{id}/runs
+      operations:
+      - name: getScenarioRuns
+        method: GET
+        description: Get the runs for a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The Scenario ID.
+          required: true
+        - name: limit
+          in: query
+          type: integer
+          description: The limit of items to return. Default is 20. Max is 5000.
+          required: false
+        - name: starting_after
+          in: query
+          type: string
+          description: Load the next page of data starting after the item with the given ID.
+          required: false
+        - name: include_total_count
+          in: query
+          type: boolean
+          description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+            performance on large datasets.
+          required: false
+    - name: v1-scenarios-id-unarchive
+      path: /v1/scenarios/{id}/unarchive
+      operations:
+      - name: unarchiveScenario
+        method: POST
+        description: Unarchive a Scenario.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The ID of the Scenario to unarchive.
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.RUNLOOP_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: scenario-scenarios-rest
+    port: 8080
+    description: REST adapter for Runloop scenarios. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/scenarios
+      name: v1-scenarios
+      description: REST surface for v1-scenarios.
+      operations:
+      - method: POST
+        name: createScenario
+        description: Create a Scenario.
+        call: scenario-scenarios.createScenario
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listScenarios
+        description: List Scenarios.
+        call: scenario-scenarios.listScenarios
+        with:
+          name: rest.params.name
+          benchmark_id: rest.params.benchmark_id
+          validation_type: rest.params.validation_type
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/list_public
+      name: v1-scenarios-list-public
+      description: REST surface for v1-scenarios-list-public.
+      operations:
+      - method: GET
+        name: listPublicScenarios
+        description: List Public Scenarios.
+        call: scenario-scenarios.listPublicScenarios
+        with:
+          name: rest.params.name
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/metadata/keys
+      name: v1-scenarios-metadata-keys
+      description: REST surface for v1-scenarios-metadata-keys.
+      operations:
+      - method: GET
+        name: getScenarioMetadataKeys
+        description: List available scenario metadata keys.
+        call: scenario-scenarios.getScenarioMetadataKeys
+        with:
+          _: rest.params._
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/metadata/keys/{key}/values
+      name: v1-scenarios-metadata-keys-key-values
+      description: REST surface for v1-scenarios-metadata-keys-key-values.
+      operations:
+      - method: GET
+        name: getScenarioMetadataValues
+        description: List values for a specific scenario metadata key.
+        call: scenario-scenarios.getScenarioMetadataValues
+        with:
+          key: rest.params.key
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs
+      name: v1-scenarios-runs
+      description: REST surface for v1-scenarios-runs.
+      operations:
+      - method: GET
+        name: listScenarioRuns
+        description: List ScenarioRuns.
+        call: scenario-scenarios.listScenarioRuns
+        with:
+          name: rest.params.name
+          state: rest.params.state
+          benchmark_run_id: rest.params.benchmark_run_id
+          scenario_id: rest.params.scenario_id
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs/{id}
+      name: v1-scenarios-runs-id
+      description: REST surface for v1-scenarios-runs-id.
+      operations:
+      - method: GET
+        name: getScenarioRun
+        description: Get a previously created ScenarioRun.
+        call: scenario-scenarios.getScenarioRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs/{id}/cancel
+      name: v1-scenarios-runs-id-cancel
+      description: REST surface for v1-scenarios-runs-id-cancel.
+      operations:
+      - method: POST
+        name: cancelScenarioRun
+        description: Cancel a Scenario run.
+        call: scenario-scenarios.cancelScenarioRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs/{id}/complete
+      name: v1-scenarios-runs-id-complete
+      description: REST surface for v1-scenarios-runs-id-complete.
+      operations:
+      - method: POST
+        name: completeScenarioRun
+        description: Complete a ScenarioRun.
+        call: scenario-scenarios.completeScenarioRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs/{id}/download_logs
+      name: v1-scenarios-runs-id-download-logs
+      description: REST surface for v1-scenarios-runs-id-download-logs.
+      operations:
+      - method: POST
+        name: downloadScenarioRunLogs
+        description: Download logs for a Scenario run.
+        call: scenario-scenarios.downloadScenarioRunLogs
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/runs/{id}/score
+      name: v1-scenarios-runs-id-score
+      description: REST surface for v1-scenarios-runs-id-score.
+      operations:
+      - method: POST
+        name: scoreScenarioRun
+        description: Score a ScenarioRun.
+        call: scenario-scenarios.scoreScenarioRun
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/scorers
+      name: v1-scenarios-scorers
+      description: REST surface for v1-scenarios-scorers.
+      operations:
+      - method: POST
+        name: createCustomScorer
+        description: Create a custom scenario scorer.
+        call: scenario-scenarios.createCustomScorer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listScenarioScorers
+        description: List Scenario Scorers.
+        call: scenario-scenarios.listScenarioScorers
+        with:
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/scorers/{id}
+      name: v1-scenarios-scorers-id
+      description: REST surface for v1-scenarios-scorers-id.
+      operations:
+      - method: POST
+        name: updateCustomScorer
+        description: Update a custom scenario scorer.
+        call: scenario-scenarios.updateCustomScorer
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: retrieveScenarioScorers
+        description: Retrieve Scenario Scorer.
+        call: scenario-scenarios.retrieveScenarioScorers
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/start_run
+      name: v1-scenarios-start-run
+      description: REST surface for v1-scenarios-start-run.
+      operations:
+      - method: POST
+        name: startScenarioRun
+        description: Start a new ScenarioRun.
+        call: scenario-scenarios.startScenarioRun
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/{id}
+      name: v1-scenarios-id
+      description: REST surface for v1-scenarios-id.
+      operations:
+      - method: POST
+        name: updateScenario
+        description: Update a Scenario.
+        call: scenario-scenarios.updateScenario
+        with:
+          id: rest.params.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getScenario
+        description: Get a Scenario.
+        call: scenario-scenarios.getScenario
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/{id}/archive
+      name: v1-scenarios-id-archive
+      description: REST surface for v1-scenarios-id-archive.
+      operations:
+      - method: POST
+        name: archiveScenario
+        description: Archive a Scenario.
+        call: scenario-scenarios.archiveScenario
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/{id}/runs
+      name: v1-scenarios-id-runs
+      description: REST surface for v1-scenarios-id-runs.
+      operations:
+      - method: GET
+        name: getScenarioRuns
+        description: Get the runs for a Scenario.
+        call: scenario-scenarios.getScenarioRuns
+        with:
+          id: rest.params.id
+          limit: rest.params.limit
+          starting_after: rest.params.starting_after
+          include_total_count: rest.params.include_total_count
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/scenarios/{id}/unarchive
+      name: v1-scenarios-id-unarchive
+      description: REST surface for v1-scenarios-id-unarchive.
+      operations:
+      - method: POST
+        name: unarchiveScenario
+        description: Unarchive a Scenario.
+        call: scenario-scenarios.unarchiveScenario
+        with:
+          id: rest.params.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: scenario-scenarios-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Runloop scenarios. One tool per consumed operation.
+    tools:
+    - name: runloop-scenario-scenarios-createScenario
+      description: Create a Scenario.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.createScenario
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-listScenarios
+      description: List Scenarios.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.listScenarios
+      with:
+        name: tools.name
+        benchmark_id: tools.benchmark_id
+        validation_type: tools.validation_type
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-listPublicScenarios
+      description: List Public Scenarios.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.listPublicScenarios
+      with:
+        name: tools.name
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-getScenarioMetadataKeys
+      description: List available scenario metadata keys.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.getScenarioMetadataKeys
+      with:
+        _: tools._
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-getScenarioMetadataValues
+      description: List values for a specific scenario metadata key.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.getScenarioMetadataValues
+      with:
+        key: tools.key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-listScenarioRuns
+      description: List ScenarioRuns.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.listScenarioRuns
+      with:
+        name: tools.name
+        state: tools.state
+        benchmark_run_id: tools.benchmark_run_id
+        scenario_id: tools.scenario_id
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-getScenarioRun
+      description: Get a previously created ScenarioRun.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.getScenarioRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-cancelScenarioRun
+      description: Cancel a Scenario run.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.cancelScenarioRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-completeScenarioRun
+      description: Complete a ScenarioRun.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.completeScenarioRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-downloadScenarioRunLogs
+      description: Download logs for a Scenario run.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.downloadScenarioRunLogs
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-scoreScenarioRun
+      description: Score a ScenarioRun.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.scoreScenarioRun
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-createCustomScorer
+      description: Create a custom scenario scorer.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.createCustomScorer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-listScenarioScorers
+      description: List Scenario Scorers.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.listScenarioScorers
+      with:
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-updateCustomScorer
+      description: Update a custom scenario scorer.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.updateCustomScorer
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-retrieveScenarioScorers
+      description: Retrieve Scenario Scorer.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.retrieveScenarioScorers
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-startScenarioRun
+      description: Start a new ScenarioRun.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.startScenarioRun
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-updateScenario
+      description: Update a Scenario.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.updateScenario
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-getScenario
+      description: Get a Scenario.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.getScenario
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-archiveScenario
+      description: Archive a Scenario.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.archiveScenario
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-getScenarioRuns
+      description: Get the runs for a Scenario.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: scenario-scenarios.getScenarioRuns
+      with:
+        id: tools.id
+        limit: tools.limit
+        starting_after: tools.starting_after
+        include_total_count: tools.include_total_count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: runloop-scenario-scenarios-unarchiveScenario
+      description: Unarchive a Scenario.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: scenario-scenarios.unarchiveScenario
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
