@@ -1,0 +1,151 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Create Scenario and Run It
+  summary: Define a repeatable AI coding evaluation scenario, start a run of it, poll until it is scored, then complete the run.
+  description: >-
+    Scenarios are repeatable AI coding evaluations that pair a starting
+    environment with a scoring contract. This workflow creates a scenario with a
+    problem statement and a bash script scorer, starts a scenario run on a fresh
+    devbox, polls the run until it reaches the scored state (looping while it is
+    running or scoring, and ending the flow if it fails, times out, or is
+    canceled), then completes the run to release the underlying devbox. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: scenarioApi
+  url: ../openapi/runloop-scenario-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-scenario-and-run
+  summary: Create a scenario, run it, wait for scoring, and complete the run.
+  description: >-
+    Creates a scenario with a scoring contract, starts a run, polls until the run
+    is scored, then completes the run.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - scenarioName
+    - problemStatement
+    - scorerName
+    - bashScript
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      scenarioName:
+        type: string
+        description: Name to give the scenario.
+      problemStatement:
+        type: string
+        description: The problem statement the scenario asks the agent to solve.
+      scorerName:
+        type: string
+        description: Name of the scoring function (only [a-zA-Z0-9_-] allowed).
+      bashScript:
+        type: string
+        description: Bash script that scores the run and prints score=[0.0..1.0] to stdout.
+  steps:
+  - stepId: createScenario
+    description: >-
+      Create a scenario with the supplied problem statement and a single bash
+      script scorer weighted at 1.0.
+    operationId: createScenario
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.scenarioName
+        input_context:
+          problem_statement: $inputs.problemStatement
+        scoring_contract:
+          scoring_function_parameters:
+          - name: $inputs.scorerName
+            weight: 1.0
+            scorer:
+              type: bash_script_scorer
+              bash_script: $inputs.bashScript
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      scenarioId: $response.body#/id
+  - stepId: startRun
+    description: Start a scenario run, which provisions a devbox for the evaluation.
+    operationId: startScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        scenario_id: $steps.createScenario.outputs.scenarioId
+        run_name: $inputs.scenarioName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      runId: $response.body#/id
+      devboxId: $response.body#/devbox_id
+      state: $response.body#/state
+  - stepId: pollRun
+    description: >-
+      Poll the scenario run until it reaches the scored state, looping while it
+      is running or scoring, and ending the flow on failure, timeout, or cancel.
+    operationId: getScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startRun.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+      score: $response.body#/scoring_contract_result/score
+    onSuccess:
+    - name: scored
+      type: goto
+      stepId: completeRun
+      criteria:
+      - context: $response.body
+        condition: $.state == "scored"
+        type: jsonpath
+    - name: inProgress
+      type: goto
+      stepId: pollRun
+      criteria:
+      - context: $response.body
+        condition: $.state == "running" || $.state == "scoring"
+        type: jsonpath
+    - name: runEnded
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.state == "failed" || $.state == "timeout" || $.state == "canceled"
+        type: jsonpath
+  - stepId: completeRun
+    description: Complete the scored run, shutting down the underlying devbox.
+    operationId: completeScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startRun.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalState: $response.body#/state
+      finalScore: $response.body#/scoring_contract_result/score
+  outputs:
+    scenarioId: $steps.createScenario.outputs.scenarioId
+    runId: $steps.startRun.outputs.runId
+    finalState: $steps.completeRun.outputs.finalState
+    finalScore: $steps.completeRun.outputs.finalScore

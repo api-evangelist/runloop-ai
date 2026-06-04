@@ -1,0 +1,148 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Provision Devbox and Run a Command
+  summary: Create a devbox, wait for it to reach running, then execute a shell command asynchronously and wait for completion.
+  description: >-
+    The core Runloop devbox loop. The workflow creates a fresh devbox, polls the
+    devbox lifecycle until it transitions to the running state, launches a shell
+    command asynchronously on the devbox, and then waits for that execution to
+    complete before returning its stdout, stderr, and exit status. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-and-run-command
+  summary: Boot a devbox and run a command on it once it is ready.
+  description: >-
+    Creates a devbox, blocks on the devbox reaching the running state, then runs
+    a command asynchronously and waits for the execution to finish.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - command
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      name:
+        type: string
+        description: Optional friendly name for the devbox.
+      blueprintId:
+        type: string
+        description: Optional blueprint id to base the devbox on.
+      command:
+        type: string
+        description: The shell command to execute on the devbox.
+      commandId:
+        type: string
+        description: A client supplied UUIDv7 command id for idempotency and tracking.
+  steps:
+  - stepId: createDevbox
+    description: Create a devbox; it begins booting in the provisioning state.
+    operationId: createDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        blueprint_id: $inputs.blueprintId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      devboxId: $response.body#/id
+      initialStatus: $response.body#/status
+  - stepId: waitUntilRunning
+    description: >-
+      Poll the devbox lifecycle until it reports the running status, branching
+      back to retry while it is still provisioning or initializing.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: ready
+      type: goto
+      stepId: runCommand
+      criteria:
+      - context: $response.body
+        condition: $.status == "running"
+        type: jsonpath
+    - name: stillBooting
+      type: goto
+      stepId: waitUntilRunning
+      criteria:
+      - context: $response.body
+        condition: $.status == "provisioning" || $.status == "initializing" || $.status == "resuming"
+        type: jsonpath
+  - stepId: runCommand
+    description: Launch the supplied command asynchronously on the running devbox.
+    operationId: execAsyncCommand
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        command: $inputs.command
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      executionId: $response.body#/execution_id
+      execStatus: $response.body#/status
+  - stepId: waitForCompletion
+    description: Wait for the asynchronous execution to reach the completed status.
+    operationId: waitForCommandCompletion
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: devbox_id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    - name: execution_id
+      in: path
+      value: $steps.runCommand.outputs.executionId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - completed
+        timeout_seconds: 25
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+      stdout: $response.body#/stdout
+      stderr: $response.body#/stderr
+      exitStatus: $response.body#/exit_status
+  outputs:
+    devboxId: $steps.createDevbox.outputs.devboxId
+    executionId: $steps.runCommand.outputs.executionId
+    stdout: $steps.waitForCompletion.outputs.stdout
+    exitStatus: $steps.waitForCompletion.outputs.exitStatus

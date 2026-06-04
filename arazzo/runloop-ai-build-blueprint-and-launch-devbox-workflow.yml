@@ -1,0 +1,146 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Build Blueprint and Launch Devbox
+  summary: Build a custom blueprint image, poll until the build completes, then launch a devbox from it and wait for running.
+  description: >-
+    Blueprints are cached, customized starting points for devboxes. This workflow
+    starts a blueprint build, polls the blueprint until its build status reaches
+    build_complete (branching back while it is queued, provisioning, or building,
+    and failing out if it reports failed), then creates a devbox from the finished
+    blueprint and waits for that devbox to reach the running state. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: blueprintApi
+  url: ../openapi/runloop-blueprint-api-openapi.yml
+  type: openapi
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: build-blueprint-and-launch-devbox
+  summary: Build a blueprint and boot a devbox from it.
+  description: >-
+    Creates and builds a blueprint, waits for the build to complete, then
+    launches a devbox seeded from that blueprint and waits for it to be running.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - blueprintName
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      blueprintName:
+        type: string
+        description: Name to give the blueprint.
+      dockerfile:
+        type: string
+        description: Dockerfile contents used to build the blueprint.
+      systemSetupCommands:
+        type: array
+        description: List of shell commands to run to set up the system.
+        items:
+          type: string
+      devboxName:
+        type: string
+        description: Optional name for the devbox launched from the blueprint.
+  steps:
+  - stepId: createBlueprint
+    description: Start a blueprint build; it begins in the provisioning step.
+    operationId: createBlueprint
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.blueprintName
+        dockerfile: $inputs.dockerfile
+        system_setup_commands: $inputs.systemSetupCommands
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      blueprintId: $response.body#/id
+      buildStatus: $response.body#/status
+  - stepId: pollBuild
+    description: >-
+      Poll the blueprint until the build status reaches build_complete, looping
+      back while it is queued, provisioning, or building, and ending the flow if
+      the build fails.
+    operationId: getBlueprint
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createBlueprint.outputs.blueprintId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      buildStatus: $response.body#/status
+    onSuccess:
+    - name: built
+      type: goto
+      stepId: launchDevbox
+      criteria:
+      - context: $response.body
+        condition: $.status == "build_complete"
+        type: jsonpath
+    - name: building
+      type: goto
+      stepId: pollBuild
+      criteria:
+      - context: $response.body
+        condition: $.status == "queued" || $.status == "provisioning" || $.status == "building"
+        type: jsonpath
+    - name: buildFailed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "failed"
+        type: jsonpath
+  - stepId: launchDevbox
+    description: Create a devbox seeded from the freshly built blueprint.
+    operationId: createDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.devboxName
+        blueprint_id: $steps.createBlueprint.outputs.blueprintId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      devboxId: $response.body#/id
+  - stepId: waitUntilRunning
+    description: Wait for the blueprint-based devbox to reach the running state.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.launchDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  outputs:
+    blueprintId: $steps.createBlueprint.outputs.blueprintId
+    devboxId: $steps.launchDevbox.outputs.devboxId
+    devboxStatus: $steps.waitUntilRunning.outputs.status

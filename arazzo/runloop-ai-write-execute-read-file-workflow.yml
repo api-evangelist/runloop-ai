@@ -1,0 +1,160 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Write, Execute, and Read a File on a Devbox
+  summary: Boot a devbox, write a file into it, run a command that transforms the file, then read the resulting contents back.
+  description: >-
+    A common devbox file round trip. The workflow creates a devbox, waits for it
+    to be running, writes a UTF-8 file onto its filesystem, executes a shell
+    command that operates on that file, and finally reads the file contents back
+    as text. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: write-execute-read-file
+  summary: Write a file, run a command on it, and read it back from a devbox.
+  description: >-
+    Creates a devbox, waits for running, writes a file, executes a command, and
+    reads the file contents back.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - filePath
+    - contents
+    - command
+    - commandId
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      name:
+        type: string
+        description: Optional friendly name for the devbox.
+      commandId:
+        type: string
+        description: A client supplied UUIDv7 command id for idempotency and tracking.
+      filePath:
+        type: string
+        description: Path on the devbox to write and read, relative to the user home directory.
+      contents:
+        type: string
+        description: The UTF-8 string contents to write to the file.
+      command:
+        type: string
+        description: A shell command that operates on the written file.
+  steps:
+  - stepId: createDevbox
+    description: Create a devbox to host the file round trip.
+    operationId: createDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      devboxId: $response.body#/id
+  - stepId: waitUntilRunning
+    description: Poll until the devbox is running, looping back while it boots.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: ready
+      type: goto
+      stepId: writeFile
+      criteria:
+      - context: $response.body
+        condition: $.status == "running"
+        type: jsonpath
+    - name: stillBooting
+      type: goto
+      stepId: waitUntilRunning
+      criteria:
+      - context: $response.body
+        condition: $.status == "provisioning" || $.status == "initializing"
+        type: jsonpath
+  - stepId: writeFile
+    description: Write the supplied UTF-8 contents to the file path on the devbox.
+    operationId: devboxWriteFileContents
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        file_path: $inputs.filePath
+        contents: $inputs.contents
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      writeStdout: $response.body#/stdout
+  - stepId: runCommand
+    description: Execute a command that operates on the written file, waiting for completion.
+    operationId: executeCommand
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        command_id: $inputs.commandId
+        command: $inputs.command
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      execStatus: $response.body#/status
+      executionId: $response.body#/execution_id
+  - stepId: readFile
+    description: Read the file contents back from the devbox as text.
+    operationId: devboxReadFileContents
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        file_path: $inputs.filePath
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      fileContents: $response.body
+  outputs:
+    devboxId: $steps.createDevbox.outputs.devboxId
+    executionId: $steps.runCommand.outputs.executionId
+    fileContents: $steps.readFile.outputs.fileContents

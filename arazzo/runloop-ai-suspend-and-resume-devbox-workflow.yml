@@ -1,0 +1,139 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Suspend and Resume a Devbox
+  summary: Suspend a running devbox to free compute, wait until it is suspended, then resume it and wait until it is running again.
+  description: >-
+    Suspending a devbox snapshots its disk and stops active compute so it can be
+    resumed later with the same disk. This workflow suspends a running devbox,
+    polls until it reports the suspended status, then resumes it and polls until
+    it reports running again. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: suspend-and-resume-devbox
+  summary: Suspend a devbox then resume it back to running.
+  description: >-
+    Suspends a running devbox, waits for the suspended state, resumes it, and
+    waits for the running state.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - devboxId
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      devboxId:
+        type: string
+        description: The id of the running devbox to suspend and resume.
+  steps:
+  - stepId: suspendDevbox
+    description: Suspend the running devbox; its disk is snapshotted as part of suspension.
+    operationId: suspendDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  - stepId: waitUntilSuspended
+    description: >-
+      Poll until the devbox reports suspended, looping back while it is still
+      suspending.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - suspended
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: suspended
+      type: goto
+      stepId: resumeDevbox
+      criteria:
+      - context: $response.body
+        condition: $.status == "suspended"
+        type: jsonpath
+    - name: stillSuspending
+      type: goto
+      stepId: waitUntilSuspended
+      criteria:
+      - context: $response.body
+        condition: $.status == "suspending"
+        type: jsonpath
+  - stepId: resumeDevbox
+    description: Resume the suspended devbox from its captured disk state.
+    operationId: resumeDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  - stepId: waitUntilRunning
+    description: >-
+      Poll until the devbox reports running again, looping back while it is still
+      resuming.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: running
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "running"
+        type: jsonpath
+    - name: stillResuming
+      type: goto
+      stepId: waitUntilRunning
+      criteria:
+      - context: $response.body
+        condition: $.status == "resuming"
+        type: jsonpath
+  outputs:
+    devboxId: $inputs.devboxId
+    finalStatus: $steps.waitUntilRunning.outputs.status

@@ -1,0 +1,174 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Bootstrap a Devbox from an Object Artifact
+  summary: Create and complete a storage object, generate its download URL, then boot a devbox and pull the artifact into it.
+  description: >-
+    Stages a reusable artifact in Runloop object storage and seeds a fresh devbox
+    with it. The workflow creates an object, completes its upload to make it
+    read-only, generates a presigned download URL, creates a devbox, waits for the
+    devbox to be running, and then runs a command that downloads the artifact into
+    the devbox using the presigned URL. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: objectsApi
+  url: ../openapi/runloop-objects-api-openapi.yml
+  type: openapi
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bootstrap-devbox-from-object
+  summary: Stage an object artifact and pull it into a freshly booted devbox.
+  description: >-
+    Creates and completes an object, gets a download URL, boots a devbox, and
+    downloads the artifact into the running devbox.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - objectName
+    - contentType
+    - targetPath
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      objectName:
+        type: string
+        description: The name of the object to create.
+      contentType:
+        type: string
+        description: The content type of the object (one of unspecified, text, binary, gzip, tar, tgz).
+      targetPath:
+        type: string
+        description: Path on the devbox to download the artifact to.
+      devboxName:
+        type: string
+        description: Optional friendly name for the devbox.
+  steps:
+  - stepId: createObject
+    description: Create the artifact object; it starts in the UPLOADING state.
+    operationId: createObject
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.objectName
+        content_type: $inputs.contentType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      objectId: $response.body#/id
+  - stepId: completeUpload
+    description: Mark the object upload complete so it becomes read-only.
+    operationId: completeObject
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createObject.outputs.objectId
+    requestBody:
+      contentType: application/json
+      payload: {}
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+  - stepId: getDownloadUrl
+    description: Generate a presigned download URL for the completed artifact.
+    operationId: generateDownloadUrl
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createObject.outputs.objectId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      downloadUrl: $response.body#/download_url
+  - stepId: createDevbox
+    description: Create the devbox that will host the downloaded artifact.
+    operationId: createDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.devboxName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      devboxId: $response.body#/id
+  - stepId: waitUntilRunning
+    description: Poll until the devbox is running, looping back while it boots.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: ready
+      type: goto
+      stepId: downloadArtifact
+      criteria:
+      - context: $response.body
+        condition: $.status == "running"
+        type: jsonpath
+    - name: stillBooting
+      type: goto
+      stepId: waitUntilRunning
+      criteria:
+      - context: $response.body
+        condition: $.status == "provisioning" || $.status == "initializing"
+        type: jsonpath
+  - stepId: downloadArtifact
+    description: >-
+      Run a command on the devbox that pulls the artifact into the target path
+      using the presigned download URL.
+    operationId: executeCommand
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createDevbox.outputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        command_id: $steps.createObject.outputs.objectId
+        command: "curl -fsSL '$steps.getDownloadUrl.outputs.downloadUrl' -o '$inputs.targetPath'"
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      execStatus: $response.body#/status
+      executionId: $response.body#/execution_id
+  outputs:
+    objectId: $steps.createObject.outputs.objectId
+    devboxId: $steps.createDevbox.outputs.devboxId
+    downloadUrl: $steps.getDownloadUrl.outputs.downloadUrl
+    executionId: $steps.downloadArtifact.outputs.executionId

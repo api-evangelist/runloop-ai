@@ -1,0 +1,77 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Graceful Snapshot and Shutdown
+  summary: Synchronously snapshot a running devbox's disk to preserve its state, then permanently shut the devbox down.
+  description: >-
+    Shutting down a devbox permanently stops it, so any state that must survive
+    has to be captured first. This workflow takes a synchronous disk snapshot of
+    a running devbox (blocking until the snapshot is created), then shuts the
+    devbox down. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: graceful-snapshot-and-shutdown
+  summary: Snapshot a devbox disk synchronously, then shut the devbox down.
+  description: >-
+    Captures a synchronous disk snapshot to preserve devbox state and then
+    permanently shuts the devbox down.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - devboxId
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      devboxId:
+        type: string
+        description: The id of the running devbox to snapshot and shut down.
+      snapshotName:
+        type: string
+        description: Optional name for the disk snapshot.
+      commitMessage:
+        type: string
+        description: Optional commit message describing the snapshot.
+  steps:
+  - stepId: snapshotDisk
+    description: Synchronously create a disk snapshot of the running devbox.
+    operationId: createDiskSnapshot
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.snapshotName
+        commit_message: $inputs.commitMessage
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      snapshotId: $response.body#/id
+      sourceDevboxId: $response.body#/source_devbox_id
+  - stepId: shutdownDevbox
+    description: Permanently shut the devbox down now that its state is captured.
+    operationId: shutdownDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  outputs:
+    snapshotId: $steps.snapshotDisk.outputs.snapshotId
+    finalStatus: $steps.shutdownDevbox.outputs.status

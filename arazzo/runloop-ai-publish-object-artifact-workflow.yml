@@ -1,0 +1,97 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Publish an Object Artifact
+  summary: Create a storage object, mark its upload complete to make it read-only, then generate a presigned download URL for it.
+  description: >-
+    Objects are Runloop's stored data artifacts. This workflow creates an object
+    with a name and content type, completes its upload to transition it from the
+    UPLOADING state into the read-only state, and then generates a time limited
+    presigned download URL so the artifact can be retrieved. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: objectsApi
+  url: ../openapi/runloop-objects-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: publish-object-artifact
+  summary: Create an object, complete its upload, and get a download URL.
+  description: >-
+    Creates a storage object, marks its upload complete, and generates a
+    presigned download URL for it.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - objectName
+    - contentType
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      objectName:
+        type: string
+        description: The name of the object to create.
+      contentType:
+        type: string
+        description: The content type of the object (one of unspecified, text, binary, gzip, tar, tgz).
+      durationSeconds:
+        type: integer
+        description: Validity window in seconds for the generated download URL.
+  steps:
+  - stepId: createObject
+    description: Create the object; it starts in the UPLOADING state.
+    operationId: createObject
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.objectName
+        content_type: $inputs.contentType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      objectId: $response.body#/id
+      state: $response.body#/state
+  - stepId: completeUpload
+    description: Mark the object upload complete, transitioning it to the read-only state.
+    operationId: completeObject
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createObject.outputs.objectId
+    requestBody:
+      contentType: application/json
+      payload: {}
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+  - stepId: generateDownloadUrl
+    description: Generate a presigned download URL for the completed object.
+    operationId: generateDownloadUrl
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.createObject.outputs.objectId
+    - name: duration_seconds
+      in: query
+      value: $inputs.durationSeconds
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      downloadUrl: $response.body#/download_url
+  outputs:
+    objectId: $steps.createObject.outputs.objectId
+    state: $steps.completeUpload.outputs.state
+    downloadUrl: $steps.generateDownloadUrl.outputs.downloadUrl

@@ -393,6 +393,39 @@ access: 3rd-Party
 created: '2026-05-25'
 modified: '2026-05-25'
 common:
+- type: ArazzoWorkflows
+  url: arazzo/
+  workflows:
+  - url: arazzo/runloop-ai-bootstrap-devbox-from-object-workflow.yml
+    name: Runloop Bootstrap a Devbox from an Object Artifact
+    summary: Create and complete a storage object, generate its download URL, then boot a devbox and pull the artifact into it.
+  - url: arazzo/runloop-ai-build-blueprint-and-launch-devbox-workflow.yml
+    name: Runloop Build Blueprint and Launch Devbox
+    summary: Build a custom blueprint image, poll until the build completes, then launch a devbox from it and wait for running.
+  - url: arazzo/runloop-ai-create-scenario-and-run-workflow.yml
+    name: Runloop Create Scenario and Run It
+    summary: Define a repeatable AI coding evaluation scenario, start a run of it, poll until it is scored, then complete the run.
+  - url: arazzo/runloop-ai-graceful-snapshot-and-shutdown-workflow.yml
+    name: Runloop Graceful Snapshot and Shutdown
+    summary: Synchronously snapshot a running devbox's disk to preserve its state, then permanently shut the devbox down.
+  - url: arazzo/runloop-ai-provision-and-run-command-workflow.yml
+    name: Runloop Provision Devbox and Run a Command
+    summary: Create a devbox, wait for it to reach running, then execute a shell command asynchronously and wait for completion.
+  - url: arazzo/runloop-ai-publish-object-artifact-workflow.yml
+    name: Runloop Publish an Object Artifact
+    summary: Create a storage object, mark its upload complete to make it read-only, then generate a presigned download URL for it.
+  - url: arazzo/runloop-ai-score-running-scenario-run-workflow.yml
+    name: Runloop Score a Running Scenario Run
+    summary: Start a run of an existing scenario, wait for it to be running, trigger scoring, then complete the run.
+  - url: arazzo/runloop-ai-snapshot-and-restore-devbox-workflow.yml
+    name: Runloop Snapshot and Restore a Devbox
+    summary: Take an asynchronous disk snapshot of a running devbox, poll until it completes, then launch a new devbox from that snapshot.
+  - url: arazzo/runloop-ai-suspend-and-resume-devbox-workflow.yml
+    name: Runloop Suspend and Resume a Devbox
+    summary: Suspend a running devbox to free compute, wait until it is suspended, then resume it and wait until it is running again.
+  - url: arazzo/runloop-ai-write-execute-read-file-workflow.yml
+    name: Runloop Write, Execute, and Read a File on a Devbox
+    summary: Boot a devbox, write a file into it, run a command that transforms the file, then read the resulting contents back.
 - type: Website
   url: https://runloop.ai
 - type: Documentation

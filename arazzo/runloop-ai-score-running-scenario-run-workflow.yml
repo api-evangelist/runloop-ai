@@ -1,0 +1,120 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Score a Running Scenario Run
+  summary: Start a run of an existing scenario, wait for it to be running, trigger scoring, then complete the run.
+  description: >-
+    For an already defined scenario, this workflow starts a new run, polls the
+    run until it reaches the running state (so the environment is ready), invokes
+    scoring against the running run, and then completes the run to release the
+    underlying devbox. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: scenarioApi
+  url: ../openapi/runloop-scenario-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: score-running-scenario-run
+  summary: Run an existing scenario, score it while running, then complete it.
+  description: >-
+    Starts a run of a known scenario, waits for it to be running, scores it, and
+    completes the run.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - scenarioId
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      scenarioId:
+        type: string
+        description: The id of the existing scenario to run and score.
+      runName:
+        type: string
+        description: Optional display name for the run.
+  steps:
+  - stepId: startRun
+    description: Start a run of the existing scenario, provisioning a devbox for it.
+    operationId: startScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        scenario_id: $inputs.scenarioId
+        run_name: $inputs.runName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      runId: $response.body#/id
+      devboxId: $response.body#/devbox_id
+      state: $response.body#/state
+  - stepId: waitUntilRunning
+    description: >-
+      Poll the run until it reports the running state so the environment is ready
+      to be scored.
+    operationId: getScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startRun.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+    onSuccess:
+    - name: running
+      type: goto
+      stepId: scoreRun
+      criteria:
+      - context: $response.body
+        condition: $.state == "running"
+        type: jsonpath
+    - name: notReady
+      type: goto
+      stepId: waitUntilRunning
+      criteria:
+      - context: $response.body
+        condition: $.state != "running"
+        type: jsonpath
+  - stepId: scoreRun
+    description: Trigger scoring of the currently running scenario run.
+    operationId: scoreScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startRun.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+      score: $response.body#/scoring_contract_result/score
+  - stepId: completeRun
+    description: Complete the run, shutting down the underlying devbox.
+    operationId: completeScenarioRun
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startRun.outputs.runId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalState: $response.body#/state
+      finalScore: $response.body#/scoring_contract_result/score
+  outputs:
+    runId: $steps.startRun.outputs.runId
+    score: $steps.scoreRun.outputs.score
+    finalState: $steps.completeRun.outputs.finalState

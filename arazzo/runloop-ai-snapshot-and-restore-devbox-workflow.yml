@@ -1,0 +1,141 @@
+arazzo: 1.0.1
+info:
+  title: Runloop Snapshot and Restore a Devbox
+  summary: Take an asynchronous disk snapshot of a running devbox, poll until it completes, then launch a new devbox from that snapshot.
+  description: >-
+    Disk snapshots let you capture a devbox's disk state and relaunch future
+    devboxes from it. This workflow starts an asynchronous disk snapshot of an
+    existing devbox, polls the snapshot status until it reports complete
+    (looping while it is in_progress and ending the flow on error), then creates
+    a brand new devbox seeded from the finished snapshot and waits for it to
+    reach the running state. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: devboxApi
+  url: ../openapi/runloop-devbox-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: snapshot-and-restore-devbox
+  summary: Snapshot a devbox disk and restore it into a new devbox.
+  description: >-
+    Starts an async disk snapshot of a source devbox, waits for the snapshot to
+    complete, then launches a new devbox from that snapshot.
+  inputs:
+    type: object
+    required:
+    - apiToken
+    - devboxId
+    properties:
+      apiToken:
+        type: string
+        description: Runloop API bearer token.
+      devboxId:
+        type: string
+        description: The id of the source devbox to snapshot.
+      snapshotName:
+        type: string
+        description: Optional name for the disk snapshot.
+      commitMessage:
+        type: string
+        description: Optional commit message describing the snapshot.
+      restoredName:
+        type: string
+        description: Optional name for the devbox restored from the snapshot.
+  steps:
+  - stepId: startSnapshot
+    description: Begin an asynchronous disk snapshot of the source devbox.
+    operationId: createDiskSnapshotAsync
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $inputs.devboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.snapshotName
+        commit_message: $inputs.commitMessage
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      snapshotId: $response.body#/id
+  - stepId: pollSnapshot
+    description: >-
+      Poll the snapshot status until it reports complete, looping back while it
+      is in_progress and ending the flow if it errors.
+    operationId: queryDiskSnapshotAsync
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.startSnapshot.outputs.snapshotId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      snapshotStatus: $response.body#/status
+    onSuccess:
+    - name: complete
+      type: goto
+      stepId: restoreDevbox
+      criteria:
+      - context: $response.body
+        condition: $.status == "complete"
+        type: jsonpath
+    - name: inProgress
+      type: goto
+      stepId: pollSnapshot
+      criteria:
+      - context: $response.body
+        condition: $.status == "in_progress"
+        type: jsonpath
+    - name: snapshotError
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "error"
+        type: jsonpath
+  - stepId: restoreDevbox
+    description: Create a new devbox seeded from the completed disk snapshot.
+    operationId: createDevbox
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.restoredName
+        snapshot_id: $steps.startSnapshot.outputs.snapshotId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      restoredDevboxId: $response.body#/id
+  - stepId: waitUntilRunning
+    description: Wait for the restored devbox to reach the running state.
+    operationId: waitForDevboxStatus
+    parameters:
+    - name: Authorization
+      in: header
+      value: Bearer $inputs.apiToken
+    - name: id
+      in: path
+      value: $steps.restoreDevbox.outputs.restoredDevboxId
+    requestBody:
+      contentType: application/json
+      payload:
+        statuses:
+        - running
+        timeout_seconds: 30
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  outputs:
+    snapshotId: $steps.startSnapshot.outputs.snapshotId
+    restoredDevboxId: $steps.restoreDevbox.outputs.restoredDevboxId
+    restoredStatus: $steps.waitUntilRunning.outputs.status
