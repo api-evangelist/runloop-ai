@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop MCP Configs API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "mcp-configs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List McpConfigs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/mcp-configs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (prefix match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all McpConfigs for the authenticated account."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config specifies the target endpoint and which tools are allowed."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig."
+              }
+            ]
+          },
+          "docs": "[Beta] Get a specific McpConfig by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "[Beta] Update an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Update an existing McpConfig. All fields are optional."
+        },
+        {
+          "info": {
+            "name": "[Beta] Delete an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Delete an existing McpConfig. This action is irreversible."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

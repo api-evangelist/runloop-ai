@@ -1,0 +1,1706 @@
+{
+  "info": {
+    "_postman_id": "e8348041-9327-4ed9-88a0-dc09f7ba2a2d",
+    "name": "Runloop Gateway Configs API",
+    "description": "Configure Agent Gateways \u2014 proxy configurations that allow Devbox agents to call external AI APIs (OpenAI, Anthropic, etc.) without exposing raw provider credentials to agent code.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:26.000Z",
+    "updatedAt": "2026-06-05T15:15:26.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e8348041-9327-4ed9-88a0-dc09f7ba2a2d"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "gateway-configs",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "delete",
+                  "item": [
+                    {
+                      "name": "Delete a GatewayConfig.",
+                      "id": "5a43b7cd-dd19-4dc7-97e3-3fe57e8bdcb9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id",
+                            "delete"
+                          ],
+                          "variable": [
+                            {
+                              "id": "bc73e4a5-30e8-4093-aa10-a5392b9507f8",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the GatewayConfig to delete."
+                            }
+                          ]
+                        },
+                        "description": "Delete an existing GatewayConfig. This action is irreversible."
+                      },
+                      "response": [
+                        {
+                          "id": "a5334736-4ffd-4b5e-a434-c24c718c35bb",
+                          "name": "GatewayConfig deleted successfully.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"account_id\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-a5334736-4ffd-4b5e-a434-c24c718c35bb"
+                        },
+                        {
+                          "id": "0855d8dc-a811-4ae2-a655-d8095b100754",
+                          "name": "Bad request. Config is in use by active devboxes.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-0855d8dc-a811-4ae2-a655-d8095b100754"
+                        },
+                        {
+                          "id": "eb670edc-474f-4ac6-89b5-e0061bdd8705",
+                          "name": "Unauthorized. Invalid or missing authentication.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-eb670edc-474f-4ac6-89b5-e0061bdd8705"
+                        },
+                        {
+                          "id": "81cc0acb-6956-4e3a-a4d9-1120e9354fea",
+                          "name": "Forbidden. Account does not have devbox capability.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-81cc0acb-6956-4e3a-a4d9-1120e9354fea"
+                        },
+                        {
+                          "id": "6d9dd668-f2e1-4df5-b28c-bfe3d9a7048d",
+                          "name": "GatewayConfig not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-6d9dd668-f2e1-4df5-b28c-bfe3d9a7048d"
+                        },
+                        {
+                          "id": "ea89f2f1-8caf-4fd9-aab3-e7176c47565b",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/gateway-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "gateway-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:27.000Z",
+                          "updatedAt": "2026-06-05T15:15:27.000Z",
+                          "uid": "35240-ea89f2f1-8caf-4fd9-aab3-e7176c47565b"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-5a43b7cd-dd19-4dc7-97e3-3fe57e8bdcb9"
+                    }
+                  ],
+                  "id": "cc05181f-97d8-4c6e-a84c-fe041a45a37e",
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-cc05181f-97d8-4c6e-a84c-fe041a45a37e"
+                },
+                {
+                  "name": "Get a GatewayConfig.",
+                  "id": "7c326e5a-ac24-42ad-99f6-ee6346ee386f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "45c6523c-d45f-4828-a1fb-7e6a382b18bc",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the GatewayConfig."
+                        }
+                      ]
+                    },
+                    "description": "Get a specific GatewayConfig by its unique identifier."
+                  },
+                  "response": [
+                    {
+                      "id": "8f546d46-b6a6-48e3-978b-ac05410889e9",
+                      "name": "Successfully retrieved the GatewayConfig.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"account_id\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-8f546d46-b6a6-48e3-978b-ac05410889e9"
+                    },
+                    {
+                      "id": "af30a9d3-2a88-4f02-8998-4c2110bc11c2",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-af30a9d3-2a88-4f02-8998-4c2110bc11c2"
+                    },
+                    {
+                      "id": "08e1de7a-d778-4758-bd37-8bda7fb5d521",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-08e1de7a-d778-4758-bd37-8bda7fb5d521"
+                    },
+                    {
+                      "id": "509d58fc-390d-4014-ad16-638a9503796b",
+                      "name": "GatewayConfig not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-509d58fc-390d-4014-ad16-638a9503796b"
+                    },
+                    {
+                      "id": "a69e0678-70e1-445a-9de5-ae4d6ed5a186",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-a69e0678-70e1-445a-9de5-ae4d6ed5a186"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-7c326e5a-ac24-42ad-99f6-ee6346ee386f"
+                },
+                {
+                  "name": "Update a GatewayConfig.",
+                  "id": "31f1c54d-abbe-4c79-8692-18834c417cff",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5bf92e7d-b6e4-4ae6-b474-1d6665cbf5a6",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the GatewayConfig to update."
+                        }
+                      ]
+                    },
+                    "description": "Update an existing GatewayConfig. All fields are optional."
+                  },
+                  "response": [
+                    {
+                      "id": "aad74833-e0c2-4be4-bdee-040412d424a1",
+                      "name": "GatewayConfig updated successfully.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"account_id\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-aad74833-e0c2-4be4-bdee-040412d424a1"
+                    },
+                    {
+                      "id": "15a408b8-097b-4ec5-a836-2924adad44a8",
+                      "name": "Bad request. Invalid parameters.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-15a408b8-097b-4ec5-a836-2924adad44a8"
+                    },
+                    {
+                      "id": "fa9b7e2b-7173-4c54-a74c-2232c585cb47",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-fa9b7e2b-7173-4c54-a74c-2232c585cb47"
+                    },
+                    {
+                      "id": "b625ebd7-0449-4f64-8608-c3c126c2471b",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-b625ebd7-0449-4f64-8608-c3c126c2471b"
+                    },
+                    {
+                      "id": "892cb334-0976-4460-96df-507d08997381",
+                      "name": "GatewayConfig not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-892cb334-0976-4460-96df-507d08997381"
+                    },
+                    {
+                      "id": "f95c0048-9add-4904-81e3-d5f1aa39bbc9",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/gateway-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "gateway-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:27.000Z",
+                      "updatedAt": "2026-06-05T15:15:27.000Z",
+                      "uid": "35240-f95c0048-9add-4904-81e3-d5f1aa39bbc9"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-31f1c54d-abbe-4c79-8692-18834c417cff"
+                }
+              ],
+              "id": "cdfa4cf0-6dad-40b0-9cc0-4440bd12cd49",
+              "createdAt": "2026-06-05T15:15:27.000Z",
+              "updatedAt": "2026-06-05T15:15:27.000Z",
+              "uid": "35240-cdfa4cf0-6dad-40b0-9cc0-4440bd12cd49"
+            },
+            {
+              "name": "Create a GatewayConfig.",
+              "id": "01519e6e-0f4c-46e5-b59e-914e4048befb",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/gateway-configs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "gateway-configs"
+                  ]
+                },
+                "description": "Create a new GatewayConfig to proxy API requests through the agent gateway. The config specifies the target endpoint and how credentials should be applied."
+              },
+              "response": [
+                {
+                  "id": "8f7dc328-259a-45c4-a2a6-c08cf56a7b78",
+                  "name": "GatewayConfig created successfully.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"account_id\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-8f7dc328-259a-45c4-a2a6-c08cf56a7b78"
+                },
+                {
+                  "id": "331b99ee-2591-435d-8803-aef1db4f8320",
+                  "name": "Bad request. Name already exists or is invalid.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-331b99ee-2591-435d-8803-aef1db4f8320"
+                },
+                {
+                  "id": "0ec467d4-851c-43bc-becd-8049a4a2bbdc",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-0ec467d4-851c-43bc-becd-8049a4a2bbdc"
+                },
+                {
+                  "id": "bc91297e-dcbc-4a1a-9b2c-ece94f768486",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-bc91297e-dcbc-4a1a-9b2c-ece94f768486"
+                },
+                {
+                  "id": "d7baa37d-73ca-4fe2-90ee-98b6d94ffba9",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"auth_mechanism\": {\n    \"type\": \"<string>\",\n    \"key\": \"<string>\"\n  },\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-d7baa37d-73ca-4fe2-90ee-98b6d94ffba9"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:27.000Z",
+              "updatedAt": "2026-06-05T15:15:27.000Z",
+              "uid": "35240-01519e6e-0f4c-46e5-b59e-914e4048befb"
+            },
+            {
+              "name": "List GatewayConfigs.",
+              "id": "7ae87930-6110-40ec-bba2-f3c66c93c896",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/gateway-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "gateway-configs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by name (partial match supported).",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ID.",
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The limit of items to return. Default is 20. Max is 5000.",
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Load the next page of data starting after the item with the given ID.",
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "List all GatewayConfigs for the authenticated account, including system-provided configs like 'anthropic' and 'openai'."
+              },
+              "response": [
+                {
+                  "id": "77b40627-44f9-4855-91a5-33adc232b982",
+                  "name": "Successfully retrieved list of GatewayConfigs.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"gateway_configs\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"endpoint\": \"<string>\",\n      \"auth_mechanism\": {\n        \"type\": \"<string>\",\n        \"key\": \"<string>\"\n      },\n      \"create_time_ms\": \"<long>\",\n      \"account_id\": \"<string>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"endpoint\": \"<string>\",\n      \"auth_mechanism\": {\n        \"type\": \"<string>\",\n        \"key\": \"<string>\"\n      },\n      \"create_time_ms\": \"<long>\",\n      \"account_id\": \"<string>\",\n      \"description\": \"<string>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-77b40627-44f9-4855-91a5-33adc232b982"
+                },
+                {
+                  "id": "aa12e027-d4a5-478f-b5ac-8df98bd1b003",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-aa12e027-d4a5-478f-b5ac-8df98bd1b003"
+                },
+                {
+                  "id": "ae921d9f-fee2-4116-84de-7f75cfcd1949",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-ae921d9f-fee2-4116-84de-7f75cfcd1949"
+                },
+                {
+                  "id": "8c791d9f-9a4a-4e1d-97e5-87f228cc7d5e",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/gateway-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "gateway-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:27.000Z",
+                  "updatedAt": "2026-06-05T15:15:27.000Z",
+                  "uid": "35240-8c791d9f-9a4a-4e1d-97e5-87f228cc7d5e"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:27.000Z",
+              "updatedAt": "2026-06-05T15:15:27.000Z",
+              "uid": "35240-7ae87930-6110-40ec-bba2-f3c66c93c896"
+            }
+          ],
+          "id": "4ade1870-5699-42fd-b9c1-30c8c218848c",
+          "createdAt": "2026-06-05T15:15:27.000Z",
+          "updatedAt": "2026-06-05T15:15:27.000Z",
+          "uid": "35240-4ade1870-5699-42fd-b9c1-30c8c218848c"
+        }
+      ],
+      "id": "c7eb5414-3f22-4adf-819a-42f736c9c80f",
+      "createdAt": "2026-06-05T15:15:27.000Z",
+      "updatedAt": "2026-06-05T15:15:27.000Z",
+      "uid": "35240-c7eb5414-3f22-4adf-819a-42f736c9c80f"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

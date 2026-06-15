@@ -1,0 +1,269 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Objects API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "objects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Objects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by name (partial match supported)."
+              },
+              {
+                "name": "content_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by content type."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by state."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by object ID or name."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Objects for the authenticated account with pagination support."
+        },
+        {
+          "info": {
+            "name": "Create an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Object with content and metadata. The Object will be assigned a unique ID."
+        },
+        {
+          "info": {
+            "name": "List Public Objects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/list_public",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by name (partial match supported)."
+              },
+              {
+                "name": "content_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by content type."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by state."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by object ID or name."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public Objects with pagination support."
+        },
+        {
+          "info": {
+            "name": "List available object metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering objects."
+        },
+        {
+          "info": {
+            "name": "List values for a specific object metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all objects."
+        },
+        {
+          "info": {
+            "name": "Get an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific Object by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Complete Object Upload.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to complete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mark an Object's upload as complete, transitioning it from UPLOADING to READ-only state."
+        },
+        {
+          "info": {
+            "name": "Delete an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing Object by ID. This action is irreversible and will remove the Object and all its metadata."
+        },
+        {
+          "info": {
+            "name": "Generate Download URL for Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/:id/download",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to generate download URL for."
+              },
+              {
+                "name": "duration_seconds",
+                "value": "",
+                "type": "query",
+                "description": "Duration in seconds for the presigned URL validity (default: 3600)."
+              }
+            ]
+          },
+          "docs": "Generate a presigned download URL for an Object. The URL will be valid for the specified duration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

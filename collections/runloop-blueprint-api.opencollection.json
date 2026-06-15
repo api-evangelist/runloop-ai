@@ -1,0 +1,272 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Blueprint API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Blueprint",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Blueprints.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Blueprints or filter by name."
+        },
+        {
+          "info": {
+            "name": "Create and build a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint. The Blueprint will begin in the 'provisioning' step and transition to the 'building' step once it is selected off the build queue., Upon build complete it will transition to 'building_complete' if the build is successful."
+        },
+        {
+          "info": {
+            "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/create_from_inspection",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint using a RepositoryConnection Inspection as a source container specification."
+        },
+        {
+          "info": {
+            "name": "List Public Blueprints.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/list_public",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public Blueprints that are available to all users."
+        },
+        {
+          "info": {
+            "name": "List available blueprint metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering blueprints."
+        },
+        {
+          "info": {
+            "name": "List values for a specific blueprint metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all blueprints."
+        },
+        {
+          "info": {
+            "name": "Preview Dockerfile definition for a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/preview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview building a Blueprint with the specified configuration. You can take the resulting Dockerfile and test out your build using any local docker tooling."
+        },
+        {
+          "info": {
+            "name": "List available public blueprint metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/public/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys from public blueprints only that can be used for filtering."
+        },
+        {
+          "info": {
+            "name": "List values for a specific public blueprint metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/public/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for from public blueprints."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all public blueprints only."
+        },
+        {
+          "info": {
+            "name": "Get a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get the details of a previously created Blueprint including the build status."
+        },
+        {
+          "info": {
+            "name": "Delete a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Delete a previously created Blueprint. If a blueprint has dependent snapshots, it cannot be deleted. You can find them by querying: GET /v1/devboxes/disk_snapshots?source_blueprint_id={blueprint_id}."
+        },
+        {
+          "info": {
+            "name": "Get Blueprint build logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get all logs from the building of a Blueprint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

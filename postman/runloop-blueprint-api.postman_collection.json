@@ -1,0 +1,1553 @@
+{
+  "info": {
+    "_postman_id": "76bf1b7a-c1ad-4571-94ab-e5d265af04b2",
+    "name": "Runloop Blueprint API",
+    "description": "Build and manage Blueprints \u2014 Dockerfile-based container image templates for fast Devbox startup with pre-installed dependencies, system packages, and tooling. Supports building, previewing, listing public blueprints, and metadata-based discovery.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:15.000Z",
+    "updatedAt": "2026-06-05T15:15:15.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-76bf1b7a-c1ad-4571-94ab-e5d265af04b2"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "blueprints",
+          "item": [
+            {
+              "name": "create_from_inspection",
+              "item": [
+                {
+                  "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+                  "id": "9eafe02e-4ebe-4a7d-a208-0df35838919e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"inspection_source\": {\n    \"inspection_id\": \"<string>\",\n    \"github_auth_token\": \"<string>\"\n  },\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"MEDIUM\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"x86_64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"Excepteur__\": \"<string>\",\n    \"aliquip8\": \"<string>\",\n    \"ind6c\": \"<string>\"\n  },\n  \"metadata\": {\n    \"dolore__\": \"<string>\"\n  },\n  \"secrets\": {\n    \"ut4\": \"<string>\",\n    \"dolor_75\": \"<string>\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints/create_from_inspection",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints",
+                        "create_from_inspection"
+                      ]
+                    },
+                    "description": "Starts build of custom defined container Blueprint using a RepositoryConnection Inspection as a source container specification."
+                  },
+                  "response": [
+                    {
+                      "id": "a25c4207-fd4d-46ea-a72c-b6c899528326",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"inspection_source\": {\n    \"inspection_id\": \"<string>\",\n    \"github_auth_token\": \"<string>\"\n  },\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"MEDIUM\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"x86_64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"Excepteur__\": \"<string>\",\n    \"aliquip8\": \"<string>\",\n    \"ind6c\": \"<string>\"\n  },\n  \"metadata\": {\n    \"dolore__\": \"<string>\"\n  },\n  \"secrets\": {\n    \"ut4\": \"<string>\",\n    \"dolor_75\": \"<string>\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/create_from_inspection",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            "create_from_inspection"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"status\": \"provisioning\",\n  \"state\": \"created\",\n  \"create_time_ms\": \"<long>\",\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"laborume\": \"<string>\",\n      \"magnaf\": \"<string>\",\n      \"nisi_24\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"veniam_f52\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"sunt_6d3\": \"<string>\",\n          \"nostrud_dd2\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"in_5f\": \"<string>\"\n    },\n    \"build_args\": {\n      \"consectetur_4c\": \"<string>\"\n    },\n    \"secrets\": {\n      \"nisi__\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": \"<long>\",\n  \"failure_reason\": \"build_failed\",\n  \"base_blueprint_id\": \"<string>\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"irure2\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"Loremb\": \"<string>\",\n        \"sunt5\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": \"<boolean>\",\n  \"metadata\": {\n    \"suntaf4\": \"<string>\",\n    \"anim_8\": \"<string>\"\n  },\n  \"devbox_capabilities\": [\n    \"unknown\",\n    \"docker_in_docker\"\n  ]\n}",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-a25c4207-fd4d-46ea-a72c-b6c899528326"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-9eafe02e-4ebe-4a7d-a208-0df35838919e"
+                }
+              ],
+              "id": "e3e423b1-e44a-47e3-8241-a6c4a6e45f4c",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-e3e423b1-e44a-47e3-8241-a6c4a6e45f4c"
+            },
+            {
+              "name": "list_public",
+              "item": [
+                {
+                  "name": "List Public Blueprints.",
+                  "id": "5acc9f94-d1a4-44a5-8b7a-f3f799146b64",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints/list_public?name=<string>&status=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints",
+                        "list_public"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by build status (queued, provisioning, building, failed, build_complete)",
+                          "key": "status",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "List all public Blueprints that are available to all users."
+                  },
+                  "response": [
+                    {
+                      "id": "e0606a2a-8128-42dd-8ffb-7e2eb7d8fd28",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/list_public?name=<string>&status=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            "list_public"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by build status (queued, provisioning, building, failed, build_complete)",
+                              "key": "status",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The limit of items to return. Default is 20. Max is 5000.",
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Load the next page of data starting after the item with the given ID.",
+                              "key": "starting_after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                              "key": "include_total_count",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"blueprints\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"building\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": \"<long>\",\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"X_SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"x86_64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"anim__5\": \"<string>\",\n          \"quisbd\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"occaecat04\": \"<string>\",\n              \"dolore65\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"adipisicing69\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"magna0\": \"<string>\",\n          \"qui5a\": \"<string>\"\n        },\n        \"build_args\": {\n          \"esse386\": \"<string>\"\n        },\n        \"secrets\": {\n          \"proident71b\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": \"<string>\",\n          \"type\": \"object\"\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": \"<long>\",\n      \"failure_reason\": \"out_of_memory\",\n      \"base_blueprint_id\": \"<string>\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"dolor104\": \"<string>\",\n            \"nullae7\": \"<string>\",\n            \"reprehenderit8\": \"<string>\",\n            \"cillum_f\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"dolor_da\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": \"<boolean>\",\n      \"metadata\": {\n        \"irure4\": \"<string>\",\n        \"minim51a\": \"<string>\",\n        \"mollit3\": \"<string>\",\n        \"magna_52\": \"<string>\"\n      },\n      \"devbox_capabilities\": [\n        \"docker_in_docker\",\n        \"unknown\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"provisioning\",\n      \"state\": \"created\",\n      \"create_time_ms\": \"<long>\",\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"shutdown\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"veniamc\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"in_b0b\": \"<string>\",\n              \"inc35\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"consequat0bf\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"dolor143\": \"<string>\"\n        },\n        \"build_args\": {\n          \"Excepteurec\": \"<string>\",\n          \"enim_d\": \"<string>\"\n        },\n        \"secrets\": {\n          \"ullamco541\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": \"<string>\",\n          \"type\": \"object\"\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": \"<long>\",\n      \"failure_reason\": \"out_of_disk\",\n      \"base_blueprint_id\": \"<string>\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"ut_9\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"ut_e57\": \"<string>\",\n            \"ut7\": \"<string>\",\n            \"minim_9\": \"<string>\",\n            \"sed8_\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": \"<boolean>\",\n      \"metadata\": {\n        \"incididuntf\": \"<string>\",\n        \"nullaa\": \"<string>\"\n      },\n      \"devbox_capabilities\": [\n        \"docker_in_docker\",\n        \"unknown\"\n      ]\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-e0606a2a-8128-42dd-8ffb-7e2eb7d8fd28"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-5acc9f94-d1a4-44a5-8b7a-f3f799146b64"
+                }
+              ],
+              "id": "66aae5e7-96e8-4e97-bc46-cf746402163b",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-66aae5e7-96e8-4e97-bc46-cf746402163b"
+            },
+            {
+              "name": "metadata",
+              "item": [
+                {
+                  "name": "keys",
+                  "item": [
+                    {
+                      "name": "{key}",
+                      "item": [
+                        {
+                          "name": "values",
+                          "item": [
+                            {
+                              "name": "List values for a specific blueprint metadata key.",
+                              "id": "48bfcc2a-25d9-466b-aa08-e5aad2e0fadb",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/blueprints/metadata/keys/:key/values",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "blueprints",
+                                    "metadata",
+                                    "keys",
+                                    ":key",
+                                    "values"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "b2ba2f29-1b95-487c-8353-9fed2728fd01",
+                                      "key": "key",
+                                      "value": "<string>",
+                                      "description": "(Required) The metadata key to get values for."
+                                    }
+                                  ]
+                                },
+                                "description": "Returns a list of all values that exist for a specific metadata key across all blueprints."
+                              },
+                              "response": [
+                                {
+                                  "id": "9f408eab-ffe1-46ae-b028-c0d08b5915c8",
+                                  "name": "OK",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v1/blueprints/metadata/keys/:key/values",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v1",
+                                        "blueprints",
+                                        "metadata",
+                                        "keys",
+                                        ":key",
+                                        "values"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "key"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"key\": \"<string>\",\n  \"values\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:15:16.000Z",
+                                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                                  "uid": "35240-9f408eab-ffe1-46ae-b028-c0d08b5915c8"
+                                },
+                                {
+                                  "id": "cb3f37e0-0cb5-4f75-a6ba-65ed6dc08a28",
+                                  "name": "Invalid metadata key provided.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v1/blueprints/metadata/keys/:key/values",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v1",
+                                        "blueprints",
+                                        "metadata",
+                                        "keys",
+                                        ":key",
+                                        "values"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "key"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T15:15:16.000Z",
+                                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                                  "uid": "35240-cb3f37e0-0cb5-4f75-a6ba-65ed6dc08a28"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:15:16.000Z",
+                              "updatedAt": "2026-06-05T15:15:16.000Z",
+                              "uid": "35240-48bfcc2a-25d9-466b-aa08-e5aad2e0fadb"
+                            }
+                          ],
+                          "id": "66656b01-4c62-4609-8c0b-2c784f9cf66f",
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-66656b01-4c62-4609-8c0b-2c784f9cf66f"
+                        }
+                      ],
+                      "id": "5b88261f-8a9b-4188-aa18-c0f87ed290a9",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-5b88261f-8a9b-4188-aa18-c0f87ed290a9"
+                    },
+                    {
+                      "name": "List available blueprint metadata keys.",
+                      "id": "332423f9-29bd-4379-95e8-117a0310277a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/metadata/keys",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            "metadata",
+                            "keys"
+                          ]
+                        },
+                        "description": "Returns a list of all available metadata keys that can be used for filtering blueprints."
+                      },
+                      "response": [
+                        {
+                          "id": "d3f0eaef-ffbb-4c90-8cec-c5db1a3f66dd",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/metadata/keys",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                "metadata",
+                                "keys"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"keys\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-d3f0eaef-ffbb-4c90-8cec-c5db1a3f66dd"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-332423f9-29bd-4379-95e8-117a0310277a"
+                    }
+                  ],
+                  "id": "ab4d4961-c63a-4736-b350-6f34cfaf3488",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-ab4d4961-c63a-4736-b350-6f34cfaf3488"
+                }
+              ],
+              "id": "b5200365-53e2-42e9-af4e-178b10ec75f6",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-b5200365-53e2-42e9-af4e-178b10ec75f6"
+            },
+            {
+              "name": "preview",
+              "item": [
+                {
+                  "name": "Preview Dockerfile definition for a Blueprint.",
+                  "id": "451daf4a-11e4-4002-b05e-427123fc62d4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"X_LARGE\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"arm64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"ad_27\": \"<string>\",\n    \"nulla5_\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"quis_dcd\": \"<string>\",\n        \"dolor_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"incididunt11a\": \"<string>\",\n        \"mollit0bf\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"ine\": \"<string>\",\n    \"ullamco_13c\": \"<string>\"\n  },\n  \"build_args\": {\n    \"nullaf1d\": \"<string>\",\n    \"Excepteur750\": \"<string>\"\n  },\n  \"secrets\": {\n    \"Lorem__\": \"<string>\",\n    \"tempor_cc\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints/preview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints",
+                        "preview"
+                      ]
+                    },
+                    "description": "Preview building a Blueprint with the specified configuration. You can take the resulting Dockerfile and test out your build using any local docker tooling."
+                  },
+                  "response": [
+                    {
+                      "id": "76df68a9-744a-47b1-b8d1-6bce96db7684",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"X_LARGE\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"arm64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"ad_27\": \"<string>\",\n    \"nulla5_\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"quis_dcd\": \"<string>\",\n        \"dolor_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"incididunt11a\": \"<string>\",\n        \"mollit0bf\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"ine\": \"<string>\",\n    \"ullamco_13c\": \"<string>\"\n  },\n  \"build_args\": {\n    \"nullaf1d\": \"<string>\",\n    \"Excepteur750\": \"<string>\"\n  },\n  \"secrets\": {\n    \"Lorem__\": \"<string>\",\n    \"tempor_cc\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/preview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            "preview"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"dockerfile\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-76df68a9-744a-47b1-b8d1-6bce96db7684"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-451daf4a-11e4-4002-b05e-427123fc62d4"
+                }
+              ],
+              "id": "51ac37e7-1ae1-4126-b6a5-0802ee546daa",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-51ac37e7-1ae1-4126-b6a5-0802ee546daa"
+            },
+            {
+              "name": "public",
+              "item": [
+                {
+                  "name": "metadata",
+                  "item": [
+                    {
+                      "name": "keys",
+                      "item": [
+                        {
+                          "name": "{key}",
+                          "item": [
+                            {
+                              "name": "values",
+                              "item": [
+                                {
+                                  "name": "List values for a specific public blueprint metadata key.",
+                                  "id": "77944fa5-7edd-4340-b443-1d763ace6175",
+                                  "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                  },
+                                  "request": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v1/blueprints/public/metadata/keys/:key/values",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v1",
+                                        "blueprints",
+                                        "public",
+                                        "metadata",
+                                        "keys",
+                                        ":key",
+                                        "values"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "id": "df661d47-032d-4141-a16e-3f30ca57c58c",
+                                          "key": "key",
+                                          "value": "<string>",
+                                          "description": "(Required) The metadata key to get values for from public blueprints."
+                                        }
+                                      ]
+                                    },
+                                    "description": "Returns a list of all values that exist for a specific metadata key across all public blueprints only."
+                                  },
+                                  "response": [
+                                    {
+                                      "id": "968b4cb6-e3c3-4435-b035-f8dde193a4b5",
+                                      "name": "OK",
+                                      "originalRequest": {
+                                        "method": "GET",
+                                        "header": [
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/v1/blueprints/public/metadata/keys/:key/values",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "v1",
+                                            "blueprints",
+                                            "public",
+                                            "metadata",
+                                            "keys",
+                                            ":key",
+                                            "values"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "key"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "OK",
+                                      "code": 200,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{\n  \"key\": \"<string>\",\n  \"values\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                                      "createdAt": "2026-06-05T15:15:16.000Z",
+                                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                                      "uid": "35240-968b4cb6-e3c3-4435-b035-f8dde193a4b5"
+                                    },
+                                    {
+                                      "id": "594914f2-16ba-4c9f-9dfb-eba640e8d868",
+                                      "name": "Invalid metadata key provided.",
+                                      "originalRequest": {
+                                        "method": "GET",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: bearer",
+                                            "key": "Authorization",
+                                            "value": "Bearer <token>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/v1/blueprints/public/metadata/keys/:key/values",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "v1",
+                                            "blueprints",
+                                            "public",
+                                            "metadata",
+                                            "keys",
+                                            ":key",
+                                            "values"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "key"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Bad Request",
+                                      "code": 400,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-06-05T15:15:16.000Z",
+                                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                                      "uid": "35240-594914f2-16ba-4c9f-9dfb-eba640e8d868"
+                                    }
+                                  ],
+                                  "createdAt": "2026-06-05T15:15:16.000Z",
+                                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                                  "uid": "35240-77944fa5-7edd-4340-b443-1d763ace6175"
+                                }
+                              ],
+                              "id": "788b6d59-e6dd-455f-9993-a434a4ea9cf3",
+                              "createdAt": "2026-06-05T15:15:16.000Z",
+                              "updatedAt": "2026-06-05T15:15:16.000Z",
+                              "uid": "35240-788b6d59-e6dd-455f-9993-a434a4ea9cf3"
+                            }
+                          ],
+                          "id": "979d6b62-d0e6-484c-b9d2-50e2aef92764",
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-979d6b62-d0e6-484c-b9d2-50e2aef92764"
+                        },
+                        {
+                          "name": "List available public blueprint metadata keys.",
+                          "id": "7143bea1-a163-4a84-98e9-bf9290b64b21",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/public/metadata/keys",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                "public",
+                                "metadata",
+                                "keys"
+                              ]
+                            },
+                            "description": "Returns a list of all available metadata keys from public blueprints only that can be used for filtering."
+                          },
+                          "response": [
+                            {
+                              "id": "0a46fd13-2b10-49a1-9530-e6036a663629",
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/blueprints/public/metadata/keys",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "blueprints",
+                                    "public",
+                                    "metadata",
+                                    "keys"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"keys\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "createdAt": "2026-06-05T15:15:16.000Z",
+                              "updatedAt": "2026-06-05T15:15:16.000Z",
+                              "uid": "35240-0a46fd13-2b10-49a1-9530-e6036a663629"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-7143bea1-a163-4a84-98e9-bf9290b64b21"
+                        }
+                      ],
+                      "id": "9a06a26b-ebdc-4bea-9a7b-3fa733aa27c0",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-9a06a26b-ebdc-4bea-9a7b-3fa733aa27c0"
+                    }
+                  ],
+                  "id": "40585b4d-0c1a-4cbc-b699-1396344f6d64",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-40585b4d-0c1a-4cbc-b699-1396344f6d64"
+                }
+              ],
+              "id": "a5424eff-b8a2-477f-90e8-c4fd4babc199",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-a5424eff-b8a2-477f-90e8-c4fd4babc199"
+            },
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "delete",
+                  "item": [
+                    {
+                      "name": "Delete a Blueprint.",
+                      "id": "cf2f4962-c890-4ea0-a475-d06d90f7e92d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/:id/delete",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            ":id",
+                            "delete"
+                          ],
+                          "variable": [
+                            {
+                              "id": "66afff86-86fb-4d25-be54-a1f0192ff408",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The ID of the Blueprint"
+                            }
+                          ]
+                        },
+                        "description": "Delete a previously created Blueprint. If a blueprint has dependent snapshots, it cannot be deleted. You can find them by querying: GET /v1/devboxes/disk_snapshots?source_blueprint_id={blueprint_id}."
+                      },
+                      "response": [
+                        {
+                          "id": "43412a5d-f560-41a0-9089-53001c537445",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-43412a5d-f560-41a0-9089-53001c537445"
+                        },
+                        {
+                          "id": "6142b7b9-578c-480b-9af2-907ecfe8f3d2",
+                          "name": "Blueprint has dependent snapshots that must be deleted first. Returns list of snapshot IDs.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-6142b7b9-578c-480b-9af2-907ecfe8f3d2"
+                        },
+                        {
+                          "id": "2715e37b-4223-494c-973c-d59d55df3a4f",
+                          "name": "Blueprint not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-2715e37b-4223-494c-973c-d59d55df3a4f"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-cf2f4962-c890-4ea0-a475-d06d90f7e92d"
+                    }
+                  ],
+                  "id": "43e114c3-5e1d-45dc-acf0-0ee894141e5b",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-43e114c3-5e1d-45dc-acf0-0ee894141e5b"
+                },
+                {
+                  "name": "logs",
+                  "item": [
+                    {
+                      "name": "Get Blueprint build logs.",
+                      "id": "66281ef1-48fb-4bb6-9366-e9cd3b0fb693",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/:id/logs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            ":id",
+                            "logs"
+                          ],
+                          "variable": [
+                            {
+                              "id": "bfee70f5-f01b-47eb-beef-ae385b41a0ff",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The ID of the Blueprint"
+                            }
+                          ]
+                        },
+                        "description": "Get all logs from the building of a Blueprint."
+                      },
+                      "response": [
+                        {
+                          "id": "b2e83c81-547d-408e-bec1-2bafdde604ea",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/blueprints/:id/logs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "blueprints",
+                                ":id",
+                                "logs"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"blueprint_id\": \"<string>\",\n  \"logs\": [\n    {\n      \"level\": \"<string>\",\n      \"timestamp_ms\": \"<long>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"level\": \"<string>\",\n      \"timestamp_ms\": \"<long>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:15:16.000Z",
+                          "updatedAt": "2026-06-05T15:15:16.000Z",
+                          "uid": "35240-b2e83c81-547d-408e-bec1-2bafdde604ea"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-66281ef1-48fb-4bb6-9366-e9cd3b0fb693"
+                    }
+                  ],
+                  "id": "3a98aaa6-403e-4b8c-97ae-6be39fdacbb5",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-3a98aaa6-403e-4b8c-97ae-6be39fdacbb5"
+                },
+                {
+                  "name": "Get a Blueprint.",
+                  "id": "2a24ce32-a112-488b-800f-46ff94d92956",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f796505b-0ef7-4ff7-83dd-3a8291ab0bb1",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the Blueprint"
+                        }
+                      ]
+                    },
+                    "description": "Get the details of a previously created Blueprint including the build status."
+                  },
+                  "response": [
+                    {
+                      "id": "ac9d3254-b2d7-401c-a124-0d20d30c9298",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/blueprints/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "blueprints",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"status\": \"provisioning\",\n  \"state\": \"created\",\n  \"create_time_ms\": \"<long>\",\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"laborume\": \"<string>\",\n      \"magnaf\": \"<string>\",\n      \"nisi_24\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"veniam_f52\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"sunt_6d3\": \"<string>\",\n          \"nostrud_dd2\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"in_5f\": \"<string>\"\n    },\n    \"build_args\": {\n      \"consectetur_4c\": \"<string>\"\n    },\n    \"secrets\": {\n      \"nisi__\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": \"<long>\",\n  \"failure_reason\": \"build_failed\",\n  \"base_blueprint_id\": \"<string>\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"irure2\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"Loremb\": \"<string>\",\n        \"sunt5\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": \"<boolean>\",\n  \"metadata\": {\n    \"suntaf4\": \"<string>\",\n    \"anim_8\": \"<string>\"\n  },\n  \"devbox_capabilities\": [\n    \"unknown\",\n    \"docker_in_docker\"\n  ]\n}",
+                      "createdAt": "2026-06-05T15:15:16.000Z",
+                      "updatedAt": "2026-06-05T15:15:16.000Z",
+                      "uid": "35240-ac9d3254-b2d7-401c-a124-0d20d30c9298"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-2a24ce32-a112-488b-800f-46ff94d92956"
+                }
+              ],
+              "id": "aca9082d-ddc8-4023-ae5a-7aace4baed0b",
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-aca9082d-ddc8-4023-ae5a-7aace4baed0b"
+            },
+            {
+              "name": "Create and build a Blueprint.",
+              "id": "3159b2a4-6b4e-4418-bad1-2550b866c8c9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"X_LARGE\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"arm64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"ad_27\": \"<string>\",\n    \"nulla5_\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"quis_dcd\": \"<string>\",\n        \"dolor_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"incididunt11a\": \"<string>\",\n        \"mollit0bf\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"ine\": \"<string>\",\n    \"ullamco_13c\": \"<string>\"\n  },\n  \"build_args\": {\n    \"nullaf1d\": \"<string>\",\n    \"Excepteur750\": \"<string>\"\n  },\n  \"secrets\": {\n    \"Lorem__\": \"<string>\",\n    \"tempor_cc\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/blueprints",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "blueprints"
+                  ]
+                },
+                "description": "Starts build of custom defined container Blueprint. The Blueprint will begin in the 'provisioning' step and transition to the 'building' step once it is selected off the build queue., Upon build complete it will transition to 'building_complete' if the build is successful."
+              },
+              "response": [
+                {
+                  "id": "94ff6a19-e675-4ef5-95fa-728df4c7946f",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"X_LARGE\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"shutdown\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"arm64\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"ad_27\": \"<string>\",\n    \"nulla5_\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"quis_dcd\": \"<string>\",\n        \"dolor_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"incididunt11a\": \"<string>\",\n        \"mollit0bf\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"ine\": \"<string>\",\n    \"ullamco_13c\": \"<string>\"\n  },\n  \"build_args\": {\n    \"nullaf1d\": \"<string>\",\n    \"Excepteur750\": \"<string>\"\n  },\n  \"secrets\": {\n    \"Lorem__\": \"<string>\",\n    \"tempor_cc\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"status\": \"provisioning\",\n  \"state\": \"created\",\n  \"create_time_ms\": \"<long>\",\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"laborume\": \"<string>\",\n      \"magnaf\": \"<string>\",\n      \"nisi_24\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"veniam_f52\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"sunt_6d3\": \"<string>\",\n          \"nostrud_dd2\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"in_5f\": \"<string>\"\n    },\n    \"build_args\": {\n      \"consectetur_4c\": \"<string>\"\n    },\n    \"secrets\": {\n      \"nisi__\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": \"<long>\",\n  \"failure_reason\": \"build_failed\",\n  \"base_blueprint_id\": \"<string>\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"irure2\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"Loremb\": \"<string>\",\n        \"sunt5\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": \"<boolean>\",\n  \"metadata\": {\n    \"suntaf4\": \"<string>\",\n    \"anim_8\": \"<string>\"\n  },\n  \"devbox_capabilities\": [\n    \"unknown\",\n    \"docker_in_docker\"\n  ]\n}",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-94ff6a19-e675-4ef5-95fa-728df4c7946f"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-3159b2a4-6b4e-4418-bad1-2550b866c8c9"
+            },
+            {
+              "name": "List Blueprints.",
+              "id": "0eb5fb02-f43a-4756-ab35-dc8b0fe1e990",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/blueprints?name=<string>&status=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "blueprints"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by name",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by build status (queued, provisioning, building, failed, build_complete)",
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The limit of items to return. Default is 20. Max is 5000.",
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Load the next page of data starting after the item with the given ID.",
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "List all Blueprints or filter by name."
+              },
+              "response": [
+                {
+                  "id": "25a3afb9-95c5-4682-8226-1b68db96139b",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/blueprints?name=<string>&status=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "blueprints"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by build status (queued, provisioning, building, failed, build_complete)",
+                          "key": "status",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"blueprints\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"building\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": \"<long>\",\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"X_SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"x86_64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"anim__5\": \"<string>\",\n          \"quisbd\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"occaecat04\": \"<string>\",\n              \"dolore65\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"adipisicing69\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"magna0\": \"<string>\",\n          \"qui5a\": \"<string>\"\n        },\n        \"build_args\": {\n          \"esse386\": \"<string>\"\n        },\n        \"secrets\": {\n          \"proident71b\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": \"<string>\",\n          \"type\": \"object\"\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": \"<long>\",\n      \"failure_reason\": \"out_of_memory\",\n      \"base_blueprint_id\": \"<string>\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"dolor104\": \"<string>\",\n            \"nullae7\": \"<string>\",\n            \"reprehenderit8\": \"<string>\",\n            \"cillum_f\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"dolor_da\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": \"<boolean>\",\n      \"metadata\": {\n        \"irure4\": \"<string>\",\n        \"minim51a\": \"<string>\",\n        \"mollit3\": \"<string>\",\n        \"magna_52\": \"<string>\"\n      },\n      \"devbox_capabilities\": [\n        \"docker_in_docker\",\n        \"unknown\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"provisioning\",\n      \"state\": \"created\",\n      \"create_time_ms\": \"<long>\",\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"shutdown\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"veniamc\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"in_b0b\": \"<string>\",\n              \"inc35\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"username\": \"<string>\",\n              \"password\": \"<string>\"\n            },\n            \"env\": {\n              \"consequat0bf\": \"<string>\"\n            },\n            \"port_mappings\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"dolor143\": \"<string>\"\n        },\n        \"build_args\": {\n          \"Excepteurec\": \"<string>\",\n          \"enim_d\": \"<string>\"\n        },\n        \"secrets\": {\n          \"ullamco541\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": \"<string>\",\n          \"type\": \"object\"\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": \"<long>\",\n      \"failure_reason\": \"out_of_disk\",\n      \"base_blueprint_id\": \"<string>\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"ut_9\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"ut_e57\": \"<string>\",\n            \"ut7\": \"<string>\",\n            \"minim_9\": \"<string>\",\n            \"sed8_\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": \"<boolean>\",\n      \"metadata\": {\n        \"incididuntf\": \"<string>\",\n        \"nullaa\": \"<string>\"\n      },\n      \"devbox_capabilities\": [\n        \"docker_in_docker\",\n        \"unknown\"\n      ]\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:16.000Z",
+                  "updatedAt": "2026-06-05T15:15:16.000Z",
+                  "uid": "35240-25a3afb9-95c5-4682-8226-1b68db96139b"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:16.000Z",
+              "updatedAt": "2026-06-05T15:15:16.000Z",
+              "uid": "35240-0eb5fb02-f43a-4756-ab35-dc8b0fe1e990"
+            }
+          ],
+          "id": "690814c7-2a39-46f2-b7df-32d5fb9ebed5",
+          "createdAt": "2026-06-05T15:15:16.000Z",
+          "updatedAt": "2026-06-05T15:15:16.000Z",
+          "uid": "35240-690814c7-2a39-46f2-b7df-32d5fb9ebed5"
+        }
+      ],
+      "id": "b0546193-de3a-4fb1-927a-3a0ccdf77488",
+      "createdAt": "2026-06-05T15:15:16.000Z",
+      "updatedAt": "2026-06-05T15:15:16.000Z",
+      "uid": "35240-b0546193-de3a-4fb1-927a-3a0ccdf77488"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

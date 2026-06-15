@@ -1,0 +1,1706 @@
+{
+  "info": {
+    "_postman_id": "eda068d1-c33a-4d4b-b00e-163beb545e78",
+    "name": "Runloop MCP Configs API",
+    "description": "Configure and manage Model Context Protocol (MCP) server bindings for Devboxes \u2014 declarative MCP server configs that can be mounted to agents to expose tools.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:27.000Z",
+    "updatedAt": "2026-06-05T15:15:27.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-eda068d1-c33a-4d4b-b00e-163beb545e78"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "mcp-configs",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "delete",
+                  "item": [
+                    {
+                      "name": "[Beta] Delete an McpConfig.",
+                      "id": "59aa516c-aad9-4b18-ac42-e3e32d9ffedc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id",
+                            "delete"
+                          ],
+                          "variable": [
+                            {
+                              "id": "472af90f-951f-4cb4-a6b4-7be10a1cca8d",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the McpConfig to delete."
+                            }
+                          ]
+                        },
+                        "description": "[Beta] Delete an existing McpConfig. This action is irreversible."
+                      },
+                      "response": [
+                        {
+                          "id": "e8157186-02fa-4a3f-9c20-ad7d6d7bebcc",
+                          "name": "McpConfig deleted successfully.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"create_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-e8157186-02fa-4a3f-9c20-ad7d6d7bebcc"
+                        },
+                        {
+                          "id": "7187794c-bb93-4fa4-897d-95c439cd3919",
+                          "name": "Bad request. Config is in use by active devboxes.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-7187794c-bb93-4fa4-897d-95c439cd3919"
+                        },
+                        {
+                          "id": "48e0ee8d-3679-42be-acc1-7792d5e58049",
+                          "name": "Unauthorized. Invalid or missing authentication.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-48e0ee8d-3679-42be-acc1-7792d5e58049"
+                        },
+                        {
+                          "id": "023e4b09-76d0-4af1-bbd1-c424d45d2013",
+                          "name": "Forbidden. Account does not have devbox capability.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-023e4b09-76d0-4af1-bbd1-c424d45d2013"
+                        },
+                        {
+                          "id": "33c51fc1-5cc3-43bc-9189-352a160bbb6a",
+                          "name": "McpConfig not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-33c51fc1-5cc3-43bc-9189-352a160bbb6a"
+                        },
+                        {
+                          "id": "76e9fad4-85d5-4ef3-b185-fe2777a0ed44",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/mcp-configs/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "mcp-configs",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:28.000Z",
+                          "updatedAt": "2026-06-05T15:15:28.000Z",
+                          "uid": "35240-76e9fad4-85d5-4ef3-b185-fe2777a0ed44"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-59aa516c-aad9-4b18-ac42-e3e32d9ffedc"
+                    }
+                  ],
+                  "id": "08707c51-324e-459e-a53f-1f96d5fcd85a",
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-08707c51-324e-459e-a53f-1f96d5fcd85a"
+                },
+                {
+                  "name": "[Beta] Get an McpConfig.",
+                  "id": "31a3eaf1-8f0e-4071-9d30-fcb8a6e9be94",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a675b092-9a10-4d14-9c10-178ff07120ad",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the McpConfig."
+                        }
+                      ]
+                    },
+                    "description": "[Beta] Get a specific McpConfig by its unique identifier."
+                  },
+                  "response": [
+                    {
+                      "id": "dfa3283d-9f88-4ecb-9d44-a6e7e4587a2d",
+                      "name": "Successfully retrieved the McpConfig.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"create_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-dfa3283d-9f88-4ecb-9d44-a6e7e4587a2d"
+                    },
+                    {
+                      "id": "c8e07662-327d-4aeb-ab12-ed1728c73458",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-c8e07662-327d-4aeb-ab12-ed1728c73458"
+                    },
+                    {
+                      "id": "401359a1-4a0c-40fa-b5cb-29e5a3f16c1b",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-401359a1-4a0c-40fa-b5cb-29e5a3f16c1b"
+                    },
+                    {
+                      "id": "50f30865-962a-448f-bab1-4d7cd24891cc",
+                      "name": "McpConfig not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-50f30865-962a-448f-bab1-4d7cd24891cc"
+                    },
+                    {
+                      "id": "a7506182-e994-4709-9db6-948e48373db4",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-a7506182-e994-4709-9db6-948e48373db4"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-31a3eaf1-8f0e-4071-9d30-fcb8a6e9be94"
+                },
+                {
+                  "name": "[Beta] Update an McpConfig.",
+                  "id": "87309df1-4d94-4d63-a0c1-fe7c2c3238df",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9a939adc-f668-4d90-8ef8-7215cb281ae2",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the McpConfig to update."
+                        }
+                      ]
+                    },
+                    "description": "[Beta] Update an existing McpConfig. All fields are optional."
+                  },
+                  "response": [
+                    {
+                      "id": "f83ab2e8-345c-49d0-b163-7e784f0784ac",
+                      "name": "McpConfig updated successfully.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"create_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-f83ab2e8-345c-49d0-b163-7e784f0784ac"
+                    },
+                    {
+                      "id": "5c173171-878d-4a97-b302-ed983cc495a2",
+                      "name": "Bad request. Invalid parameters.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-5c173171-878d-4a97-b302-ed983cc495a2"
+                    },
+                    {
+                      "id": "454cb540-da10-422d-b999-0d2dd856cd7b",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-454cb540-da10-422d-b999-0d2dd856cd7b"
+                    },
+                    {
+                      "id": "1ddc85a6-ce4c-4009-a96f-27805ab6a814",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-1ddc85a6-ce4c-4009-a96f-27805ab6a814"
+                    },
+                    {
+                      "id": "8d673bb7-10cf-4dff-838a-d8b1de300810",
+                      "name": "McpConfig not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-8d673bb7-10cf-4dff-838a-d8b1de300810"
+                    },
+                    {
+                      "id": "ede2c720-3e6a-40ae-b2ab-9bf83e5aa462",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/mcp-configs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "mcp-configs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:28.000Z",
+                      "updatedAt": "2026-06-05T15:15:28.000Z",
+                      "uid": "35240-ede2c720-3e6a-40ae-b2ab-9bf83e5aa462"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-87309df1-4d94-4d63-a0c1-fe7c2c3238df"
+                }
+              ],
+              "id": "bcc18576-3374-4f42-a0c4-32fb4043fb2f",
+              "createdAt": "2026-06-05T15:15:28.000Z",
+              "updatedAt": "2026-06-05T15:15:28.000Z",
+              "uid": "35240-bcc18576-3374-4f42-a0c4-32fb4043fb2f"
+            },
+            {
+              "name": "[Beta] Create an McpConfig.",
+              "id": "7074b9bb-e219-4184-af32-310a533290f3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/mcp-configs",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "mcp-configs"
+                  ]
+                },
+                "description": "[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config specifies the target endpoint and which tools are allowed."
+              },
+              "response": [
+                {
+                  "id": "8b7dfd66-10f4-4b2e-8c4e-89381fcecac1",
+                  "name": "McpConfig created successfully.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"create_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-8b7dfd66-10f4-4b2e-8c4e-89381fcecac1"
+                },
+                {
+                  "id": "0519a7e3-e45b-4825-b337-ef6d3af0f127",
+                  "name": "Bad request. Name already exists or is invalid.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-0519a7e3-e45b-4825-b337-ef6d3af0f127"
+                },
+                {
+                  "id": "cd878000-66be-432f-a406-d51965c43f31",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-cd878000-66be-432f-a406-d51965c43f31"
+                },
+                {
+                  "id": "ef71f486-43ba-4a46-9e39-be45945d219b",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-ef71f486-43ba-4a46-9e39-be45945d219b"
+                },
+                {
+                  "id": "d98f8517-450d-4e3e-bfc3-2496598769e3",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"endpoint\": \"<string>\",\n  \"allowed_tools\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-d98f8517-450d-4e3e-bfc3-2496598769e3"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:28.000Z",
+              "updatedAt": "2026-06-05T15:15:28.000Z",
+              "uid": "35240-7074b9bb-e219-4184-af32-310a533290f3"
+            },
+            {
+              "name": "[Beta] List McpConfigs.",
+              "id": "5021cfc9-9225-4b14-8380-3919ebb37a2c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/mcp-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "mcp-configs"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by name (prefix match supported).",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ID.",
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The limit of items to return. Default is 20. Max is 5000.",
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Load the next page of data starting after the item with the given ID.",
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "[Beta] List all McpConfigs for the authenticated account."
+              },
+              "response": [
+                {
+                  "id": "1cd6dcd4-74f3-49a6-8405-4cb4f599d08a",
+                  "name": "Successfully retrieved list of McpConfigs.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (prefix match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"mcp_configs\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"endpoint\": \"<string>\",\n      \"allowed_tools\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"create_time_ms\": \"<long>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"endpoint\": \"<string>\",\n      \"allowed_tools\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"create_time_ms\": \"<long>\",\n      \"description\": \"<string>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-1cd6dcd4-74f3-49a6-8405-4cb4f599d08a"
+                },
+                {
+                  "id": "697dc17c-6be7-47b3-b673-a8098ec32fab",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (prefix match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-697dc17c-6be7-47b3-b673-a8098ec32fab"
+                },
+                {
+                  "id": "fa5eae76-2ddf-4f72-8ebc-dfb72a807759",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (prefix match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-fa5eae76-2ddf-4f72-8ebc-dfb72a807759"
+                },
+                {
+                  "id": "4fa179f8-af79-4598-b952-0d4ea2caaf80",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/mcp-configs?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "mcp-configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (prefix match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:28.000Z",
+                  "updatedAt": "2026-06-05T15:15:28.000Z",
+                  "uid": "35240-4fa179f8-af79-4598-b952-0d4ea2caaf80"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:28.000Z",
+              "updatedAt": "2026-06-05T15:15:28.000Z",
+              "uid": "35240-5021cfc9-9225-4b14-8380-3919ebb37a2c"
+            }
+          ],
+          "id": "6925db91-d43c-4105-91d8-b5758600faa9",
+          "createdAt": "2026-06-05T15:15:28.000Z",
+          "updatedAt": "2026-06-05T15:15:28.000Z",
+          "uid": "35240-6925db91-d43c-4105-91d8-b5758600faa9"
+        }
+      ],
+      "id": "6940b824-dc7e-4237-b15c-c6539f547ab5",
+      "createdAt": "2026-06-05T15:15:28.000Z",
+      "updatedAt": "2026-06-05T15:15:28.000Z",
+      "uid": "35240-6940b824-dc7e-4237-b15c-c6539f547ab5"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

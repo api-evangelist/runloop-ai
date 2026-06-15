@@ -1,0 +1,525 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Scenario API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scenario",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Scenarios.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Query for Scenarios with a given name."
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter scenarios by benchmark ID."
+              },
+              {
+                "name": "validation_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by validation type"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Scenarios matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Scenario, a repeatable AI coding evaluation test that defines the starting environment as well as evaluation success criteria."
+        },
+        {
+          "info": {
+            "name": "List Public Scenarios.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/list_public",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Query for Scenarios with a given name."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public scenarios matching filter."
+        },
+        {
+          "info": {
+            "name": "List available scenario metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering scenarios."
+        },
+        {
+          "info": {
+            "name": "List values for a specific scenario metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all scenarios."
+        },
+        {
+          "info": {
+            "name": "List ScenarioRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "benchmark_run_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by benchmark run ID"
+              },
+              {
+                "name": "scenario_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs associated to Scenario given ID"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all ScenarioRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Get a ScenarioRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a Scenario run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario Run ID."
+              }
+            ]
+          },
+          "docs": "Cancel a currently running Scenario run. This will shutdown the underlying Devbox resource."
+        },
+        {
+          "info": {
+            "name": "Complete a ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running ScenarioRun. Calling complete will shutdown underlying Devbox resource."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Scenario run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Scenario run from the associated devbox."
+        },
+        {
+          "info": {
+            "name": "Score a ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/score",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Score a currently running ScenarioRun."
+        },
+        {
+          "info": {
+            "name": "List Scenario Scorers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Scenario Scorers matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a custom scenario scorer."
+        },
+        {
+          "info": {
+            "name": "Retrieve Scenario Scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ]
+          },
+          "docs": "Retrieve Scenario Scorer."
+        },
+        {
+          "info": {
+            "name": "Update a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a scenario scorer."
+        },
+        {
+          "info": {
+            "name": "Start a new ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/start_run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a new ScenarioRun based on the provided Scenario."
+        },
+        {
+          "info": {
+            "name": "Get a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              }
+            ]
+          },
+          "docs": "Get a previously created scenario."
+        },
+        {
+          "info": {
+            "name": "Update a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Scenario. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely."
+        },
+        {
+          "info": {
+            "name": "Archive a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Scenario to archive."
+              }
+            ]
+          },
+          "docs": "Archive a previously created Scenario. The scenario will no longer appear in list endpoints but can still be retrieved by ID."
+        },
+        {
+          "info": {
+            "name": "Get the runs for a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "Get a previously created scenario."
+        },
+        {
+          "info": {
+            "name": "Unarchive a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Scenario to unarchive."
+              }
+            ]
+          },
+          "docs": "Unarchive a previously archived Scenario. The scenario will appear in list endpoints again."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

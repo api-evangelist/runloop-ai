@@ -1,0 +1,302 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Axons API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "axons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List active axons.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by axon name (prefix match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by axon ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all active axons."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a new axon."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ]
+          },
+          "docs": "[Beta] Get an axon given ID."
+        },
+        {
+          "info": {
+            "name": "[Beta] List events for an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id/events",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List events from an axon's event stream, ordered by sequence descending."
+        },
+        {
+          "info": {
+            "name": "[Beta] Publish an event to an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/publish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Publish an event to a specified axon."
+        },
+        {
+          "info": {
+            "name": "[Beta] Execute a batch of SQL statements against an axon's database.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/sql/batch",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Execute multiple SQL statements atomically within a single transaction against an axon's SQLite database."
+        },
+        {
+          "info": {
+            "name": "[Beta] Execute a SQL query against an axon's database.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/sql/query",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Execute a single parameterized SQL statement against an axon's SQLite database."
+        },
+        {
+          "info": {
+            "name": "[Beta] Subscribe to an axon event stream via SSE.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id/subscribe/sse",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              },
+              {
+                "name": "after_sequence",
+                "value": "",
+                "type": "query",
+                "description": "Sequence number after which to start streaming. Events with sequence > this value are returned. If unset, replay from the beginning."
+              }
+            ]
+          },
+          "docs": "[Beta] Subscribe to an axon event stream via server-sent events."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "executions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tails the stderr logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stderr_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stderr logs for the given execution with SSE streaming"
+        },
+        {
+          "info": {
+            "name": "Tails the stdout logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stdout_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stdout logs for the given execution with SSE streaming"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

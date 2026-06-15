@@ -1,0 +1,2692 @@
+{
+  "info": {
+    "_postman_id": "8a21ad61-84a1-4d02-993d-1f8040aea019",
+    "name": "Runloop Scenario API",
+    "description": "Define and run individual evaluation Scenarios \u2014 the atomic unit of benchmarks. Supports scenario authoring, scenario runs lifecycle, scoring (ScenarioScorer), and metadata.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:18.000Z",
+    "updatedAt": "2026-06-05T15:15:18.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8a21ad61-84a1-4d02-993d-1f8040aea019"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "scenarios",
+          "item": [
+            {
+              "name": "list_public",
+              "item": [
+                {
+                  "name": "List Public Scenarios.",
+                  "id": "df5cc588-1507-46b1-9c5a-77514dc8fb83",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/list_public?name=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        "list_public"
+                      ],
+                      "query": [
+                        {
+                          "description": "Query for Scenarios with a given name.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "List all public scenarios matching filter."
+                  },
+                  "response": [
+                    {
+                      "id": "aea37bb3-636f-4e5c-abf5-e52b7f7e7044",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/list_public?name=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "list_public"
+                          ],
+                          "query": [
+                            {
+                              "description": "Query for Scenarios with a given name.",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The limit of items to return. Default is 20. Max is 5000.",
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Load the next page of data starting after the item with the given ID.",
+                              "key": "starting_after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                              "key": "include_total_count",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"scenarios\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"input_context\": {\n        \"problem_statement\": \"<string>\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          }\n        ]\n      },\n      \"metadata\": {\n        \"dolor_0\": \"<string>\",\n        \"aliquip_57\": \"<string>\",\n        \"velit77_\": \"<string>\"\n      },\n      \"status\": \"archived\",\n      \"environment\": {\n        \"blueprint_id\": \"<string>\",\n        \"snapshot_id\": \"<string>\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"LARGE\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"shutdown\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"working_directory\": \"<string>\"\n      },\n      \"reference_output\": \"<string>\",\n      \"required_environment_variables\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"required_secret_names\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_public\": \"<boolean>\",\n      \"validation_type\": \"FORWARD\",\n      \"scorer_timeout_sec\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"input_context\": {\n        \"problem_statement\": \"<string>\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          }\n        ]\n      },\n      \"metadata\": {\n        \"amet_0\": \"<string>\",\n        \"sed_e6\": \"<string>\"\n      },\n      \"status\": \"archived\",\n      \"environment\": {\n        \"blueprint_id\": \"<string>\",\n        \"snapshot_id\": \"<string>\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"working_directory\": \"<string>\"\n      },\n      \"reference_output\": \"<string>\",\n      \"required_environment_variables\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"required_secret_names\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_public\": \"<boolean>\",\n      \"validation_type\": \"FORWARD\",\n      \"scorer_timeout_sec\": \"<integer>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-aea37bb3-636f-4e5c-abf5-e52b7f7e7044"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-df5cc588-1507-46b1-9c5a-77514dc8fb83"
+                }
+              ],
+              "id": "a40c933b-2af3-4388-87a5-5a2b1b5b8672",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-a40c933b-2af3-4388-87a5-5a2b1b5b8672"
+            },
+            {
+              "name": "metadata",
+              "item": [
+                {
+                  "name": "keys",
+                  "item": [
+                    {
+                      "name": "{key}",
+                      "item": [
+                        {
+                          "name": "values",
+                          "item": [
+                            {
+                              "name": "List values for a specific scenario metadata key.",
+                              "id": "d17411db-3404-407e-b531-9559f94c8584",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/scenarios/metadata/keys/:key/values",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "scenarios",
+                                    "metadata",
+                                    "keys",
+                                    ":key",
+                                    "values"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "0e14e41e-8b4d-4181-9d5c-c98ec1b898ad",
+                                      "key": "key",
+                                      "value": "<string>",
+                                      "description": "(Required) The metadata key to get values for."
+                                    }
+                                  ]
+                                },
+                                "description": "Returns a list of all values that exist for a specific metadata key across all scenarios."
+                              },
+                              "response": [
+                                {
+                                  "id": "11d89e94-fc67-4c19-a0e4-e15cbd513a12",
+                                  "name": "OK",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v1/scenarios/metadata/keys/:key/values",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v1",
+                                        "scenarios",
+                                        "metadata",
+                                        "keys",
+                                        ":key",
+                                        "values"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "key"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"key\": \"<string>\",\n  \"values\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:15:19.000Z",
+                                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                                  "uid": "35240-11d89e94-fc67-4c19-a0e4-e15cbd513a12"
+                                },
+                                {
+                                  "id": "a9b205c2-488e-41a2-910e-c39cc3f17ac8",
+                                  "name": "Invalid metadata key provided.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/v1/scenarios/metadata/keys/:key/values",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "v1",
+                                        "scenarios",
+                                        "metadata",
+                                        "keys",
+                                        ":key",
+                                        "values"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "key"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T15:15:19.000Z",
+                                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                                  "uid": "35240-a9b205c2-488e-41a2-910e-c39cc3f17ac8"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:15:19.000Z",
+                              "updatedAt": "2026-06-05T15:15:19.000Z",
+                              "uid": "35240-d17411db-3404-407e-b531-9559f94c8584"
+                            }
+                          ],
+                          "id": "27c114e1-9c77-4c93-9300-7fb8a268346b",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-27c114e1-9c77-4c93-9300-7fb8a268346b"
+                        }
+                      ],
+                      "id": "fe43254f-c7eb-451d-8a0c-1b3166b0447c",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-fe43254f-c7eb-451d-8a0c-1b3166b0447c"
+                    },
+                    {
+                      "name": "List available scenario metadata keys.",
+                      "id": "c795071c-d6a7-428c-8824-d8ce157848c5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/metadata/keys",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "metadata",
+                            "keys"
+                          ]
+                        },
+                        "description": "Returns a list of all available metadata keys that can be used for filtering scenarios."
+                      },
+                      "response": [
+                        {
+                          "id": "61b980c2-ca9d-4ff4-b29f-8cba4e5ee8e8",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/metadata/keys",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "metadata",
+                                "keys"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"keys\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-61b980c2-ca9d-4ff4-b29f-8cba4e5ee8e8"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-c795071c-d6a7-428c-8824-d8ce157848c5"
+                    }
+                  ],
+                  "id": "54976f89-5ce2-48a4-a20e-250c4e837407",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-54976f89-5ce2-48a4-a20e-250c4e837407"
+                }
+              ],
+              "id": "6fa5e3d8-ad77-4a93-bb59-8168b98afedc",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-6fa5e3d8-ad77-4a93-bb59-8168b98afedc"
+            },
+            {
+              "name": "runs",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "cancel",
+                      "item": [
+                        {
+                          "name": "Cancel a Scenario run.",
+                          "id": "ddfdf8a2-1745-4096-a25c-21ef6eefa6fc",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/runs/:id/cancel",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "runs",
+                                ":id",
+                                "cancel"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "8eea9267-3511-43f3-b569-7649c5921f1f",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) The Scenario Run ID."
+                                }
+                              ]
+                            },
+                            "description": "Cancel a currently running Scenario run. This will shutdown the underlying Devbox resource."
+                          },
+                          "response": [
+                            {
+                              "id": "344af466-6ab5-4200-b31c-6f488236bff5",
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/scenarios/runs/:id/cancel",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "scenarios",
+                                    "runs",
+                                    ":id",
+                                    "cancel"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"scenario_id\": \"<string>\",\n  \"devbox_id\": \"<string>\",\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"nostrudc26\": \"<string>\",\n    \"in4b5\": \"<string>\",\n    \"doloref1\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"scoring_contract_result\": {\n    \"score\": \"<float>\",\n    \"scoring_function_results\": [\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      },\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      }\n    ]\n  },\n  \"start_time_ms\": \"<long>\",\n  \"duration_ms\": \"<long>\",\n  \"purpose\": \"<string>\",\n  \"environment_variables\": {\n    \"et_2_\": \"<string>\",\n    \"exercitationc\": \"<string>\"\n  },\n  \"secrets_provided\": {\n    \"ida1\": \"<string>\"\n  }\n}",
+                              "createdAt": "2026-06-05T15:15:19.000Z",
+                              "updatedAt": "2026-06-05T15:15:19.000Z",
+                              "uid": "35240-344af466-6ab5-4200-b31c-6f488236bff5"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-ddfdf8a2-1745-4096-a25c-21ef6eefa6fc"
+                        }
+                      ],
+                      "id": "dd053001-e040-4d0e-8934-510e60084358",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-dd053001-e040-4d0e-8934-510e60084358"
+                    },
+                    {
+                      "name": "complete",
+                      "item": [
+                        {
+                          "name": "Complete a ScenarioRun.",
+                          "id": "408d7004-2d21-4448-a2d8-1b122b4b22f0",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/runs/:id/complete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "runs",
+                                ":id",
+                                "complete"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "1d63a238-f47a-40d1-a345-d3145a00c517",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) The ScenarioRun ID."
+                                }
+                              ]
+                            },
+                            "description": "Complete a currently running ScenarioRun. Calling complete will shutdown underlying Devbox resource."
+                          },
+                          "response": [
+                            {
+                              "id": "86cd3234-92c4-4629-94bf-fc9f55c87bc6",
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/scenarios/runs/:id/complete",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "scenarios",
+                                    "runs",
+                                    ":id",
+                                    "complete"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"scenario_id\": \"<string>\",\n  \"devbox_id\": \"<string>\",\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"nostrudc26\": \"<string>\",\n    \"in4b5\": \"<string>\",\n    \"doloref1\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"scoring_contract_result\": {\n    \"score\": \"<float>\",\n    \"scoring_function_results\": [\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      },\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      }\n    ]\n  },\n  \"start_time_ms\": \"<long>\",\n  \"duration_ms\": \"<long>\",\n  \"purpose\": \"<string>\",\n  \"environment_variables\": {\n    \"et_2_\": \"<string>\",\n    \"exercitationc\": \"<string>\"\n  },\n  \"secrets_provided\": {\n    \"ida1\": \"<string>\"\n  }\n}",
+                              "createdAt": "2026-06-05T15:15:19.000Z",
+                              "updatedAt": "2026-06-05T15:15:19.000Z",
+                              "uid": "35240-86cd3234-92c4-4629-94bf-fc9f55c87bc6"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-408d7004-2d21-4448-a2d8-1b122b4b22f0"
+                        }
+                      ],
+                      "id": "925bf767-f6e2-4076-8cd6-faa3fb6ae0e5",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-925bf767-f6e2-4076-8cd6-faa3fb6ae0e5"
+                    },
+                    {
+                      "name": "download_logs",
+                      "item": [
+                        {
+                          "name": "Download logs for a Scenario run.",
+                          "id": "c8ff806d-0456-4c3a-936d-9f5c6534c05a",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/zip"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/runs/:id/download_logs",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "runs",
+                                ":id",
+                                "download_logs"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "b8a9d712-d0af-4ea4-a0ed-b1dfde39327f",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) The ScenarioRun ID."
+                                }
+                              ]
+                            },
+                            "description": "Download a zip file containing all logs for a Scenario run from the associated devbox."
+                          },
+                          "response": [
+                            {
+                              "id": "0bcd1881-2a05-4324-be6b-518615277d28",
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/zip"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/scenarios/runs/:id/download_logs",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "scenarios",
+                                    "runs",
+                                    ":id",
+                                    "download_logs"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/zip"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "(Required) application/zip",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Content-Type",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "(Required) attachment; filename=\"scenario_run_logs.zip\"",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Content-Disposition",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"format\": \"binary\"\n}",
+                              "createdAt": "2026-06-05T15:15:19.000Z",
+                              "updatedAt": "2026-06-05T15:15:19.000Z",
+                              "uid": "35240-0bcd1881-2a05-4324-be6b-518615277d28"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-c8ff806d-0456-4c3a-936d-9f5c6534c05a"
+                        }
+                      ],
+                      "id": "3665ce54-1a80-4837-a657-4547092fa10e",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-3665ce54-1a80-4837-a657-4547092fa10e"
+                    },
+                    {
+                      "name": "score",
+                      "item": [
+                        {
+                          "name": "Score a ScenarioRun.",
+                          "id": "5a9f0770-374d-46ef-b3f9-38690a9c2287",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/runs/:id/score",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "runs",
+                                ":id",
+                                "score"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "aa459f06-c7d3-4452-9ad0-fc630f55ca98",
+                                  "key": "id",
+                                  "value": "<string>",
+                                  "description": "(Required) The ScenarioRun ID."
+                                }
+                              ]
+                            },
+                            "description": "Score a currently running ScenarioRun."
+                          },
+                          "response": [
+                            {
+                              "id": "a784fc87-0933-4710-adb4-a187a06282fb",
+                              "name": "OK",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/scenarios/runs/:id/score",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "scenarios",
+                                    "runs",
+                                    ":id",
+                                    "score"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"scenario_id\": \"<string>\",\n  \"devbox_id\": \"<string>\",\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"nostrudc26\": \"<string>\",\n    \"in4b5\": \"<string>\",\n    \"doloref1\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"scoring_contract_result\": {\n    \"score\": \"<float>\",\n    \"scoring_function_results\": [\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      },\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      }\n    ]\n  },\n  \"start_time_ms\": \"<long>\",\n  \"duration_ms\": \"<long>\",\n  \"purpose\": \"<string>\",\n  \"environment_variables\": {\n    \"et_2_\": \"<string>\",\n    \"exercitationc\": \"<string>\"\n  },\n  \"secrets_provided\": {\n    \"ida1\": \"<string>\"\n  }\n}",
+                              "createdAt": "2026-06-05T15:15:19.000Z",
+                              "updatedAt": "2026-06-05T15:15:19.000Z",
+                              "uid": "35240-a784fc87-0933-4710-adb4-a187a06282fb"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-5a9f0770-374d-46ef-b3f9-38690a9c2287"
+                        }
+                      ],
+                      "id": "8a2c3971-417b-4905-a969-54eeabfa11e7",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-8a2c3971-417b-4905-a969-54eeabfa11e7"
+                    },
+                    {
+                      "name": "Get a previously created ScenarioRun.",
+                      "id": "12b4a68e-aa38-41af-a7bb-05e68efd6777",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/runs/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "runs",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f9243af2-b7c0-4388-856a-c7c8ddfb46e1",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The ScenarioRun ID."
+                            }
+                          ]
+                        },
+                        "description": "Get a ScenarioRun given ID."
+                      },
+                      "response": [
+                        {
+                          "id": "b2836827-40e5-4fc2-b3c3-5cfe563a137e",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/runs/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "runs",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"scenario_id\": \"<string>\",\n  \"devbox_id\": \"<string>\",\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"nostrudc26\": \"<string>\",\n    \"in4b5\": \"<string>\",\n    \"doloref1\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"scoring_contract_result\": {\n    \"score\": \"<float>\",\n    \"scoring_function_results\": [\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      },\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      }\n    ]\n  },\n  \"start_time_ms\": \"<long>\",\n  \"duration_ms\": \"<long>\",\n  \"purpose\": \"<string>\",\n  \"environment_variables\": {\n    \"et_2_\": \"<string>\",\n    \"exercitationc\": \"<string>\"\n  },\n  \"secrets_provided\": {\n    \"ida1\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-b2836827-40e5-4fc2-b3c3-5cfe563a137e"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-12b4a68e-aa38-41af-a7bb-05e68efd6777"
+                    }
+                  ],
+                  "id": "46095e99-f442-4d0c-9f51-51dd8dca1e9f",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-46095e99-f442-4d0c-9f51-51dd8dca1e9f"
+                },
+                {
+                  "name": "List ScenarioRuns.",
+                  "id": "79968ca8-acf4-4299-b206-9e451ad32e52",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/runs?name=<string>&state=<string>&benchmark_run_id=<string>&scenario_id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        "runs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by state",
+                          "key": "state",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by benchmark run ID",
+                          "key": "benchmark_run_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter runs associated to Scenario given ID",
+                          "key": "scenario_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "List all ScenarioRuns matching filter."
+                  },
+                  "response": [
+                    {
+                      "id": "cea9aa80-3810-4c9d-8853-e0a986b59599",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/runs?name=<string>&state=<string>&benchmark_run_id=<string>&scenario_id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "runs"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by state",
+                              "key": "state",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by benchmark run ID",
+                              "key": "benchmark_run_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter runs associated to Scenario given ID",
+                              "key": "scenario_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The limit of items to return. Default is 20. Max is 5000.",
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Load the next page of data starting after the item with the given ID.",
+                              "key": "starting_after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                              "key": "include_total_count",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"runs\": [\n    {\n      \"id\": \"<string>\",\n      \"scenario_id\": \"<string>\",\n      \"devbox_id\": \"<string>\",\n      \"state\": \"running\",\n      \"metadata\": {\n        \"exercitation_a_\": \"<string>\",\n        \"aliqua_b\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"benchmark_run_id\": \"<string>\",\n      \"scoring_contract_result\": {\n        \"score\": \"<float>\",\n        \"scoring_function_results\": [\n          {\n            \"score\": \"<float>\",\n            \"scoring_function_name\": \"<string>\",\n            \"output\": \"<string>\",\n            \"state\": \"unknown\"\n          },\n          {\n            \"score\": \"<float>\",\n            \"scoring_function_name\": \"<string>\",\n            \"output\": \"<string>\",\n            \"state\": \"complete\"\n          }\n        ]\n      },\n      \"start_time_ms\": \"<long>\",\n      \"duration_ms\": \"<long>\",\n      \"purpose\": \"<string>\",\n      \"environment_variables\": {\n        \"exercitation__\": \"<string>\",\n        \"sit_f1\": \"<string>\",\n        \"do73\": \"<string>\",\n        \"voluptate437\": \"<string>\"\n      },\n      \"secrets_provided\": {\n        \"amet_c52\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"scenario_id\": \"<string>\",\n      \"devbox_id\": \"<string>\",\n      \"state\": \"running\",\n      \"metadata\": {\n        \"minim35\": \"<string>\",\n        \"in94\": \"<string>\"\n      },\n      \"name\": \"<string>\",\n      \"benchmark_run_id\": \"<string>\",\n      \"scoring_contract_result\": {\n        \"score\": \"<float>\",\n        \"scoring_function_results\": [\n          {\n            \"score\": \"<float>\",\n            \"scoring_function_name\": \"<string>\",\n            \"output\": \"<string>\",\n            \"state\": \"error\"\n          },\n          {\n            \"score\": \"<float>\",\n            \"scoring_function_name\": \"<string>\",\n            \"output\": \"<string>\",\n            \"state\": \"unknown\"\n          }\n        ]\n      },\n      \"start_time_ms\": \"<long>\",\n      \"duration_ms\": \"<long>\",\n      \"purpose\": \"<string>\",\n      \"environment_variables\": {\n        \"magna_c4\": \"<string>\",\n        \"pariatur_d\": \"<string>\",\n        \"officia_8\": \"<string>\"\n      },\n      \"secrets_provided\": {\n        \"velit9d\": \"<string>\",\n        \"Lorem_de\": \"<string>\"\n      }\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-cea9aa80-3810-4c9d-8853-e0a986b59599"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-79968ca8-acf4-4299-b206-9e451ad32e52"
+                }
+              ],
+              "id": "836bbee5-b089-4f58-84ad-815829c3ebc3",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-836bbee5-b089-4f58-84ad-815829c3ebc3"
+            },
+            {
+              "name": "scorers",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Update a custom scenario scorer.",
+                      "id": "e9309713-eca8-4d8c-b4e3-2c8093f57d93",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/scorers/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "scorers",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "af93f7b3-7351-467f-86e7-bdac90405cd3",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The Scorer ID."
+                            }
+                          ]
+                        },
+                        "description": "Update a scenario scorer."
+                      },
+                      "response": [
+                        {
+                          "id": "6e0c72bb-0d8e-4ef4-952a-2498060746f0",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/scorers/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "scorers",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-6e0c72bb-0d8e-4ef4-952a-2498060746f0"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-e9309713-eca8-4d8c-b4e3-2c8093f57d93"
+                    },
+                    {
+                      "name": "Retrieve Scenario Scorer.",
+                      "id": "8f76ad1b-48da-498f-8509-9d54f4380709",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/scorers/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "scorers",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "eb444cac-9684-44d1-951d-e58dc363749c",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The Scorer ID."
+                            }
+                          ]
+                        },
+                        "description": "Retrieve Scenario Scorer."
+                      },
+                      "response": [
+                        {
+                          "id": "5ecaa8b9-61fa-42ef-9a5b-5d0ef986d883",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/scorers/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                "scorers",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-5ecaa8b9-61fa-42ef-9a5b-5d0ef986d883"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-8f76ad1b-48da-498f-8509-9d54f4380709"
+                    }
+                  ],
+                  "id": "342bbf02-7b45-44fc-b046-4b39f4263c8d",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-342bbf02-7b45-44fc-b046-4b39f4263c8d"
+                },
+                {
+                  "name": "Create a custom scenario scorer.",
+                  "id": "4f42e478-7b98-43b5-b040-fa150fac6ec4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/scorers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        "scorers"
+                      ]
+                    },
+                    "description": "Create a custom scenario scorer."
+                  },
+                  "response": [
+                    {
+                      "id": "3324e37a-68f0-4eb2-a300-8044b9dc4547",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/scorers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "scorers"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-3324e37a-68f0-4eb2-a300-8044b9dc4547"
+                    },
+                    {
+                      "id": "29b2c19a-06a4-4eff-8627-dded10cc3112",
+                      "name": "Custom scorer type already exists.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"<string>\",\n  \"bash_script\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/scorers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "scorers"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-29b2c19a-06a4-4eff-8627-dded10cc3112"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-4f42e478-7b98-43b5-b040-fa150fac6ec4"
+                },
+                {
+                  "name": "List Scenario Scorers.",
+                  "id": "d97e0097-63a0-40d5-857e-d3d4d5edb5c4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/scorers?limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        "scorers"
+                      ],
+                      "query": [
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "List all Scenario Scorers matching filter."
+                  },
+                  "response": [
+                    {
+                      "id": "af879b22-cfbd-4059-99d0-966cc45e38ba",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/scorers?limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "scorers"
+                          ],
+                          "query": [
+                            {
+                              "description": "The limit of items to return. Default is 20. Max is 5000.",
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Load the next page of data starting after the item with the given ID.",
+                              "key": "starting_after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                              "key": "include_total_count",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"scorers\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"bash_script\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"bash_script\": \"<string>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-af879b22-cfbd-4059-99d0-966cc45e38ba"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-d97e0097-63a0-40d5-857e-d3d4d5edb5c4"
+                }
+              ],
+              "id": "57d54db6-2e2e-4c23-97da-a27dc6ae86c8",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-57d54db6-2e2e-4c23-97da-a27dc6ae86c8"
+            },
+            {
+              "name": "start_run",
+              "item": [
+                {
+                  "name": "Start a new ScenarioRun.",
+                  "id": "29b90169-1c16-4652-ae1c-a0d5fee74f9c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"scenario_id\": \"<string>\",\n  \"run_name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"metadata\": {\n    \"labore5d\": \"<string>\",\n    \"cupidatata5_\": \"<string>\"\n  },\n  \"runProfile\": {\n    \"purpose\": \"<string>\",\n    \"envVars\": {\n      \"labore_a\": \"<string>\"\n    },\n    \"secrets\": {\n      \"dolore3\": \"<string>\",\n      \"pariatur_f8\": \"<string>\",\n      \"mollitd\": \"<string>\"\n    },\n    \"launchParameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"arm64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"mounts\": [\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      },\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/start_run",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        "start_run"
+                      ]
+                    },
+                    "description": "Start a new ScenarioRun based on the provided Scenario."
+                  },
+                  "response": [
+                    {
+                      "id": "4acd25df-bd8e-4474-81aa-8bf7c8352474",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"scenario_id\": \"<string>\",\n  \"run_name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"metadata\": {\n    \"labore5d\": \"<string>\",\n    \"cupidatata5_\": \"<string>\"\n  },\n  \"runProfile\": {\n    \"purpose\": \"<string>\",\n    \"envVars\": {\n      \"labore_a\": \"<string>\"\n    },\n    \"secrets\": {\n      \"dolore3\": \"<string>\",\n      \"pariatur_f8\": \"<string>\",\n      \"mollitd\": \"<string>\"\n    },\n    \"launchParameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"arm64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"mounts\": [\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      },\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      }\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/start_run",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            "start_run"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"scenario_id\": \"<string>\",\n  \"devbox_id\": \"<string>\",\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"nostrudc26\": \"<string>\",\n    \"in4b5\": \"<string>\",\n    \"doloref1\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"benchmark_run_id\": \"<string>\",\n  \"scoring_contract_result\": {\n    \"score\": \"<float>\",\n    \"scoring_function_results\": [\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      },\n      {\n        \"score\": \"<float>\",\n        \"scoring_function_name\": \"<string>\",\n        \"output\": \"<string>\",\n        \"state\": \"error\"\n      }\n    ]\n  },\n  \"start_time_ms\": \"<long>\",\n  \"duration_ms\": \"<long>\",\n  \"purpose\": \"<string>\",\n  \"environment_variables\": {\n    \"et_2_\": \"<string>\",\n    \"exercitationc\": \"<string>\"\n  },\n  \"secrets_provided\": {\n    \"ida1\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-4acd25df-bd8e-4474-81aa-8bf7c8352474"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-29b90169-1c16-4652-ae1c-a0d5fee74f9c"
+                }
+              ],
+              "id": "77d40143-23c3-456c-b7cd-b1ec9f562b4c",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-77d40143-23c3-456c-b7cd-b1ec9f562b4c"
+            },
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "archive",
+                  "item": [
+                    {
+                      "name": "Archive a Scenario.",
+                      "id": "9581386f-4428-4e84-9f3e-4b5b97c3c562",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/:id/archive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            ":id",
+                            "archive"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b481a4dc-610d-487d-b1b5-ea350ed913a0",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The ID of the Scenario to archive."
+                            }
+                          ]
+                        },
+                        "description": "Archive a previously created Scenario. The scenario will no longer appear in list endpoints but can still be retrieved by ID."
+                      },
+                      "response": [
+                        {
+                          "id": "bbbd44d2-7bd5-49d8-b1f1-913c45809561",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/archive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "archive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-bbbd44d2-7bd5-49d8-b1f1-913c45809561"
+                        },
+                        {
+                          "id": "5b7e761b-a33f-439b-b1c9-75c26381618c",
+                          "name": "Cannot archive public scenarios.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/archive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "archive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-5b7e761b-a33f-439b-b1c9-75c26381618c"
+                        },
+                        {
+                          "id": "a8a1e669-f21b-4f6d-8179-a11e34ac6a5f",
+                          "name": "Scenario not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/archive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "archive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-a8a1e669-f21b-4f6d-8179-a11e34ac6a5f"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-9581386f-4428-4e84-9f3e-4b5b97c3c562"
+                    }
+                  ],
+                  "id": "ad3b3015-2b9a-49ff-a9d9-2e445c5a3503",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-ad3b3015-2b9a-49ff-a9d9-2e445c5a3503"
+                },
+                {
+                  "name": "runs",
+                  "item": [
+                    {
+                      "name": "Get the runs for a Scenario.",
+                      "id": "4bf052bf-f2c3-4d17-972a-b448912d11c8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/:id/runs?limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            ":id",
+                            "runs"
+                          ],
+                          "query": [
+                            {
+                              "description": "The limit of items to return. Default is 20. Max is 5000.",
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Load the next page of data starting after the item with the given ID.",
+                              "key": "starting_after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                              "key": "include_total_count",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "534a8f38-1c30-4c79-a3a3-74adb716b42e",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The Scenario ID."
+                            }
+                          ]
+                        },
+                        "description": "Get a previously created scenario."
+                      },
+                      "response": [
+                        {
+                          "id": "0453f825-f87e-46db-996d-848153ee52fa",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/runs?limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "runs"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The limit of items to return. Default is 20. Max is 5000.",
+                                  "key": "limit",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Load the next page of data starting after the item with the given ID.",
+                                  "key": "starting_after",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                                  "key": "include_total_count",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-0453f825-f87e-46db-996d-848153ee52fa"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-4bf052bf-f2c3-4d17-972a-b448912d11c8"
+                    }
+                  ],
+                  "id": "a97a0f1c-8141-4c43-8b4d-a8c9f3fa511d",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-a97a0f1c-8141-4c43-8b4d-a8c9f3fa511d"
+                },
+                {
+                  "name": "unarchive",
+                  "item": [
+                    {
+                      "name": "Unarchive a Scenario.",
+                      "id": "112a7f89-c6f3-4d56-876f-cce6d6f358d2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/:id/unarchive",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            ":id",
+                            "unarchive"
+                          ],
+                          "variable": [
+                            {
+                              "id": "26cc5af9-0535-4ef5-a44d-de5444d62987",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The ID of the Scenario to unarchive."
+                            }
+                          ]
+                        },
+                        "description": "Unarchive a previously archived Scenario. The scenario will appear in list endpoints again."
+                      },
+                      "response": [
+                        {
+                          "id": "688ff8f1-25b4-40d3-9b66-7b23f61ab071",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/unarchive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "unarchive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-688ff8f1-25b4-40d3-9b66-7b23f61ab071"
+                        },
+                        {
+                          "id": "7ef2f9a4-dd38-441a-86d7-cce237dbf873",
+                          "name": "Cannot unarchive public scenarios.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/unarchive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "unarchive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-7ef2f9a4-dd38-441a-86d7-cce237dbf873"
+                        },
+                        {
+                          "id": "c7007776-f85c-4884-9b43-1bbd075a63d6",
+                          "name": "Scenario not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/scenarios/:id/unarchive",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "scenarios",
+                                ":id",
+                                "unarchive"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:19.000Z",
+                          "updatedAt": "2026-06-05T15:15:19.000Z",
+                          "uid": "35240-c7007776-f85c-4884-9b43-1bbd075a63d6"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-112a7f89-c6f3-4d56-876f-cce6d6f358d2"
+                    }
+                  ],
+                  "id": "0f4bba5e-7fe5-4262-aa33-cbf5a155b324",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-0f4bba5e-7fe5-4262-aa33-cbf5a155b324"
+                },
+                {
+                  "name": "Update a Scenario.",
+                  "id": "45841dac-40b1-4f7e-ac57-a9ff808f701f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"environment_parameters\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"arm64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"metadata\": {\n    \"deseruntf4c\": \"<string>\",\n    \"consequat33\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reference_output\": \"<string>\",\n  \"validation_type\": \"REVERSE\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "19a9386e-df20-4046-90dc-4de28a3056ce",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The Scenario ID."
+                        }
+                      ]
+                    },
+                    "description": "Update a Scenario. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely."
+                  },
+                  "response": [
+                    {
+                      "id": "e278cb79-fb06-4898-aa4f-48b244292d08",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"environment_parameters\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"arm64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"metadata\": {\n    \"deseruntf4c\": \"<string>\",\n    \"consequat33\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"reference_output\": \"<string>\",\n  \"validation_type\": \"REVERSE\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-e278cb79-fb06-4898-aa4f-48b244292d08"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-45841dac-40b1-4f7e-ac57-a9ff808f701f"
+                },
+                {
+                  "name": "Get a Scenario.",
+                  "id": "3555f26f-3663-4b73-bc80-78248482596b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "99a2efcc-c203-40c6-867b-3f82dfb7435d",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The Scenario ID."
+                        }
+                      ]
+                    },
+                    "description": "Get a previously created scenario."
+                  },
+                  "response": [
+                    {
+                      "id": "571b028b-dc38-4bd3-bc0a-60d00edbe492",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/scenarios/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "scenarios",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T15:15:19.000Z",
+                      "updatedAt": "2026-06-05T15:15:19.000Z",
+                      "uid": "35240-571b028b-dc38-4bd3-bc0a-60d00edbe492"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-3555f26f-3663-4b73-bc80-78248482596b"
+                }
+              ],
+              "id": "c6b762f8-2e88-47ff-970c-6df6bbaf932d",
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-c6b762f8-2e88-47ff-970c-6df6bbaf932d"
+            },
+            {
+              "name": "Create a Scenario.",
+              "id": "e1d1f05b-7990-4ac9-b2c5-9988ab56e81e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"environment_parameters\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"XX_LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"metadata\": {\n    \"consequat9fd\": \"<string>\",\n    \"sit_88c\": \"<string>\",\n    \"ullamco241\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"validation_type\": \"REVERSE\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/scenarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "scenarios"
+                  ]
+                },
+                "description": "Create a Scenario, a repeatable AI coding evaluation test that defines the starting environment as well as evaluation success criteria."
+              },
+              "response": [
+                {
+                  "id": "0061dd9d-7575-4a55-b83c-8cd71b190bfa",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"environment_parameters\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"XX_LARGE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"shutdown\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"shutdown\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"metadata\": {\n    \"consequat9fd\": \"<string>\",\n    \"sit_88c\": \"<string>\",\n    \"ullamco241\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"validation_type\": \"REVERSE\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"input_context\": {\n    \"problem_statement\": \"<string>\",\n    \"additional_context\": {}\n  },\n  \"scoring_contract\": {\n    \"scoring_function_parameters\": [\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"scorer\": {\n          \"search_directory\": \"<string>\",\n          \"pattern\": \"<string>\",\n          \"type\": \"ast_grep_scorer\",\n          \"lang\": \"<string>\"\n        },\n        \"weight\": \"<float>\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"exercitation_c\": \"<string>\"\n  },\n  \"status\": \"archived\",\n  \"environment\": {\n    \"blueprint_id\": \"<string>\",\n    \"snapshot_id\": \"<string>\",\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"CUSTOM_SIZE\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"suspend\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"x86_64\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": \"suspend\"\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"working_directory\": \"<string>\"\n  },\n  \"reference_output\": \"<string>\",\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_public\": \"<boolean>\",\n  \"validation_type\": \"FORWARD\",\n  \"scorer_timeout_sec\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-0061dd9d-7575-4a55-b83c-8cd71b190bfa"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-e1d1f05b-7990-4ac9-b2c5-9988ab56e81e"
+            },
+            {
+              "name": "List Scenarios.",
+              "id": "306d75cf-80b9-455d-b0dd-734d65893c4f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/scenarios?name=<string>&benchmark_id=<string>&validation_type=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "scenarios"
+                  ],
+                  "query": [
+                    {
+                      "description": "Query for Scenarios with a given name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter scenarios by benchmark ID.",
+                      "key": "benchmark_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by validation type",
+                      "key": "validation_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The limit of items to return. Default is 20. Max is 5000.",
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Load the next page of data starting after the item with the given ID.",
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "List all Scenarios matching filter."
+              },
+              "response": [
+                {
+                  "id": "569d8866-8466-4b25-b748-f8923faf5e45",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/scenarios?name=<string>&benchmark_id=<string>&validation_type=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "scenarios"
+                      ],
+                      "query": [
+                        {
+                          "description": "Query for Scenarios with a given name.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter scenarios by benchmark ID.",
+                          "key": "benchmark_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by validation type",
+                          "key": "validation_type",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"scenarios\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"input_context\": {\n        \"problem_statement\": \"<string>\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          }\n        ]\n      },\n      \"metadata\": {\n        \"dolor_0\": \"<string>\",\n        \"aliquip_57\": \"<string>\",\n        \"velit77_\": \"<string>\"\n      },\n      \"status\": \"archived\",\n      \"environment\": {\n        \"blueprint_id\": \"<string>\",\n        \"snapshot_id\": \"<string>\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"LARGE\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"shutdown\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"working_directory\": \"<string>\"\n      },\n      \"reference_output\": \"<string>\",\n      \"required_environment_variables\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"required_secret_names\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_public\": \"<boolean>\",\n      \"validation_type\": \"FORWARD\",\n      \"scorer_timeout_sec\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"input_context\": {\n        \"problem_statement\": \"<string>\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"scorer\": {\n              \"search_directory\": \"<string>\",\n              \"pattern\": \"<string>\",\n              \"type\": \"ast_grep_scorer\",\n              \"lang\": \"<string>\"\n            },\n            \"weight\": \"<float>\"\n          }\n        ]\n      },\n      \"metadata\": {\n        \"amet_0\": \"<string>\",\n        \"sed_e6\": \"<string>\"\n      },\n      \"status\": \"archived\",\n      \"environment\": {\n        \"blueprint_id\": \"<string>\",\n        \"snapshot_id\": \"<string>\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"SMALL\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": \"<integer>\",\n            \"on_idle\": \"suspend\"\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"arm64\",\n          \"user_parameters\": {\n            \"username\": \"<string>\",\n            \"uid\": \"<integer>\"\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"idle_time_seconds\": \"<integer>\",\n              \"on_idle\": \"suspend\"\n            },\n            \"resume_triggers\": {\n              \"http\": \"<boolean>\",\n              \"axon_event\": \"<boolean>\"\n            }\n          }\n        },\n        \"working_directory\": \"<string>\"\n      },\n      \"reference_output\": \"<string>\",\n      \"required_environment_variables\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"required_secret_names\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"is_public\": \"<boolean>\",\n      \"validation_type\": \"FORWARD\",\n      \"scorer_timeout_sec\": \"<integer>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:19.000Z",
+                  "updatedAt": "2026-06-05T15:15:19.000Z",
+                  "uid": "35240-569d8866-8466-4b25-b748-f8923faf5e45"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:19.000Z",
+              "updatedAt": "2026-06-05T15:15:19.000Z",
+              "uid": "35240-306d75cf-80b9-455d-b0dd-734d65893c4f"
+            }
+          ],
+          "id": "d36e825e-b1fe-44f5-a897-9f5c7fcd2708",
+          "createdAt": "2026-06-05T15:15:19.000Z",
+          "updatedAt": "2026-06-05T15:15:19.000Z",
+          "uid": "35240-d36e825e-b1fe-44f5-a897-9f5c7fcd2708"
+        }
+      ],
+      "id": "df8bf760-e5c9-4b5e-a965-985fd8f3f16a",
+      "createdAt": "2026-06-05T15:15:19.000Z",
+      "updatedAt": "2026-06-05T15:15:19.000Z",
+      "uid": "35240-df8bf760-e5c9-4b5e-a965-985fd8f3f16a"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

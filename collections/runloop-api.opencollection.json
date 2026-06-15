@@ -1,0 +1,3776 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "RunLoop API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devbox",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create or reconnect to a PTY session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/pty/:session_name",
+            "params": [
+              {
+                "name": "session_name",
+                "value": "",
+                "type": "path",
+                "description": "The client-chosen PTY session name. Must be 1..=256 ASCII letters, digits, '-' and '_'. Reusing the same name reconnects to the same logical PTY session when it is still available."
+              },
+              {
+                "name": "cols",
+                "value": "",
+                "type": "query",
+                "description": "Optional initial terminal width in character cells (1..=1000). Defaults to 80 when omitted. Applied only if both cols and rows are provided; otherwise ignored."
+              },
+              {
+                "name": "rows",
+                "value": "",
+                "type": "query",
+                "description": "Optional initial terminal height in character cells (1..=1000). Defaults to 24 when omitted. Applied only if both cols and rows are provided; otherwise ignored."
+              }
+            ]
+          },
+          "docs": "Looks up the PTY session identified by the path session_name and either reconnects to the existing session or creates it if it does not yet exist. The session_name is a client-chosen session identifier, not an opaque server-issued ID. It must be non-empty (1..=256 chars) and use only ASCII letters, digits, '-' and '_'. A newly created PTY session starts an interactive bash shell on the Devbox. Optional cols and rows query parameters apply an initial terminal size before any I/O; they must both b"
+        },
+        {
+          "info": {
+            "name": "Send a control command to a PTY session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/pty/:session_name/control",
+            "params": [
+              {
+                "name": "session_name",
+                "value": "",
+                "type": "path",
+                "description": "The client-chosen PTY session name. Must be 1..=256 ASCII letters, digits, '-' and '_'."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a PTY control operation to an existing session. The action field selects the operation; the other fields in PtyControlParameters are interpreted only when they are relevant to the chosen action.\n\nresize: cols and rows are required and must each be in 1..=1000. A 0 or out-of-range value returns 400. The new winsize is applied to the PTY master and the kernel delivers SIGWINCH to the foreground process group.\n\nsignal: signal is the POSIX signal name (for example 'SIGTERM', 'SIGHUP', 'SIGIN"
+        },
+        {
+          "info": {
+            "name": "List Devboxes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Devboxes while optionally filtering by status."
+        },
+        {
+          "info": {
+            "name": "Create a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Devbox and begin the boot process. The Devbox will initially launch in the 'provisioning' state while Runloop allocates the necessary infrastructure. It will transition to the 'initializing' state while the booted Devbox runs any Runloop or user defined set up scripts. Finally, the Devbox will transition to the 'running' state when it is ready for use."
+        },
+        {
+          "info": {
+            "name": "List disk snapshots of a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "query",
+                "description": "Devbox ID to filter by."
+              },
+              {
+                "name": "source_blueprint_id",
+                "value": "",
+                "type": "query",
+                "description": "Source Blueprint ID to filter snapshots by."
+              },
+              {
+                "name": "metadata[key]",
+                "value": "",
+                "type": "query",
+                "description": "Filter snapshots by metadata key-value pair. Can be used multiple times for different keys."
+              },
+              {
+                "name": "metadata[key][in]",
+                "value": "",
+                "type": "query",
+                "description": "Filter snapshots by metadata key with multiple possible values (OR condition)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all snapshots of a Devbox while optionally filtering by Devbox ID, source Blueprint ID, and metadata."
+        },
+        {
+          "info": {
+            "name": "List public disk snapshots.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/list_public",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "query",
+                "description": "Devbox ID to filter by."
+              },
+              {
+                "name": "source_blueprint_id",
+                "value": "",
+                "type": "query",
+                "description": "Source Blueprint ID to filter snapshots by."
+              },
+              {
+                "name": "metadata[key]",
+                "value": "",
+                "type": "query",
+                "description": "Filter snapshots by metadata key-value pair. Can be used multiple times for different keys."
+              },
+              {
+                "name": "metadata[key][in]",
+                "value": "",
+                "type": "query",
+                "description": "Filter snapshots by metadata key with multiple possible values (OR condition)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public disk snapshots that are available to all users."
+        },
+        {
+          "info": {
+            "name": "List available snapshot metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering snapshots."
+        },
+        {
+          "info": {
+            "name": "List values for a specific snapshot metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all snapshots."
+        },
+        {
+          "info": {
+            "name": "List available public snapshot metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/public/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys from public snapshots only that can be used for filtering."
+        },
+        {
+          "info": {
+            "name": "List values for a specific public snapshot metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/public/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for from public snapshots."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all public snapshots only."
+        },
+        {
+          "info": {
+            "name": "Update metadata of Disk Snapshot.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Snapshot ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates disk snapshot metadata via update vs patch. The entire metadata will be replaced."
+        },
+        {
+          "info": {
+            "name": "Delete a disk snapshot of a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the snapshot."
+              }
+            ]
+          },
+          "docs": "Delete a previously taken disk snapshot of a Devbox."
+        },
+        {
+          "info": {
+            "name": "Query the status of an asynchronous disk snapshot.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/disk_snapshots/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Snapshot ID."
+              }
+            ]
+          },
+          "docs": "Get the current status of an asynchronous disk snapshot operation, including whether it is still in progress and any error messages if it failed."
+        },
+        {
+          "info": {
+            "name": "List available devbox metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering devboxes."
+        },
+        {
+          "info": {
+            "name": "List values for a specific devbox metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all devboxes."
+        },
+        {
+          "info": {
+            "name": "Get status of an asynchronous execution on a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The Execution ID"
+              },
+              {
+                "name": "last_n",
+                "value": "",
+                "type": "query",
+                "description": "Last n lines of standard error / standard out to return (default: 100)"
+              }
+            ]
+          },
+          "docs": "Get the latest status of a previously launched asynchronous execuction including stdout/error and the exit code if complete."
+        },
+        {
+          "info": {
+            "name": "Kill an asynchronous execution currently running on a devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/kill",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The Async Execution ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Kill a previously launched asynchronous execution if it is still running by killing the launched process. Optionally kill the entire process group."
+        },
+        {
+          "info": {
+            "name": "Send Content to Std In for a running execution.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/send_std_in",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The Async Execution ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send content to the Std In of a running execution."
+        },
+        {
+          "info": {
+            "name": "Wait for an asynchronous execution to reach a specific status.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/wait_for_status",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The Async Execution ID."
+              },
+              {
+                "name": "last_n",
+                "value": "",
+                "type": "query",
+                "description": "Last n lines of standard error / standard out to return (default: 100)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Polls the asynchronous execution's status until it reaches one of the desired statuses or times out. Max is 25 seconds."
+        },
+        {
+          "info": {
+            "name": "Get Devbox details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Get the latest details and status of a Devbox."
+        },
+        {
+          "info": {
+            "name": "Update a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a devbox by doing a complete update the existing name,metadata fields. It does not patch partial values."
+        },
+        {
+          "info": {
+            "name": "Create an ephemeral PTY tunnel for a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/create_pty_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Create an SSH key for a Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/create_ssh_key",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Create an SSH key for a Devbox to enable remote access."
+        },
+        {
+          "info": {
+            "name": "Download binary file contents from Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/download_file",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Download file contents of any type (binary, text, etc) from a specified path on the Devbox."
+        },
+        {
+          "info": {
+            "name": "Enable a tunnel for a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/enable_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai\n\nEach Devbox can have one tunnel."
+        },
+        {
+          "info": {
+            "name": "Execute a command with a known ID, optimistically waiting for completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/execute",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "last_n",
+                "value": "",
+                "type": "query",
+                "description": "Last n lines of standard error / standard out to return (default: 100)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute a command with a known command ID on a devbox, optimistically waiting for it to complete within the specified timeout. If it completes in time, return the result. If not, return a status indicating the command is still running. Note: attach_stdin parameter is not supported; use execute_async for stdin support."
+        },
+        {
+          "info": {
+            "name": "Asynchronously execute a command via the Devbox shell",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/execute_async",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute the given command in the Devbox shell asynchronously and returns the execution that can be used to track the command's progress."
+        },
+        {
+          "info": {
+            "name": "(Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/execute_sync",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute a bash command in the Devbox shell, await the command completion and return the output. Note: attach_stdin parameter is not supported for synchronous execution."
+        },
+        {
+          "info": {
+            "name": "Reset the idle timer of a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/keep_alive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Send a 'Keep Alive' signal to a running Devbox that is configured to shutdown on idle so the idle time resets."
+        },
+        {
+          "info": {
+            "name": "Get Devbox logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of execution to filter logs by."
+              },
+              {
+                "name": "shell_name",
+                "value": "",
+                "type": "query",
+                "description": "Shell Name to filter logs by."
+              }
+            ]
+          },
+          "docs": "Get all logs from a running or completed Devbox."
+        },
+        {
+          "info": {
+            "name": "Live Tail Devbox Logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/logs/tail",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of execution to filter logs by."
+              },
+              {
+                "name": "shell_name",
+                "value": "",
+                "type": "query",
+                "description": "Shell Name to filter logs by."
+              }
+            ]
+          },
+          "docs": "Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed."
+        },
+        {
+          "info": {
+            "name": "Read text file contents from Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/read_file_contents",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read file contents from a file on a Devbox as a UTF-8. Note 'downloadFile' should be used for large files (greater than 100MB). Returns the file contents as a UTF-8 string."
+        },
+        {
+          "info": {
+            "name": "Remove a tunnel from the Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/remove_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Remove an existing V2 tunnel from the Devbox."
+        },
+        {
+          "info": {
+            "name": "Resume a suspended Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/resume",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Resume a suspended Devbox with the disk state captured as suspend time. Note that any previously running processes or daemons will need to be restarted using the Devbox shell tools."
+        },
+        {
+          "info": {
+            "name": "Shutdown a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/shutdown",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "force",
+                "value": "",
+                "type": "query",
+                "description": "If true, force shutdown even if snapshots are in progress. Defaults to false."
+              }
+            ]
+          },
+          "docs": "Shutdown a running Devbox. This will permanently stop the Devbox. If you want to save the state of the Devbox, you should take a snapshot before shutting down or should suspend the Devbox instead of shutting down. If the Devbox has any in-progress snapshots, the shutdown will be rejected with a 409 Conflict unless force=true is specified."
+        },
+        {
+          "info": {
+            "name": "Synchronously create a disk snapshot of a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/snapshot_disk",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a disk snapshot of a devbox with the specified name and metadata to enable launching future Devboxes with the same disk state."
+        },
+        {
+          "info": {
+            "name": "Start an asynchronous disk snapshot of a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/snapshot_disk_async",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start an asynchronous disk snapshot of a devbox with the specified name and metadata. The snapshot operation will continue in the background and can be monitored using the query endpoint."
+        },
+        {
+          "info": {
+            "name": "Suspend a running Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/suspend",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Suspend a running Devbox and create a disk snapshot to enable resuming the Devbox later with the same disk. Note this will not snapshot memory state such as running processes."
+        },
+        {
+          "info": {
+            "name": "Upload binary file contents to Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/upload_file",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload file contents of any type (binary, text, etc) to a Devbox. Note this API is suitable for large files (larger than 100MB) and efficiently uploads files via multipart form data."
+        },
+        {
+          "info": {
+            "name": "Get resource usage for a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/usage",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended."
+        },
+        {
+          "info": {
+            "name": "Wait for a Devbox to reach one of the specified statuses.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/wait_for_status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Polls the Devbox's status until it reaches one of the desired statuses or times out."
+        },
+        {
+          "info": {
+            "name": "Write text file contents to Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/write_file_contents",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Write UTF-8 string contents to a file at path on the Devbox. Note for large files (larger than 100MB), the upload_file endpoint must be used."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "agents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Agents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/agents",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter agents by name (partial match supported)."
+              },
+              {
+                "name": "is_public",
+                "value": "",
+                "type": "query",
+                "description": "Filter agents by public visibility."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by agent ID or name."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Filter by version. Use 'latest' to get the most recently created agent."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Agents for the authenticated account with pagination support."
+        },
+        {
+          "info": {
+            "name": "Create an Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/agents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Agent with a name and optional public visibility. The Agent will be assigned a unique ID."
+        },
+        {
+          "info": {
+            "name": "Get Devbox counts by Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/agents/devbox_counts"
+          },
+          "docs": "Returns devbox counts grouped by agent name. This endpoint efficiently aggregates devbox counts for all agents in a single request, avoiding N+1 query patterns."
+        },
+        {
+          "info": {
+            "name": "List Public Agents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/agents/list_public",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter agents by name (partial match supported)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by agent ID or name."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Filter by version. Use 'latest' to get the most recently created agent."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public Agents with pagination support."
+        },
+        {
+          "info": {
+            "name": "Get an Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/agents/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Agent to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific Agent by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Delete an Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/agents/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Agent to delete."
+              }
+            ]
+          },
+          "docs": "Delete an Agent by its unique identifier. The Agent will be permanently removed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "apikeys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create API Key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/apikeys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new API key for the authenticated account. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "axons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List active axons.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by axon name (prefix match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by axon ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all active axons."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a new axon."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ]
+          },
+          "docs": "[Beta] Get an axon given ID."
+        },
+        {
+          "info": {
+            "name": "[Beta] List events for an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id/events",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List events from an axon's event stream, ordered by sequence descending."
+        },
+        {
+          "info": {
+            "name": "[Beta] Publish an event to an axon.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/publish",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Publish an event to a specified axon."
+        },
+        {
+          "info": {
+            "name": "[Beta] Execute a batch of SQL statements against an axon's database.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/sql/batch",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Execute multiple SQL statements atomically within a single transaction against an axon's SQLite database."
+        },
+        {
+          "info": {
+            "name": "[Beta] Execute a SQL query against an axon's database.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/axons/:id/sql/query",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Execute a single parameterized SQL statement against an axon's SQLite database."
+        },
+        {
+          "info": {
+            "name": "[Beta] Subscribe to an axon event stream via SSE.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/axons/:id/subscribe/sse",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The axon identifier."
+              },
+              {
+                "name": "after_sequence",
+                "value": "",
+                "type": "query",
+                "description": "Sequence number after which to start streaming. Events with sequence > this value are returned. If unset, replay from the beginning."
+              }
+            ]
+          },
+          "docs": "[Beta] Subscribe to an axon event stream via server-sent events."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Benchmark",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List BenchmarkJobs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all BenchmarkJobs matching filter."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create a BenchmarkJob.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a BenchmarkJob that runs a set of scenarios entirely on runloop."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get a previously created BenchmarkJob.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkJob ID."
+              }
+            ]
+          },
+          "docs": "[Beta] Get a BenchmarkJob given ID."
+        },
+        {
+          "info": {
+            "name": "List BenchmarkRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "The Benchmark ID to filter by."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all BenchmarkRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Get a BenchmarkRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a currently running Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios"
+        },
+        {
+          "info": {
+            "name": "Complete a BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running BenchmarkRun."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Benchmark run."
+        },
+        {
+          "info": {
+            "name": "List started scenario runs for a benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/scenario_runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Scenario Run state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List started scenario runs for a benchmark run."
+        },
+        {
+          "info": {
+            "name": "List Benchmarks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Benchmarks matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Benchmark with a set of Scenarios."
+        },
+        {
+          "info": {
+            "name": "List Public Benchmarks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/list_public",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public benchmarks matching filter."
+        },
+        {
+          "info": {
+            "name": "List available benchmark metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering benchmarks."
+        },
+        {
+          "info": {
+            "name": "List values for a specific benchmark metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering benchmarks."
+        },
+        {
+          "info": {
+            "name": "List BenchmarkRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "The Benchmark ID to filter by."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all BenchmarkRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Get a BenchmarkRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a currently running Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios"
+        },
+        {
+          "info": {
+            "name": "Complete a BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running BenchmarkRun."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Benchmark run."
+        },
+        {
+          "info": {
+            "name": "List started scenario runs for a benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/scenario_runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Scenario Run state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List started scenario runs for a benchmark run."
+        },
+        {
+          "info": {
+            "name": "Start a new BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/start_run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a new BenchmarkRun based on the provided Benchmark."
+        },
+        {
+          "info": {
+            "name": "Get a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ]
+          },
+          "docs": "Get a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Update a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Benchmark. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely."
+        },
+        {
+          "info": {
+            "name": "Archive a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Benchmark to archive."
+              }
+            ]
+          },
+          "docs": "Archive a previously created Benchmark. The benchmark will no longer appear in list endpoints but can still be retrieved by ID."
+        },
+        {
+          "info": {
+            "name": "Get scenario definitions for a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/definitions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              }
+            ]
+          },
+          "docs": "Get scenario definitions for a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Get runs for a provided Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "Get runs for a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Modify scenarios for a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/scenarios",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add and/or remove Scenario IDs from an existing Benchmark."
+        },
+        {
+          "info": {
+            "name": "Unarchive a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Benchmark to unarchive."
+              }
+            ]
+          },
+          "docs": "Unarchive a previously archived Benchmark. The benchmark will appear in list endpoints again."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Blueprint",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Blueprints.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Blueprints or filter by name."
+        },
+        {
+          "info": {
+            "name": "Create and build a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint. The Blueprint will begin in the 'provisioning' step and transition to the 'building' step once it is selected off the build queue., Upon build complete it will transition to 'building_complete' if the build is successful."
+        },
+        {
+          "info": {
+            "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/create_from_inspection",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint using a RepositoryConnection Inspection as a source container specification."
+        },
+        {
+          "info": {
+            "name": "List Public Blueprints.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/list_public",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public Blueprints that are available to all users."
+        },
+        {
+          "info": {
+            "name": "List available blueprint metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering blueprints."
+        },
+        {
+          "info": {
+            "name": "List values for a specific blueprint metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all blueprints."
+        },
+        {
+          "info": {
+            "name": "Preview Dockerfile definition for a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/preview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview building a Blueprint with the specified configuration. You can take the resulting Dockerfile and test out your build using any local docker tooling."
+        },
+        {
+          "info": {
+            "name": "List available public blueprint metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/public/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys from public blueprints only that can be used for filtering."
+        },
+        {
+          "info": {
+            "name": "List values for a specific public blueprint metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/public/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for from public blueprints."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all public blueprints only."
+        },
+        {
+          "info": {
+            "name": "Get a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get the details of a previously created Blueprint including the build status."
+        },
+        {
+          "info": {
+            "name": "Delete a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Delete a previously created Blueprint. If a blueprint has dependent snapshots, it cannot be deleted. You can find them by querying: GET /v1/devboxes/disk_snapshots?source_blueprint_id={blueprint_id}."
+        },
+        {
+          "info": {
+            "name": "Get Blueprint build logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get all logs from the building of a Blueprint."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "executions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tails the stderr logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stderr_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stderr logs for the given execution with SSE streaming"
+        },
+        {
+          "info": {
+            "name": "Tails the stdout logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stdout_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stdout logs for the given execution with SSE streaming"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "gateway-configs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List GatewayConfigs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/gateway-configs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (partial match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all GatewayConfigs for the authenticated account, including system-provided configs like 'anthropic' and 'openai'."
+        },
+        {
+          "info": {
+            "name": "Create a GatewayConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/gateway-configs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new GatewayConfig to proxy API requests through the agent gateway. The config specifies the target endpoint and how credentials should be applied."
+        },
+        {
+          "info": {
+            "name": "Get a GatewayConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/gateway-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the GatewayConfig."
+              }
+            ]
+          },
+          "docs": "Get a specific GatewayConfig by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Update a GatewayConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/gateway-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the GatewayConfig to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing GatewayConfig. All fields are optional."
+        },
+        {
+          "info": {
+            "name": "Delete a GatewayConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/gateway-configs/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the GatewayConfig to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing GatewayConfig. This action is irreversible."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "mcp-configs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List McpConfigs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/mcp-configs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (prefix match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all McpConfigs for the authenticated account."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config specifies the target endpoint and which tools are allowed."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig."
+              }
+            ]
+          },
+          "docs": "[Beta] Get a specific McpConfig by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "[Beta] Update an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Update an existing McpConfig. All fields are optional."
+        },
+        {
+          "info": {
+            "name": "[Beta] Delete an McpConfig.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/mcp-configs/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the McpConfig to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Delete an existing McpConfig. This action is irreversible."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "network-policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List NetworkPolicies.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/network-policies",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name (partial match supported)."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all NetworkPolicies for the authenticated account."
+        },
+        {
+          "info": {
+            "name": "Create a NetworkPolicy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/network-policies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new NetworkPolicy with the specified egress rules. The policy can then be applied to blueprints, devboxes, or snapshot resumes."
+        },
+        {
+          "info": {
+            "name": "Get a NetworkPolicy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/network-policies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the NetworkPolicy."
+              }
+            ]
+          },
+          "docs": "Get a specific NetworkPolicy by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Update a NetworkPolicy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/network-policies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the NetworkPolicy to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing NetworkPolicy. All fields are optional."
+        },
+        {
+          "info": {
+            "name": "Delete a NetworkPolicy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/network-policies/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the NetworkPolicy to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing NetworkPolicy. This action is irreversible."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "objects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Objects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by name (partial match supported)."
+              },
+              {
+                "name": "content_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by content type."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by state."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by object ID or name."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Objects for the authenticated account with pagination support."
+        },
+        {
+          "info": {
+            "name": "Create an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Object with content and metadata. The Object will be assigned a unique ID."
+        },
+        {
+          "info": {
+            "name": "List Public Objects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/list_public",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by name (partial match supported)."
+              },
+              {
+                "name": "content_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by content type."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter storage objects by state."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by object ID or name."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public Objects with pagination support."
+        },
+        {
+          "info": {
+            "name": "List available object metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering objects."
+        },
+        {
+          "info": {
+            "name": "List values for a specific object metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all objects."
+        },
+        {
+          "info": {
+            "name": "Get an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific Object by its unique identifier."
+        },
+        {
+          "info": {
+            "name": "Complete Object Upload.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to complete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mark an Object's upload as complete, transitioning it from UPLOADING to READ-only state."
+        },
+        {
+          "info": {
+            "name": "Delete an Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/objects/:id/delete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing Object by ID. This action is irreversible and will remove the Object and all its metadata."
+        },
+        {
+          "info": {
+            "name": "Generate Download URL for Object.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/objects/:id/download",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Object to generate download URL for."
+              },
+              {
+                "name": "duration_seconds",
+                "value": "",
+                "type": "query",
+                "description": "Duration in seconds for the presigned URL validity (default: 3600)."
+              }
+            ]
+          },
+          "docs": "Generate a presigned download URL for an Object. The URL will be valid for the specified duration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "restricted_keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a restricted API key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/restricted_keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a restricted API key with specific resource scopes. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Scenario",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Scenarios.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Query for Scenarios with a given name."
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter scenarios by benchmark ID."
+              },
+              {
+                "name": "validation_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by validation type"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Scenarios matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Scenario, a repeatable AI coding evaluation test that defines the starting environment as well as evaluation success criteria."
+        },
+        {
+          "info": {
+            "name": "List Public Scenarios.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/list_public",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Query for Scenarios with a given name."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public scenarios matching filter."
+        },
+        {
+          "info": {
+            "name": "List available scenario metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering scenarios."
+        },
+        {
+          "info": {
+            "name": "List values for a specific scenario metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all values that exist for a specific metadata key across all scenarios."
+        },
+        {
+          "info": {
+            "name": "List ScenarioRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "benchmark_run_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by benchmark run ID"
+              },
+              {
+                "name": "scenario_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs associated to Scenario given ID"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all ScenarioRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Get a ScenarioRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a Scenario run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario Run ID."
+              }
+            ]
+          },
+          "docs": "Cancel a currently running Scenario run. This will shutdown the underlying Devbox resource."
+        },
+        {
+          "info": {
+            "name": "Complete a ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running ScenarioRun. Calling complete will shutdown underlying Devbox resource."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Scenario run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Scenario run from the associated devbox."
+        },
+        {
+          "info": {
+            "name": "Score a ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/runs/:id/score",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ScenarioRun ID."
+              }
+            ]
+          },
+          "docs": "Score a currently running ScenarioRun."
+        },
+        {
+          "info": {
+            "name": "List Scenario Scorers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Scenario Scorers matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a custom scenario scorer."
+        },
+        {
+          "info": {
+            "name": "Retrieve Scenario Scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ]
+          },
+          "docs": "Retrieve Scenario Scorer."
+        },
+        {
+          "info": {
+            "name": "Update a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a scenario scorer."
+        },
+        {
+          "info": {
+            "name": "Start a new ScenarioRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/start_run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a new ScenarioRun based on the provided Scenario."
+        },
+        {
+          "info": {
+            "name": "Get a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              }
+            ]
+          },
+          "docs": "Get a previously created scenario."
+        },
+        {
+          "info": {
+            "name": "Update a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Scenario. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely."
+        },
+        {
+          "info": {
+            "name": "Archive a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Scenario to archive."
+              }
+            ]
+          },
+          "docs": "Archive a previously created Scenario. The scenario will no longer appear in list endpoints but can still be retrieved by ID."
+        },
+        {
+          "info": {
+            "name": "Get the runs for a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scenario ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "Get a previously created scenario."
+        },
+        {
+          "info": {
+            "name": "Unarchive a Scenario.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Scenario to unarchive."
+              }
+            ]
+          },
+          "docs": "Unarchive a previously archived Scenario. The scenario will appear in list endpoints again."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "secrets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Secrets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/secrets",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              }
+            ]
+          },
+          "docs": "List all Secrets for the authenticated account. Secret values are not included for security reasons."
+        },
+        {
+          "info": {
+            "name": "Create a Secret.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/secrets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Secret with a globally unique name and value. The Secret will be encrypted at rest and made available as an environment variable in Devboxes."
+        },
+        {
+          "info": {
+            "name": "Get a Secret.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/secrets/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the Secret to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve a Secret by name. The secret value is not included for security."
+        },
+        {
+          "info": {
+            "name": "Update a Secret.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/secrets/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the Secret to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the value of an existing Secret by name. The new value will be encrypted at rest."
+        },
+        {
+          "info": {
+            "name": "Delete a Secret.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/secrets/:name/delete",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the Secret to delete."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete an existing Secret by name. This action is irreversible and will remove the Secret from all Devboxes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

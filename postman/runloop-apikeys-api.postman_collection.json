@@ -1,0 +1,311 @@
+{
+  "info": {
+    "_postman_id": "458133f0-14e5-41c0-a02a-b812d63664d3",
+    "name": "Runloop API Keys API",
+    "description": "Create and manage Runloop API Keys at the account scope. Used for SDK and REST API authentication.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:28.000Z",
+    "updatedAt": "2026-06-05T15:15:28.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-458133f0-14e5-41c0-a02a-b812d63664d3"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "apikeys",
+          "item": [
+            {
+              "name": "Create API Key.",
+              "id": "45d6a4a3-4205-42b2-b615-a29dfd0e56a7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"expires_at_ms\": \"<long>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/apikeys",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "apikeys"
+                  ]
+                },
+                "description": "Create a new API key for the authenticated account. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope."
+              },
+              "response": [
+                {
+                  "id": "a73e6a77-21b6-4412-a028-fd9e824d911e",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"expires_at_ms\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/apikeys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "apikeys"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"key_secret\": \"<string>\",\n  \"expires_at_ms\": \"<long>\"\n}",
+                  "createdAt": "2026-06-05T15:15:29.000Z",
+                  "updatedAt": "2026-06-05T15:15:29.000Z",
+                  "uid": "35240-a73e6a77-21b6-4412-a028-fd9e824d911e"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:29.000Z",
+              "updatedAt": "2026-06-05T15:15:29.000Z",
+              "uid": "35240-45d6a4a3-4205-42b2-b615-a29dfd0e56a7"
+            }
+          ],
+          "id": "8bd5d864-10e1-4844-9a4f-be107d9823a8",
+          "createdAt": "2026-06-05T15:15:29.000Z",
+          "updatedAt": "2026-06-05T15:15:29.000Z",
+          "uid": "35240-8bd5d864-10e1-4844-9a4f-be107d9823a8"
+        },
+        {
+          "name": "restricted_keys",
+          "item": [
+            {
+              "name": "Create a restricted API key.",
+              "id": "45064506-298b-41a0-a426-6f1e06a3443b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"scopes\": [\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    },\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    }\n  ],\n  \"expires_at_ms\": \"<long>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/restricted_keys",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "restricted_keys"
+                  ]
+                },
+                "description": "Create a restricted API key with specific resource scopes. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope."
+              },
+              "response": [
+                {
+                  "id": "c2e38bf2-f5d5-4001-a5fe-b634f7b38fb3",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"scopes\": [\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    },\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    }\n  ],\n  \"expires_at_ms\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/restricted_keys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "restricted_keys"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"key_secret\": \"<string>\",\n  \"scopes\": [\n    {\n      \"resource_type\": \"RESOURCE_TYPE_ACCOUNT\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    },\n    {\n      \"resource_type\": \"RESOURCE_TYPE_ACCOUNT\",\n      \"access_level\": \"ACCESS_LEVEL_READ\"\n    }\n  ],\n  \"expires_at_ms\": \"<long>\"\n}",
+                  "createdAt": "2026-06-05T15:15:29.000Z",
+                  "updatedAt": "2026-06-05T15:15:29.000Z",
+                  "uid": "35240-c2e38bf2-f5d5-4001-a5fe-b634f7b38fb3"
+                },
+                {
+                  "id": "f787022c-e3f5-4b97-b17f-cf4093d6e267",
+                  "name": "Invalid scopes.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"scopes\": [\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    },\n    {\n      \"resource_type\": \"RESOURCE_TYPE_OBJECTS\",\n      \"access_level\": \"ACCESS_LEVEL_NONE\"\n    }\n  ],\n  \"expires_at_ms\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/restricted_keys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "restricted_keys"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:29.000Z",
+                  "updatedAt": "2026-06-05T15:15:29.000Z",
+                  "uid": "35240-f787022c-e3f5-4b97-b17f-cf4093d6e267"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:29.000Z",
+              "updatedAt": "2026-06-05T15:15:29.000Z",
+              "uid": "35240-45064506-298b-41a0-a426-6f1e06a3443b"
+            }
+          ],
+          "id": "daeffd8b-0acd-42d9-b904-f63a8fbb092a",
+          "createdAt": "2026-06-05T15:15:29.000Z",
+          "updatedAt": "2026-06-05T15:15:29.000Z",
+          "uid": "35240-daeffd8b-0acd-42d9-b904-f63a8fbb092a"
+        }
+      ],
+      "id": "92ddaf2e-d52d-4f9a-981c-2518d4456359",
+      "createdAt": "2026-06-05T15:15:29.000Z",
+      "updatedAt": "2026-06-05T15:15:29.000Z",
+      "uid": "35240-92ddaf2e-d52d-4f9a-981c-2518d4456359"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

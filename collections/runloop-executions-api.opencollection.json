@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Executions API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "executions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tails the stderr logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stderr_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stderr logs for the given execution with SSE streaming"
+        },
+        {
+          "info": {
+            "name": "Tails the stdout logs for the given execution with SSE streaming",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:devbox_id/executions/:execution_id/stream_stdout_updates",
+            "params": [
+              {
+                "name": "devbox_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the devbox."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the execution."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)"
+              }
+            ]
+          },
+          "docs": "Tails the stdout logs for the given execution with SSE streaming"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

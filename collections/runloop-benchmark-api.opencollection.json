@@ -1,0 +1,730 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop Benchmark API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Benchmark",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Beta] List BenchmarkJobs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "[Beta] List all BenchmarkJobs matching filter."
+        },
+        {
+          "info": {
+            "name": "[Beta] Create a BenchmarkJob.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[Beta] Create a BenchmarkJob that runs a set of scenarios entirely on runloop."
+        },
+        {
+          "info": {
+            "name": "[Beta] Get a previously created BenchmarkJob.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_jobs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkJob ID."
+              }
+            ]
+          },
+          "docs": "[Beta] Get a BenchmarkJob given ID."
+        },
+        {
+          "info": {
+            "name": "List BenchmarkRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "The Benchmark ID to filter by."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all BenchmarkRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Get a BenchmarkRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a currently running Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios"
+        },
+        {
+          "info": {
+            "name": "Complete a BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running BenchmarkRun."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Benchmark run."
+        },
+        {
+          "info": {
+            "name": "List started scenario runs for a benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmark_runs/:id/scenario_runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Scenario Run state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List started scenario runs for a benchmark run."
+        },
+        {
+          "info": {
+            "name": "List Benchmarks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Benchmarks matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Benchmark with a set of Scenarios."
+        },
+        {
+          "info": {
+            "name": "List Public Benchmarks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/list_public",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all public benchmarks matching filter."
+        },
+        {
+          "info": {
+            "name": "List available benchmark metadata keys.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/metadata/keys"
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering benchmarks."
+        },
+        {
+          "info": {
+            "name": "List values for a specific benchmark metadata key.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/metadata/keys/:key/values",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path",
+                "description": "The metadata key to get values for."
+              }
+            ]
+          },
+          "docs": "Returns a list of all available metadata keys that can be used for filtering benchmarks."
+        },
+        {
+          "info": {
+            "name": "List BenchmarkRuns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by name"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "query",
+                "description": "The Benchmark ID to filter by."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all BenchmarkRuns matching filter."
+        },
+        {
+          "info": {
+            "name": "Get a previously created BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Get a BenchmarkRun given ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a currently running Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios"
+        },
+        {
+          "info": {
+            "name": "Complete a BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/complete",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Complete a currently running BenchmarkRun."
+        },
+        {
+          "info": {
+            "name": "Download logs for a Benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/download_logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              }
+            ]
+          },
+          "docs": "Download a zip file containing all logs for a Benchmark run."
+        },
+        {
+          "info": {
+            "name": "List started scenario runs for a benchmark run.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/runs/:id/scenario_runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The BenchmarkRun ID."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Scenario Run state"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List started scenario runs for a benchmark run."
+        },
+        {
+          "info": {
+            "name": "Start a new BenchmarkRun.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/start_run",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a new BenchmarkRun based on the provided Benchmark."
+        },
+        {
+          "info": {
+            "name": "Get a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ]
+          },
+          "docs": "Get a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Update a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Benchmark. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely."
+        },
+        {
+          "info": {
+            "name": "Archive a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/archive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Benchmark to archive."
+              }
+            ]
+          },
+          "docs": "Archive a previously created Benchmark. The benchmark will no longer appear in list endpoints but can still be retrieved by ID."
+        },
+        {
+          "info": {
+            "name": "Get scenario definitions for a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/definitions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              }
+            ]
+          },
+          "docs": "Get scenario definitions for a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Get runs for a provided Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/runs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "Get runs for a previously created Benchmark."
+        },
+        {
+          "info": {
+            "name": "Modify scenarios for a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/scenarios",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Benchmark ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add and/or remove Scenario IDs from an existing Benchmark."
+        },
+        {
+          "info": {
+            "name": "Unarchive a Benchmark.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/benchmarks/:id/unarchive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Benchmark to unarchive."
+              }
+            ]
+          },
+          "docs": "Unarchive a previously archived Benchmark. The benchmark will appear in list endpoints again."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

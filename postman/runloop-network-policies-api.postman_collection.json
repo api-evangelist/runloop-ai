@@ -1,0 +1,1706 @@
+{
+  "info": {
+    "_postman_id": "78703ff5-4780-476d-97c0-084de16ffe81",
+    "name": "Runloop Network Policies API",
+    "description": "Define and manage egress Network Policies that restrict outbound network access from Devboxes \u2014 per-policy allow/deny rules at the account scope.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:15:25.000Z",
+    "updatedAt": "2026-06-05T15:15:25.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-78703ff5-4780-476d-97c0-084de16ffe81"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "network-policies",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "delete",
+                  "item": [
+                    {
+                      "name": "Delete a NetworkPolicy.",
+                      "id": "fdff44ee-c79f-4968-87c0-c425d9690d3d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id",
+                            "delete"
+                          ],
+                          "variable": [
+                            {
+                              "id": "950af76e-4e54-4c9e-b1fc-d2a4be66abc0",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the NetworkPolicy to delete."
+                            }
+                          ]
+                        },
+                        "description": "Delete an existing NetworkPolicy. This action is irreversible."
+                      },
+                      "response": [
+                        {
+                          "id": "c84bb375-0b53-46cc-81f6-4bf0db5e8cdc",
+                          "name": "NetworkPolicy deleted successfully.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"egress\": {\n    \"allow_all\": \"<boolean>\",\n    \"allow_devbox_to_devbox\": \"<boolean>\",\n    \"allowed_hostnames\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_agent_gateway\": \"<boolean>\",\n    \"allow_mcp_gateway\": \"<boolean>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"update_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-c84bb375-0b53-46cc-81f6-4bf0db5e8cdc"
+                        },
+                        {
+                          "id": "bf4c2f07-d87c-4487-84b9-15733edfb673",
+                          "name": "Bad request. Policy is in use by active devboxes.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-bf4c2f07-d87c-4487-84b9-15733edfb673"
+                        },
+                        {
+                          "id": "18cb37dd-357b-4aa2-8d8f-e02170624fad",
+                          "name": "Unauthorized. Invalid or missing authentication.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-18cb37dd-357b-4aa2-8d8f-e02170624fad"
+                        },
+                        {
+                          "id": "d41d135e-7f66-4617-8da8-0b99dbc9cf02",
+                          "name": "Forbidden. Account does not have devbox capability.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-d41d135e-7f66-4617-8da8-0b99dbc9cf02"
+                        },
+                        {
+                          "id": "2da89310-6ad4-4ffe-96dd-0e267e61c8c2",
+                          "name": "NetworkPolicy not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-2da89310-6ad4-4ffe-96dd-0e267e61c8c2"
+                        },
+                        {
+                          "id": "e607835e-93ae-4bd7-bd4f-98ab489b6c1e",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/network-policies/:id/delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "network-policies",
+                                ":id",
+                                "delete"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:15:25.000Z",
+                          "updatedAt": "2026-06-05T15:15:25.000Z",
+                          "uid": "35240-e607835e-93ae-4bd7-bd4f-98ab489b6c1e"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-fdff44ee-c79f-4968-87c0-c425d9690d3d"
+                    }
+                  ],
+                  "id": "3b902afc-a88c-49db-8b5a-b8938c382e45",
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-3b902afc-a88c-49db-8b5a-b8938c382e45"
+                },
+                {
+                  "name": "Get a NetworkPolicy.",
+                  "id": "f693cce0-f8f4-48cb-95e1-e21a7fcf78bb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "96696e10-4688-4a95-a4d3-cbadd97bdcc5",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the NetworkPolicy."
+                        }
+                      ]
+                    },
+                    "description": "Get a specific NetworkPolicy by its unique identifier."
+                  },
+                  "response": [
+                    {
+                      "id": "2341b137-a196-4625-97da-1d9269db1216",
+                      "name": "Successfully retrieved the NetworkPolicy.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"egress\": {\n    \"allow_all\": \"<boolean>\",\n    \"allow_devbox_to_devbox\": \"<boolean>\",\n    \"allowed_hostnames\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_agent_gateway\": \"<boolean>\",\n    \"allow_mcp_gateway\": \"<boolean>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"update_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-2341b137-a196-4625-97da-1d9269db1216"
+                    },
+                    {
+                      "id": "acf25d70-fecb-4947-b5f5-a685e4a63a78",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-acf25d70-fecb-4947-b5f5-a685e4a63a78"
+                    },
+                    {
+                      "id": "d284bec9-2af9-4dff-980b-5fdcd86ea9fb",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-d284bec9-2af9-4dff-980b-5fdcd86ea9fb"
+                    },
+                    {
+                      "id": "267949b4-80ff-43ca-9dff-2a99893f4660",
+                      "name": "NetworkPolicy not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-267949b4-80ff-43ca-9dff-2a99893f4660"
+                    },
+                    {
+                      "id": "36e4347f-da30-4f2b-a773-b9833ae7a4a0",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-36e4347f-da30-4f2b-a773-b9833ae7a4a0"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-f693cce0-f8f4-48cb-95e1-e21a7fcf78bb"
+                },
+                {
+                  "name": "Update a NetworkPolicy.",
+                  "id": "b0410b9b-01ec-4352-a950-6ae71c544f57",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c56a369c-e2ee-486c-b16d-17f2eddb9334",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier of the NetworkPolicy to update."
+                        }
+                      ]
+                    },
+                    "description": "Update an existing NetworkPolicy. All fields are optional."
+                  },
+                  "response": [
+                    {
+                      "id": "e9b567cd-f19a-493e-ae34-0aeec9d6e5ec",
+                      "name": "NetworkPolicy updated successfully.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"egress\": {\n    \"allow_all\": \"<boolean>\",\n    \"allow_devbox_to_devbox\": \"<boolean>\",\n    \"allowed_hostnames\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_agent_gateway\": \"<boolean>\",\n    \"allow_mcp_gateway\": \"<boolean>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"update_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-e9b567cd-f19a-493e-ae34-0aeec9d6e5ec"
+                    },
+                    {
+                      "id": "a02eb0c8-ec8d-4ff6-a906-d8927e14a113",
+                      "name": "Bad request. Invalid parameters.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-a02eb0c8-ec8d-4ff6-a906-d8927e14a113"
+                    },
+                    {
+                      "id": "1436654e-8fce-47e5-9bbc-44487f9c830d",
+                      "name": "Unauthorized. Invalid or missing authentication.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-1436654e-8fce-47e5-9bbc-44487f9c830d"
+                    },
+                    {
+                      "id": "88f166ad-c7e1-4d25-914e-18d6b49fa543",
+                      "name": "Forbidden. Account does not have devbox capability.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-88f166ad-c7e1-4d25-914e-18d6b49fa543"
+                    },
+                    {
+                      "id": "0db84b55-1f54-47ff-9e51-a518de42fd04",
+                      "name": "NetworkPolicy not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-0db84b55-1f54-47ff-9e51-a518de42fd04"
+                    },
+                    {
+                      "id": "88572f38-693f-4891-950a-0f0b76c6a1a1",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/network-policies/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "network-policies",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T15:15:25.000Z",
+                      "updatedAt": "2026-06-05T15:15:25.000Z",
+                      "uid": "35240-88572f38-693f-4891-950a-0f0b76c6a1a1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-b0410b9b-01ec-4352-a950-6ae71c544f57"
+                }
+              ],
+              "id": "d42e6a53-4a5d-4c06-86b8-ea2af9953922",
+              "createdAt": "2026-06-05T15:15:25.000Z",
+              "updatedAt": "2026-06-05T15:15:25.000Z",
+              "uid": "35240-d42e6a53-4a5d-4c06-86b8-ea2af9953922"
+            },
+            {
+              "name": "Create a NetworkPolicy.",
+              "id": "b59a89d3-67bd-4b7f-9015-62845c51575a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/network-policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "network-policies"
+                  ]
+                },
+                "description": "Create a new NetworkPolicy with the specified egress rules. The policy can then be applied to blueprints, devboxes, or snapshot resumes."
+              },
+              "response": [
+                {
+                  "id": "42e44621-137c-445c-bd57-3929217df244",
+                  "name": "NetworkPolicy created successfully.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"egress\": {\n    \"allow_all\": \"<boolean>\",\n    \"allow_devbox_to_devbox\": \"<boolean>\",\n    \"allowed_hostnames\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_agent_gateway\": \"<boolean>\",\n    \"allow_mcp_gateway\": \"<boolean>\"\n  },\n  \"create_time_ms\": \"<long>\",\n  \"update_time_ms\": \"<long>\",\n  \"description\": \"<string>\"\n}",
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-42e44621-137c-445c-bd57-3929217df244"
+                },
+                {
+                  "id": "bb642651-b7d2-45e4-924e-4a4b86e45ad1",
+                  "name": "Bad request. Name already exists or is invalid.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-bb642651-b7d2-45e4-924e-4a4b86e45ad1"
+                },
+                {
+                  "id": "fe1b0236-f1f9-4eba-a927-98d1564bfbd4",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-fe1b0236-f1f9-4eba-a927-98d1564bfbd4"
+                },
+                {
+                  "id": "fb668fe7-8209-4664-8d0c-e273211ea766",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-fb668fe7-8209-4664-8d0c-e273211ea766"
+                },
+                {
+                  "id": "d79d5cf8-4337-48b0-b029-5e9f8db53bba",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"allow_all\": \"<boolean>\",\n  \"allow_devbox_to_devbox\": \"<boolean>\",\n  \"allowed_hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"allow_agent_gateway\": \"<boolean>\",\n  \"allow_mcp_gateway\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-d79d5cf8-4337-48b0-b029-5e9f8db53bba"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:25.000Z",
+              "updatedAt": "2026-06-05T15:15:25.000Z",
+              "uid": "35240-b59a89d3-67bd-4b7f-9015-62845c51575a"
+            },
+            {
+              "name": "List NetworkPolicies.",
+              "id": "2e779454-10df-4364-ba8e-c3960e37ece3",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/network-policies?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "network-policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by name (partial match supported).",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by ID.",
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The limit of items to return. Default is 20. Max is 5000.",
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Load the next page of data starting after the item with the given ID.",
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "List all NetworkPolicies for the authenticated account."
+              },
+              "response": [
+                {
+                  "id": "48610868-c2ec-4b34-87ba-7180212c4eff",
+                  "name": "Successfully retrieved list of NetworkPolicies.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"network_policies\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"egress\": {\n        \"allow_all\": \"<boolean>\",\n        \"allow_devbox_to_devbox\": \"<boolean>\",\n        \"allowed_hostnames\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"allow_agent_gateway\": \"<boolean>\",\n        \"allow_mcp_gateway\": \"<boolean>\"\n      },\n      \"create_time_ms\": \"<long>\",\n      \"update_time_ms\": \"<long>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"egress\": {\n        \"allow_all\": \"<boolean>\",\n        \"allow_devbox_to_devbox\": \"<boolean>\",\n        \"allowed_hostnames\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"allow_agent_gateway\": \"<boolean>\",\n        \"allow_mcp_gateway\": \"<boolean>\"\n      },\n      \"create_time_ms\": \"<long>\",\n      \"update_time_ms\": \"<long>\",\n      \"description\": \"<string>\"\n    }\n  ],\n  \"has_more\": \"<boolean>\",\n  \"total_count\": \"<integer>\"\n}",
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-48610868-c2ec-4b34-87ba-7180212c4eff"
+                },
+                {
+                  "id": "e194ff8f-bb4d-40dd-a30f-17f0e9b1850c",
+                  "name": "Unauthorized. Invalid or missing authentication.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-e194ff8f-bb4d-40dd-a30f-17f0e9b1850c"
+                },
+                {
+                  "id": "2592004f-7644-43d3-af54-a31f29f4f2de",
+                  "name": "Forbidden. Account does not have devbox capability.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-2592004f-7644-43d3-af54-a31f29f4f2de"
+                },
+                {
+                  "id": "a4fe8617-b455-4460-9baa-33735825611d",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/network-policies?name=<string>&id=<string>&limit=<integer>&starting_after=<string>&include_total_count=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "network-policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by name (partial match supported).",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by ID.",
+                          "key": "id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The limit of items to return. Default is 20. Max is 5000.",
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Load the next page of data starting after the item with the given ID.",
+                          "key": "starting_after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.",
+                          "key": "include_total_count",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T15:15:25.000Z",
+                  "updatedAt": "2026-06-05T15:15:25.000Z",
+                  "uid": "35240-a4fe8617-b455-4460-9baa-33735825611d"
+                }
+              ],
+              "createdAt": "2026-06-05T15:15:25.000Z",
+              "updatedAt": "2026-06-05T15:15:25.000Z",
+              "uid": "35240-2e779454-10df-4364-ba8e-c3960e37ece3"
+            }
+          ],
+          "id": "54fca648-15f8-44d8-98c5-e534aefcb780",
+          "createdAt": "2026-06-05T15:15:25.000Z",
+          "updatedAt": "2026-06-05T15:15:25.000Z",
+          "uid": "35240-54fca648-15f8-44d8-98c5-e534aefcb780"
+        }
+      ],
+      "id": "1cc3c4e8-e37c-498b-b3c4-89700d0a090c",
+      "createdAt": "2026-06-05T15:15:25.000Z",
+      "updatedAt": "2026-06-05T15:15:25.000Z",
+      "uid": "35240-1cc3c4e8-e37c-498b-b3c4-89700d0a090c"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.runloop.ai"
+    }
+  ]
+}

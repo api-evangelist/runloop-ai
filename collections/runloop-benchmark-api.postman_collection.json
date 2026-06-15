@@ -1,0 +1,3422 @@
+{
+  "item": [
+    {
+      "id": "60d35c0d-279d-4f82-ad0e-cc44212de88f",
+      "name": "Benchmark",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "88a55baa-eb31-4a57-858f-c1f154ddb4f2",
+          "name": "[Beta] Create a BenchmarkJob.",
+          "request": {
+            "name": "[Beta] Create a BenchmarkJob.",
+            "description": {
+              "content": "[Beta] Create a BenchmarkJob that runs a set of scenarios entirely on runloop.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"spec\": {\n    \"inline_yaml\": \"<string>\",\n    \"type\": \"harbor\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c4e520b3-4a07-44d6-894c-564cdae42f68",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"spec\": {\n    \"inline_yaml\": \"<string>\",\n    \"type\": \"harbor\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"state\": \"running\",\n  \"create_time_ms\": 1408,\n  \"job_source\": {\n    \"inline_yaml\": \"string\",\n    \"type\": \"harbor\"\n  },\n  \"job_spec\": {\n    \"scenario_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"agent_configs\": [\n      {\n        \"name\": \"string\",\n        \"type\": \"job_agent\",\n        \"agent_id\": \"string\",\n        \"model_name\": \"string\",\n        \"timeout_seconds\": 9505.038694622253,\n        \"kwargs\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"agent_environment\": {\n          \"environment_variables\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"secrets\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          }\n        }\n      },\n      {\n        \"name\": \"string\",\n        \"type\": \"job_agent\",\n        \"agent_id\": \"string\",\n        \"model_name\": \"string\",\n        \"timeout_seconds\": 8596.605268414418,\n        \"kwargs\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\",\n          \"key_3\": \"string\"\n        },\n        \"agent_environment\": {\n          \"environment_variables\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"secrets\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          }\n        }\n      }\n    ],\n    \"orchestrator_config\": {\n      \"n_concurrent_trials\": 6476,\n      \"n_attempts\": 8950,\n      \"timeout_multiplier\": 6923.1307489093,\n      \"quiet\": false\n    }\n  },\n  \"failure_reason\": \"string\",\n  \"benchmark_outcomes\": [\n    {\n      \"benchmark_run_id\": \"string\",\n      \"agent_name\": \"string\",\n      \"n_completed\": 2610,\n      \"n_failed\": 7537,\n      \"n_timeout\": 3184,\n      \"scenario_outcomes\": [\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"CANCELED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 4208.497364088192,\n          \"duration_ms\": 332,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        },\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"COMPLETED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 5034.438034541156,\n          \"duration_ms\": 2256,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        }\n      ],\n      \"model_name\": \"string\",\n      \"average_score\": 8156.168073151475,\n      \"duration_ms\": 9381\n    },\n    {\n      \"benchmark_run_id\": \"string\",\n      \"agent_name\": \"string\",\n      \"n_completed\": 4318,\n      \"n_failed\": 2765,\n      \"n_timeout\": 888,\n      \"scenario_outcomes\": [\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"CANCELED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 6256.3663439705,\n          \"duration_ms\": 5624,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        },\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"COMPLETED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 9747.168884715764,\n          \"duration_ms\": 7190,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        }\n      ],\n      \"model_name\": \"string\",\n      \"average_score\": 1112.9335361733017,\n      \"duration_ms\": 4995\n    }\n  ],\n  \"in_progress_runs\": [\n    {\n      \"benchmark_run_id\": \"string\",\n      \"state\": \"failed\",\n      \"start_time_ms\": 4136,\n      \"agent_config\": {\n        \"type\": \"external_api\",\n        \"info\": \"string\"\n      },\n      \"duration_ms\": 6624\n    },\n    {\n      \"benchmark_run_id\": \"string\",\n      \"state\": \"completed\",\n      \"start_time_ms\": 7295,\n      \"agent_config\": {\n        \"type\": \"external_api\",\n        \"info\": \"string\"\n      },\n      \"duration_ms\": 4497\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "53346eb5-a21d-49a2-9406-293a5e6f4691",
+          "name": "[Beta] List BenchmarkJobs.",
+          "request": {
+            "name": "[Beta] List BenchmarkJobs.",
+            "description": {
+              "content": "[Beta] List all BenchmarkJobs matching filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4c89dfe8-e034-44cb-a8b4-4327dfc84949",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"jobs\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"state\": \"timeout\",\n      \"create_time_ms\": 6775,\n      \"job_source\": {\n        \"inline_yaml\": \"string\",\n        \"type\": \"harbor\"\n      },\n      \"job_spec\": {\n        \"scenario_ids\": [\n          \"string\",\n          \"string\"\n        ],\n        \"agent_configs\": [\n          {\n            \"name\": \"string\",\n            \"type\": \"job_agent\",\n            \"agent_id\": \"string\",\n            \"model_name\": \"string\",\n            \"timeout_seconds\": 6326.958109127613,\n            \"kwargs\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"agent_environment\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"name\": \"string\",\n            \"type\": \"job_agent\",\n            \"agent_id\": \"string\",\n            \"model_name\": \"string\",\n            \"timeout_seconds\": 9708.562871129774,\n            \"kwargs\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"agent_environment\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"orchestrator_config\": {\n          \"n_concurrent_trials\": 4287,\n          \"n_attempts\": 389,\n          \"timeout_multiplier\": 5327.425661091016,\n          \"quiet\": false\n        }\n      },\n      \"failure_reason\": \"string\",\n      \"benchmark_outcomes\": [\n        {\n          \"benchmark_run_id\": \"string\",\n          \"agent_name\": \"string\",\n          \"n_completed\": 6461,\n          \"n_failed\": 9094,\n          \"n_timeout\": 8255,\n          \"scenario_outcomes\": [\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"model_name\": \"string\",\n          \"average_score\": 971.1270336938483,\n          \"duration_ms\": 8225\n        },\n        {\n          \"benchmark_run_id\": \"string\",\n          \"agent_name\": \"string\",\n          \"n_completed\": 1431,\n          \"n_failed\": 3983,\n          \"n_timeout\": 805,\n          \"scenario_outcomes\": [\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"model_name\": \"string\",\n          \"average_score\": 6287.268386189268,\n          \"duration_ms\": 1038\n        }\n      ],\n      \"in_progress_runs\": [\n        {\n          \"benchmark_run_id\": \"string\",\n          \"state\": \"failed\",\n          \"start_time_ms\": 5008,\n          \"agent_config\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"duration_ms\": 6346\n        },\n        {\n          \"benchmark_run_id\": \"string\",\n          \"state\": \"canceled\",\n          \"start_time_ms\": 3171,\n          \"agent_config\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"duration_ms\": 2222\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"state\": \"completed\",\n      \"create_time_ms\": 7353,\n      \"job_source\": {\n        \"inline_yaml\": \"string\",\n        \"type\": \"harbor\"\n      },\n      \"job_spec\": {\n        \"scenario_ids\": [\n          \"string\",\n          \"string\"\n        ],\n        \"agent_configs\": [\n          {\n            \"name\": \"string\",\n            \"type\": \"job_agent\",\n            \"agent_id\": \"string\",\n            \"model_name\": \"string\",\n            \"timeout_seconds\": 6691.6487799868755,\n            \"kwargs\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"agent_environment\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"name\": \"string\",\n            \"type\": \"job_agent\",\n            \"agent_id\": \"string\",\n            \"model_name\": \"string\",\n            \"timeout_seconds\": 8029.816433100273,\n            \"kwargs\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"agent_environment\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"orchestrator_config\": {\n          \"n_concurrent_trials\": 7685,\n          \"n_attempts\": 3430,\n          \"timeout_multiplier\": 1413.1262911647946,\n          \"quiet\": false\n        }\n      },\n      \"failure_reason\": \"string\",\n      \"benchmark_outcomes\": [\n        {\n          \"benchmark_run_id\": \"string\",\n          \"agent_name\": \"string\",\n          \"n_completed\": 6991,\n          \"n_failed\": 5803,\n          \"n_timeout\": 3570,\n          \"scenario_outcomes\": [\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"model_name\": \"string\",\n          \"average_score\": 3300.2102899671304,\n          \"duration_ms\": 2692\n        },\n        {\n          \"benchmark_run_id\": \"string\",\n          \"agent_name\": \"string\",\n          \"n_completed\": 1398,\n          \"n_failed\": 2149,\n          \"n_timeout\": 8938,\n          \"scenario_outcomes\": [\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"scenario_definition_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_name\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"scenario_run_id\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"score\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"duration_ms\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"failure_reason\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"model_name\": \"string\",\n          \"average_score\": 6527.806555627203,\n          \"duration_ms\": 4330\n        }\n      ],\n      \"in_progress_runs\": [\n        {\n          \"benchmark_run_id\": \"string\",\n          \"state\": \"completed\",\n          \"start_time_ms\": 1537,\n          \"agent_config\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"duration_ms\": 5173\n        },\n        {\n          \"benchmark_run_id\": \"string\",\n          \"state\": \"running\",\n          \"start_time_ms\": 3593,\n          \"agent_config\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"duration_ms\": 8920\n        }\n      ]\n    }\n  ],\n  \"has_more\": true,\n  \"total_count\": 8755\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "caf50e60-f723-426f-9853-0b0532ecfb30",
+          "name": "[Beta] Get a previously created BenchmarkJob.",
+          "request": {
+            "name": "[Beta] Get a previously created BenchmarkJob.",
+            "description": {
+              "content": "[Beta] Get a BenchmarkJob given ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_jobs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkJob ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "89eccdb7-c438-424b-bb34-f27a9e868582",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_jobs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkJob ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"state\": \"failed\",\n  \"create_time_ms\": 1504,\n  \"job_source\": {\n    \"inline_yaml\": \"string\",\n    \"type\": \"harbor\"\n  },\n  \"job_spec\": {\n    \"scenario_ids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"agent_configs\": [\n      {\n        \"name\": \"string\",\n        \"type\": \"job_agent\",\n        \"agent_id\": \"string\",\n        \"model_name\": \"string\",\n        \"timeout_seconds\": 9194.444373453667,\n        \"kwargs\": {\n          \"key_0\": \"string\"\n        },\n        \"agent_environment\": {\n          \"environment_variables\": {\n            \"key_0\": \"string\"\n          },\n          \"secrets\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          }\n        }\n      },\n      {\n        \"name\": \"string\",\n        \"type\": \"job_agent\",\n        \"agent_id\": \"string\",\n        \"model_name\": \"string\",\n        \"timeout_seconds\": 2957.321818545747,\n        \"kwargs\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"agent_environment\": {\n          \"environment_variables\": {\n            \"key_0\": \"string\"\n          },\n          \"secrets\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          }\n        }\n      }\n    ],\n    \"orchestrator_config\": {\n      \"n_concurrent_trials\": 5432,\n      \"n_attempts\": 3180,\n      \"timeout_multiplier\": 3735.280176143205,\n      \"quiet\": false\n    }\n  },\n  \"failure_reason\": \"string\",\n  \"benchmark_outcomes\": [\n    {\n      \"benchmark_run_id\": \"string\",\n      \"agent_name\": \"string\",\n      \"n_completed\": 877,\n      \"n_failed\": 6893,\n      \"n_timeout\": 8385,\n      \"scenario_outcomes\": [\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"TIMEOUT\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 7549.277254475765,\n          \"duration_ms\": 9279,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        },\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"CANCELED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 6747.250638769522,\n          \"duration_ms\": 8192,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        }\n      ],\n      \"model_name\": \"string\",\n      \"average_score\": 8566.912272563026,\n      \"duration_ms\": 6289\n    },\n    {\n      \"benchmark_run_id\": \"string\",\n      \"agent_name\": \"string\",\n      \"n_completed\": 8724,\n      \"n_failed\": 7734,\n      \"n_timeout\": 718,\n      \"scenario_outcomes\": [\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"TIMEOUT\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 8141.469360556763,\n          \"duration_ms\": 5047,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        },\n        {\n          \"scenario_definition_id\": \"string\",\n          \"scenario_name\": \"string\",\n          \"state\": \"COMPLETED\",\n          \"scenario_run_id\": \"string\",\n          \"score\": 3824.5929512284806,\n          \"duration_ms\": 5476,\n          \"failure_reason\": {\n            \"exception_type\": \"string\",\n            \"exception_message\": \"string\"\n          }\n        }\n      ],\n      \"model_name\": \"string\",\n      \"average_score\": 6695.8786395242605,\n      \"duration_ms\": 9655\n    }\n  ],\n  \"in_progress_runs\": [\n    {\n      \"benchmark_run_id\": \"string\",\n      \"state\": \"canceled\",\n      \"start_time_ms\": 8280,\n      \"agent_config\": {\n        \"type\": \"external_api\",\n        \"info\": \"string\"\n      },\n      \"duration_ms\": 9026\n    },\n    {\n      \"benchmark_run_id\": \"string\",\n      \"state\": \"failed\",\n      \"start_time_ms\": 3108,\n      \"agent_config\": {\n        \"type\": \"external_api\",\n        \"info\": \"string\"\n      },\n      \"duration_ms\": 5714\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbfd3e93-0c6b-49f9-a4f8-f52425fbcdfb",
+          "name": "List BenchmarkRuns.",
+          "request": {
+            "name": "List BenchmarkRuns.",
+            "description": {
+              "content": "List all BenchmarkRuns matching filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "benchmark_id",
+                  "value": "<string>",
+                  "description": "The Benchmark ID to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by state"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c873274f-cff6-421e-87fa-26f2a806de5e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "benchmark_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 1149,\n      \"state\": \"completed\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 5410,\n      \"score\": 282.18281024381395,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 6935,\n      \"state\": \"canceled\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 5438,\n      \"score\": 4182.476737912333,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total_count\": 5338\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "53332640-45f4-485e-8842-3b62f0a8cf4f",
+          "name": "Get a previously created BenchmarkRun.",
+          "request": {
+            "name": "Get a previously created BenchmarkRun.",
+            "description": {
+              "content": "Get a BenchmarkRun given ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "da04bd23-f77b-4af4-ab8a-bb3514c08da7",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0470e3f7-61b7-4fa5-b17a-b10de213fbdc",
+          "name": "Cancel a currently running Benchmark run.",
+          "request": {
+            "name": "Cancel a currently running Benchmark run.",
+            "description": {
+              "content": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b139c8fa-0921-4f27-b4cf-acf5b9b7f056",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15833c13-bbeb-4bca-af1d-1c69978dbad3",
+          "name": "Complete a BenchmarkRun.",
+          "request": {
+            "name": "Complete a BenchmarkRun.",
+            "description": {
+              "content": "Complete a currently running BenchmarkRun.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs",
+                ":id",
+                "complete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a292474c-0fe0-4457-b7be-1bd9f36402df",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs",
+                    ":id",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "465652db-8e89-416c-b5bd-0ca04ef14c85",
+          "name": "Download logs for a Benchmark run.",
+          "request": {
+            "name": "Download logs for a Benchmark run.",
+            "description": {
+              "content": "Download a zip file containing all logs for a Benchmark run.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs",
+                ":id",
+                "download_logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/zip"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ce2ac4ce-7911-43d0-aa83-c45f6cabcd8e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs",
+                    ":id",
+                    "download_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/zip"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) attachment; filename=\"benchmark_run_logs.zip\"",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/zip"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8172c20e-7964-430a-8b14-ec37982e4e71",
+          "name": "List started scenario runs for a benchmark run.",
+          "request": {
+            "name": "List started scenario runs for a benchmark run.",
+            "description": {
+              "content": "List started scenario runs for a benchmark run.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmark_runs",
+                ":id",
+                "scenario_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by Scenario Run state"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ac71e895-4d01-41b8-9166-3ce4872552de",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmark_runs",
+                    ":id",
+                    "scenario_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"string\",\n      \"scenario_id\": \"string\",\n      \"devbox_id\": \"string\",\n      \"state\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"name\": \"string\",\n      \"benchmark_run_id\": \"string\",\n      \"scoring_contract_result\": {\n        \"score\": 4978.813392581246,\n        \"scoring_function_results\": [\n          {\n            \"score\": 8474.691535155098,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"score\": 993.7795502211633,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"start_time_ms\": 9131,\n      \"duration_ms\": 6767,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"scenario_id\": \"string\",\n      \"devbox_id\": \"string\",\n      \"state\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"name\": \"string\",\n      \"benchmark_run_id\": \"string\",\n      \"scoring_contract_result\": {\n        \"score\": 4276.721162594132,\n        \"scoring_function_results\": [\n          {\n            \"score\": 28.437871985488307,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"score\": 2715.8836636612527,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"start_time_ms\": 899,\n      \"duration_ms\": 8572,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total_count\": 1135\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da39a1af-a88c-4f5f-99bf-175e425f4a98",
+          "name": "Create a Benchmark.",
+          "request": {
+            "name": "Create a Benchmark.",
+            "description": {
+              "content": "Create a Benchmark with a set of Scenarios.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"scenario_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"attribution\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c69d6264-12e2-4f55-a3f4-da021d475320",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"scenario_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"attribution\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"archived\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "66ee5812-8085-4dc7-9cf3-ad8dbad79b02",
+          "name": "List Benchmarks.",
+          "request": {
+            "name": "List Benchmarks.",
+            "description": {
+              "content": "List all Benchmarks matching filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b3484a73-481f-4ac6-90fd-11743f8b9026",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"benchmarks\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"scenarioIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"status\": \"archived\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": false,\n      \"attribution\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"scenarioIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"status\": \"active\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": true,\n      \"attribution\": \"string\",\n      \"description\": \"string\"\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 899\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "acc5fd3e-5918-4ef7-9fb5-9df88d66f5a0",
+          "name": "List Public Benchmarks.",
+          "request": {
+            "name": "List Public Benchmarks.",
+            "description": {
+              "content": "List all public benchmarks matching filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "list_public"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a9004853-788a-4403-b234-68eb7c5fc433",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"benchmarks\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"scenarioIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"status\": \"active\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": true,\n      \"attribution\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"scenarioIds\": [\n        \"string\",\n        \"string\"\n      ],\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"status\": \"archived\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": true,\n      \"attribution\": \"string\",\n      \"description\": \"string\"\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 2389\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6be515d0-f8ed-4550-a6f0-736deb8a092f",
+          "name": "List available benchmark metadata keys.",
+          "request": {
+            "name": "List available benchmark metadata keys.",
+            "description": {
+              "content": "Returns a list of all available metadata keys that can be used for filtering benchmarks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "metadata",
+                "keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "46859795-f990-49db-89bc-95bf815f17ea",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "metadata",
+                    "keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eeee8aca-abdb-4ce0-a092-75ea359dc32a",
+          "name": "List values for a specific benchmark metadata key.",
+          "request": {
+            "name": "List values for a specific benchmark metadata key.",
+            "description": {
+              "content": "Returns a list of all available metadata keys that can be used for filtering benchmarks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "metadata",
+                "keys",
+                ":key",
+                "values"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) The metadata key to get values for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "561073a6-6055-4602-b12e-aa2f5cd3f2d0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"values\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a1b8b7d0-cb4b-451c-b7c6-5c934016cd36",
+              "name": "Invalid metadata key provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c70e71a7-b7f8-4b7c-9218-cb25c447f837",
+          "name": "List BenchmarkRuns.",
+          "request": {
+            "name": "List BenchmarkRuns.",
+            "description": {
+              "content": "List all BenchmarkRuns matching filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "benchmark_id",
+                  "value": "<string>",
+                  "description": "The Benchmark ID to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by state"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e3af719-2996-40ad-9c76-822cbf276e56",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "benchmark_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 2722,\n      \"state\": \"failed\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 6588,\n      \"score\": 6382.535543896048,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 5838,\n      \"state\": \"canceled\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 6064,\n      \"score\": 8384.335814705188,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 2805\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75398949-6333-4a47-9675-164f9412c59b",
+          "name": "Get a previously created BenchmarkRun.",
+          "request": {
+            "name": "Get a previously created BenchmarkRun.",
+            "description": {
+              "content": "Get a BenchmarkRun given ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93dd9259-d06b-4885-bcba-4ee193e2f946",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d21e7e1b-271b-4357-91b0-621b762073a0",
+          "name": "Cancel a currently running Benchmark run.",
+          "request": {
+            "name": "Cancel a currently running Benchmark run.",
+            "description": {
+              "content": "Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c9aa3899-ae0f-4316-9aad-a5421e85a25b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67125f0d-ba2b-4597-98c9-e31cd91079fa",
+          "name": "Complete a BenchmarkRun.",
+          "request": {
+            "name": "Complete a BenchmarkRun.",
+            "description": {
+              "content": "Complete a currently running BenchmarkRun.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs",
+                ":id",
+                "complete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0b50aa9f-32fb-4ae7-9336-d5729860ba6b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs",
+                    ":id",
+                    "complete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9091a7ae-80fb-4b80-8c21-af7c4d52e799",
+          "name": "Download logs for a Benchmark run.",
+          "request": {
+            "name": "Download logs for a Benchmark run.",
+            "description": {
+              "content": "Download a zip file containing all logs for a Benchmark run.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs",
+                ":id",
+                "download_logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/zip"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b8dc91e-54d9-4909-b39e-b3e196185eb1",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs",
+                    ":id",
+                    "download_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/zip"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) attachment; filename=\"benchmark_run_logs.zip\"",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/zip"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ebd4fc40-bdfd-4938-89ab-7a83ade97764",
+          "name": "List started scenario runs for a benchmark run.",
+          "request": {
+            "name": "List started scenario runs for a benchmark run.",
+            "description": {
+              "content": "List started scenario runs for a benchmark run.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "runs",
+                ":id",
+                "scenario_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by Scenario Run state"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The BenchmarkRun ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "743c54d1-5de3-433a-9543-fe8da4879ca9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "runs",
+                    ":id",
+                    "scenario_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The BenchmarkRun ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"string\",\n      \"scenario_id\": \"string\",\n      \"devbox_id\": \"string\",\n      \"state\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"name\": \"string\",\n      \"benchmark_run_id\": \"string\",\n      \"scoring_contract_result\": {\n        \"score\": 2789.253633767276,\n        \"scoring_function_results\": [\n          {\n            \"score\": 4397.186239887786,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"score\": 6602.036559771117,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"start_time_ms\": 1521,\n      \"duration_ms\": 7519,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"scenario_id\": \"string\",\n      \"devbox_id\": \"string\",\n      \"state\": \"<string>\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"name\": \"string\",\n      \"benchmark_run_id\": \"string\",\n      \"scoring_contract_result\": {\n        \"score\": 7027.452471310411,\n        \"scoring_function_results\": [\n          {\n            \"score\": 1774.899383705274,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"score\": 5759.986709123192,\n            \"scoring_function_name\": \"string\",\n            \"output\": \"string\",\n            \"state\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      },\n      \"start_time_ms\": 1976,\n      \"duration_ms\": 9242,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total_count\": 7742\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6a45bb6-d1ae-4311-abdf-1d523eaa72ab",
+          "name": "Start a new BenchmarkRun.",
+          "request": {
+            "name": "Start a new BenchmarkRun.",
+            "description": {
+              "content": "Start a new BenchmarkRun based on the provided Benchmark.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                "start_run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"benchmark_id\": \"<string>\",\n  \"run_name\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"runProfile\": {\n    \"purpose\": \"<string>\",\n    \"envVars\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"secrets\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\",\n      \"key_3\": \"<string>\"\n    },\n    \"launchParameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"<string>\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"<string>\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"mounts\": [\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      },\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f41ca703-d904-4743-8ab8-85e0446a7bd9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    "start_run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"benchmark_id\": \"<string>\",\n  \"run_name\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"runProfile\": {\n    \"purpose\": \"<string>\",\n    \"envVars\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"secrets\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    },\n    \"launchParameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"<string>\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"<string>\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"mounts\": [\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      },\n      {\n        \"object_id\": \"<string>\",\n        \"object_path\": \"<string>\",\n        \"type\": \"object_mount\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"start_time_ms\": 4954,\n  \"state\": \"completed\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"benchmark_id\": \"string\",\n  \"name\": \"string\",\n  \"duration_ms\": 7169,\n  \"score\": 1623.633391544912,\n  \"purpose\": \"string\",\n  \"environment_variables\": {\n    \"key_0\": \"string\"\n  },\n  \"secrets_provided\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5ee7b8c-5de0-4aea-aadb-98ef4dafebb7",
+          "name": "Update a Benchmark.",
+          "request": {
+            "name": "Update a Benchmark.",
+            "description": {
+              "content": "Update a Benchmark. Fields that are null will preserve the existing value. Fields that are provided (including empty values) will replace the existing value entirely.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Benchmark ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"scenario_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"attribution\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f726c97d-afc7-4b34-8fb2-d22781aefd63",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Benchmark ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"scenario_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"required_environment_variables\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"required_secret_names\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"attribution\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"active\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "099ac728-0c7c-469c-90a0-5f5316296bc3",
+          "name": "Get a Benchmark.",
+          "request": {
+            "name": "Get a Benchmark.",
+            "description": {
+              "content": "Get a previously created Benchmark.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Benchmark ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9b066dff-b2e6-4d83-b586-08c34afbc660",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Benchmark ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"active\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c25e07c-733f-48cf-91ac-d7aa8acc9831",
+          "name": "Archive a Benchmark.",
+          "request": {
+            "name": "Archive a Benchmark.",
+            "description": {
+              "content": "Archive a previously created Benchmark. The benchmark will no longer appear in list endpoints but can still be retrieved by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the Benchmark to archive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2fe4e3b9-230b-4e99-986b-c37adb9b2422",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"active\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4e3d0ea-2d0f-48cd-ba26-93b48dd1f8c7",
+              "name": "Cannot archive public benchmarks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a76b55ec-7fec-44af-b1bc-d1e50f0a73fc",
+              "name": "Benchmark not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36dee0a4-0d30-42c8-8d2e-65398b17c09f",
+          "name": "Get scenario definitions for a Benchmark.",
+          "request": {
+            "name": "Get scenario definitions for a Benchmark.",
+            "description": {
+              "content": "Get scenario definitions for a previously created Benchmark.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id",
+                "definitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Benchmark ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "46fdc4bb-1eb0-4df4-9b01-a53d92840a65",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Benchmark ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scenarios\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"input_context\": {\n        \"problem_statement\": \"string\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"string\",\n            \"scorer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": 615.4406702138582\n          },\n          {\n            \"name\": \"string\",\n            \"scorer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": 5325.910362780523\n          }\n        ]\n      },\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"status\": \"active\",\n      \"environment\": {\n        \"blueprint_id\": \"string\",\n        \"snapshot_id\": \"string\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"working_directory\": \"string\"\n      },\n      \"reference_output\": \"string\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": true,\n      \"validation_type\": \"FORWARD\",\n      \"scorer_timeout_sec\": 5313\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"input_context\": {\n        \"problem_statement\": \"string\",\n        \"additional_context\": {}\n      },\n      \"scoring_contract\": {\n        \"scoring_function_parameters\": [\n          {\n            \"name\": \"string\",\n            \"scorer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": 834.7124612990864\n          },\n          {\n            \"name\": \"string\",\n            \"scorer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"weight\": 3073.3263382680066\n          }\n        ]\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"status\": \"archived\",\n      \"environment\": {\n        \"blueprint_id\": \"string\",\n        \"snapshot_id\": \"string\",\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"working_directory\": \"string\"\n      },\n      \"reference_output\": \"string\",\n      \"required_environment_variables\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required_secret_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_public\": true,\n      \"validation_type\": \"EVALUATION\",\n      \"scorer_timeout_sec\": 3976\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 4266\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1630a5c5-ec81-4472-a762-329cf8889582",
+          "name": "Get runs for a provided Benchmark.",
+          "request": {
+            "name": "Get runs for a provided Benchmark.",
+            "description": {
+              "content": "Get runs for a previously created Benchmark.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Benchmark ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "89992d29-f656-4b62-8dad-bc15a0b7fd80",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Benchmark ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 2722,\n      \"state\": \"failed\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 6588,\n      \"score\": 6382.535543896048,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"start_time_ms\": 5838,\n      \"state\": \"canceled\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"benchmark_id\": \"string\",\n      \"name\": \"string\",\n      \"duration_ms\": 6064,\n      \"score\": 8384.335814705188,\n      \"purpose\": \"string\",\n      \"environment_variables\": {\n        \"key_0\": \"string\"\n      },\n      \"secrets_provided\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 2805\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6b5cf2a-c459-4497-a508-f84336474c88",
+          "name": "Modify scenarios for a Benchmark.",
+          "request": {
+            "name": "Modify scenarios for a Benchmark.",
+            "description": {
+              "content": "Add and/or remove Scenario IDs from an existing Benchmark.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id",
+                "scenarios"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Benchmark ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenarios_to_add\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"scenarios_to_remove\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5feb2bf3-4397-4b0c-8ca3-f8fd45e7643d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "scenarios"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Benchmark ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"scenarios_to_add\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"scenarios_to_remove\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"active\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a0737bca-0d50-4e2a-94dc-5c60fed3b7f2",
+          "name": "Unarchive a Benchmark.",
+          "request": {
+            "name": "Unarchive a Benchmark.",
+            "description": {
+              "content": "Unarchive a previously archived Benchmark. The benchmark will appear in list endpoints again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "benchmarks",
+                ":id",
+                "unarchive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the Benchmark to unarchive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8f219fc4-d60f-416b-a2fd-2bd64d3af928",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "unarchive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to unarchive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"scenarioIds\": [\n    \"string\",\n    \"string\"\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"status\": \"active\",\n  \"required_environment_variables\": [\n    \"string\",\n    \"string\"\n  ],\n  \"required_secret_names\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_public\": true,\n  \"attribution\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d41146e-01e7-4448-a1c8-e668ac2c2fa9",
+              "name": "Cannot unarchive public benchmarks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "unarchive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to unarchive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "45d402ec-3199-4039-a481-7bb3eb3b4569",
+              "name": "Benchmark not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "benchmarks",
+                    ":id",
+                    "unarchive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Benchmark to unarchive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.runloop.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "170ce9f3-c96b-411a-b02d-f03175beae40",
+    "name": "Runloop Benchmark API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Run and manage Benchmarks and Benchmark Runs — the evaluation framework for AI coding agents. Supports SWE-Bench, SWE-smith, and custom benchmark definitions, scenario aggregation, run lifecycle (start/cancel/complete), scoring, and log retrieval.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+      "type": "text/plain"
+    }
+  }
+}
