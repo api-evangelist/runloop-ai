@@ -45,11 +45,11 @@ apis:
       - url: json-ld/runloop-context.jsonld
         type: JSONLD
       - url: examples/runloop-devbox-create-example.json
-        type: Example
+        type: Examples
       - url: examples/runloop-devbox-exec-example.json
-        type: Example
+        type: Examples
       - url: examples/runloop-snapshot-create-example.json
-        type: Example
+        type: Examples
     description: >
       Create, configure, and operate Devboxes — isolated Linux microVM-backed sandbox environments purpose-built for AI
       coding agents. The Devbox API covers the full lifecycle (create, suspend, resume, snapshot, shutdown), synchronous
@@ -98,7 +98,7 @@ apis:
       - url: json-schema/runloop-benchmark-run-schema.json
         type: JSONSchema
       - url: examples/runloop-benchmark-run-example.json
-        type: Example
+        type: Examples
     description: >
       Define, configure, and run Benchmarks against your agents. Runloop ships SWE-Bench Verified and SWE-smith out of
       the box; the Benchmark API also supports custom benchmarks built from your own scenarios and scorers. Resources
@@ -164,7 +164,7 @@ apis:
       - url: json-schema/runloop-axon-schema.json
         type: JSONSchema
       - url: examples/runloop-axon-subscribe-example.json
-        type: Example
+        type: Examples
     description: >
       Create and operate Axons — Runloop's distributed event streams for sequencing, recording, and observing agent
       interactions. Each Axon supports event publish, SSE subscription, SQL queries and batch operations over event
@@ -340,55 +340,36 @@ modified: '2026-05-25'
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/runloop/overview
-  - type: ArazzoWorkflows
-    url: arazzo/
-    workflows:
-      - url: arazzo/runloop-ai-bootstrap-devbox-from-object-workflow.yml
-        name: Runloop Bootstrap a Devbox from an Object Artifact
-        summary: >-
-          Create and complete a storage object, generate its download URL, then boot a devbox and pull the artifact into
-          it.
-      - url: arazzo/runloop-ai-build-blueprint-and-launch-devbox-workflow.yml
-        name: Runloop Build Blueprint and Launch Devbox
-        summary: >-
-          Build a custom blueprint image, poll until the build completes, then launch a devbox from it and wait for
-          running.
-      - url: arazzo/runloop-ai-create-scenario-and-run-workflow.yml
-        name: Runloop Create Scenario and Run It
-        summary: >-
-          Define a repeatable AI coding evaluation scenario, start a run of it, poll until it is scored, then complete
-          the run.
-      - url: arazzo/runloop-ai-graceful-snapshot-and-shutdown-workflow.yml
-        name: Runloop Graceful Snapshot and Shutdown
-        summary: Synchronously snapshot a running devbox's disk to preserve its state, then permanently shut the devbox down.
-      - url: arazzo/runloop-ai-provision-and-run-command-workflow.yml
-        name: Runloop Provision Devbox and Run a Command
-        summary: >-
-          Create a devbox, wait for it to reach running, then execute a shell command asynchronously and wait for
-          completion.
-      - url: arazzo/runloop-ai-publish-object-artifact-workflow.yml
-        name: Runloop Publish an Object Artifact
-        summary: >-
-          Create a storage object, mark its upload complete to make it read-only, then generate a presigned download URL
-          for it.
-      - url: arazzo/runloop-ai-score-running-scenario-run-workflow.yml
-        name: Runloop Score a Running Scenario Run
-        summary: Start a run of an existing scenario, wait for it to be running, trigger scoring, then complete the run.
-      - url: arazzo/runloop-ai-snapshot-and-restore-devbox-workflow.yml
-        name: Runloop Snapshot and Restore a Devbox
-        summary: >-
-          Take an asynchronous disk snapshot of a running devbox, poll until it completes, then launch a new devbox from
-          that snapshot.
-      - url: arazzo/runloop-ai-suspend-and-resume-devbox-workflow.yml
-        name: Runloop Suspend and Resume a Devbox
-        summary: >-
-          Suspend a running devbox to free compute, wait until it is suspended, then resume it and wait until it is
-          running again.
-      - url: arazzo/runloop-ai-write-execute-read-file-workflow.yml
-        name: Runloop Write, Execute, and Read a File on a Devbox
-        summary: >-
-          Boot a devbox, write a file into it, run a command that transforms the file, then read the resulting contents
-          back.
+  - type: Arazzo
+    url: arazzo/runloop-ai-bootstrap-devbox-from-object-workflow.yml
+    name: Runloop Bootstrap a Devbox from an Object Artifact
+  - type: Arazzo
+    url: arazzo/runloop-ai-build-blueprint-and-launch-devbox-workflow.yml
+    name: Runloop Build Blueprint and Launch Devbox
+  - type: Arazzo
+    url: arazzo/runloop-ai-create-scenario-and-run-workflow.yml
+    name: Runloop Create Scenario and Run It
+  - type: Arazzo
+    url: arazzo/runloop-ai-graceful-snapshot-and-shutdown-workflow.yml
+    name: Runloop Graceful Snapshot and Shutdown
+  - type: Arazzo
+    url: arazzo/runloop-ai-provision-and-run-command-workflow.yml
+    name: Runloop Provision Devbox and Run a Command
+  - type: Arazzo
+    url: arazzo/runloop-ai-publish-object-artifact-workflow.yml
+    name: Runloop Publish an Object Artifact
+  - type: Arazzo
+    url: arazzo/runloop-ai-score-running-scenario-run-workflow.yml
+    name: Runloop Score a Running Scenario Run
+  - type: Arazzo
+    url: arazzo/runloop-ai-snapshot-and-restore-devbox-workflow.yml
+    name: Runloop Snapshot and Restore a Devbox
+  - type: Arazzo
+    url: arazzo/runloop-ai-suspend-and-resume-devbox-workflow.yml
+    name: Runloop Suspend and Resume a Devbox
+  - type: Arazzo
+    url: arazzo/runloop-ai-write-execute-read-file-workflow.yml
+    name: Runloop Write, Execute, and Read a File on a Devbox
   - type: Website
     url: https://runloop.ai
   - type: Documentation
@@ -397,7 +378,7 @@ common:
     url: https://docs.runloop.ai/api-reference
   - type: Portal
     url: https://docs.runloop.ai
-  - type: SignUp
+  - type: Signup
     url: https://platform.runloop.ai/signup
   - type: Pricing
     url: https://runloop.ai/pricing
@@ -445,19 +426,19 @@ common:
     url: https://docs.runloop.ai/docs/overview/what-is-runloop
   - type: Tutorials
     url: https://docs.runloop.ai/docs/tutorials/overview
-  - type: SDK
+  - type: SDKs
     name: Python SDK
     url: https://github.com/runloopai/api-client-python
-  - type: SDK
+  - type: SDKs
     name: Python SDK Docs
     url: https://runloopai.github.io/api-client-python/
   - type: PythonPackage
     name: runloop-api-client
     url: https://pypi.org/project/runloop-api-client/
-  - type: SDK
+  - type: SDKs
     name: TypeScript SDK
     url: https://github.com/runloopai/api-client-ts
-  - type: SDK
+  - type: SDKs
     name: TypeScript SDK Docs
     url: https://runloopai.github.io/api-client-ts/
   - type: NPMPackage
@@ -471,7 +452,7 @@ common:
     url: https://docs.runloop.ai/docs/tools/rl-cli
   - type: Homebrew
     url: https://github.com/runloopai/homebrew-tap
-  - type: SDK
+  - type: SDKs
     name: Remote Agents SDK (Axon broker clients)
     url: https://github.com/runloopai/remote-agents-sdk
   - type: Tools
@@ -501,16 +482,16 @@ common:
   - type: Tools
     name: codex-tax-man (Codex + W&B Weave starter)
     url: https://github.com/runloopai/codex-tax-man
-  - type: Integration
+  - type: Integrations
     name: OpenAI Agents SDK + Runloop tutorial
     url: https://docs.runloop.ai/docs/tutorials/openai-agentssdk-runloop
-  - type: Integration
+  - type: Integrations
     name: OpenCode on Runloop
     url: https://docs.runloop.ai/docs/tutorials/opencode-runloop
-  - type: Integration
+  - type: Integrations
     name: Axon + ACP with OpenCode
     url: https://docs.runloop.ai/docs/tutorials/axon-acp-broker
-  - type: Integration
+  - type: Integrations
     name: GitHub Actions for agent deployment
     url: https://docs.runloop.ai/docs/devboxes/agents/deploying-with-github-actions
   - type: MCP
@@ -520,7 +501,7 @@ common:
     url: https://www.linkedin.com/company/runloopai
   - type: Twitter
     url: https://twitter.com/runloopai
-  - type: ContactInfo
+  - type: Contact
     name: support@runloop.ai
     url: mailto:support@runloop.ai
 maintainers:
