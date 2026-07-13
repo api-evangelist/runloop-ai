@@ -2,13 +2,14 @@
   "repo": "runloop-ai",
   "feeds": [
     {
-      "source": "https://runloop.ai/blog",
-      "feed_url": "",
+      "source": "https://runloop.ai/about",
+      "feed_url": "https://runloop.ai/about",
+      "title": "",
       "saved": 0,
-      "method": "agent-scrape"
+      "method": "none"
     }
   ],
   "post_count": 25,
-  "fetched": "2026-06-27T13:06:43Z",
-  "agent_pulled": "2026-06-27"
+  "fetched": "2026-07-11T11:50:51Z",
+  "agent_pulled": "2026-07-04"
 }
