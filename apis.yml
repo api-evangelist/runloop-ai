@@ -338,6 +338,8 @@ access: 3rd-Party
 created: '2026-05-25'
 modified: '2026-05-25'
 common:
+  - type: AgenticAccess
+    url: agentic-access/runloop-ai-agentic-access.yml
   - type: TrustCenter
     url: security/runloop-ai-trust-center.yml
   - type: DomainSecurity
