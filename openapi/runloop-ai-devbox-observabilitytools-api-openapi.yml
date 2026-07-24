@@ -1,0 +1,242 @@
+openapi: 3.0.3
+info:
+  title: Runloop agents Devbox-ObservabilityTools API
+  version: '0.1'
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+security:
+- bearerAuth: []
+tags:
+- name: Devbox-ObservabilityTools
+paths:
+  /v1/devboxes/{id}/logs:
+    get:
+      tags:
+      - Devbox-ObservabilityTools
+      summary: Get Devbox logs.
+      description: Get all logs from a running or completed Devbox.
+      operationId: listDevboxLogs
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: query
+        description: ID of execution to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: shell_name
+        in: query
+        description: Shell Name to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxLogsListView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/logs/tail:
+    get:
+      tags:
+      - Devbox-ObservabilityTools
+      summary: Live Tail Devbox Logs.
+      description: Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed.
+      operationId: tailDevboxLogs
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: query
+        description: ID of execution to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: shell_name
+        in: query
+        description: Shell Name to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/usage:
+    get:
+      tags:
+      - Devbox-ObservabilityTools
+      summary: Get resource usage for a Devbox.
+      description: Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended.
+      operationId: getDevboxResourceUsage
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxResourceUsageView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+components:
+  schemas:
+    DevboxLog:
+      type: object
+      additionalProperties: false
+      properties:
+        cmd_id:
+          type: string
+          nullable: true
+          description: Identifier of the associated command the log is sourced from.
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        shell_name:
+          type: string
+          nullable: true
+          description: The Shell name the cmd executed in.
+        cmd:
+          type: string
+          nullable: true
+          description: The Command Executed
+        message:
+          type: string
+          nullable: true
+          description: Log line message.
+        exit_code:
+          type: integer
+          format: int32
+          nullable: true
+          description: The Exit Code of the command
+        source:
+          $ref: '#/components/schemas/DevboxLogSource'
+          description: The source of the log.
+      required:
+      - level
+      - timestamp_ms
+      - source
+    DevboxLogsListView:
+      type: object
+      additionalProperties: false
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxLog'
+          description: List of logs for the given devbox.
+      required:
+      - logs
+    DevboxResourceUsageView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The devbox ID.
+        total_active_seconds:
+          type: integer
+          format: int64
+          description: Total time in seconds the devbox was actively running (excludes time spent suspended).
+        total_elapsed_seconds:
+          type: integer
+          format: int64
+          description: Total elapsed time in seconds from devbox creation to now (or end time if terminated). Includes all time regardless of devbox state.
+        vcpu_seconds:
+          type: integer
+          format: int64
+          description: vCPU usage in vCPU-seconds (total_active_seconds multiplied by the number of vCPUs).
+        memory_gb_seconds:
+          type: integer
+          format: int64
+          description: Memory usage in GB-seconds (total_active_seconds multiplied by memory in GB).
+        disk_gb_seconds:
+          type: integer
+          format: int64
+          description: Disk usage in GB-seconds (total_elapsed_seconds multiplied by disk size in GB). Disk is billed for elapsed time since storage is consumed even when suspended.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The devbox creation time in milliseconds since epoch.
+        end_time_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: The devbox end time in milliseconds since epoch, or null if still running.
+        status:
+          type: string
+          description: The current status of the devbox.
+      required:
+      - id
+      - total_active_seconds
+      - total_elapsed_seconds
+      - vcpu_seconds
+      - memory_gb_seconds
+      - disk_gb_seconds
+      - start_time_ms
+      - status
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

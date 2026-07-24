@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Runloop MCP Configs API
+  title: Runloop agents mcp-configs API
   version: '0.1'
-  description: "Configure and manage Model Context Protocol (MCP) server bindings for Devboxes \u2014 declarative MCP server\
-    \ configs that can be mounted to agents to expose tools."
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -12,6 +11,8 @@ servers:
 - url: https://api.runloop.ai
   description: Runloop API
   variables: {}
+security:
+- bearerAuth: []
 tags:
 - name: mcp-configs
 paths:
@@ -20,8 +21,7 @@ paths:
       tags:
       - mcp-configs
       summary: '[Beta] Create an McpConfig.'
-      description: '[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config
-        specifies the target endpoint and which tools are allowed.'
+      description: '[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config specifies the target endpoint and which tools are allowed.'
       operationId: createMcpConfig
       parameters: []
       requestBody:
@@ -88,8 +88,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -222,10 +221,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
     McpConfigCreateParameters:
       type: object
       additionalProperties: false
@@ -233,8 +228,7 @@ components:
       properties:
         name:
           type: string
-          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before
-            '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
+          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
         endpoint:
           type: string
           description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
@@ -242,8 +236,7 @@ components:
           type: array
           items:
             type: string
-          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools,
-            [''github.search_*'', ''github.get_*''] for specific patterns.'
+          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools, [''github.search_*'', ''github.get_*''] for specific patterns.'
         description:
           type: string
           nullable: true
@@ -276,8 +269,7 @@ components:
     McpConfigUpdateParameters:
       type: object
       additionalProperties: false
-      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be
-        updated.
+      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
       properties:
         name:
           type: string
@@ -292,8 +284,7 @@ components:
           items:
             type: string
           nullable: true
-          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*'']
-            for specific patterns.'
+          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
         description:
           type: string
           nullable: true
@@ -301,8 +292,7 @@ components:
     McpConfigView:
       type: object
       additionalProperties: false
-      description: An McpConfig defines a configuration for connecting to an upstream MCP (Model Context Protocol) server.
-        It specifies the target endpoint and which tools are allowed.
+      description: An McpConfig defines a configuration for connecting to an upstream MCP (Model Context Protocol) server. It specifies the target endpoint and which tools are allowed.
       properties:
         id:
           type: string
@@ -317,8 +307,7 @@ components:
           type: array
           items:
             type: string
-          description: Glob patterns specifying which tools are allowed from this MCP server (e.g., ['github.search_*', 'github.get_*']
-            or ['*'] for all tools).
+          description: Glob patterns specifying which tools are allowed from this MCP server (e.g., ['github.search_*', 'github.get_*'] or ['*'] for all tools).
         description:
           type: string
           nullable: true
@@ -333,9 +322,11 @@ components:
       - endpoint
       - allowed_tools
       - create_time_ms
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
   securitySchemes:
     bearerAuth:
       scheme: bearer
       type: http
-security:
-- bearerAuth: []

@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Runloop agents ScenarioScorer API
+  version: '0.1'
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+security:
+- bearerAuth: []
+tags:
+- name: ScenarioScorer
+paths:
+  /v1/scenarios/scorers:
+    post:
+      tags:
+      - ScenarioScorer
+      summary: Create a custom scenario scorer.
+      description: Create a custom scenario scorer.
+      operationId: createCustomScorer
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomScorerParams'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioScorerView'
+        '400':
+          description: Custom scorer type already exists.
+      deprecated: false
+    get:
+      tags:
+      - ScenarioScorer
+      summary: List Scenario Scorers.
+      description: List all Scenario Scorers matching filter.
+      operationId: listScenarioScorers
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioScorersListView'
+      deprecated: false
+  /v1/scenarios/scorers/{id}:
+    post:
+      tags:
+      - ScenarioScorer
+      summary: Update a custom scenario scorer.
+      description: Update a scenario scorer.
+      operationId: updateCustomScorer
+      parameters:
+      - name: id
+        in: path
+        description: The Scorer ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomScorerParams'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioScorerView'
+      deprecated: false
+    get:
+      tags:
+      - ScenarioScorer
+      summary: Retrieve Scenario Scorer.
+      description: Retrieve Scenario Scorer.
+      operationId: retrieveScenarioScorers
+      parameters:
+      - name: id
+        in: path
+        description: The Scorer ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioScorerView'
+      deprecated: false
+components:
+  schemas:
+    CreateCustomScorerParams:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: Name of the type of custom scorer.
+        bash_script:
+          type: string
+          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
+      required:
+      - type
+      - bash_script
+    ScenarioScorerView:
+      type: object
+      additionalProperties: false
+      description: A ScenarioScorerView represents a custom scoring function for a Scenario.
+      properties:
+        id:
+          type: string
+          description: ID for the scenario scorer.
+        type:
+          type: string
+          description: Name of the type of scenario scorer.
+        bash_script:
+          type: string
+          description: Bash script that takes in $RL_SCORER_CONTEXT as env variable and runs scoring.
+      required:
+      - id
+      - type
+      - bash_script
+    ScenarioScorersListView:
+      type: object
+      additionalProperties: false
+      properties:
+        scorers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioScorerView'
+          description: List of ScenarioScorers matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - scorers
+      - has_more
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Runloop Network Policies API
+  title: Runloop agents network-policies API
   version: '0.1'
-  description: "Define and manage egress Network Policies that restrict outbound network access from Devboxes \u2014 per-policy\
-    \ allow/deny rules at the account scope."
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -12,6 +11,8 @@ servers:
 - url: https://api.runloop.ai
   description: Runloop API
   variables: {}
+security:
+- bearerAuth: []
 tags:
 - name: network-policies
 paths:
@@ -20,8 +21,7 @@ paths:
       tags:
       - network-policies
       summary: Create a NetworkPolicy.
-      description: Create a new NetworkPolicy with the specified egress rules. The policy can then be applied to blueprints,
-        devboxes, or snapshot resumes.
+      description: Create a new NetworkPolicy with the specified egress rules. The policy can then be applied to blueprints, devboxes, or snapshot resumes.
       operationId: createNetworkPolicy
       parameters: []
       requestBody:
@@ -88,8 +88,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -222,6 +221,38 @@ paths:
       deprecated: false
 components:
   schemas:
+    NetworkPolicyView:
+      type: object
+      additionalProperties: false
+      description: A NetworkPolicy defines egress network access rules for devboxes. Policies can be applied to blueprints, devboxes, and snapshot resumes.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the NetworkPolicy.
+        name:
+          type: string
+          description: The human-readable name of the NetworkPolicy. Unique per account.
+        description:
+          type: string
+          nullable: true
+          description: Optional description of the NetworkPolicy.
+        egress:
+          $ref: '#/components/schemas/EgressRulesView'
+          description: The egress rules for this policy.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the NetworkPolicy (Unix timestamp in milliseconds).
+        update_time_ms:
+          type: integer
+          format: int64
+          description: Last update time of the NetworkPolicy (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - egress
+      - create_time_ms
+      - update_time_ms
     EgressRulesView:
       type: object
       additionalProperties: false
@@ -237,8 +268,7 @@ components:
           type: array
           items:
             type: string
-          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com''].
-            Empty list with allow_all=false means no network access (DENY_ALL behavior).'
+          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com'']. Empty list with allow_all=false means no network access (DENY_ALL behavior).'
         allow_agent_gateway:
           type: boolean
           description: If true, allows devbox egress to the agent gateway for credential proxying.
@@ -251,6 +281,27 @@ components:
       - allowed_hostnames
       - allow_agent_gateway
       - allow_mcp_gateway
+    NetworkPolicyListView:
+      type: object
+      additionalProperties: false
+      description: A list of NetworkPolicies with pagination information.
+      properties:
+        network_policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkPolicyView'
+          description: The list of NetworkPolicies.
+        has_more:
+          type: boolean
+          description: Whether there are more results available.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total count of items in this response.
+      required:
+      - network_policies
+      - has_more
     EmptyRecord:
       type: object
       additionalProperties: false
@@ -274,8 +325,7 @@ components:
         allow_devbox_to_devbox:
           type: boolean
           nullable: true
-          description: (Optional) If true, allows traffic between the account's own devboxes via tunnels. Defaults to false.
-            If allow_all is true, this is automatically set to true.
+          description: (Optional) If true, allows traffic between the account's own devboxes via tunnels. Defaults to false. If allow_all is true, this is automatically set to true.
         allowed_hostnames:
           type: array
           items:
@@ -285,35 +335,13 @@ components:
         allow_agent_gateway:
           type: boolean
           nullable: true
-          description: (Optional) If true, allows devbox egress to the agent gateway for credential proxying. Defaults to
-            false.
+          description: (Optional) If true, allows devbox egress to the agent gateway for credential proxying. Defaults to false.
         allow_mcp_gateway:
           type: boolean
           nullable: true
           description: (Optional) If true, allows devbox egress to the MCP hub for MCP server access. Defaults to false.
       required:
       - name
-    NetworkPolicyListView:
-      type: object
-      additionalProperties: false
-      description: A list of NetworkPolicies with pagination information.
-      properties:
-        network_policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkPolicyView'
-          description: The list of NetworkPolicies.
-        has_more:
-          type: boolean
-          description: Whether there are more results available.
-        total_count:
-          type: integer
-          format: int32
-          nullable: true
-          description: Total count of items in this response.
-      required:
-      - network_policies
-      - has_more
     NetworkPolicyUpdateParameters:
       type: object
       additionalProperties: false
@@ -349,42 +377,7 @@ components:
           type: boolean
           nullable: true
           description: If true, allows devbox egress to the MCP hub.
-    NetworkPolicyView:
-      type: object
-      additionalProperties: false
-      description: A NetworkPolicy defines egress network access rules for devboxes. Policies can be applied to blueprints,
-        devboxes, and snapshot resumes.
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the NetworkPolicy.
-        name:
-          type: string
-          description: The human-readable name of the NetworkPolicy. Unique per account.
-        description:
-          type: string
-          nullable: true
-          description: Optional description of the NetworkPolicy.
-        egress:
-          $ref: '#/components/schemas/EgressRulesView'
-          description: The egress rules for this policy.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: The creation time of the NetworkPolicy (Unix timestamp in milliseconds).
-        update_time_ms:
-          type: integer
-          format: int64
-          description: Last update time of the NetworkPolicy (Unix timestamp in milliseconds).
-      required:
-      - id
-      - name
-      - egress
-      - create_time_ms
-      - update_time_ms
   securitySchemes:
     bearerAuth:
       scheme: bearer
       type: http
-security:
-- bearerAuth: []

@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Runloop Objects API
+  title: Runloop agents objects API
   version: '0.1'
-  description: "Upload and manage Storage Objects \u2014 managed files with presigned download URLs that can be mounted into\
-    \ Devboxes or shared between agent runs."
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -12,6 +11,8 @@ servers:
 - url: https://api.runloop.ai
   description: Runloop API
   variables: {}
+security:
+- bearerAuth: []
 tags:
 - name: objects
 paths:
@@ -103,8 +104,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -183,8 +183,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -401,101 +400,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    ContentType:
-      type: string
-      enum:
-      - unspecified
-      - text
-      - binary
-      - gzip
-      - tar
-      - tgz
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
-    ObjectCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters required to create a new Object.
-      properties:
-        name:
-          type: string
-          description: The name of the Object.
-        content_type:
-          $ref: '#/components/schemas/ContentType'
-          description: The content type of the Object.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: User defined metadata to attach to the object for organization.
-        ttl_ms:
-          type: integer
-          format: int64
-          nullable: true
-          description: Optional lifetime of the object in milliseconds, after which the object is automatically deleted. Time
-            starts ticking after the object is created.
-      required:
-      - name
-      - content_type
-    ObjectDownloadUrlView:
-      type: object
-      additionalProperties: false
-      description: A response containing a presigned download URL for an Object.
-      properties:
-        download_url:
-          type: string
-          description: The presigned download URL for the Object.
-      required:
-      - download_url
-    ObjectListView:
-      type: object
-      additionalProperties: false
-      description: A paginated list of Objects.
-      properties:
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ObjectView'
-          description: List of Object entities.
-        has_more:
-          type: boolean
-          description: True if there are more results available beyond this page.
-        total_count:
-          type: integer
-          format: int32
-          nullable: true
-          description: Total number of Objects across all pages.
-      required:
-      - objects
-      - has_more
-    ObjectState:
-      type: string
-      enum:
-      - UPLOADING
-      - READ_ONLY
-      - DELETED
-      - ERROR
     ObjectView:
       type: object
       additionalProperties: false
@@ -543,9 +447,101 @@ components:
       - state
       - content_type
       - create_time_ms
+    ObjectCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new Object.
+      properties:
+        name:
+          type: string
+          description: The name of the Object.
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the object for organization.
+        ttl_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Optional lifetime of the object in milliseconds, after which the object is automatically deleted. Time starts ticking after the object is created.
+      required:
+      - name
+      - content_type
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    ContentType:
+      type: string
+      enum:
+      - unspecified
+      - text
+      - binary
+      - gzip
+      - tar
+      - tgz
+    ObjectDownloadUrlView:
+      type: object
+      additionalProperties: false
+      description: A response containing a presigned download URL for an Object.
+      properties:
+        download_url:
+          type: string
+          description: The presigned download URL for the Object.
+      required:
+      - download_url
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    ObjectState:
+      type: string
+      enum:
+      - UPLOADING
+      - READ_ONLY
+      - DELETED
+      - ERROR
+    ObjectListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of Objects.
+      properties:
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectView'
+          description: List of Object entities.
+        has_more:
+          type: boolean
+          description: True if there are more results available beyond this page.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total number of Objects across all pages.
+      required:
+      - objects
+      - has_more
   securitySchemes:
     bearerAuth:
       scheme: bearer
       type: http
-security:
-- bearerAuth: []

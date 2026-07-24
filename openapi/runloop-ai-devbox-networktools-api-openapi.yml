@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: Runloop agents Devbox-NetworkTools API
+  version: '0.1'
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+security:
+- bearerAuth: []
+tags:
+- name: Devbox-NetworkTools
+paths:
+  /v1/devboxes/{id}/create_pty_tunnel:
+    post:
+      tags:
+      - Devbox-NetworkTools
+      summary: Create an ephemeral PTY tunnel for a running Devbox.
+      description: Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in the Authorization header.
+      operationId: createDevboxPtyTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PtyTunnelView'
+        '400':
+          description: Devbox is not currently running.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/create_ssh_key:
+    post:
+      tags:
+      - Devbox-NetworkTools
+      summary: Create an SSH key for a Devbox
+      description: Create an SSH key for a Devbox to enable remote access.
+      operationId: createDevboxSshKey
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxCreateSshKeyView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/enable_tunnel:
+    post:
+      tags:
+      - Devbox-NetworkTools
+      summary: Enable a tunnel for a running Devbox.
+      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai
+
+
+        Each Devbox can have one tunnel.'
+      operationId: enableDevboxTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TunnelConfig'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TunnelView'
+        '400':
+          description: Devbox is not running or already has a tunnel configured.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/remove_tunnel:
+    post:
+      tags:
+      - Devbox-NetworkTools
+      summary: Remove a tunnel from the Devbox.
+      description: Remove an existing V2 tunnel from the Devbox.
+      operationId: removeDevboxTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+components:
+  schemas:
+    TunnelAuthMode:
+      type: string
+      enum:
+      - open
+      - authenticated
+    TunnelConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically provisioned.
+      properties:
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthMode'
+          nullable: true
+          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
+        http_keep_alive:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
+        wake_on_http:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
+    PtyTunnelView:
+      type: object
+      additionalProperties: false
+      description: 'An ephemeral PTY tunnel providing authenticated terminal access to a Devbox. These tunnels are not stored on the Devbox and are generated fresh on each request. Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai with Authorization: Bearer {auth_token}'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_token:
+          type: string
+          description: Bearer token for tunnel authentication. Always required for PTY tunnels.
+      required:
+      - tunnel_key
+      - auth_token
+    TunnelView:
+      type: object
+      additionalProperties: false
+      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.
+
+        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthModeView'
+          description: The authentication mode for the tunnel.
+        auth_token:
+          type: string
+          nullable: true
+          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the tunnel (Unix timestamp milliseconds).
+        http_keep_alive:
+          type: boolean
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer.
+        wake_on_http:
+          type: boolean
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
+      required:
+      - tunnel_key
+      - auth_mode
+      - create_time_ms
+      - http_keep_alive
+      - wake_on_http
+    TunnelAuthModeView:
+      type: string
+      enum:
+      - open
+      - authenticated
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxCreateSshKeyView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The ID of the Devbox.
+        url:
+          type: string
+          description: The host url of the Devbox that can be used for SSH.
+        ssh_private_key:
+          type: string
+          description: The ssh private key, in PEM format.
+        ssh_user:
+          type: string
+          description: The Linux user to use for SSH connections to this Devbox.
+      required:
+      - id
+      - url
+      - ssh_private_key
+      - ssh_user
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Runloop Axons API
+  title: Runloop agents axons API
   version: '0.1'
-  description: "Create and operate Axons \u2014 distributed event streams for sequencing, recording, and observing agent interactions.\
-    \ Supports SSE subscriptions, publish, SQL query/batch over event history, and broker bridging to agents running in Devboxes."
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -12,9 +11,10 @@ servers:
 - url: https://api.runloop.ai
   description: Runloop API
   variables: {}
+security:
+- bearerAuth: []
 tags:
 - name: axons
-- name: streaming
 paths:
   /v1/axons:
     post:
@@ -80,8 +80,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -154,8 +153,7 @@ paths:
           type: string
       - name: include_total_count
         in: query
-        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
-          performance on large datasets.
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -204,8 +202,7 @@ paths:
       tags:
       - axons
       summary: '[Beta] Execute a batch of SQL statements against an axon''s database.'
-      description: '[Beta] Execute multiple SQL statements atomically within a single transaction against an axon''s SQLite
-        database.'
+      description: '[Beta] Execute multiple SQL statements atomically within a single transaction against an axon''s SQLite database.'
       operationId: axonSqlBatch
       parameters:
       - name: id
@@ -278,8 +275,7 @@ paths:
           type: string
       - name: after_sequence
         in: query
-        description: Sequence number after which to start streaming. Events with sequence > this value are returned. If unset,
-          replay from the beginning.
+        description: Sequence number after which to start streaming. Events with sequence > this value are returned. If unset, replay from the beginning.
         required: false
         deprecated: false
         allowEmptyValue: true
@@ -299,117 +295,17 @@ paths:
               schema:
                 type: string
       deprecated: false
-  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates:
-    get:
-      tags:
-      - executions
-      - streaming
-      summary: Tails the stderr logs for the given execution with SSE streaming
-      description: Tails the stderr logs for the given execution with SSE streaming
-      operationId: streamStdErrUpdates
-      parameters:
-      - name: devbox_id
-        in: path
-        description: The ID of the devbox.
-        required: true
-        deprecated: false
-        allowEmptyValue: false
-        schema:
-          type: string
-      - name: execution_id
-        in: path
-        description: The ID of the execution.
-        required: true
-        deprecated: false
-        allowEmptyValue: false
-        schema:
-          type: string
-      - name: offset
-        in: query
-        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
-        required: false
-        deprecated: false
-        allowEmptyValue: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExecUpdateChunkView'
-          headers:
-            Content-Type:
-              description: text/event-stream
-              schema:
-                type: string
-      deprecated: false
-  /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates:
-    get:
-      tags:
-      - executions
-      - streaming
-      summary: Tails the stdout logs for the given execution with SSE streaming
-      description: Tails the stdout logs for the given execution with SSE streaming
-      operationId: streamStdOutUpdates
-      parameters:
-      - name: devbox_id
-        in: path
-        description: The ID of the devbox.
-        required: true
-        deprecated: false
-        allowEmptyValue: false
-        schema:
-          type: string
-      - name: execution_id
-        in: path
-        description: The ID of the execution.
-        required: true
-        deprecated: false
-        allowEmptyValue: false
-        schema:
-          type: string
-      - name: offset
-        in: query
-        description: The byte offset to start the stream from (if unspecified, starts from the beginning of the stream)
-        required: false
-        deprecated: false
-        allowEmptyValue: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExecUpdateChunkView'
-          headers:
-            Content-Type:
-              description: text/event-stream
-              schema:
-                type: string
-      deprecated: false
 components:
   schemas:
-    AxonCreateParams:
+    AxonListView:
       type: object
       additionalProperties: false
       properties:
-        name:
-          type: string
-          nullable: true
-          description: (Optional) Name for the axon.
-    AxonEventListView:
-      type: object
-      additionalProperties: false
-      properties:
-        events:
+        axons:
           type: array
           items:
-            $ref: '#/components/schemas/AxonEventView'
-          description: List of axon events.
+            $ref: '#/components/schemas/AxonView'
+          description: List of active axons.
         has_more:
           type: boolean
         total_count:
@@ -417,15 +313,76 @@ components:
           format: int32
           nullable: true
       required:
-      - events
+      - axons
       - has_more
-    AxonEventOrigin:
+    SqlStatementParams:
+      type: object
+      additionalProperties: false
+      properties:
+        sql:
+          type: string
+          description: SQL query with ?-style positional placeholders.
+        params:
+          type: array
+          items:
+            type: object
+          description: Positional parameter bindings for ? placeholders.
+      required:
+      - sql
+    AxonView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The axon identifier.
+        name:
+          type: string
+          nullable: true
+          description: The name of the axon.
+        created_at_ms:
+          type: integer
+          format: int64
+          description: Creation time in milliseconds since epoch.
+      required:
+      - id
+      - created_at_ms
+    PublishEventOrigin:
       type: string
       enum:
       - EXTERNAL_EVENT
       - AGENT_EVENT
       - USER_EVENT
-      - SYSTEM_EVENT
+    SqlQueryResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlColumnMetaView'
+          description: Column metadata.
+        rows:
+          type: array
+          items:
+            type: object
+          description: Result rows (empty for non-SELECT statements).
+        meta:
+          $ref: '#/components/schemas/SqlResultMetaView'
+          description: Execution metadata.
+      required:
+      - columns
+      - rows
+      - meta
+    SqlStepErrorView:
+      type: object
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Error message.
+      required:
+      - message
     AxonEventView:
       type: object
       additionalProperties: false
@@ -461,15 +418,88 @@ components:
       - source
       - event_type
       - payload
-    AxonListView:
+    AxonEventOrigin:
+      type: string
+      enum:
+      - EXTERNAL_EVENT
+      - AGENT_EVENT
+      - USER_EVENT
+      - SYSTEM_EVENT
+    SqlResultMetaView:
       type: object
       additionalProperties: false
       properties:
-        axons:
+        duration_ms:
+          type: number
+          format: double
+          description: Execution time in milliseconds.
+        changes:
+          type: integer
+          format: int64
+          description: Rows modified by INSERT/UPDATE/DELETE.
+        rows_read_limit_reached:
+          type: boolean
+          description: True when result was truncated at the row limit.
+      required:
+      - duration_ms
+      - changes
+      - rows_read_limit_reached
+    SqlBatchResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/AxonView'
-          description: List of active axons.
+            $ref: '#/components/schemas/SqlStepResultView'
+          description: One result per statement, in order.
+      required:
+      - results
+    SqlStepResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        success:
+          $ref: '#/components/schemas/SqlQueryResultView'
+          nullable: true
+          description: Result on success.
+        error:
+          $ref: '#/components/schemas/SqlStepErrorView'
+          nullable: true
+          description: Error on failure.
+    SqlColumnMetaView:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Column name or alias.
+        type:
+          type: string
+          description: Declared type (TEXT, INTEGER, REAL, BLOB, or empty).
+      required:
+      - name
+      - type
+    SqlBatchParams:
+      type: object
+      additionalProperties: false
+      properties:
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlStatementParams'
+          description: The SQL statements to execute atomically within a transaction.
+      required:
+      - statements
+    AxonEventListView:
+      type: object
+      additionalProperties: false
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxonEventView'
+          description: List of axon events.
         has_more:
           type: boolean
         total_count:
@@ -477,45 +507,23 @@ components:
           format: int32
           nullable: true
       required:
-      - axons
+      - events
       - has_more
-    AxonView:
+    PublishResultView:
       type: object
       additionalProperties: false
       properties:
-        id:
-          type: string
-          description: The axon identifier.
-        name:
-          type: string
-          nullable: true
-          description: The name of the axon.
-        created_at_ms:
+        sequence:
           type: integer
           format: int64
-          description: Creation time in milliseconds since epoch.
-      required:
-      - id
-      - created_at_ms
-    ExecUpdateChunkView:
-      type: object
-      additionalProperties: false
-      properties:
-        offset:
+          description: Assigned sequence number.
+        timestamp_ms:
           type: integer
           format: int64
-          description: The byte offset of this chunk of log stream.
-        output:
-          type: string
-          description: The latest log stream chunk.
+          description: Timestamp in milliseconds since epoch.
       required:
-      - output
-    PublishEventOrigin:
-      type: string
-      enum:
-      - EXTERNAL_EVENT
-      - AGENT_EVENT
-      - USER_EVENT
+      - sequence
+      - timestamp_ms
     PublishParams:
       type: object
       additionalProperties: false
@@ -537,134 +545,15 @@ components:
       - event_type
       - origin
       - payload
-    PublishResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        sequence:
-          type: integer
-          format: int64
-          description: Assigned sequence number.
-        timestamp_ms:
-          type: integer
-          format: int64
-          description: Timestamp in milliseconds since epoch.
-      required:
-      - sequence
-      - timestamp_ms
-    SqlBatchParams:
-      type: object
-      additionalProperties: false
-      properties:
-        statements:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlStatementParams'
-          description: The SQL statements to execute atomically within a transaction.
-      required:
-      - statements
-    SqlBatchResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlStepResultView'
-          description: One result per statement, in order.
-      required:
-      - results
-    SqlColumnMetaView:
+    AxonCreateParams:
       type: object
       additionalProperties: false
       properties:
         name:
           type: string
-          description: Column name or alias.
-        type:
-          type: string
-          description: Declared type (TEXT, INTEGER, REAL, BLOB, or empty).
-      required:
-      - name
-      - type
-    SqlQueryResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlColumnMetaView'
-          description: Column metadata.
-        rows:
-          type: array
-          items:
-            type: object
-          description: Result rows (empty for non-SELECT statements).
-        meta:
-          $ref: '#/components/schemas/SqlResultMetaView'
-          description: Execution metadata.
-      required:
-      - columns
-      - rows
-      - meta
-    SqlResultMetaView:
-      type: object
-      additionalProperties: false
-      properties:
-        duration_ms:
-          type: number
-          format: double
-          description: Execution time in milliseconds.
-        changes:
-          type: integer
-          format: int64
-          description: Rows modified by INSERT/UPDATE/DELETE.
-        rows_read_limit_reached:
-          type: boolean
-          description: True when result was truncated at the row limit.
-      required:
-      - duration_ms
-      - changes
-      - rows_read_limit_reached
-    SqlStatementParams:
-      type: object
-      additionalProperties: false
-      properties:
-        sql:
-          type: string
-          description: SQL query with ?-style positional placeholders.
-        params:
-          type: array
-          items:
-            type: object
-          description: Positional parameter bindings for ? placeholders.
-      required:
-      - sql
-    SqlStepErrorView:
-      type: object
-      additionalProperties: false
-      properties:
-        message:
-          type: string
-          description: Error message.
-      required:
-      - message
-    SqlStepResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        success:
-          $ref: '#/components/schemas/SqlQueryResultView'
           nullable: true
-          description: Result on success.
-        error:
-          $ref: '#/components/schemas/SqlStepErrorView'
-          nullable: true
-          description: Error on failure.
+          description: (Optional) Name for the axon.
   securitySchemes:
     bearerAuth:
       scheme: bearer
       type: http
-security:
-- bearerAuth: []

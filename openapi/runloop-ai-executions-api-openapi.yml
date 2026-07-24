@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Runloop Executions API
+  title: Runloop agents executions API
   version: '0.1'
-  description: Stream stdout and stderr updates from in-flight Devbox executions in real time. Use alongside the Devbox execute
-    endpoints for long-running command output capture.
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -12,6 +11,8 @@ servers:
 - url: https://api.runloop.ai
   description: Runloop API
   variables: {}
+security:
+- bearerAuth: []
 tags:
 - name: executions
 paths:
@@ -19,7 +20,6 @@ paths:
     get:
       tags:
       - executions
-      - streaming
       summary: Tails the stderr logs for the given execution with SSE streaming
       description: Tails the stderr logs for the given execution with SSE streaming
       operationId: streamStdErrUpdates
@@ -65,7 +65,6 @@ paths:
     get:
       tags:
       - executions
-      - streaming
       summary: Tails the stdout logs for the given execution with SSE streaming
       description: Tails the stdout logs for the given execution with SSE streaming
       operationId: streamStdOutUpdates
@@ -126,5 +125,3 @@ components:
     bearerAuth:
       scheme: bearer
       type: http
-security:
-- bearerAuth: []

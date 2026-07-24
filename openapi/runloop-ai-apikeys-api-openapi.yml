@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: Runloop agents apikeys API
+  version: '0.1'
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+security:
+- bearerAuth: []
+tags:
+- name: apikeys
+paths:
+  /v1/apikeys:
+    post:
+      tags:
+      - apikeys
+      summary: Create API Key.
+      description: Create a new API key for the authenticated account. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope.
+      operationId: createAPIKey
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyCreatedView'
+      deprecated: false
+components:
+  schemas:
+    ApiKeyCreatedView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        key_secret:
+          type: string
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+    ApiKeyCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        expires_at_ms:
+          type: integer
+          format: int64
+          nullable: true
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

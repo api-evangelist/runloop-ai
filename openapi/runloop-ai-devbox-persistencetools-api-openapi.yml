@@ -1,0 +1,529 @@
+openapi: 3.0.3
+info:
+  title: Runloop agents Devbox-PersistenceTools API
+  version: '0.1'
+  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+security:
+- bearerAuth: []
+tags:
+- name: Devbox-PersistenceTools
+paths:
+  /v1/devboxes/disk_snapshots:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List disk snapshots of a Devbox.
+      description: List all snapshots of a Devbox while optionally filtering by Devbox ID, source Blueprint ID, and metadata.
+      operationId: getDevboxDiskSnapshotList
+      parameters:
+      - name: devbox_id
+        in: query
+        description: Devbox ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: source_blueprint_id
+        in: query
+        description: Source Blueprint ID to filter snapshots by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key]
+        in: query
+        description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key][in]
+        in: query
+        description: Filter snapshots by metadata key with multiple possible values (OR condition).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotListView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/list_public:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List public disk snapshots.
+      description: List all public disk snapshots that are available to all users.
+      operationId: listPublicSnapshots
+      parameters:
+      - name: devbox_id
+        in: query
+        description: Devbox ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: source_blueprint_id
+        in: query
+        description: Source Blueprint ID to filter snapshots by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key]
+        in: query
+        description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key][in]
+        in: query
+        description: Filter snapshots by metadata key with multiple possible values (OR condition).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotListView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/metadata/keys:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List available snapshot metadata keys.
+      description: Returns a list of all available metadata keys that can be used for filtering snapshots.
+      operationId: getSnapshotMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List values for a specific snapshot metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all snapshots.
+      operationId: getSnapshotMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/public/metadata/keys:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List available public snapshot metadata keys.
+      description: Returns a list of all available metadata keys from public snapshots only that can be used for filtering.
+      operationId: getPublicSnapshotMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/public/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: List values for a specific public snapshot metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all public snapshots only.
+      operationId: getPublicSnapshotMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for from public snapshots.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}:
+    post:
+      tags:
+      - Devbox-PersistenceTools
+      summary: Update metadata of Disk Snapshot.
+      description: Updates disk snapshot metadata via update vs patch. The entire metadata will be replaced.
+      operationId: updateDiskSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The Snapshot ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}/delete:
+    post:
+      tags:
+      - Devbox-PersistenceTools
+      summary: Delete a disk snapshot of a Devbox.
+      description: Delete a previously taken disk snapshot of a Devbox.
+      operationId: deleteSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the snapshot.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Snapshot deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '404':
+          description: Snapshot not found.
+        '409':
+          description: Only successfully created snapshots can be deleted.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}/status:
+    get:
+      tags:
+      - Devbox-PersistenceTools
+      summary: Query the status of an asynchronous disk snapshot.
+      description: Get the current status of an asynchronous disk snapshot operation, including whether it is still in progress and any error messages if it failed.
+      operationId: queryDiskSnapshotAsync
+      parameters:
+      - name: id
+        in: path
+        description: The Snapshot ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Snapshot status retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxSnapshotAsyncStatusView'
+        '404':
+          description: Snapshot not found.
+      deprecated: false
+  /v1/devboxes/{id}/snapshot_disk:
+    post:
+      tags:
+      - Devbox-PersistenceTools
+      summary: Synchronously create a disk snapshot of a running Devbox.
+      description: Create a disk snapshot of a devbox with the specified name and metadata to enable launching future Devboxes with the same disk state.
+      operationId: createDiskSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/snapshot_disk_async:
+    post:
+      tags:
+      - Devbox-PersistenceTools
+      summary: Start an asynchronous disk snapshot of a running Devbox.
+      description: Start an asynchronous disk snapshot of a devbox with the specified name and metadata. The snapshot operation will continue in the background and can be monitored using the query endpoint.
+      operationId: createDiskSnapshotAsync
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot operation started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+components:
+  schemas:
+    DevboxSnapshotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type: string
+          nullable: true
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
+    DevboxSnapshotAsyncStatusView:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxSnapshotStatus'
+          description: The current status of the snapshot operation.
+        snapshot:
+          $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          nullable: true
+          description: The snapshot details if the operation completed successfully.
+        error_message:
+          type: string
+          nullable: true
+          description: Error message if the operation failed.
+      required:
+      - status
+    DevboxDiskSnapshotListView:
+      type: object
+      additionalProperties: false
+      properties:
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: List of snapshots matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - snapshots
+      - has_more
+    DevboxDiskSnapshotView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the snapshot.
+        name:
+          type: string
+          nullable: true
+          description: (Optional) The custom name of the snapshot.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the Snapshot (Unix timestamp milliseconds).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata associated with the snapshot.
+        source_devbox_id:
+          type: string
+          description: The source Devbox ID this snapshot was created from.
+        source_blueprint_id:
+          type: string
+          nullable: true
+          description: (Optional) The source Blueprint ID this snapshot was created from.
+        commit_message:
+          type: string
+          nullable: true
+          description: (Optional) The commit message of the snapshot (max 1000 characters).
+        size_bytes:
+          type: integer
+          format: int64
+          nullable: true
+          description: (Optional) The size of the snapshot in bytes, relative to the base blueprint.
+      required:
+      - id
+      - create_time_ms
+      - metadata
+      - source_devbox_id
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxSnapshotStatus:
+      type: string
+      enum:
+      - in_progress
+      - error
+      - complete
+      - deleted
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
