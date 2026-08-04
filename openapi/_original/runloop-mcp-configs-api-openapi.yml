@@ -1,0 +1,341 @@
+openapi: 3.0.3
+info:
+  title: Runloop MCP Configs API
+  version: '0.1'
+  description: "Configure and manage Model Context Protocol (MCP) server bindings for Devboxes \u2014 declarative MCP server\
+    \ configs that can be mounted to agents to expose tools."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: mcp-configs
+paths:
+  /v1/mcp-configs:
+    post:
+      tags:
+      - mcp-configs
+      summary: '[Beta] Create an McpConfig.'
+      description: '[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config
+        specifies the target endpoint and which tools are allowed.'
+      operationId: createMcpConfig
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpConfigCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: McpConfig created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpConfigView'
+        '400':
+          description: Bad request. Name already exists or is invalid.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    get:
+      tags:
+      - mcp-configs
+      summary: '[Beta] List McpConfigs.'
+      description: '[Beta] List all McpConfigs for the authenticated account.'
+      operationId: listMcpConfigs
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name (prefix match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Filter by ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of McpConfigs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpConfigListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/mcp-configs/{id}:
+    get:
+      tags:
+      - mcp-configs
+      summary: '[Beta] Get an McpConfig.'
+      description: '[Beta] Get a specific McpConfig by its unique identifier.'
+      operationId: getMcpConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the McpConfig.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved the McpConfig.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpConfigView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: McpConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    post:
+      tags:
+      - mcp-configs
+      summary: '[Beta] Update an McpConfig.'
+      description: '[Beta] Update an existing McpConfig. All fields are optional.'
+      operationId: updateMcpConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the McpConfig to update.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpConfigUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: McpConfig updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpConfigView'
+        '400':
+          description: Bad request. Invalid parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: McpConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/mcp-configs/{id}/delete:
+    post:
+      tags:
+      - mcp-configs
+      summary: '[Beta] Delete an McpConfig.'
+      description: '[Beta] Delete an existing McpConfig. This action is irreversible.'
+      operationId: deleteMcpConfig
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the McpConfig to delete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyRecord'
+        required: false
+      responses:
+        '200':
+          description: McpConfig deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpConfigView'
+        '400':
+          description: Bad request. Config is in use by active devboxes.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: McpConfig not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+components:
+  schemas:
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    McpConfigCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new McpConfig.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before
+            '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
+        endpoint:
+          type: string
+          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
+        allowed_tools:
+          type: array
+          items:
+            type: string
+          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools,
+            [''github.search_*'', ''github.get_*''] for specific patterns.'
+        description:
+          type: string
+          nullable: true
+          description: Optional description for this MCP configuration.
+      required:
+      - name
+      - endpoint
+      - allowed_tools
+    McpConfigListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of McpConfigs.
+      properties:
+        mcp_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpConfigView'
+          description: The list of McpConfigs.
+        has_more:
+          type: boolean
+          description: Whether there are more results available beyond this page.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: Total count of McpConfigs that match the query.
+      required:
+      - mcp_configs
+      - has_more
+    McpConfigUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be
+        updated.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: New name for the McpConfig. Must be unique within your account.
+        endpoint:
+          type: string
+          nullable: true
+          description: New target MCP server endpoint URL.
+        allowed_tools:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*'']
+            for specific patterns.'
+        description:
+          type: string
+          nullable: true
+          description: New description for this MCP configuration.
+    McpConfigView:
+      type: object
+      additionalProperties: false
+      description: An McpConfig defines a configuration for connecting to an upstream MCP (Model Context Protocol) server.
+        It specifies the target endpoint and which tools are allowed.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the McpConfig.
+        name:
+          type: string
+          description: The human-readable name of the McpConfig. Unique per account.
+        endpoint:
+          type: string
+          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
+        allowed_tools:
+          type: array
+          items:
+            type: string
+          description: Glob patterns specifying which tools are allowed from this MCP server (e.g., ['github.search_*', 'github.get_*']
+            or ['*'] for all tools).
+        description:
+          type: string
+          nullable: true
+          description: Optional description for this MCP configuration.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the McpConfig (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - endpoint
+      - allowed_tools
+      - create_time_ms
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

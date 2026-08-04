@@ -1,0 +1,2971 @@
+openapi: 3.0.3
+info:
+  title: Runloop Devbox API
+  version: '0.1'
+  description: "Create, manage, and interact with Devboxes \u2014 isolated Linux sandbox environments for AI coding agents.\
+    \ Supports lifecycle (create/snapshot/suspend/resume/shutdown), shell execution, file I/O, networking (tunnels, port forwarding),\
+    \ PTY sessions, and observability (logs, metrics, executions)."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: Devbox
+- name: Devbox-FileTools
+- name: Devbox-Lifecycle
+- name: Devbox-NetworkTools
+- name: Devbox-ObservabilityTools
+- name: Devbox-PersistenceTools
+- name: Devbox-ShellTools
+paths:
+  /pty/{session_name}:
+    get:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Create or reconnect to a PTY session.
+      description: 'Looks up the PTY session identified by the path session_name and either reconnects to the existing session
+        or creates it if it does not yet exist. The session_name is a client-chosen session identifier, not an opaque server-issued
+        ID. It must be non-empty (1..=256 chars) and use only ASCII letters, digits, ''-'' and ''_''. A newly created PTY
+        session starts an interactive bash shell on the Devbox. Optional cols and rows query parameters apply an initial terminal
+        size before any I/O; they must both be present and in the range 1..=1000 to take effect. The response returns a PtyConnectView
+        containing connect_url (a server-relative path to the WebSocket data plane), idle_ttl_seconds (how long this session
+        is retained after the last client disconnects), and the resulting cols/rows. The interactive byte stream itself is
+        intentionally not modeled in OpenAPI; see the controller-level documentation for the WebSocket close-code conventions.
+        The single-attach contract is enforced when a client opens the WebSocket data plane, not on this bootstrap call: bootstrap
+        always succeeds for a valid session_name, even if another client is currently attached. Rejection of a second concurrent
+        attach happens at WebSocket upgrade time. If the active client disconnects, the session is preserved for the idle
+        TTL so a later connect using the same session_name resumes the same shell. After the TTL expires, after an explicit
+        close control action, or after the underlying Devbox lifecycle replaces the PTY process (such as through suspend/resume),
+        a later request with the same session_name creates a fresh PTY session without the previous shell state.
+
+
+        Documentation note: this operation is published from mux strictly as an OpenAPI contract stub for the PTY service
+        control plane. It is not evidence that mux itself serves the interactive PTY transport.'
+      operationId: connectDevboxPtySession
+      parameters:
+      - name: session_name
+        in: path
+        description: The client-chosen PTY session name. Must be 1..=256 ASCII letters, digits, '-' and '_'. Reusing the same
+          name reconnects to the same logical PTY session when it is still available.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: cols
+        in: query
+        description: Optional initial terminal width in character cells (1..=1000). Defaults to 80 when omitted. Applied only
+          if both cols and rows are provided; otherwise ignored.
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: integer
+          format: int32
+      - name: rows
+        in: query
+        description: Optional initial terminal height in character cells (1..=1000). Defaults to 24 when omitted. Applied
+          only if both cols and rows are provided; otherwise ignored.
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PtyConnectView'
+        '400':
+          description: Malformed session_name (alphabet or length out of range).
+        '503':
+          description: PTY session could not be spawned (host resource exhaustion).
+      deprecated: false
+  /pty/{session_name}/control:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Send a control command to a PTY session.
+      description: 'Applies a PTY control operation to an existing session. The action field selects the operation; the other
+        fields in PtyControlParameters are interpreted only when they are relevant to the chosen action.
+
+
+        resize: cols and rows are required and must each be in 1..=1000. A 0 or out-of-range value returns 400. The new winsize
+        is applied to the PTY master and the kernel delivers SIGWINCH to the foreground process group.
+
+
+        signal: signal is the POSIX signal name (for example ''SIGTERM'', ''SIGHUP'', ''SIGINT'', ''SIGUSR1''). Unknown signal
+        names return 400. The signal is delivered to the slave''s foreground process group via killpg(2). If the shell has
+        already exited and there is no foreground process group, returns 400.
+
+
+        close: terminates the session. Sends SIGHUP to the foreground process group (best-effort; ignored if the shell has
+        already exited) and drops the session from the server''s session cache. A subsequent connect with the same session_name
+        will create a fresh PTY session.
+
+
+        Documentation note: this operation is published from mux strictly as an OpenAPI contract stub for the PTY service
+        control plane. It is not evidence that mux itself serves the interactive PTY transport.'
+      operationId: controlDevboxPtySession
+      parameters:
+      - name: session_name
+        in: path
+        description: The client-chosen PTY session name. Must be 1..=256 ASCII letters, digits, '-' and '_'.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PtyControlParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PtyControlResultView'
+        '400':
+          description: 'Invalid action parameters: out-of-range cols/rows on resize, unknown signal name on signal, or no
+            foreground process group on signal.'
+        '404':
+          description: PTY session not found.
+      deprecated: false
+  /v1/devboxes:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Create a Devbox.
+      description: Create a Devbox and begin the boot process. The Devbox will initially launch in the 'provisioning' state
+        while Runloop allocates the necessary infrastructure. It will transition to the 'initializing' state while the booted
+        Devbox runs any Runloop or user defined set up scripts. Finally, the Devbox will transition to the 'running' state
+        when it is ready for use.
+      operationId: createDevbox
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+      deprecated: false
+    get:
+      tags:
+      - Devbox
+      summary: List Devboxes.
+      description: List all Devboxes while optionally filtering by status.
+      operationId: listDevboxes
+      parameters:
+      - name: status
+        in: query
+        description: Filter by status
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/DevboxViewStatus'
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxListView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List disk snapshots of a Devbox.
+      description: List all snapshots of a Devbox while optionally filtering by Devbox ID, source Blueprint ID, and metadata.
+      operationId: getDevboxDiskSnapshotList
+      parameters:
+      - name: devbox_id
+        in: query
+        description: Devbox ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: source_blueprint_id
+        in: query
+        description: Source Blueprint ID to filter snapshots by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key]
+        in: query
+        description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key][in]
+        in: query
+        description: Filter snapshots by metadata key with multiple possible values (OR condition).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotListView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/list_public:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List public disk snapshots.
+      description: List all public disk snapshots that are available to all users.
+      operationId: listPublicSnapshots
+      parameters:
+      - name: devbox_id
+        in: query
+        description: Devbox ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: source_blueprint_id
+        in: query
+        description: Source Blueprint ID to filter snapshots by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key]
+        in: query
+        description: Filter snapshots by metadata key-value pair. Can be used multiple times for different keys.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: metadata[key][in]
+        in: query
+        description: Filter snapshots by metadata key with multiple possible values (OR condition).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotListView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/metadata/keys:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List available snapshot metadata keys.
+      description: Returns a list of all available metadata keys that can be used for filtering snapshots.
+      operationId: getSnapshotMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List values for a specific snapshot metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all snapshots.
+      operationId: getSnapshotMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/public/metadata/keys:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List available public snapshot metadata keys.
+      description: Returns a list of all available metadata keys from public snapshots only that can be used for filtering.
+      operationId: getPublicSnapshotMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/devboxes/disk_snapshots/public/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: List values for a specific public snapshot metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all public snapshots only.
+      operationId: getPublicSnapshotMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for from public snapshots.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}:
+    post:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: Update metadata of Disk Snapshot.
+      description: Updates disk snapshot metadata via update vs patch. The entire metadata will be replaced.
+      operationId: updateDiskSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The Snapshot ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}/delete:
+    post:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: Delete a disk snapshot of a Devbox.
+      description: Delete a previously taken disk snapshot of a Devbox.
+      operationId: deleteSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the snapshot.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Snapshot deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '404':
+          description: Snapshot not found.
+        '409':
+          description: Only successfully created snapshots can be deleted.
+      deprecated: false
+  /v1/devboxes/disk_snapshots/{id}/status:
+    get:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: Query the status of an asynchronous disk snapshot.
+      description: Get the current status of an asynchronous disk snapshot operation, including whether it is still in progress
+        and any error messages if it failed.
+      operationId: queryDiskSnapshotAsync
+      parameters:
+      - name: id
+        in: path
+        description: The Snapshot ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Snapshot status retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxSnapshotAsyncStatusView'
+        '404':
+          description: Snapshot not found.
+      deprecated: false
+  /v1/devboxes/metadata/keys:
+    get:
+      tags:
+      - Devbox
+      summary: List available devbox metadata keys.
+      description: Returns a list of all available metadata keys that can be used for filtering devboxes.
+      operationId: getDevboxMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/devboxes/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Devbox
+      summary: List values for a specific devbox metadata key.
+      description: Returns a list of all values that exist for a specific metadata key across all devboxes.
+      operationId: getDevboxMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}:
+    get:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Get status of an asynchronous execution on a Devbox.
+      description: Get the latest status of a previously launched asynchronous execuction including stdout/error and the exit
+        code if complete.
+      operationId: queryAsyncCommand
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The Devbox ID
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The Execution ID
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: last_n
+        in: query
+        description: 'Last n lines of standard error / standard out to return (default: 100)'
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxAsyncExecutionDetailView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/kill:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Kill an asynchronous execution currently running on a devbox
+      description: Kill a previously launched asynchronous execution if it is still running by killing the launched process.
+        Optionally kill the entire process group.
+      operationId: killAsyncExecution
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The Async Execution ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxKillExecutionRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxAsyncExecutionDetailView'
+        '404':
+          description: Devbox or Execution not found.
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/send_std_in:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Send Content to Std In for a running execution.
+      description: Send content to the Std In of a running execution.
+      operationId: sendStdIn
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The Async Execution ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSendStdInRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxSendStdInResult'
+        '404':
+          description: Devbox or Execution not found.
+      deprecated: false
+  /v1/devboxes/{devbox_id}/executions/{execution_id}/wait_for_status:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Wait for an asynchronous execution to reach a specific status.
+      description: Polls the asynchronous execution's status until it reaches one of the desired statuses or times out. Max
+        is 25 seconds.
+      operationId: waitForCommandCompletion
+      parameters:
+      - name: devbox_id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: path
+        description: The Async Execution ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: last_n
+        in: query
+        description: 'Last n lines of standard error / standard out to return (default: 100)'
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxWaitForCommandRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxAsyncExecutionDetailView'
+        '400':
+          description: Invalid status provided or Devbox not in proper state.
+        '404':
+          description: Devbox or Execution not found.
+        '408':
+          description: Timeout waiting for command completion.
+      deprecated: false
+  /v1/devboxes/{id}:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Update a Devbox.
+      description: Updates a devbox by doing a complete update the existing name,metadata fields. It does not patch partial
+        values.
+      operationId: updateDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+      deprecated: false
+    get:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Get Devbox details.
+      description: Get the latest details and status of a Devbox.
+      operationId: getDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+      deprecated: false
+  /v1/devboxes/{id}/create_pty_tunnel:
+    post:
+      tags:
+      - Devbox
+      - Devbox-NetworkTools
+      summary: Create an ephemeral PTY tunnel for a running Devbox.
+      description: Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted
+        on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in
+        the Authorization header.
+      operationId: createDevboxPtyTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PtyTunnelView'
+        '400':
+          description: Devbox is not currently running.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/create_ssh_key:
+    post:
+      tags:
+      - Devbox
+      - Devbox-NetworkTools
+      summary: Create an SSH key for a Devbox
+      description: Create an SSH key for a Devbox to enable remote access.
+      operationId: createDevboxSshKey
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxCreateSshKeyView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/download_file:
+    post:
+      tags:
+      - Devbox
+      - Devbox-FileTools
+      summary: Download binary file contents from Devbox filesystem.
+      description: Download file contents of any type (binary, text, etc) from a specified path on the Devbox.
+      operationId: devboxDownloadFile
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxDownloadFileParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                format: binary
+          headers:
+            Content-Type:
+              description: application/octet-stream
+              required: true
+              schema:
+                type: string
+            Content-Disposition:
+              description: attachment
+              required: true
+              schema:
+                type: string
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/enable_tunnel:
+    post:
+      tags:
+      - Devbox
+      - Devbox-NetworkTools
+      summary: Enable a tunnel for a running Devbox.
+      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox
+        without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai
+
+
+        Each Devbox can have one tunnel.'
+      operationId: enableDevboxTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TunnelConfig'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TunnelView'
+        '400':
+          description: Devbox is not running or already has a tunnel configured.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/execute:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Execute a command with a known ID, optimistically waiting for completion
+      description: 'Execute a command with a known command ID on a devbox, optimistically waiting for it to complete within
+        the specified timeout. If it completes in time, return the result. If not, return a status indicating the command
+        is still running. Note: attach_stdin parameter is not supported; use execute_async for stdin support.'
+      operationId: executeCommand
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: last_n
+        in: query
+        description: 'Last n lines of standard error / standard out to return (default: 100)'
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxStartExecutionParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxAsyncExecutionDetailView'
+        '404':
+          description: Devbox not found.
+        '408':
+          description: Command timed out.
+      deprecated: false
+  /v1/devboxes/{id}/execute_async:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: Asynchronously execute a command via the Devbox shell
+      description: Execute the given command in the Devbox shell asynchronously and returns the execution that can be used
+        to track the command's progress.
+      operationId: execAsyncCommand
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxCreateExecutionParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxAsyncExecutionDetailView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/execute_sync:
+    post:
+      tags:
+      - Devbox
+      - Devbox-ShellTools
+      summary: (Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox
+      description: 'Execute a bash command in the Devbox shell, await the command completion and return the output. Note:
+        attach_stdin parameter is not supported for synchronous execution.'
+      operationId: execSyncCommand
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxCreateExecutionParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxExecutionDetailView'
+      deprecated: true
+  /v1/devboxes/{id}/keep_alive:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Reset the idle timer of a running Devbox.
+      description: Send a 'Keep Alive' signal to a running Devbox that is configured to shutdown on idle so the idle time
+        resets.
+      operationId: keepAliveDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+      deprecated: false
+  /v1/devboxes/{id}/logs:
+    get:
+      tags:
+      - Devbox
+      - Devbox-ObservabilityTools
+      summary: Get Devbox logs.
+      description: Get all logs from a running or completed Devbox.
+      operationId: listDevboxLogs
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: query
+        description: ID of execution to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: shell_name
+        in: query
+        description: Shell Name to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxLogsListView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/logs/tail:
+    get:
+      tags:
+      - Devbox
+      - Devbox-ObservabilityTools
+      summary: Live Tail Devbox Logs.
+      description: Tail the logs for the given devbox. This will return past log entries and continue streaming from there.
+        The stream will then continue to stream logs until the connection is closed.
+      operationId: tailDevboxLogs
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: execution_id
+        in: query
+        description: ID of execution to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: shell_name
+        in: query
+        description: Shell Name to filter logs by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              description: text/event-stream
+              schema:
+                type: string
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/read_file_contents:
+    post:
+      tags:
+      - Devbox
+      - Devbox-FileTools
+      summary: Read text file contents from Devbox filesystem.
+      description: Read file contents from a file on a Devbox as a UTF-8. Note 'downloadFile' should be used for large files
+        (greater than 100MB). Returns the file contents as a UTF-8 string.
+      operationId: devboxReadFileContents
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxReadFileParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/remove_tunnel:
+    post:
+      tags:
+      - Devbox
+      - Devbox-NetworkTools
+      summary: Remove a tunnel from the Devbox.
+      description: Remove an existing V2 tunnel from the Devbox.
+      operationId: removeDevboxTunnel
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/resume:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Resume a suspended Devbox
+      description: Resume a suspended Devbox with the disk state captured as suspend time. Note that any previously running
+        processes or daemons will need to be restarted using the Devbox shell tools.
+      operationId: resumeDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+        '400':
+          description: Devbox is not suspended.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/shutdown:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Shutdown a running Devbox.
+      description: Shutdown a running Devbox. This will permanently stop the Devbox. If you want to save the state of the
+        Devbox, you should take a snapshot before shutting down or should suspend the Devbox instead of shutting down. If
+        the Devbox has any in-progress snapshots, the shutdown will be rejected with a 409 Conflict unless force=true is specified.
+      operationId: shutdownDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: force
+        in: query
+        description: If true, force shutdown even if snapshots are in progress. Defaults to false.
+        required: false
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+        '409':
+          description: Devbox has in-progress snapshots and cannot be shut down at this time. Use force=true to override.
+      deprecated: false
+  /v1/devboxes/{id}/snapshot_disk:
+    post:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: Synchronously create a disk snapshot of a running Devbox.
+      description: Create a disk snapshot of a devbox with the specified name and metadata to enable launching future Devboxes
+        with the same disk state.
+      operationId: createDiskSnapshot
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/snapshot_disk_async:
+    post:
+      tags:
+      - Devbox
+      - Devbox-PersistenceTools
+      summary: Start an asynchronous disk snapshot of a running Devbox.
+      description: Start an asynchronous disk snapshot of a devbox with the specified name and metadata. The snapshot operation
+        will continue in the background and can be monitored using the query endpoint.
+      operationId: createDiskSnapshotAsync
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxSnapshotRequest'
+        required: false
+      responses:
+        '200':
+          description: Snapshot operation started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxDiskSnapshotView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/suspend:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Suspend a running Devbox
+      description: Suspend a running Devbox and create a disk snapshot to enable resuming the Devbox later with the same disk.
+        Note this will not snapshot memory state such as running processes.
+      operationId: suspendDevbox
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+        '400':
+          description: Devbox is not running.
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/upload_file:
+    post:
+      tags:
+      - Devbox
+      - Devbox-FileTools
+      summary: Upload binary file contents to Devbox filesystem.
+      description: Upload file contents of any type (binary, text, etc) to a Devbox. Note this API is suitable for large files
+        (larger than 100MB) and efficiently uploads files via multipart form data.
+      operationId: devboxUploadFile
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileUpload'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/usage:
+    get:
+      tags:
+      - Devbox
+      - Devbox-ObservabilityTools
+      summary: Get resource usage for a Devbox.
+      description: Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated
+        from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed
+        time since storage is consumed even when suspended.
+      operationId: getDevboxResourceUsage
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxResourceUsageView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+  /v1/devboxes/{id}/wait_for_status:
+    post:
+      tags:
+      - Devbox
+      - Devbox-Lifecycle
+      summary: Wait for a Devbox to reach one of the specified statuses.
+      description: Polls the Devbox's status until it reaches one of the desired statuses or times out.
+      operationId: waitForDevboxStatus
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxWaitForStatusRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxView'
+        '400':
+          description: Invalid status provided.
+        '404':
+          description: Devbox not found.
+        '408':
+          description: Timeout waiting for status.
+      deprecated: false
+  /v1/devboxes/{id}/write_file_contents:
+    post:
+      tags:
+      - Devbox
+      - Devbox-FileTools
+      summary: Write text file contents to Devbox filesystem.
+      description: Write UTF-8 string contents to a file at path on the Devbox. Note for large files (larger than 100MB),
+        the upload_file endpoint must be used.
+      operationId: devboxWriteFileContents
+      parameters:
+      - name: id
+        in: path
+        description: The Devbox ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevboxWriteFileParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevboxExecutionDetailView'
+        '404':
+          description: Devbox not found.
+      deprecated: false
+components:
+  schemas:
+    AgentMount:
+      type: object
+      additionalProperties: false
+      properties:
+        agent_id:
+          type: string
+          nullable: true
+          description: The ID of the agent to mount. Either agent_id or name must be set.
+        agent_name:
+          type: string
+          nullable: true
+          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string
+            provided. Either agent id or name must be set
+        agent_path:
+          type: string
+          nullable: true
+          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g.,
+            /home/user/agent)
+        auth_token:
+          type: string
+          nullable: true
+          description: Optional auth token for private repositories. Only used for git agents.
+        type:
+          type: string
+          enum:
+          - agent_mount
+          default: agent_mount
+      required:
+      - agent_id
+      - agent_name
+      - type
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    BrokerMount:
+      type: object
+      additionalProperties: false
+      properties:
+        axon_id:
+          type: string
+          description: The ID of the axon event stream to mount onto the Devbox.
+        protocol:
+          $ref: '#/components/schemas/BrokerMountProtocol'
+          nullable: true
+          description: The protocol used by the broker to deliver events to the agent.
+        agent_binary:
+          type: string
+          nullable: true
+          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
+        working_directory:
+          type: string
+          nullable: true
+          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
+        launch_args:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess
+            (acp, claude_json).
+        type:
+          type: string
+          enum:
+          - broker_mount
+          default: broker_mount
+      required:
+      - axon_id
+      - type
+    BrokerMountProtocol:
+      type: string
+      enum:
+      - acp
+      - claude_json
+    CodeMount:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type: string
+          nullable: true
+          description: Installation command to install and setup repository.
+        git_ref:
+          type: string
+          nullable: true
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type: string
+          nullable: true
+          description: The authentication token necessary to pull repo.
+        type:
+          type: string
+          enum:
+          - code_mount
+          default: code_mount
+      required:
+      - repo_name
+      - repo_owner
+      - type
+    CodeMountParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type: string
+          nullable: true
+          description: Installation command to install and setup repository.
+        git_ref:
+          type: string
+          nullable: true
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type: string
+          nullable: true
+          description: The authentication token necessary to pull repo.
+      required:
+      - repo_name
+      - repo_owner
+    DevboxAsyncExecutionDetailView:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command was executed.
+        execution_id:
+          type: string
+          description: Ephemeral id of the execution in progress.
+        status:
+          $ref: '#/components/schemas/DevboxExecutionStatus'
+          description: Current status of the execution.
+        shell_name:
+          type: string
+          nullable: true
+          description: Shell name.
+        stdout:
+          type: string
+          nullable: true
+          description: Standard out generated by command. This field will remain unset until the execution has completed.
+        stderr:
+          type: string
+          nullable: true
+          description: Standard error generated by command. This field will remain unset until the execution has completed.
+        exit_status:
+          type: integer
+          format: int32
+          nullable: true
+          description: Exit code of command execution. This field will remain unset until the execution has completed.
+        stdout_truncated:
+          type: boolean
+          nullable: true
+          description: Indicates whether the stdout was truncated due to size limits.
+        stderr_truncated:
+          type: boolean
+          nullable: true
+          description: Indicates whether the stderr was truncated due to size limits.
+      required:
+      - devbox_id
+      - execution_id
+      - status
+    DevboxCapabilities:
+      type: string
+      enum:
+      - unknown
+      - docker_in_docker
+    DevboxCreateExecutionParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        command:
+          type: string
+          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory
+            unless shell_name is specified. If shell_name is specified the command is run from the directory based on the
+            recent state of the persistent shell.
+        shell_name:
+          type: string
+          nullable: true
+          description: The name of the persistent shell to create or use if already created. When using a persistent shell,
+            the command will run from the directory at the end of the previous command and environment variables will be preserved.
+        attach_stdin:
+          type: boolean
+          nullable: true
+          description: Whether to attach stdin streaming for async commands. Not valid for execute_sync endpoint. Defaults
+            to false if not specified.
+      required:
+      - command
+    DevboxCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: (Optional) A user specified name to give the Devbox.
+        environment_variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: (Optional) Environment variables used to configure your Devbox.
+        secrets:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: '(Optional) Map of environment variable names to secret names. The secret values will be securely injected
+            as environment variables in the Devbox. Example: {"DB_PASS": "DATABASE_PASSWORD"} sets environment variable ''DB_PASS''
+            to the value of secret ''DATABASE_PASSWORD''.'
+        file_mounts:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Map of paths and file contents to write before setup. Use mounts instead.
+        entrypoint:
+          type: string
+          nullable: true
+          description: (Optional) When specified, the Devbox will run this script as its main executable. The devbox lifecycle
+            will be bound to entrypoint, shutting down when the process is complete.
+        blueprint_id:
+          type: string
+          nullable: true
+          description: Blueprint ID to use for the Devbox. If none set, the Devbox will be created with the default Runloop
+            Devbox image. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
+        blueprint_name:
+          type: string
+          nullable: true
+          description: Name of Blueprint to use for the Devbox. When set, this will load the latest successfully built Blueprint
+            with the given name. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
+        repo_connection_id:
+          type: string
+          nullable: true
+          description: Repository connection id the devbox should source its base image from.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          nullable: true
+          description: Parameters to configure the resources and launch time behavior of the Devbox.
+        snapshot_id:
+          type: string
+          nullable: true
+          description: Snapshot ID to use for the Devbox. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be
+            specified.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the devbox for organization.
+        code_mounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeMountParameters'
+          nullable: true
+          description: A list of code mounts to be included in the Devbox. Use mounts instead.
+        mounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mount'
+          nullable: true
+          description: A list of mounts to be included in the Devbox.
+        tunnel:
+          $ref: '#/components/schemas/TunnelConfig'
+          nullable: true
+          description: (Optional) Configuration for creating a V2 tunnel at Devbox launch time. When specified, a tunnel will
+            be automatically provisioned and the tunnel details will be included in the Devbox response.
+        gateways:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/GatewaySpec'
+          nullable: true
+          description: '(Optional) Agent gateway specifications for credential proxying. Map key is the environment variable
+            prefix (e.g., ''GWS_ANTHROPIC''). The agent gateway will proxy requests to external APIs using the specified credential
+            without exposing the real API key. Example: {''GWS_ANTHROPIC'': {''gateway'': ''anthropic'', ''secret'': ''my_claude_key''}}'
+        mcp:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/McpSpec'
+          nullable: true
+          description: '[Beta] (Optional) MCP specifications for MCP server access. Map key is the environment variable name
+            for the MCP token envelope. Each spec links an MCP config to a secret. The devbox will also receive RL_MCP_URL
+            for the MCP hub endpoint. Example: {''MCP_SECRET'': {''mcp_config'': ''github-readonly'', ''secret'': ''MY_GITHUB_TOKEN''}}'
+    DevboxCreateSshKeyView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The ID of the Devbox.
+        url:
+          type: string
+          description: The host url of the Devbox that can be used for SSH.
+        ssh_private_key:
+          type: string
+          description: The ssh private key, in PEM format.
+        ssh_user:
+          type: string
+          description: The Linux user to use for SSH connections to this Devbox.
+      required:
+      - id
+      - url
+      - ssh_private_key
+      - ssh_user
+    DevboxDiskSnapshotListView:
+      type: object
+      additionalProperties: false
+      properties:
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: List of snapshots matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - snapshots
+      - has_more
+    DevboxDiskSnapshotView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the snapshot.
+        name:
+          type: string
+          nullable: true
+          description: (Optional) The custom name of the snapshot.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the Snapshot (Unix timestamp milliseconds).
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata associated with the snapshot.
+        source_devbox_id:
+          type: string
+          description: The source Devbox ID this snapshot was created from.
+        source_blueprint_id:
+          type: string
+          nullable: true
+          description: (Optional) The source Blueprint ID this snapshot was created from.
+        commit_message:
+          type: string
+          nullable: true
+          description: (Optional) The commit message of the snapshot (max 1000 characters).
+        size_bytes:
+          type: integer
+          format: int64
+          nullable: true
+          description: (Optional) The size of the snapshot in bytes, relative to the base blueprint.
+      required:
+      - id
+      - create_time_ms
+      - metadata
+      - source_devbox_id
+    DevboxDownloadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - path
+    DevboxExecutionDetailView:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command was executed.
+        stdout:
+          type: string
+          description: Standard out generated by command.
+        stderr:
+          type: string
+          description: Standard error generated by command.
+        exit_status:
+          type: integer
+          format: int32
+          description: Exit status of command execution.
+        shell_name:
+          type: string
+          nullable: true
+          description: Shell name.
+      required:
+      - devbox_id
+      - stdout
+      - stderr
+      - exit_status
+    DevboxExecutionStatus:
+      type: string
+      enum:
+      - queued
+      - running
+      - completed
+    DevboxKillExecutionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        kill_process_group:
+          type: boolean
+          nullable: true
+          description: 'Whether to kill the entire process group (default: false). If true, kills all processes in the same
+            process group as the target process.'
+    DevboxListView:
+      type: object
+      additionalProperties: false
+      properties:
+        devboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxView'
+          description: List of devboxes matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - devboxes
+      - has_more
+    DevboxLog:
+      type: object
+      additionalProperties: false
+      properties:
+        cmd_id:
+          type: string
+          nullable: true
+          description: Identifier of the associated command the log is sourced from.
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        shell_name:
+          type: string
+          nullable: true
+          description: The Shell name the cmd executed in.
+        cmd:
+          type: string
+          nullable: true
+          description: The Command Executed
+        message:
+          type: string
+          nullable: true
+          description: Log line message.
+        exit_code:
+          type: integer
+          format: int32
+          nullable: true
+          description: The Exit Code of the command
+        source:
+          $ref: '#/components/schemas/DevboxLogSource'
+          description: The source of the log.
+      required:
+      - level
+      - timestamp_ms
+      - source
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
+    DevboxLogsListView:
+      type: object
+      additionalProperties: false
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxLog'
+          description: List of logs for the given devbox.
+      required:
+      - logs
+    DevboxReadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - file_path
+    DevboxResourceUsageView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The devbox ID.
+        total_active_seconds:
+          type: integer
+          format: int64
+          description: Total time in seconds the devbox was actively running (excludes time spent suspended).
+        total_elapsed_seconds:
+          type: integer
+          format: int64
+          description: Total elapsed time in seconds from devbox creation to now (or end time if terminated). Includes all
+            time regardless of devbox state.
+        vcpu_seconds:
+          type: integer
+          format: int64
+          description: vCPU usage in vCPU-seconds (total_active_seconds multiplied by the number of vCPUs).
+        memory_gb_seconds:
+          type: integer
+          format: int64
+          description: Memory usage in GB-seconds (total_active_seconds multiplied by memory in GB).
+        disk_gb_seconds:
+          type: integer
+          format: int64
+          description: Disk usage in GB-seconds (total_elapsed_seconds multiplied by disk size in GB). Disk is billed for
+            elapsed time since storage is consumed even when suspended.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The devbox creation time in milliseconds since epoch.
+        end_time_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: The devbox end time in milliseconds since epoch, or null if still running.
+        status:
+          type: string
+          description: The current status of the devbox.
+      required:
+      - id
+      - total_active_seconds
+      - total_elapsed_seconds
+      - vcpu_seconds
+      - memory_gb_seconds
+      - disk_gb_seconds
+      - start_time_ms
+      - status
+    DevboxSendStdInRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        text:
+          type: string
+          nullable: true
+          description: Text to send to std in of the running execution.
+        signal:
+          $ref: '#/components/schemas/SignalType'
+          nullable: true
+          description: Signal to send to std in of the running execution.
+    DevboxSendStdInResult:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command is executing.
+        execution_id:
+          type: string
+          description: Execution id that received the stdin.
+        success:
+          type: boolean
+          description: Whether the stdin was successfully sent.
+      required:
+      - devbox_id
+      - execution_id
+      - success
+    DevboxSnapshotAsyncStatusView:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxSnapshotStatus'
+          description: The current status of the snapshot operation.
+        snapshot:
+          $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          nullable: true
+          description: The snapshot details if the operation completed successfully.
+        error_message:
+          type: string
+          nullable: true
+          description: Error message if the operation failed.
+      required:
+      - status
+    DevboxSnapshotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type: string
+          nullable: true
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
+    DevboxSnapshotStatus:
+      type: string
+      enum:
+      - in_progress
+      - error
+      - complete
+      - deleted
+    DevboxStartExecutionParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        command_id:
+          type: string
+          description: The command ID in UUIDv7 string format for idempotency and tracking
+        command:
+          type: string
+          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory
+            unless shell_name is specified. If shell_name is specified the command is run from the directory based on the
+            recent state of the persistent shell.
+        shell_name:
+          type: string
+          nullable: true
+          description: The name of the persistent shell to create or use if already created. When using a persistent shell,
+            the command will run from the directory at the end of the previous command and environment variables will be preserved.
+        optimistic_timeout:
+          type: integer
+          format: int32
+          nullable: true
+          description: Timeout in seconds to wait for command completion, up to 25 seconds. Defaults to 25 seconds. Operation
+            is not killed.
+      required:
+      - command_id
+      - command
+    DevboxStateTransition:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxViewStatus'
+        transition_time_ms:
+          $ref: '#/components/schemas/Number'
+          description: The time the status change occurred
+    DevboxUpdateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: (Optional) A user specified name to give the Devbox.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the devbox for organization.
+    DevboxView:
+      type: object
+      additionalProperties: false
+      description: A Devbox represents a virtual development environment. It is an isolated sandbox that can be given to agents
+        and used to run arbitrary code such as AI generated code.
+      properties:
+        id:
+          type: string
+          description: The ID of the Devbox.
+        name:
+          type: string
+          nullable: true
+          description: The name of the Devbox.
+        status:
+          $ref: '#/components/schemas/DevboxViewStatus'
+          description: The current status of the Devbox.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the Devbox (Unix timestamp milliseconds).
+        end_time_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: The time the Devbox finished execution (Unix timestamp milliseconds). Present if the Devbox is in a
+            terminal state.
+        initiator_type:
+          $ref: '#/components/schemas/InitiatorType'
+          description: The type of initiator that created the Devbox.
+        initiator_id:
+          type: string
+          nullable: true
+          description: The ID of the initiator that created the Devbox.
+        blueprint_id:
+          type: string
+          nullable: true
+          description: The Blueprint ID used in creation of the Devbox, if the devbox was created from a Blueprint.
+        snapshot_id:
+          type: string
+          nullable: true
+          description: The Snapshot ID used in creation of the Devbox, if the devbox was created from a Snapshot.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: The user defined Devbox metadata.
+        failure_reason:
+          $ref: '#/components/schemas/DevboxViewFailureReason'
+          nullable: true
+          description: The failure reason if the Devbox failed, if the Devbox has a 'failure' status.
+        shutdown_reason:
+          $ref: '#/components/schemas/DevboxViewShutdownReason'
+          nullable: true
+          description: The shutdown reason if the Devbox shutdown, if the Devbox has a 'shutdown' status.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: The launch parameters used to create the Devbox.
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxCapabilities'
+          description: A list of capability groups this devbox has access to.
+        state_transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxStateTransition'
+          description: A list of state transitions in order with durations
+        tunnel:
+          $ref: '#/components/schemas/TunnelView'
+          nullable: true
+          description: V2 tunnel information if a tunnel was created at launch time or via the createTunnel API.
+        gateway_specs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/GatewaySpecView'
+          nullable: true
+          description: Gateway specifications configured for this devbox. Map key is the environment variable prefix (e.g.,
+            'GWS_ANTHROPIC').
+        mcp_specs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/McpSpecView'
+          nullable: true
+          description: '[Beta] MCP specifications configured for this devbox. Map key is the environment variable name for
+            the MCP token envelope. Each spec links an MCP config to a secret for MCP server access through the MCP hub.'
+      required:
+      - id
+      - status
+      - create_time_ms
+      - end_time_ms
+      - metadata
+      - launch_parameters
+      - capabilities
+      - state_transitions
+    DevboxViewFailureReason:
+      type: string
+      enum:
+      - out_of_memory
+      - out_of_disk
+      - execution_failed
+      - health_check_failed
+      description: 'The category of failure experienced by the Devbox.
+
+
+        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
+
+        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use
+        case.
+
+        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
+
+        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum.
+        Consider requesting a larger resource size.
+
+        '
+      x-enum-descriptions:
+        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
+        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use
+          case.
+        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
+        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum.
+          Consider requesting a larger resource size.
+    DevboxViewShutdownReason:
+      type: string
+      enum:
+      - api_shutdown
+      - keep_alive_timeout
+      - entrypoint_exit
+      - idle
+      - ttl_expired
+      description: 'The reason that caused the transition of the Devbox to the shutown state.
+
+
+        api_shutdown: The Devbox shutdown due to API request.
+
+        entrypoint_exit: The Devbox entrypoint program completed.
+
+        idle: The Devbox shutdown due to configured action on idle configuration.
+
+        ttl_expired: The Devbox shutdown due to TTL expiration.
+
+        '
+      x-enum-descriptions:
+        api_shutdown: The Devbox shutdown due to API request.
+        entrypoint_exit: The Devbox entrypoint program completed.
+        idle: The Devbox shutdown due to configured action on idle configuration.
+        ttl_expired: The Devbox shutdown due to TTL expiration.
+    DevboxViewStatus:
+      type: string
+      enum:
+      - provisioning
+      - initializing
+      - running
+      - suspending
+      - suspended
+      - resuming
+      - failure
+      - shutdown
+      description: 'The status of the Devbox.
+
+
+        provisioning: Runloop is allocating and booting the necessary infrastructure resources.
+
+        initializing: Runloop defined boot scripts are running to enable the environment for interaction.
+
+        running: The Devbox is ready for interaction.
+
+        suspending: The Devbox disk is being snapshotted as part of suspension.
+
+        suspended: The Devbox disk is saved and no more active compute is being used for the Devbox.
+
+        resuming: The Devbox disk is being loaded as part of booting a suspended Devbox.
+
+        failure: The Devbox failed as part of booting or running user requested actions.
+
+        shutdown: The Devbox was successfully shutdown and no more active compute is being used.
+
+        '
+      x-enum-descriptions:
+        provisioning: Runloop is allocating and booting the necessary infrastructure resources.
+        initializing: Runloop defined boot scripts are running to enable the environment for interaction.
+        running: The Devbox is ready for interaction.
+        suspending: The Devbox disk is being snapshotted as part of suspension.
+        suspended: The Devbox disk is saved and no more active compute is being used for the Devbox.
+        resuming: The Devbox disk is being loaded as part of booting a suspended Devbox.
+        failure: The Devbox failed as part of booting or running user requested actions.
+        shutdown: The Devbox was successfully shutdown and no more active compute is being used.
+    DevboxWaitForCommandRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxExecutionStatus'
+          description: The command execution statuses to wait for. At least one status must be provided. The command will
+            be returned as soon as it reaches any of the provided statuses.
+        timeout_seconds:
+          type: integer
+          format: int32
+          nullable: true
+          description: (Optional) Timeout in seconds to wait for the status, up to 25 seconds. Defaults to 25 seconds.
+      required:
+      - statuses
+    DevboxWaitForStatusRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxViewStatus'
+          description: The Devbox statuses to wait for. At least one status must be provided. The devbox will be returned
+            as soon as it reaches any of the provided statuses.
+        timeout_seconds:
+          type: integer
+          format: int32
+          nullable: true
+          description: (Optional) Timeout in seconds to wait for the status, up to 30 seconds. Defaults to 10 seconds.
+      required:
+      - statuses
+    DevboxWriteFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+        contents:
+          type: string
+          description: The UTF-8 string contents to write to the file.
+      required:
+      - file_path
+      - contents
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    FileMount:
+      type: object
+      additionalProperties: false
+      properties:
+        target:
+          type: string
+          description: Target path where the file should be mounted.
+        content:
+          type: string
+          description: Content of the file to mount.
+        type:
+          type: string
+          enum:
+          - file_mount
+          default: file_mount
+      required:
+      - target
+      - content
+      - type
+    FileUpload:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+        path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+      required:
+      - path
+    GatewaySpec:
+      type: object
+      additionalProperties: false
+      description: GatewaySpec links an agent gateway configuration to a secret for credential proxying in a devbox. The agent
+        gateway will proxy requests to external APIs using the specified credential without exposing the real API key.
+      properties:
+        gateway:
+          type: string
+          description: The gateway config to use. Can be a gateway config ID (gwc_xxx) or name.
+        secret:
+          type: string
+          description: The secret containing the credential. Can be a secret ID or name.
+      required:
+      - gateway
+      - secret
+    GatewaySpecView:
+      type: object
+      additionalProperties: false
+      properties:
+        gateway_config_id:
+          type: string
+          description: The ID of the gateway config (e.g., gwc_123abc).
+        secret_id:
+          type: string
+          description: The ID of the secret containing the credential.
+      required:
+      - gateway_config_id
+      - secret_id
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    InitiatorType:
+      type: string
+      enum:
+      - unknown
+      - api
+      - scenario
+      - scoring_validation
+    LaunchParameters:
+      type: object
+      additionalProperties: false
+      description: LaunchParameters enable you to customize the resources available to your Devbox as well as the environment
+        set up that should be completed before the Devbox is marked as 'running'.
+      properties:
+        launch_commands:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Set of commands to be run at launch time, before the entrypoint process is run.
+        resource_size_request:
+          $ref: '#/components/schemas/ResourceSize'
+          nullable: true
+          description: 'Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL:
+            0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk.
+            LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM,
+            16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size.'
+        available_ports:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: '[Deprecated] A list of ports to make available on the Devbox. This field is ignored.'
+        keep_alive_time_seconds:
+          type: integer
+          format: int64
+          nullable: true
+          description: Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours
+            (172800 seconds).
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          nullable: true
+          description: Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds.
+            If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead.
+        custom_cpu_cores:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16.
+        custom_gb_memory:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB.
+        custom_disk_size:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB.
+        architecture:
+          $ref: '#/components/schemas/Architecture'
+          nullable: true
+          description: The target architecture for the Devbox. If unset, defaults to x86_64.
+        user_parameters:
+          $ref: '#/components/schemas/UserParameters'
+          nullable: true
+          description: Specify the user for execution on Devbox. If not set, default `user` will be used.
+        required_services:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService
+            must be specified in Blueprint to be started.
+        network_policy_id:
+          type: string
+          nullable: true
+          description: (Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on
+            a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden.
+        lifecycle:
+          $ref: '#/components/schemas/LifecycleConfigurationParameters'
+          nullable: true
+          description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle
+            (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume
+        triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          nullable: true
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set,
+            they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          nullable: true
+          description: Triggers that can resume a suspended Devbox.
+    McpSpec:
+      type: object
+      additionalProperties: false
+      description: '[Beta] McpSpec links an MCP configuration to a secret for MCP server access in a devbox. The MCP hub will
+        proxy requests to upstream MCP servers using the specified credential, with tool-level access control based on the
+        MCP config''s allowed_tools.'
+      properties:
+        mcp_config:
+          type: string
+          description: The MCP config to use. Can be an MCP config ID (mcp_xxx) or name.
+        secret:
+          type: string
+          description: The secret containing the MCP server credential. Can be a secret ID or name.
+      required:
+      - mcp_config
+      - secret
+    McpSpecView:
+      type: object
+      additionalProperties: false
+      properties:
+        mcp_config_id:
+          type: string
+          description: The ID of the MCP config (e.g., mcp_123abc).
+        secret_id:
+          type: string
+          description: The ID of the secret containing the credential.
+      required:
+      - mcp_config_id
+      - secret_id
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    Mount:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectMount'
+      - $ref: '#/components/schemas/AgentMount'
+      - $ref: '#/components/schemas/CodeMount'
+      - $ref: '#/components/schemas/FileMount'
+      - $ref: '#/components/schemas/BrokerMount'
+      discriminator:
+        propertyName: type
+        mapping:
+          object_mount: '#/components/schemas/ObjectMount'
+          agent_mount: '#/components/schemas/AgentMount'
+          code_mount: '#/components/schemas/CodeMount'
+          file_mount: '#/components/schemas/FileMount'
+          broker_mount: '#/components/schemas/BrokerMount'
+    Number:
+      type: object
+      additionalProperties: false
+      properties: {}
+    ObjectMount:
+      type: object
+      additionalProperties: false
+      properties:
+        object_id:
+          type: string
+          description: The ID of the object to write.
+        object_path:
+          type: string
+          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt,
+            or directory if archive /home/user/archive_dir)
+        type:
+          type: string
+          enum:
+          - object_mount
+          default: object_mount
+      required:
+      - object_id
+      - object_path
+      - type
+    PtyConnectView:
+      type: object
+      additionalProperties: false
+      properties:
+        session_name:
+          type: string
+        status:
+          type: string
+        protocol_version:
+          type: string
+        connect_url:
+          type: string
+        created:
+          type: boolean
+        attached:
+          type: boolean
+        cols:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        idle_ttl_seconds:
+          type: integer
+          format: int64
+      required:
+      - created
+      - attached
+    PtyControlAction:
+      type: string
+      enum:
+      - resize
+      - signal
+      - close
+    PtyControlParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        action:
+          $ref: '#/components/schemas/PtyControlAction'
+        cols:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        signal:
+          type: string
+    PtyControlResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        session_name:
+          type: string
+        status:
+          type: string
+    PtyTunnelView:
+      type: object
+      additionalProperties: false
+      description: 'An ephemeral PTY tunnel providing authenticated terminal access to a Devbox. These tunnels are not stored
+        on the Devbox and are generated fresh on each request. Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai with Authorization:
+        Bearer {auth_token}'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_token:
+          type: string
+          description: Bearer token for tunnel authentication. Always required for PTY tunnels.
+      required:
+      - tunnel_key
+      - auth_token
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally
+        custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple
+        of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and
+        1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally
+          custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple
+          of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and
+          1:8 inclusive.
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type: boolean
+          nullable: true
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    SignalType:
+      type: string
+      enum:
+      - EOF
+      - INTERRUPT
+    TunnelAuthMode:
+      type: string
+      enum:
+      - open
+      - authenticated
+    TunnelAuthModeView:
+      type: string
+      enum:
+      - open
+      - authenticated
+    TunnelConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically
+        provisioned.
+      properties:
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthMode'
+          nullable: true
+          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
+        http_keep_alive:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting
+            the idle timer. Defaults to true if not specified.
+        wake_on_http:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false
+            if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are
+            set, lifecycle.resume_triggers.http takes precedence.
+    TunnelView:
+      type: object
+      additionalProperties: false
+      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients
+        to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access.
+        Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated
+        access.
+
+        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthModeView'
+          description: The authentication mode for the tunnel.
+        auth_token:
+          type: string
+          nullable: true
+          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the tunnel (Unix timestamp milliseconds).
+        http_keep_alive:
+          type: boolean
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting
+            the idle timer.
+        wake_on_http:
+          type: boolean
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
+      required:
+      - tunnel_key
+      - auth_mode
+      - create_time_ms
+      - http_keep_alive
+      - wake_on_http
+    UserParameters:
+      type: object
+      additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
+      properties:
+        username:
+          type: string
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+      required:
+      - username
+      - uid
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

@@ -1,0 +1,2645 @@
+openapi: 3.0.3
+info:
+  title: Runloop Benchmark API
+  version: '0.1'
+  description: "Run and manage Benchmarks and Benchmark Runs \u2014 the evaluation framework for AI coding agents. Supports\
+    \ SWE-Bench, SWE-smith, and custom benchmark definitions, scenario aggregation, run lifecycle (start/cancel/complete),\
+    \ scoring, and log retrieval."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: Benchmark
+paths:
+  /v1/benchmark_jobs:
+    post:
+      tags:
+      - Benchmark
+      summary: '[Beta] Create a BenchmarkJob.'
+      description: '[Beta] Create a BenchmarkJob that runs a set of scenarios entirely on runloop.'
+      operationId: createBenchmarkJob
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BenchmarkJobCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkJobView'
+      deprecated: false
+    get:
+      tags:
+      - Benchmark
+      summary: '[Beta] List BenchmarkJobs.'
+      description: '[Beta] List all BenchmarkJobs matching filter.'
+      operationId: listBenchmarkJobs
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkJobListView'
+      deprecated: false
+  /v1/benchmark_jobs/{id}:
+    get:
+      tags:
+      - Benchmark
+      summary: '[Beta] Get a previously created BenchmarkJob.'
+      description: '[Beta] Get a BenchmarkJob given ID.'
+      operationId: getBenchmarkJob
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkJob ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkJobView'
+      deprecated: false
+  /v1/benchmark_runs:
+    get:
+      tags:
+      - Benchmark
+      summary: List BenchmarkRuns.
+      description: List all BenchmarkRuns matching filter.
+      operationId: listBenchmarkRuns
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: benchmark_id
+        in: query
+        description: The Benchmark ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Filter by state
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunListView'
+      deprecated: false
+  /v1/benchmark_runs/{id}:
+    get:
+      tags:
+      - Benchmark
+      summary: Get a previously created BenchmarkRun.
+      description: Get a BenchmarkRun given ID.
+      operationId: getBenchmarkRun
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: false
+  /v1/benchmark_runs/{id}/cancel:
+    post:
+      tags:
+      - Benchmark
+      summary: Cancel a currently running Benchmark run.
+      description: 'Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying
+        Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios'
+      operationId: cancelBenchmarkRun
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: false
+  /v1/benchmark_runs/{id}/complete:
+    post:
+      tags:
+      - Benchmark
+      summary: Complete a BenchmarkRun.
+      description: Complete a currently running BenchmarkRun.
+      operationId: completeBenchmarkRun
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: false
+  /v1/benchmark_runs/{id}/download_logs:
+    post:
+      tags:
+      - Benchmark
+      summary: Download logs for a Benchmark run.
+      description: Download a zip file containing all logs for a Benchmark run.
+      operationId: downloadBenchmarkRunLogs
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/zip:
+              schema:
+                format: binary
+          headers:
+            Content-Type:
+              description: application/zip
+              required: true
+              schema:
+                type: string
+            Content-Disposition:
+              description: attachment; filename="benchmark_run_logs.zip"
+              required: true
+              schema:
+                type: string
+      deprecated: false
+  /v1/benchmark_runs/{id}/scenario_runs:
+    get:
+      tags:
+      - Benchmark
+      summary: List started scenario runs for a benchmark run.
+      description: List started scenario runs for a benchmark run.
+      operationId: listBenchmarkRunScenarioRuns
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Filter by Scenario Run state
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ScenarioRunState'
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioRunListView'
+      deprecated: false
+  /v1/benchmarks:
+    post:
+      tags:
+      - Benchmark
+      summary: Create a Benchmark.
+      description: Create a Benchmark with a set of Scenarios.
+      operationId: createBenchmark
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BenchmarkCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+      deprecated: false
+    get:
+      tags:
+      - Benchmark
+      summary: List Benchmarks.
+      description: List all Benchmarks matching filter.
+      operationId: listBenchmarks
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionListView'
+      deprecated: false
+  /v1/benchmarks/list_public:
+    get:
+      tags:
+      - Benchmark
+      summary: List Public Benchmarks.
+      description: List all public benchmarks matching filter.
+      operationId: listPublicBenchmarks
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionListView'
+      deprecated: false
+  /v1/benchmarks/metadata/keys:
+    get:
+      tags:
+      - Benchmark
+      summary: List available benchmark metadata keys.
+      description: Returns a list of all available metadata keys that can be used for filtering benchmarks.
+      operationId: getBenchmarkMetadataKeys
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataKeysView'
+      deprecated: false
+  /v1/benchmarks/metadata/keys/{key}/values:
+    get:
+      tags:
+      - Benchmark
+      summary: List values for a specific benchmark metadata key.
+      description: Returns a list of all available metadata keys that can be used for filtering benchmarks.
+      operationId: getBenchmarkMetadataValues
+      parameters:
+      - name: key
+        in: path
+        description: The metadata key to get values for.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataValuesView'
+        '400':
+          description: Invalid metadata key provided.
+      deprecated: false
+  /v1/benchmarks/runs:
+    get:
+      tags:
+      - Benchmark
+      summary: List BenchmarkRuns.
+      description: List all BenchmarkRuns matching filter.
+      operationId: listBenchmarkRunsDeprecated
+      parameters:
+      - name: name
+        in: query
+        description: Filter by name
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: benchmark_id
+        in: query
+        description: The Benchmark ID to filter by.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Filter by state
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunListView'
+      deprecated: true
+  /v1/benchmarks/runs/{id}:
+    get:
+      tags:
+      - Benchmark
+      summary: Get a previously created BenchmarkRun.
+      description: Get a BenchmarkRun given ID.
+      operationId: getBenchmarkRunDeprecated
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: true
+  /v1/benchmarks/runs/{id}/cancel:
+    post:
+      tags:
+      - Benchmark
+      summary: Cancel a currently running Benchmark run.
+      description: 'Cancel a Benchmark run. This will do the following: 1. Cancel all running scenarios and shutdown the underlying
+        Devbox resources 2. Update the benchmark state to CANCELED 3. Calculate final score from completed scenarios'
+      operationId: cancelBenchmarkRunDeprecated
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: true
+  /v1/benchmarks/runs/{id}/complete:
+    post:
+      tags:
+      - Benchmark
+      summary: Complete a BenchmarkRun.
+      description: Complete a currently running BenchmarkRun.
+      operationId: completeBenchmarkRunDeprecated
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: true
+  /v1/benchmarks/runs/{id}/download_logs:
+    post:
+      tags:
+      - Benchmark
+      summary: Download logs for a Benchmark run.
+      description: Download a zip file containing all logs for a Benchmark run.
+      operationId: downloadBenchmarkRunLogsDeprecated
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/zip:
+              schema:
+                format: binary
+          headers:
+            Content-Type:
+              description: application/zip
+              required: true
+              schema:
+                type: string
+            Content-Disposition:
+              description: attachment; filename="benchmark_run_logs.zip"
+              required: true
+              schema:
+                type: string
+      deprecated: true
+  /v1/benchmarks/runs/{id}/scenario_runs:
+    get:
+      tags:
+      - Benchmark
+      summary: List started scenario runs for a benchmark run.
+      description: List started scenario runs for a benchmark run.
+      operationId: listBenchmarkRunScenarioRunsDeprecated
+      parameters:
+      - name: id
+        in: path
+        description: The BenchmarkRun ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Filter by Scenario Run state
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          $ref: '#/components/schemas/ScenarioRunState'
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioRunListView'
+      deprecated: true
+  /v1/benchmarks/start_run:
+    post:
+      tags:
+      - Benchmark
+      summary: Start a new BenchmarkRun.
+      description: Start a new BenchmarkRun based on the provided Benchmark.
+      operationId: startBenchmarkRun
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartBenchmarkRunParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunView'
+      deprecated: false
+  /v1/benchmarks/{id}:
+    post:
+      tags:
+      - Benchmark
+      summary: Update a Benchmark.
+      description: Update a Benchmark. Fields that are null will preserve the existing value. Fields that are provided (including
+        empty values) will replace the existing value entirely.
+      operationId: updateBenchmark
+      parameters:
+      - name: id
+        in: path
+        description: The Benchmark ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BenchmarkUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+      deprecated: false
+    get:
+      tags:
+      - Benchmark
+      summary: Get a Benchmark.
+      description: Get a previously created Benchmark.
+      operationId: getBenchmark
+      parameters:
+      - name: id
+        in: path
+        description: The Benchmark ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+      deprecated: false
+  /v1/benchmarks/{id}/archive:
+    post:
+      tags:
+      - Benchmark
+      summary: Archive a Benchmark.
+      description: Archive a previously created Benchmark. The benchmark will no longer appear in list endpoints but can still
+        be retrieved by ID.
+      operationId: archiveBenchmark
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the Benchmark to archive.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+        '403':
+          description: Cannot archive public benchmarks.
+        '404':
+          description: Benchmark not found.
+      deprecated: false
+  /v1/benchmarks/{id}/definitions:
+    get:
+      tags:
+      - Benchmark
+      summary: Get scenario definitions for a Benchmark.
+      description: Get scenario definitions for a previously created Benchmark.
+      operationId: getBenchmarkScenarioDefinitions
+      parameters:
+      - name: id
+        in: path
+        description: The Benchmark ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioDefinitionListView'
+      deprecated: false
+  /v1/benchmarks/{id}/runs:
+    get:
+      tags:
+      - Benchmark
+      summary: Get runs for a provided Benchmark.
+      description: Get runs for a previously created Benchmark.
+      operationId: getBenchmarkRuns
+      parameters:
+      - name: id
+        in: path
+        description: The Benchmark ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkRunListView'
+      deprecated: false
+  /v1/benchmarks/{id}/scenarios:
+    post:
+      tags:
+      - Benchmark
+      summary: Modify scenarios for a Benchmark.
+      description: Add and/or remove Scenario IDs from an existing Benchmark.
+      operationId: updateBenchmarkScenarios
+      parameters:
+      - name: id
+        in: path
+        description: The Benchmark ID.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BenchmarkScenarioUpdateParameters'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+      deprecated: false
+  /v1/benchmarks/{id}/unarchive:
+    post:
+      tags:
+      - Benchmark
+      summary: Unarchive a Benchmark.
+      description: Unarchive a previously archived Benchmark. The benchmark will appear in list endpoints again.
+      operationId: unarchiveBenchmark
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the Benchmark to unarchive.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenchmarkDefinitionView'
+        '403':
+          description: Cannot unarchive public benchmarks.
+        '404':
+          description: Benchmark not found.
+      deprecated: false
+components:
+  schemas:
+    AgentMount:
+      type: object
+      additionalProperties: false
+      properties:
+        agent_id:
+          type: string
+          nullable: true
+          description: The ID of the agent to mount. Either agent_id or name must be set.
+        agent_name:
+          type: string
+          nullable: true
+          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string
+            provided. Either agent id or name must be set
+        agent_path:
+          type: string
+          nullable: true
+          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g.,
+            /home/user/agent)
+        auth_token:
+          type: string
+          nullable: true
+          description: Optional auth token for private repositories. Only used for git agents.
+        type:
+          type: string
+          enum:
+          - agent_mount
+          default: agent_mount
+      required:
+      - agent_id
+      - agent_name
+      - type
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    AstGrepScoringFunction:
+      type: object
+      additionalProperties: false
+      description: AstGrepScoringFunction utilizes structured coach search for scoring.
+      properties:
+        lang:
+          type: string
+          description: The language of the pattern.
+        search_directory:
+          type: string
+          description: The path to search.
+        pattern:
+          type: string
+          description: AST pattern to match. Pattern will be passed to ast-grep using the commandline surround by double quotes
+            ("), so make sure to use proper escaping (for example, \$\$\$).
+        type:
+          type: string
+          enum:
+          - ast_grep_scorer
+          default: ast_grep_scorer
+      required:
+      - search_directory
+      - pattern
+      - type
+    BashScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: BashScriptScoringFunction is a scoring function specified by a bash script that will be run in the context
+        of your environment.
+      properties:
+        bash_script:
+          type: string
+          description: A single bash script that sets up the environment, scores, and prints the final score to standard out.
+            Score should be a float between 0.0 and 1.0, and look like "score=[0.0..1.0].
+        type:
+          type: string
+          enum:
+          - bash_script_scorer
+          default: bash_script_scorer
+      required:
+      - type
+    BenchmarkCreateParameters:
+      type: object
+      additionalProperties: false
+      description: BenchmarkCreateParameters contain the set of parameters to create a Benchmark.
+      properties:
+        name:
+          type: string
+          description: The unique name of the Benchmark.
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: The Scenario IDs that make up the Benchmark.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the benchmark.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Environment variables required to run the benchmark. If any required variables are not supplied, the
+            benchmark will fail to start.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user
+            secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail
+            to start.
+        attribution:
+          type: string
+          nullable: true
+          description: Attribution information for the benchmark.
+        description:
+          type: string
+          nullable: true
+          description: Detailed description of the benchmark.
+      required:
+      - name
+    BenchmarkDefJobSource:
+      type: object
+      additionalProperties: false
+      description: Benchmark definition job source
+      properties:
+        benchmark_id:
+          type: string
+          description: The ID of the benchmark definition
+        benchmark_name:
+          type: string
+          nullable: true
+          description: Optional user-provided name for the benchmark definition
+        type:
+          type: string
+          enum:
+          - benchmark
+          default: benchmark
+      required:
+      - benchmark_id
+      - type
+    BenchmarkDefinitionJobSpec:
+      type: object
+      additionalProperties: false
+      description: Specifies a benchmark definition with runtime configuration. The benchmark definition's scenarios will
+        be executed using the provided agent and orchestrator configurations.
+      properties:
+        benchmark_id:
+          type: string
+          description: ID of the benchmark definition to run. The scenarios from this benchmark will be executed.
+        agent_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations to use for this run. Must specify at least one agent.
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          nullable: true
+          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
+        type:
+          type: string
+          enum:
+          - benchmark
+          default: benchmark
+      required:
+      - benchmark_id
+      - agent_configs
+      - type
+    BenchmarkDefinitionListView:
+      type: object
+      additionalProperties: false
+      properties:
+        benchmarks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkDefinitionView'
+          description: List of Benchmarks matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - benchmarks
+      - has_more
+    BenchmarkDefinitionView:
+      type: object
+      additionalProperties: false
+      description: A BenchmarkDefinitionView represents a grouped set of Scenarios that together form a Benchmark.
+      properties:
+        id:
+          type: string
+          description: The ID of the Benchmark.
+        name:
+          type: string
+          description: The name of the Benchmark.
+        scenarioIds:
+          type: array
+          items:
+            type: string
+          description: List of Scenario IDs that make up the benchmark.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the benchmark for organization.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          description: Required environment variables used to run the benchmark. If any required environment variables are
+            missing, the benchmark will fail to start.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          description: Required secrets used to run the benchmark. If any required secrets are missing, the benchmark will
+            fail to start.
+        is_public:
+          type: boolean
+          description: Whether this benchmark is public.
+        attribution:
+          type: string
+          description: Attribution information for the benchmark.
+        description:
+          type: string
+          description: Detailed description of the benchmark.
+        status:
+          $ref: '#/components/schemas/BenchmarkStatus'
+          description: Whether the benchmark is active or archived. Archived benchmarks are excluded from listings and cannot
+            be run.
+      required:
+      - id
+      - name
+      - scenarioIds
+      - metadata
+      - status
+    BenchmarkJobCreateParameters:
+      type: object
+      additionalProperties: false
+      description: BenchmarkJobCreateParameters contain the set of parameters to create a BenchmarkJob.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: The name of the BenchmarkJob. If not provided, name will be generated based on target dataset.
+        spec:
+          $ref: '#/components/schemas/BenchmarkJobSpec'
+          nullable: true
+          description: The job specification. Exactly one spec type must be set.
+    BenchmarkJobListView:
+      type: object
+      additionalProperties: false
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkJobView'
+          description: List of BenchmarkJobs matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - jobs
+      - has_more
+    BenchmarkJobSpec:
+      oneOf:
+      - $ref: '#/components/schemas/HarborJobSpec'
+      - $ref: '#/components/schemas/BenchmarkDefinitionJobSpec'
+      - $ref: '#/components/schemas/ScenarioDefinitionJobSpec'
+      discriminator:
+        propertyName: type
+        mapping:
+          harbor: '#/components/schemas/HarborJobSpec'
+          benchmark: '#/components/schemas/BenchmarkDefinitionJobSpec'
+          scenarios: '#/components/schemas/ScenarioDefinitionJobSpec'
+    BenchmarkJobState:
+      type: string
+      enum:
+      - initializing
+      - queued
+      - running
+      - completed
+      - failed
+      - cancelled
+      - timeout
+    BenchmarkJobView:
+      type: object
+      additionalProperties: false
+      description: A BenchmarkJobView represents a benchmark job that runs a set of scenarios entirely on runloop.
+      properties:
+        id:
+          type: string
+          description: The ID of the BenchmarkJob.
+        name:
+          type: string
+          description: The unique name of the BenchmarkJob.
+        state:
+          $ref: '#/components/schemas/BenchmarkJobState'
+          description: The current state of the benchmark job.
+        job_source:
+          $ref: '#/components/schemas/JobSource'
+          nullable: true
+          description: The source configuration that was used to create this job. Either Harbor YAML or benchmark definition
+            reference.
+        job_spec:
+          $ref: '#/components/schemas/JobSpec'
+          nullable: true
+          description: The resolved job specification. Contains scenarios, agents, and orchestrator config.
+        failure_reason:
+          type: string
+          nullable: true
+          description: Failure reason if job failed.
+        benchmark_outcomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkOutcomeView'
+          nullable: true
+          description: Detailed outcome data for each benchmark run created by this job. Includes per-agent results and scenario-level
+            details.
+        in_progress_runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/InProgressRunView'
+          nullable: true
+          description: Benchmark runs currently in progress for this job. Shows runs that have not yet completed.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Timestamp when job was created (Unix milliseconds).
+      required:
+      - id
+      - name
+      - state
+      - create_time_ms
+    BenchmarkOutcomeView:
+      type: object
+      additionalProperties: false
+      description: Outcome data for a single benchmark run within a benchmark job, representing results for one agent configuration.
+      properties:
+        benchmark_run_id:
+          type: string
+          description: The ID of the benchmark run.
+        agent_name:
+          type: string
+          description: The name of the agent configuration used.
+        model_name:
+          type: string
+          nullable: true
+          description: The model name used by the agent.
+        n_completed:
+          type: integer
+          format: int32
+          description: Number of scenarios that completed successfully.
+        n_failed:
+          type: integer
+          format: int32
+          description: Number of scenarios that failed.
+        n_timeout:
+          type: integer
+          format: int32
+          description: Number of scenarios that timed out.
+        average_score:
+          type: number
+          format: float
+          nullable: true
+          description: Average score across all completed scenarios (0.0 to 1.0).
+        duration_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Total duration of the benchmark run in milliseconds.
+        scenario_outcomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioOutcomeView'
+          description: Detailed outcomes for each scenario in this benchmark run.
+      required:
+      - benchmark_run_id
+      - agent_name
+      - n_completed
+      - n_failed
+      - n_timeout
+      - scenario_outcomes
+    BenchmarkRunListView:
+      type: object
+      additionalProperties: false
+      properties:
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkRunView'
+          description: List of BenchmarkRuns matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - runs
+      - has_more
+    BenchmarkRunState:
+      type: string
+      enum:
+      - running
+      - canceled
+      - completed
+      - failed
+    BenchmarkRunView:
+      type: object
+      additionalProperties: false
+      description: A BenchmarkRunView represents a run of a complete set of Scenarios, organized under a Benchmark or created
+        by a BenchmarkJob.
+      properties:
+        id:
+          type: string
+          description: The ID of the BenchmarkRun.
+        benchmark_id:
+          type: string
+          nullable: true
+          description: The ID of the Benchmark definition. Present if run was created from a benchmark definition.
+        name:
+          type: string
+          nullable: true
+          description: The name of the BenchmarkRun.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The time the benchmark run execution started (Unix timestamp milliseconds).
+        duration_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: The duration for the BenchmarkRun to complete.
+        state:
+          $ref: '#/components/schemas/BenchmarkRunState'
+          description: The state of the BenchmarkRun.
+        score:
+          type: number
+          format: float
+          nullable: true
+          description: The final score across the BenchmarkRun, present once completed. Calculated as sum of scenario scores
+            / number of scenario runs.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the benchmark run for organization.
+        purpose:
+          type: string
+          nullable: true
+          description: Purpose of the run.
+        environment_variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Environment variables used to run the benchmark.
+        secrets_provided:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: 'User secrets used to run the benchmark. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment
+            variable ''DB_PASS'' on all scenario devboxes to the value of the secret ''DATABASE_PASSWORD''.'
+      required:
+      - id
+      - start_time_ms
+      - state
+      - metadata
+    BenchmarkScenarioUpdateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        scenarios_to_add:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Scenario IDs to add to the Benchmark.
+        scenarios_to_remove:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Scenario IDs to remove from the Benchmark.
+    BenchmarkStatus:
+      type: string
+      enum:
+      - active
+      - archived
+    BenchmarkUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: BenchmarkUpdateParameters contain the set of parameters to update a Benchmark. All fields are optional
+        - null fields preserve existing values, provided fields replace entirely.
+      properties:
+        name:
+          type: string
+          nullable: true
+          description: The unique name of the Benchmark. Cannot be blank.
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: The Scenario IDs that make up the Benchmark. Pass in empty list to clear.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the benchmark. Pass in empty map to clear.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Environment variables required to run the benchmark. If any required variables are not supplied, the
+            benchmark will fail to start. Pass in empty list to clear.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user
+            secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail
+            to start. Pass in empty list to clear.
+        attribution:
+          type: string
+          nullable: true
+          description: Attribution information for the benchmark. Pass in empty string to clear.
+        description:
+          type: string
+          nullable: true
+          description: Detailed description of the benchmark. Pass in empty string to clear.
+    BrokerMount:
+      type: object
+      additionalProperties: false
+      properties:
+        axon_id:
+          type: string
+          description: The ID of the axon event stream to mount onto the Devbox.
+        protocol:
+          $ref: '#/components/schemas/BrokerMountProtocol'
+          nullable: true
+          description: The protocol used by the broker to deliver events to the agent.
+        agent_binary:
+          type: string
+          nullable: true
+          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
+        working_directory:
+          type: string
+          nullable: true
+          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
+        launch_args:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess
+            (acp, claude_json).
+        type:
+          type: string
+          enum:
+          - broker_mount
+          default: broker_mount
+      required:
+      - axon_id
+      - type
+    BrokerMountProtocol:
+      type: string
+      enum:
+      - acp
+      - claude_json
+    BuiltInScoringFunction:
+      oneOf:
+      - $ref: '#/components/schemas/AstGrepScoringFunction'
+      - $ref: '#/components/schemas/BashScriptScoringFunction'
+      - $ref: '#/components/schemas/CommandScoringFunction'
+      - $ref: '#/components/schemas/CustomScoringFunction'
+      - $ref: '#/components/schemas/PythonScriptScoringFunction'
+      - $ref: '#/components/schemas/TestBasedScoringFunction'
+      discriminator:
+        propertyName: type
+        mapping:
+          ast_grep_scorer: '#/components/schemas/AstGrepScoringFunction'
+          bash_script_scorer: '#/components/schemas/BashScriptScoringFunction'
+          command_scorer: '#/components/schemas/CommandScoringFunction'
+          custom_scorer: '#/components/schemas/CustomScoringFunction'
+          python_script_scorer: '#/components/schemas/PythonScriptScoringFunction'
+          test_based_scorer: '#/components/schemas/TestBasedScoringFunction'
+    CodeMount:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type: string
+          nullable: true
+          description: Installation command to install and setup repository.
+        git_ref:
+          type: string
+          nullable: true
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type: string
+          nullable: true
+          description: The authentication token necessary to pull repo.
+        type:
+          type: string
+          enum:
+          - code_mount
+          default: code_mount
+      required:
+      - repo_name
+      - repo_owner
+      - type
+    CommandScoringFunction:
+      type: object
+      additionalProperties: false
+      description: CommandScoringFunction executes a single command and checks the result.The output of the command will be
+        printed. Scoring will passed if the command returns status code 0, otherwise it will be failed.
+      properties:
+        command:
+          type: string
+          description: The command to execute.
+        type:
+          type: string
+          enum:
+          - command_scorer
+          default: command_scorer
+      required:
+      - type
+    CustomScoringFunction:
+      type: object
+      additionalProperties: false
+      description: CustomScoringFunction is a custom, user defined scoring function.
+      properties:
+        custom_scorer_type:
+          type: string
+          description: Type of the scoring function, previously registered with Runloop.
+        scorer_params:
+          type: object
+          nullable: true
+          description: Additional JSON structured context to pass to the scoring function.
+        type:
+          type: string
+          enum:
+          - custom_scorer
+          default: custom_scorer
+      required:
+      - custom_scorer_type
+      - type
+    ExternalApiAgentConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for externally-driven benchmark runs via API
+      properties:
+        info:
+          type: string
+          nullable: true
+          description: Placeholder for future external agent metadata
+        type:
+          type: string
+          enum:
+          - external_api
+          default: external_api
+      required:
+      - type
+    FailureReason:
+      type: object
+      additionalProperties: false
+      description: Information about why a scenario execution failed
+      properties:
+        exception_type:
+          type: string
+          description: The exception class name (e.g., 'TimeoutException', 'AgentTimeoutError')
+        exception_message:
+          type: string
+          description: The exception message providing context
+      required:
+      - exception_type
+      - exception_message
+    FileMount:
+      type: object
+      additionalProperties: false
+      properties:
+        target:
+          type: string
+          description: Target path where the file should be mounted.
+        content:
+          type: string
+          description: Content of the file to mount.
+        type:
+          type: string
+          enum:
+          - file_mount
+          default: file_mount
+      required:
+      - target
+      - content
+      - type
+    HarborJobSource:
+      type: object
+      additionalProperties: false
+      description: Harbor job source with inline YAML configuration
+      properties:
+        inline_yaml:
+          type: string
+          description: The Harbor job configuration as inline YAML content
+        type:
+          type: string
+          enum:
+          - harbor
+          default: harbor
+      required:
+      - inline_yaml
+      - type
+    HarborJobSpec:
+      type: object
+      additionalProperties: false
+      description: Harbor-based job specification with inline YAML configuration.
+      properties:
+        inline_yaml:
+          type: string
+          description: The Harbor job configuration as inline YAML content.
+        type:
+          type: string
+          enum:
+          - harbor
+          default: harbor
+      required:
+      - inline_yaml
+      - type
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    InProgressRunView:
+      type: object
+      additionalProperties: false
+      description: A lightweight view of a benchmark run currently in progress, showing basic execution details without full
+        outcome data.
+      properties:
+        benchmark_run_id:
+          type: string
+          description: The ID of the benchmark run.
+        agent_config:
+          $ref: '#/components/schemas/RunAgentConfig'
+          nullable: true
+          description: Agent configuration used for this run. Specifies whether the run was driven by an external API agent
+            or a job-defined agent.
+        state:
+          $ref: '#/components/schemas/BenchmarkRunState'
+          description: The current state of the run.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: Start time (Unix milliseconds).
+        duration_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Duration so far in milliseconds.
+      required:
+      - benchmark_run_id
+      - state
+      - start_time_ms
+    InputContext:
+      type: object
+      additionalProperties: false
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
+      properties:
+        problem_statement:
+          type: string
+          description: The problem statement for the Scenario.
+        additional_context:
+          type: object
+          nullable: true
+          description: Additional JSON structured input context.
+      required:
+      - problem_statement
+    JobAgentConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for an agent in a benchmark job
+      properties:
+        agent_id:
+          type: string
+          nullable: true
+          description: ID of the agent to use (optional if agent exists by name)
+        name:
+          type: string
+          description: Name of the agent
+        model_name:
+          type: string
+          nullable: true
+          description: Model name override for this agent
+        timeout_seconds:
+          type: number
+          format: float
+          nullable: true
+          description: Timeout in seconds for this agent
+        kwargs:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Additional kwargs for agent configuration
+        agent_environment:
+          $ref: '#/components/schemas/JobAgentEnvironment'
+          nullable: true
+          description: Environment configuration to use for this agent
+        type:
+          type: string
+          enum:
+          - job_agent
+          default: job_agent
+      required:
+      - name
+      - type
+    JobAgentEnvironment:
+      type: object
+      additionalProperties: false
+      description: Environment configuration for an agent in a benchmark job
+      properties:
+        environment_variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Environment variables to set when launching the agent.
+        secrets:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Secrets to inject as environment variables when launching the agent. Map of environment variable names
+            to secret IDs.
+    JobOrchestratorConfig:
+      type: object
+      additionalProperties: false
+      description: Orchestrator configuration for benchmark job execution
+      properties:
+        n_concurrent_trials:
+          type: integer
+          format: int32
+          nullable: true
+          description: 'Number of concurrent trials to run (default: 1). Controls parallelism for scenario execution. Default
+            is 1.'
+        n_attempts:
+          type: integer
+          format: int32
+          nullable: true
+          description: 'Number of retry attempts on failure (default: 0). This is the retry policy for failed scenarios. Default
+            is 0.'
+        timeout_multiplier:
+          type: number
+          format: float
+          nullable: true
+          description: 'Timeout multiplier for retries (default: 1.0). Each retry will multiply the timeout by this factor.'
+        quiet:
+          type: boolean
+          nullable: true
+          description: 'Suppress verbose output (default: false)'
+    JobSource:
+      oneOf:
+      - $ref: '#/components/schemas/HarborJobSource'
+      - $ref: '#/components/schemas/BenchmarkDefJobSource'
+      - $ref: '#/components/schemas/ScenariosJobSource'
+      discriminator:
+        propertyName: type
+        mapping:
+          harbor: '#/components/schemas/HarborJobSource'
+          benchmark: '#/components/schemas/BenchmarkDefJobSource'
+          scenarios: '#/components/schemas/ScenariosJobSource'
+    JobSpec:
+      type: object
+      additionalProperties: false
+      description: Job specification describing scenarios and execution configuration
+      properties:
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          description: List of scenario IDs to execute
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          nullable: true
+          description: Orchestrator configuration
+        agent_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations for this job
+      required:
+      - scenario_ids
+      - agent_configs
+    LaunchParameters:
+      type: object
+      additionalProperties: false
+      description: LaunchParameters enable you to customize the resources available to your Devbox as well as the environment
+        set up that should be completed before the Devbox is marked as 'running'.
+      properties:
+        launch_commands:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Set of commands to be run at launch time, before the entrypoint process is run.
+        resource_size_request:
+          $ref: '#/components/schemas/ResourceSize'
+          nullable: true
+          description: 'Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL:
+            0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk.
+            LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM,
+            16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size.'
+        available_ports:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: '[Deprecated] A list of ports to make available on the Devbox. This field is ignored.'
+        keep_alive_time_seconds:
+          type: integer
+          format: int64
+          nullable: true
+          description: Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours
+            (172800 seconds).
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          nullable: true
+          description: Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds.
+            If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead.
+        custom_cpu_cores:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16.
+        custom_gb_memory:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB.
+        custom_disk_size:
+          type: integer
+          format: int32
+          nullable: true
+          description: Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB.
+        architecture:
+          $ref: '#/components/schemas/Architecture'
+          nullable: true
+          description: The target architecture for the Devbox. If unset, defaults to x86_64.
+        user_parameters:
+          $ref: '#/components/schemas/UserParameters'
+          nullable: true
+          description: Specify the user for execution on Devbox. If not set, default `user` will be used.
+        required_services:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService
+            must be specified in Blueprint to be started.
+        network_policy_id:
+          type: string
+          nullable: true
+          description: (Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on
+            a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden.
+        lifecycle:
+          $ref: '#/components/schemas/LifecycleConfigurationParameters'
+          nullable: true
+          description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle
+            (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume
+        triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          nullable: true
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set,
+            they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          nullable: true
+          description: Triggers that can resume a suspended Devbox.
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    Mount:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectMount'
+      - $ref: '#/components/schemas/AgentMount'
+      - $ref: '#/components/schemas/CodeMount'
+      - $ref: '#/components/schemas/FileMount'
+      - $ref: '#/components/schemas/BrokerMount'
+      discriminator:
+        propertyName: type
+        mapping:
+          object_mount: '#/components/schemas/ObjectMount'
+          agent_mount: '#/components/schemas/AgentMount'
+          code_mount: '#/components/schemas/CodeMount'
+          file_mount: '#/components/schemas/FileMount'
+          broker_mount: '#/components/schemas/BrokerMount'
+    ObjectMount:
+      type: object
+      additionalProperties: false
+      properties:
+        object_id:
+          type: string
+          description: The ID of the object to write.
+        object_path:
+          type: string
+          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt,
+            or directory if archive /home/user/archive_dir)
+        type:
+          type: string
+          enum:
+          - object_mount
+          default: object_mount
+      required:
+      - object_id
+      - object_path
+      - type
+    PythonScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: PythonScriptScoringFunction will run a python script in the context of your environment as a ScoringFunction.
+      properties:
+        requirements_contents:
+          type: string
+          nullable: true
+          description: Package dependencies to be installed. The requirements should be a valid requirements.txt file.
+        python_script:
+          type: string
+          description: Python script to be run. The script should output the score to standard out as a float between 0.0
+            and 1.0.
+        python_version_constraint:
+          type: string
+          nullable: true
+          description: Python version  to run scoring. Default is "==3.12.10"
+        type:
+          type: string
+          enum:
+          - python_script_scorer
+          default: python_script_scorer
+      required:
+      - python_script
+      - type
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally
+        custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple
+        of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and
+        1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally
+          custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple
+          of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and
+          1:8 inclusive.
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type: boolean
+          nullable: true
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type: boolean
+          nullable: true
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    RunAgentConfig:
+      oneOf:
+      - $ref: '#/components/schemas/ExternalApiAgentConfig'
+      - $ref: '#/components/schemas/JobAgentConfig'
+      discriminator:
+        propertyName: type
+        mapping:
+          external_api: '#/components/schemas/ExternalApiAgentConfig'
+          job_agent: '#/components/schemas/JobAgentConfig'
+    RunProfile:
+      type: object
+      additionalProperties: false
+      properties:
+        purpose:
+          type: string
+          nullable: true
+          description: Purpose of the run.
+        envVars:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: 'Mapping of Environment Variable to Value. May be shown in devbox logging. Example: {"DB_PASS": "DATABASE_PASSWORD"}
+            would set the environment variable ''DB_PASS'' to the value ''DATABASE_PASSWORD_VALUE''.'
+        secrets:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: 'Mapping of Environment Variable to User Secret Name. Never shown in devbox logging. Example: {"DB_PASS":
+            "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' to the value of the secret ''DATABASE_PASSWORD''.'
+        launchParameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          nullable: true
+          description: Additional runtime LaunchParameters to apply after the devbox starts.
+        mounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mount'
+          nullable: true
+          description: A list of mounts to be included in the scenario run.
+    ScenarioDefinitionJobSpec:
+      type: object
+      additionalProperties: false
+      description: Specifies a set of scenarios with runtime configuration. The  scenarios will be executed using the provided
+        agent and orchestrator configurations.
+      properties:
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          description: List of scenario IDs to execute
+        agent_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations to use for this run. Must specify at least one agent.
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          nullable: true
+          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
+        type:
+          type: string
+          enum:
+          - scenarios
+          default: scenarios
+      required:
+      - scenario_ids
+      - agent_configs
+      - type
+    ScenarioDefinitionListView:
+      type: object
+      additionalProperties: false
+      properties:
+        scenarios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioDefinitionView'
+          description: List of Scenarios matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - scenarios
+      - has_more
+    ScenarioDefinitionStatus:
+      type: string
+      enum:
+      - active
+      - archived
+    ScenarioDefinitionView:
+      type: object
+      additionalProperties: false
+      description: A ScenarioDefinitionView represents a repeatable AI coding evaluation test, complete with initial environment
+        and scoring contract.
+      properties:
+        id:
+          type: string
+          description: The ID of the Scenario.
+        name:
+          type: string
+          description: The name of the Scenario.
+        environment:
+          $ref: '#/components/schemas/ScenarioEnvironment'
+          nullable: true
+          description: The Environment in which the Scenario is run.
+        input_context:
+          $ref: '#/components/schemas/InputContext'
+          description: The input context for the Scenario.
+        scoring_contract:
+          $ref: '#/components/schemas/ScoringContract'
+          description: The scoring contract for the Scenario.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario for organization.
+        reference_output:
+          type: string
+          nullable: true
+          description: A string representation of the reference output to solve the scenario. Commonly can be the result of
+            a git diff or a sequence of command actions to apply to the environment.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          description: Environment variables required to run the scenario. If any required environment variables are missing,
+            the scenario will fail to start.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          description: Environment variables required to run the scenario. If any required secrets are missing, the scenario
+            will fail to start.
+        is_public:
+          type: boolean
+          description: Whether this scenario is public.
+        validation_type:
+          $ref: '#/components/schemas/ValidationType'
+          nullable: true
+          description: Validation strategy.
+        scorer_timeout_sec:
+          type: integer
+          format: int32
+          nullable: true
+          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
+        status:
+          $ref: '#/components/schemas/ScenarioDefinitionStatus'
+          description: Whether the scenario is active or archived. Archived scenarios are excluded from listings and cannot
+            be updated.
+      required:
+      - id
+      - name
+      - input_context
+      - scoring_contract
+      - metadata
+      - status
+    ScenarioEnvironment:
+      type: object
+      additionalProperties: false
+      description: ScenarioEnvironmentParameters specify the environment in which a Scenario will be run.
+      properties:
+        blueprint_id:
+          type: string
+          nullable: true
+          description: Use the blueprint with matching ID.
+        snapshot_id:
+          type: string
+          nullable: true
+          description: Use the snapshot with matching ID.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          nullable: true
+          description: Optional launch parameters to apply to the devbox environment at launch.
+        working_directory:
+          type: string
+          nullable: true
+          description: The working directory where the agent is expected to fulfill the scenario. Scoring functions also run
+            from the working directory.
+    ScenarioOutcomeView:
+      type: object
+      additionalProperties: false
+      description: Outcome data for a single scenario execution, including its final state and scoring results.
+      properties:
+        scenario_run_id:
+          type: string
+          nullable: true
+          description: The ID of the scenario run. May be absent if the scenario failed during setup before a run was created.
+        scenario_definition_id:
+          type: string
+          description: The ID of the scenario definition that was executed.
+        scenario_name:
+          type: string
+          description: The name of the scenario.
+        state:
+          $ref: '#/components/schemas/ScenarioState'
+          description: The final state of the scenario execution.
+        score:
+          type: number
+          format: float
+          nullable: true
+          description: The score achieved for this scenario (0.0 to 1.0). Only present if state is COMPLETED.
+        duration_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Duration of the scenario execution in milliseconds.
+        failure_reason:
+          $ref: '#/components/schemas/FailureReason'
+          nullable: true
+          description: Failure information if the scenario failed or timed out. Contains exception type and message.
+      required:
+      - scenario_definition_id
+      - scenario_name
+      - state
+    ScenarioRunListView:
+      type: object
+      additionalProperties: false
+      properties:
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioRunView'
+          description: List of ScenarioRuns matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+      required:
+      - runs
+      - has_more
+    ScenarioRunState:
+      type: string
+      enum:
+      - running
+      - scoring
+      - scored
+      - completed
+      - canceled
+      - timeout
+      - failed
+    ScenarioRunView:
+      type: object
+      additionalProperties: false
+      description: A ScenarioRunView represents a single run of a Scenario on a Devbox. When completed, the ScenarioRun will
+        contain the final score and output of the run.
+      properties:
+        id:
+          type: string
+          description: ID of the ScenarioRun.
+        name:
+          type: string
+          nullable: true
+          description: Optional name of ScenarioRun.
+        scenario_id:
+          type: string
+          description: ID of the Scenario that has been run.
+        devbox_id:
+          type: string
+          description: ID of the Devbox on which the Scenario is running.
+        benchmark_run_id:
+          type: string
+          nullable: true
+          description: ID of the BenchmarkRun that this Scenario is associated with, if any.
+        scoring_contract_result:
+          $ref: '#/components/schemas/ScoringContractResultView'
+          nullable: true
+          description: The scoring result of the ScenarioRun.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The time that the scenario started
+        duration_ms:
+          type: integer
+          format: int64
+          nullable: true
+          description: Duration scenario took to run.
+        state:
+          $ref: '#/components/schemas/ScenarioRunState'
+          description: The state of the ScenarioRun.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario run for organization.
+        purpose:
+          type: string
+          nullable: true
+          description: Purpose of the ScenarioRun.
+        environment_variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: Environment variables used to run the scenario.
+        secrets_provided:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User secrets used to run the scenario.
+      required:
+      - id
+      - scenario_id
+      - devbox_id
+      - state
+      - metadata
+    ScenarioState:
+      type: string
+      enum:
+      - COMPLETED
+      - FAILED
+      - TIMEOUT
+      - CANCELED
+    ScenariosJobSource:
+      type: object
+      additionalProperties: false
+      description: Scenarios job source with a list of scenario definition IDs
+      properties:
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          description: List of scenario definition IDs to execute
+        type:
+          type: string
+          enum:
+          - scenarios
+          default: scenarios
+      required:
+      - scenario_ids
+      - type
+    ScoringContract:
+      type: object
+      additionalProperties: false
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
+      properties:
+        scoring_function_parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringFunction'
+          description: A list of scoring functions used to evaluate the Scenario.
+      required:
+      - scoring_function_parameters
+    ScoringContractResultView:
+      type: object
+      additionalProperties: false
+      description: A ScoringContractResultView represents the result of running all scoring functions on a given input context.
+      properties:
+        score:
+          type: number
+          format: float
+          description: Total score for all scoring contracts. This will be a value between 0 and 1.
+        scoring_function_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringFunctionResultView'
+          description: List of all individual scoring function results.
+      required:
+      - score
+      - scoring_function_results
+    ScoringFunction:
+      type: object
+      additionalProperties: false
+      description: ScoringFunction specifies a method of scoring a Scenario.
+      properties:
+        name:
+          type: string
+          description: Name of scoring function. Names must only contain [a-zA-Z0-9_-].
+        scorer:
+          $ref: '#/components/schemas/BuiltInScoringFunction'
+          description: The scoring function to use for evaluating this scenario. The type field determines which built-in
+            function to use.
+        weight:
+          type: number
+          format: float
+          description: Weight to apply to scoring function score. Weights of all scoring functions should sum to 1.0.
+      required:
+      - name
+      - scorer
+      - weight
+    ScoringFunctionResultView:
+      type: object
+      additionalProperties: false
+      description: A ScoringFunctionResultView represents the result of running a single scoring function on a given input
+        context.
+      properties:
+        score:
+          type: number
+          format: float
+          description: Final score for the given scoring function.
+        scoring_function_name:
+          type: string
+          description: Scoring function name that ran.
+        output:
+          type: string
+          description: Log output of the scoring function.
+        state:
+          $ref: '#/components/schemas/ScoringFunctionResultViewState'
+          description: The state of the scoring function application.
+      required:
+      - score
+      - scoring_function_name
+      - output
+      - state
+    ScoringFunctionResultViewState:
+      type: string
+      enum:
+      - unknown
+      - complete
+      - error
+    StartBenchmarkRunParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        benchmark_id:
+          type: string
+          description: ID of the Benchmark to run.
+        run_name:
+          type: string
+          nullable: true
+          description: Display name of the run.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: User defined metadata to attach to the benchmark run for organization.
+        runProfile:
+          $ref: '#/components/schemas/RunProfile'
+          nullable: true
+          description: Runtime configuration to use for this benchmark run
+      required:
+      - benchmark_id
+    TestBasedScoringFunction:
+      type: object
+      additionalProperties: false
+      description: TestBasedScoringFunction writes test files to disk and executes a test command to verify the solution.
+      properties:
+        test_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestFile'
+          description: List of test files to create
+        test_command:
+          type: string
+          description: The command to execute for running the tests
+        type:
+          type: string
+          enum:
+          - test_based_scorer
+          default: test_based_scorer
+      required:
+      - type
+    TestFile:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: Path to write content of the test file, relative to your environment's working directory
+        file_contents:
+          type: string
+          description: Content of the test file
+    UserParameters:
+      type: object
+      additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
+      properties:
+        username:
+          type: string
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+      required:
+      - username
+      - uid
+    ValidationType:
+      type: string
+      enum:
+      - UNSPECIFIED
+      - FORWARD
+      - REVERSE
+      - EVALUATION
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []

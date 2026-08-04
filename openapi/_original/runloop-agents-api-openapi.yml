@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: Runloop Agents API
+  version: '0.1'
+  description: "Register, version, and mount Agents \u2014 packaged agent definitions sourced from Git, npm, pip, or storage\
+    \ objects that can be installed on Devboxes for fast, reproducible agent execution."
+  contact:
+    name: Runloop AI Support
+    url: https://runloop.ai
+    email: support@runloop.ai
+servers:
+- url: https://api.runloop.ai
+  description: Runloop API
+  variables: {}
+tags:
+- name: agents
+paths:
+  /v1/agents:
+    post:
+      tags:
+      - agents
+      summary: Create an Agent.
+      description: Create a new Agent with a name and optional public visibility. The Agent will be assigned a unique ID.
+      operationId: createAgent
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreateParameters'
+        required: false
+      responses:
+        '200':
+          description: Agent created successfully. Returns the Agent with metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentView'
+        '400':
+          description: Bad request. Invalid name or parameters.
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+    get:
+      tags:
+      - agents
+      summary: List Agents.
+      description: List all Agents for the authenticated account with pagination support.
+      operationId: listAgents
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter agents by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: is_public
+        in: query
+        description: Filter agents by public visibility.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      - name: search
+        in: query
+        description: Search by agent ID or name.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Filter by version. Use 'latest' to get the most recently created agent.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of Agents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/agents/devbox_counts:
+    get:
+      tags:
+      - agents
+      summary: Get Devbox counts by Agent.
+      description: Returns devbox counts grouped by agent name. This endpoint efficiently aggregates devbox counts for all
+        agents in a single request, avoiding N+1 query patterns.
+      operationId: getAgentDevboxCounts
+      parameters: []
+      responses:
+        '200':
+          description: Successfully retrieved devbox counts by agent name.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentDevboxCountsView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/agents/list_public:
+    get:
+      tags:
+      - agents
+      summary: List Public Agents.
+      description: List all public Agents with pagination support.
+      operationId: listPublicAgents
+      parameters:
+      - name: limit
+        in: query
+        description: The limit of items to return. Default is 20. Max is 5000.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: integer
+          format: int32
+      - name: starting_after
+        in: query
+        description: Load the next page of data starting after the item with the given ID.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Filter agents by name (partial match supported).
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: search
+        in: query
+        description: Search by agent ID or name.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Filter by version. Use 'latest' to get the most recently created agent.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: string
+      - name: include_total_count
+        in: query
+        description: If true (default), includes total_count in the response. Set to false to skip the count query for better
+          performance on large datasets.
+        required: false
+        deprecated: false
+        allowEmptyValue: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Successfully retrieved list of public Agents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentListView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/agents/{id}:
+    get:
+      tags:
+      - agents
+      summary: Get an Agent.
+      description: Retrieve a specific Agent by its unique identifier.
+      operationId: getAgent
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Agent to retrieve.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Agent retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentView'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Agent not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+  /v1/agents/{id}/delete:
+    post:
+      tags:
+      - agents
+      summary: Delete an Agent.
+      description: Delete an Agent by its unique identifier. The Agent will be permanently removed.
+      operationId: deleteAgent
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the Agent to delete.
+        required: true
+        deprecated: false
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Agent deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyRecord'
+        '401':
+          description: Unauthorized. Invalid or missing authentication.
+        '403':
+          description: Forbidden. Account does not have devbox capability.
+        '404':
+          description: Agent not found.
+        '500':
+          description: Internal server error.
+      deprecated: false
+components:
+  schemas:
+    AgentCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for creating a new Agent.
+      properties:
+        name:
+          type: string
+          description: The name of the Agent.
+        version:
+          type: string
+          nullable: true
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g.
+            '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
+        source:
+          $ref: '#/components/schemas/AgentSource'
+          nullable: true
+          description: The source configuration for the Agent.
+      required:
+      - name
+    AgentDevboxCountsView:
+      type: object
+      additionalProperties: false
+      description: Devbox counts grouped by agent name. Used to efficiently fetch devbox counts for multiple agents in a single
+        request.
+      properties:
+        counts:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Map of agent name to devbox count. Each key is an agent name, and the value is the count of devboxes
+            associated with that agent.
+        total_count:
+          type: integer
+          format: int32
+          description: Total count of devboxes across all agents in the result.
+      required:
+      - counts
+      - total_count
+    AgentListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of Agents.
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentView'
+          description: The list of Agents.
+        has_more:
+          type: boolean
+          description: Whether there are more Agents to fetch.
+        total_count:
+          type: integer
+          format: int32
+          nullable: true
+          description: The total count of Agents.
+      required:
+      - agents
+      - has_more
+    AgentSource:
+      type: object
+      additionalProperties: false
+      description: Agent source configuration.
+      properties:
+        type:
+          type: string
+          description: 'Source type: npm, pip, object, or git'
+        npm:
+          $ref: '#/components/schemas/NpmSource'
+          nullable: true
+          description: NPM source configuration
+        pip:
+          $ref: '#/components/schemas/PipSource'
+          nullable: true
+          description: Pip source configuration
+        object:
+          $ref: '#/components/schemas/ObjectSource'
+          nullable: true
+          description: Object store source configuration
+        git:
+          $ref: '#/components/schemas/GitSource'
+          nullable: true
+          description: Git source configuration
+      required:
+      - type
+    AgentView:
+      type: object
+      additionalProperties: false
+      description: An Agent represents a registered AI agent entity.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the Agent.
+        name:
+          type: string
+          description: The name of the Agent.
+        version:
+          type: string
+          nullable: true
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g.
+            '2.0.65'). For git sources it can be a branch or tag. Omitted for object sources or when not provided.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the Agent (Unix timestamp milliseconds).
+        is_public:
+          type: boolean
+          description: Whether the Agent is publicly accessible.
+        source:
+          $ref: '#/components/schemas/AgentSource'
+          nullable: true
+          description: The source configuration for the Agent.
+      required:
+      - id
+      - name
+      - create_time_ms
+      - is_public
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    GitSource:
+      type: object
+      additionalProperties: false
+      description: Git-based agent source configuration.
+      properties:
+        repository:
+          type: string
+          description: Git repository URL
+        ref:
+          type: string
+          nullable: true
+          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
+        agent_setup:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Setup commands to run after cloning
+      required:
+      - repository
+    NpmSource:
+      type: object
+      additionalProperties: false
+      description: NPM-based agent source configuration.
+      properties:
+        package_name:
+          type: string
+          description: NPM package name
+        registry_url:
+          type: string
+          nullable: true
+          description: NPM registry URL
+        agent_setup:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Setup commands to run after installation
+      required:
+      - package_name
+    ObjectSource:
+      type: object
+      additionalProperties: false
+      description: Object store agent source configuration.
+      properties:
+        object_id:
+          type: string
+          description: Object ID
+        agent_setup:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Setup commands to run after unpacking
+      required:
+      - object_id
+    PipSource:
+      type: object
+      additionalProperties: false
+      description: Pip-based agent source configuration.
+      properties:
+        package_name:
+          type: string
+          description: Pip package name
+        registry_url:
+          type: string
+          nullable: true
+          description: Pip registry URL
+        agent_setup:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: Setup commands to run after installation
+      required:
+      - package_name
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+security:
+- bearerAuth: []
