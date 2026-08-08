@@ -2612,7 +2612,7 @@ common:
   - type: Integrations
     name: GitHub Actions for agent deployment
     url: https://docs.runloop.ai/docs/devboxes/agents/deploying-with-github-actions
-  - type: MCP
+  - type: Documentation
     name: Runloop MCP Server / AI Tools
     url: https://docs.runloop.ai/docs/tools/ai-tools
   - type: LinkedIn
