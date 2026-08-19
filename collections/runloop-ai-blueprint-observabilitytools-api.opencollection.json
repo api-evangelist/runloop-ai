@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Blueprint-ObservabilityTools API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Blueprint-ObservabilityTools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Preview Dockerfile definition for a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/preview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview building a Blueprint with the specified configuration. You can take the resulting Dockerfile and test out your build using any local docker tooling."
+        },
+        {
+          "info": {
+            "name": "Get Blueprint build logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get all logs from the building of a Blueprint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1321 @@
+{
+  "item": [
+    {
+      "id": "d6ed8124-90f5-4b6f-bbb4-60d7e69e4af5",
+      "name": "Devbox-Lifecycle",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "05075c69-219d-4047-9e22-a429810b51fd",
+          "name": "Create a Devbox.",
+          "request": {
+            "name": "Create a Devbox.",
+            "description": {
+              "content": "Create a Devbox and begin the boot process. The Devbox will initially launch in the 'provisioning' state while Runloop allocates the necessary infrastructure. It will transition to the 'initializing' state while the booted Devbox runs any Runloop or user defined set up scripts. Finally, the Devbox will transition to the 'running' state when it is ready for use.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"environment_variables\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"entrypoint\": \"<string>\",\n  \"blueprint_id\": \"<string>\",\n  \"blueprint_name\": \"<string>\",\n  \"repo_connection_id\": \"<string>\",\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"snapshot_id\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"mounts\": [\n    {\n      \"object_id\": \"<string>\",\n      \"object_path\": \"<string>\",\n      \"type\": \"object_mount\"\n    },\n    {\n      \"object_id\": \"<string>\",\n      \"object_path\": \"<string>\",\n      \"type\": \"object_mount\"\n    }\n  ],\n  \"tunnel\": {\n    \"auth_mode\": \"<string>\",\n    \"http_keep_alive\": \"<boolean>\",\n    \"wake_on_http\": \"<boolean>\"\n  },\n  \"gateways\": {\n    \"key_0\": {\n      \"gateway\": \"<string>\",\n      \"secret\": \"<string>\"\n    },\n    \"key_1\": {\n      \"gateway\": \"<string>\",\n      \"secret\": \"<string>\"\n    }\n  },\n  \"mcp\": {\n    \"key_0\": {\n      \"mcp_config\": \"<string>\",\n      \"secret\": \"<string>\"\n    },\n    \"key_1\": {\n      \"mcp_config\": \"<string>\",\n      \"secret\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7037e84e-abaa-415c-ba77-f4db37de5233",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"environment_variables\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"entrypoint\": \"<string>\",\n  \"blueprint_id\": \"<string>\",\n  \"blueprint_name\": \"<string>\",\n  \"repo_connection_id\": \"<string>\",\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"snapshot_id\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"mounts\": [\n    {\n      \"object_id\": \"<string>\",\n      \"object_path\": \"<string>\",\n      \"type\": \"object_mount\"\n    },\n    {\n      \"object_id\": \"<string>\",\n      \"object_path\": \"<string>\",\n      \"type\": \"object_mount\"\n    }\n  ],\n  \"tunnel\": {\n    \"auth_mode\": \"<string>\",\n    \"http_keep_alive\": \"<boolean>\",\n    \"wake_on_http\": \"<boolean>\"\n  },\n  \"gateways\": {\n    \"key_0\": {\n      \"gateway\": \"<string>\",\n      \"secret\": \"<string>\"\n    },\n    \"key_1\": {\n      \"gateway\": \"<string>\",\n      \"secret\": \"<string>\"\n    },\n    \"key_2\": {\n      \"gateway\": \"<string>\",\n      \"secret\": \"<string>\"\n    }\n  },\n  \"mcp\": {\n    \"key_0\": {\n      \"mcp_config\": \"<string>\",\n      \"secret\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"suspending\",\n  \"create_time_ms\": 4804,\n  \"end_time_ms\": 2879,\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"docker_in_docker\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"initializing\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"initializing\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"scenario\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"execution_failed\",\n  \"shutdown_reason\": \"api_shutdown\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"open\",\n    \"create_time_ms\": 9253,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a6a0ccf7-a519-4e7e-b4f2-0d78be929072",
+          "name": "Update a Devbox.",
+          "request": {
+            "name": "Update a Devbox.",
+            "description": {
+              "content": "Updates a devbox by doing a complete update the existing name,metadata fields. It does not patch partial values.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7e68e112-ac66-4a4c-bca0-32bafd99f6a3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failure\",\n  \"create_time_ms\": 6984,\n  \"end_time_ms\": 433,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"resuming\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"failure\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"unknown\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"out_of_memory\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6873,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e03c3969-ab52-4c6b-83ea-594395dd17d2",
+          "name": "Get Devbox details.",
+          "request": {
+            "name": "Get Devbox details.",
+            "description": {
+              "content": "Get the latest details and status of a Devbox.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c789b939-fe6a-41a6-aa2f-be6fc0269dee",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failure\",\n  \"create_time_ms\": 6984,\n  \"end_time_ms\": 433,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"resuming\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"failure\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"unknown\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"out_of_memory\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6873,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1fd38ee-51f3-4bad-b45f-691bf845dd08",
+          "name": "Reset the idle timer of a running Devbox.",
+          "request": {
+            "name": "Reset the idle timer of a running Devbox.",
+            "description": {
+              "content": "Send a 'Keep Alive' signal to a running Devbox that is configured to shutdown on idle so the idle time resets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "keep_alive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d1d8a1d0-d22a-480d-9fd5-d01ed32aa677",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "keep_alive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1509640f-8b96-4f10-a72e-2de9e209fc5f",
+          "name": "Resume a suspended Devbox",
+          "request": {
+            "name": "Resume a suspended Devbox",
+            "description": {
+              "content": "Resume a suspended Devbox with the disk state captured as suspend time. Note that any previously running processes or daemons will need to be restarted using the Devbox shell tools.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "resume"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "130523e1-1095-44f8-b6ee-14cbcf8b37ff",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failure\",\n  \"create_time_ms\": 6984,\n  \"end_time_ms\": 433,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"resuming\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"failure\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"unknown\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"out_of_memory\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6873,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ddd2d4a4-d684-4aa2-9e6d-d609fd70c1ba",
+              "name": "Devbox is not suspended.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b3dac9b-0e38-4551-9345-12bf825641d5",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "364acfae-fbb9-420a-a860-3754937aa581",
+          "name": "Shutdown a running Devbox.",
+          "request": {
+            "name": "Shutdown a running Devbox.",
+            "description": {
+              "content": "Shutdown a running Devbox. This will permanently stop the Devbox. If you want to save the state of the Devbox, you should take a snapshot before shutting down or should suspend the Devbox instead of shutting down. If the Devbox has any in-progress snapshots, the shutdown will be rejected with a 409 Conflict unless force=true is specified.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "shutdown"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "force",
+                  "value": "<string>",
+                  "description": "If true, force shutdown even if snapshots are in progress. Defaults to false."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e76b9f58-81ca-473e-9845-63bb91d508ae",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "shutdown"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "force",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failure\",\n  \"create_time_ms\": 6984,\n  \"end_time_ms\": 433,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"resuming\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"failure\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"unknown\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"out_of_memory\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6873,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a7db6fb-0953-47a9-941b-eaeb8c1fb7c2",
+              "name": "Devbox has in-progress snapshots and cannot be shut down at this time. Use force=true to override.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "shutdown"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "force",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c4a5c8db-c0ed-4dea-afda-ba1c136643a3",
+          "name": "Suspend a running Devbox",
+          "request": {
+            "name": "Suspend a running Devbox",
+            "description": {
+              "content": "Suspend a running Devbox and create a disk snapshot to enable resuming the Devbox later with the same disk. Note this will not snapshot memory state such as running processes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "suspend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2df1b6de-f922-4209-aa27-b6c8fb08abec",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "suspend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failure\",\n  \"create_time_ms\": 6984,\n  \"end_time_ms\": 433,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"resuming\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"failure\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"unknown\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"out_of_memory\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6873,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": true,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb724439-fe86-4ad4-bc45-4ed71f929810",
+              "name": "Devbox is not running.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "suspend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9284332f-59bd-4a8d-8b60-3184b86badeb",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "suspend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f6fc85a5-a608-4826-bfae-fd8b1f3e3a22",
+          "name": "Wait for a Devbox to reach one of the specified statuses.",
+          "request": {
+            "name": "Wait for a Devbox to reach one of the specified statuses.",
+            "description": {
+              "content": "Polls the Devbox's status until it reaches one of the desired statuses or times out.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "wait_for_status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statuses\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timeout_seconds\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "516bc296-b9bb-451c-920e-d8808dea4105",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "wait_for_status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"statuses\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timeout_seconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"<string>\",\n  \"create_time_ms\": 8480,\n  \"end_time_ms\": 5802,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"capabilities\": [\n    \"docker_in_docker\",\n    \"docker_in_docker\"\n  ],\n  \"state_transitions\": [\n    {\n      \"status\": \"<string>\",\n      \"transition_time_ms\": {}\n    },\n    {\n      \"status\": \"<string>\",\n      \"transition_time_ms\": {}\n    }\n  ],\n  \"name\": \"string\",\n  \"initiator_type\": \"api\",\n  \"initiator_id\": \"string\",\n  \"blueprint_id\": \"string\",\n  \"snapshot_id\": \"string\",\n  \"failure_reason\": \"health_check_failed\",\n  \"shutdown_reason\": \"ttl_expired\",\n  \"tunnel\": {\n    \"tunnel_key\": \"string\",\n    \"auth_mode\": \"authenticated\",\n    \"create_time_ms\": 6197,\n    \"http_keep_alive\": true,\n    \"wake_on_http\": false,\n    \"auth_token\": \"string\"\n  },\n  \"gateway_specs\": {\n    \"key_0\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_2\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_3\": {\n      \"gateway_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  },\n  \"mcp_specs\": {\n    \"key_0\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    },\n    \"key_1\": {\n      \"mcp_config_id\": \"string\",\n      \"secret_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0fc891f-21f0-450e-83bd-5d389d878b43",
+              "name": "Invalid status provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "wait_for_status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"statuses\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timeout_seconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "30f07e87-5d1d-41ee-9708-3bcfbdcf7b13",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "wait_for_status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"statuses\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timeout_seconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "22e01797-8093-4b51-8bfe-3a3bc6422ae8",
+              "name": "Timeout waiting for status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "wait_for_status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"statuses\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timeout_seconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Timeout",
+              "code": 408,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.runloop.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c26ce395-31a1-4808-b6e5-e450eeda1db3",
+    "name": "Runloop agents Devbox-Lifecycle API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+      "type": "text/plain"
+    }
+  }
+}

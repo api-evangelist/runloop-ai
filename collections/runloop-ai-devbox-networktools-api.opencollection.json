@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Devbox-NetworkTools API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devbox-NetworkTools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an ephemeral PTY tunnel for a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/create_pty_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Create an SSH key for a Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/create_ssh_key",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Create an SSH key for a Devbox to enable remote access."
+        },
+        {
+          "info": {
+            "name": "Enable a tunnel for a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/enable_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai\n\nEach Devbox can have one tunnel."
+        },
+        {
+          "info": {
+            "name": "Remove a tunnel from the Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/remove_tunnel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Remove an existing V2 tunnel from the Devbox."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,105 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Devbox-ObservabilityTools API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devbox-ObservabilityTools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Devbox logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/logs",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of execution to filter logs by."
+              },
+              {
+                "name": "shell_name",
+                "value": "",
+                "type": "query",
+                "description": "Shell Name to filter logs by."
+              }
+            ]
+          },
+          "docs": "Get all logs from a running or completed Devbox."
+        },
+        {
+          "info": {
+            "name": "Live Tail Devbox Logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/logs/tail",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of execution to filter logs by."
+              },
+              {
+                "name": "shell_name",
+                "value": "",
+                "type": "query",
+                "description": "Shell Name to filter logs by."
+              }
+            ]
+          },
+          "docs": "Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed."
+        },
+        {
+          "info": {
+            "name": "Get resource usage for a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/usage",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

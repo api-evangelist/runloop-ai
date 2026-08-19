@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents ScenarioScorer API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ScenarioScorer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Scenario Scorers.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The limit of items to return. Default is 20. Max is 5000."
+              },
+              {
+                "name": "starting_after",
+                "value": "",
+                "type": "query",
+                "description": "Load the next page of data starting after the item with the given ID."
+              },
+              {
+                "name": "include_total_count",
+                "value": "",
+                "type": "query",
+                "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+              }
+            ]
+          },
+          "docs": "List all Scenario Scorers matching filter."
+        },
+        {
+          "info": {
+            "name": "Create a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a custom scenario scorer."
+        },
+        {
+          "info": {
+            "name": "Retrieve Scenario Scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ]
+          },
+          "docs": "Retrieve Scenario Scorer."
+        },
+        {
+          "info": {
+            "name": "Update a custom scenario scorer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/scenarios/scorers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Scorer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a scenario scorer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

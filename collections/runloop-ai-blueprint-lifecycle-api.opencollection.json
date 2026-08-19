@@ -1,0 +1,73 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Blueprint-Lifecycle API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Blueprint-Lifecycle",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create and build a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint. The Blueprint will begin in the 'provisioning' step and transition to the 'building' step once it is selected off the build queue., Upon build complete it will transition to 'building_complete' if the build is successful."
+        },
+        {
+          "info": {
+            "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/blueprints/create_from_inspection",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts build of custom defined container Blueprint using a RepositoryConnection Inspection as a source container specification."
+        },
+        {
+          "info": {
+            "name": "Get a Blueprint.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/blueprints/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Blueprint"
+              }
+            ]
+          },
+          "docs": "Get the details of a previously created Blueprint including the build status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

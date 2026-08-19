@@ -1,0 +1,546 @@
+{
+  "item": [
+    {
+      "id": "8fa4710c-a8f5-421d-92bc-b895de425fd7",
+      "name": "Devbox-ObservabilityTools",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fd4fd6f8-22c4-4e50-a5bf-a2db27bb4b4b",
+          "name": "Get Devbox logs.",
+          "request": {
+            "name": "Get Devbox logs.",
+            "description": {
+              "content": "Get all logs from a running or completed Devbox.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "execution_id",
+                  "value": "<string>",
+                  "description": "ID of execution to filter logs by."
+                },
+                {
+                  "disabled": false,
+                  "key": "shell_name",
+                  "value": "<string>",
+                  "description": "Shell Name to filter logs by."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f57a111-2d43-4e5d-8cb1-8f9fcdfdc148",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shell_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"logs\": [\n    {\n      \"level\": \"string\",\n      \"timestamp_ms\": 3093,\n      \"source\": \"stats\",\n      \"cmd_id\": \"string\",\n      \"shell_name\": \"string\",\n      \"cmd\": \"string\",\n      \"message\": \"string\",\n      \"exit_code\": 8639\n    },\n    {\n      \"level\": \"string\",\n      \"timestamp_ms\": 6673,\n      \"source\": \"entrypoint\",\n      \"cmd_id\": \"string\",\n      \"shell_name\": \"string\",\n      \"cmd\": \"string\",\n      \"message\": \"string\",\n      \"exit_code\": 2367\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "574fe537-58fa-4d06-90cd-e57e20632198",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shell_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3e85505-7d8e-4911-b9ca-00f5c97f62c2",
+          "name": "Live Tail Devbox Logs.",
+          "request": {
+            "name": "Live Tail Devbox Logs.",
+            "description": {
+              "content": "Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "logs",
+                "tail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "execution_id",
+                  "value": "<string>",
+                  "description": "ID of execution to filter logs by."
+                },
+                {
+                  "disabled": false,
+                  "key": "shell_name",
+                  "value": "<string>",
+                  "description": "Shell Name to filter logs by."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ed40463-cd9f-4a6f-930f-bb02af588f7f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "logs",
+                    "tail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shell_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "962c1f16-aa19-46a9-88c8-96e8e64b25b6",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "logs",
+                    "tail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shell_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c411209-e007-42ef-944b-f6f542912d96",
+          "name": "Get resource usage for a Devbox.",
+          "request": {
+            "name": "Get resource usage for a Devbox.",
+            "description": {
+              "content": "Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "devboxes",
+                ":id",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The Devbox ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bcf55237-71b0-4b11-82cc-7678cbe5a85b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"total_active_seconds\": 541,\n  \"total_elapsed_seconds\": 2031,\n  \"vcpu_seconds\": 1776,\n  \"memory_gb_seconds\": 2898,\n  \"disk_gb_seconds\": 7718,\n  \"start_time_ms\": 1161,\n  \"status\": \"string\",\n  \"end_time_ms\": 2017\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a4d35b3-600e-443b-bbaf-6dca3e0e3d39",
+              "name": "Devbox not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "devboxes",
+                    ":id",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The Devbox ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.runloop.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2ee500c2-0950-4de7-84e5-d56f1a32c1e9",
+    "name": "Runloop agents Devbox-ObservabilityTools API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+      "type": "text/plain"
+    }
+  }
+}

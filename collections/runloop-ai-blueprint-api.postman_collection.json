@@ -1,0 +1,1497 @@
+{
+  "item": [
+    {
+      "id": "922a7bfc-a99b-4e98-b6ad-8f56fc3e7911",
+      "name": "Blueprint",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e5d0d58b-e558-445b-b323-ce650be9f365",
+          "name": "Create and build a Blueprint.",
+          "request": {
+            "name": "Create and build a Blueprint.",
+            "description": {
+              "content": "Starts build of custom defined container Blueprint. The Blueprint will begin in the 'provisioning' step and transition to the 'building' step once it is selected off the build queue., Upon build complete it will transition to 'building_complete' if the build is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"build_args\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a71e45d5-8ccb-42dc-bf4e-e3f02da438cd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"build_args\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"queued\",\n  \"state\": \"deleted\",\n  \"create_time_ms\": 5292,\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"<string>\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"<string>\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    },\n    \"build_args\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"secrets\": {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": 6350,\n  \"failure_reason\": \"out_of_disk\",\n  \"base_blueprint_id\": \"string\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": true,\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\"\n  },\n  \"devbox_capabilities\": [\n    \"docker_in_docker\",\n    \"docker_in_docker\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7017b72c-852f-4278-aec5-b68539ec2577",
+          "name": "List Blueprints.",
+          "request": {
+            "name": "List Blueprints.",
+            "description": {
+              "content": "List all Blueprints or filter by name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b749ec59-5ef2-4b91-abb8-8930d2c787cf",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"blueprints\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"build_complete\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": 6620,\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"key_0\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"key_0\": \"<string>\"\n        },\n        \"build_args\": {\n          \"key_0\": \"<string>\"\n        },\n        \"secrets\": {\n          \"key_0\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": 4305,\n      \"failure_reason\": \"out_of_memory\",\n      \"base_blueprint_id\": \"string\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\",\n            \"key_1\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": true,\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"devbox_capabilities\": [\n        \"unknown\",\n        \"docker_in_docker\"\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"provisioning\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": 2916,\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"build_args\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\",\n          \"key_3\": \"<string>\"\n        },\n        \"secrets\": {\n          \"key_0\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": 7274,\n      \"failure_reason\": \"out_of_memory\",\n      \"base_blueprint_id\": \"string\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\",\n            \"key_1\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": false,\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"devbox_capabilities\": [\n        \"docker_in_docker\",\n        \"unknown\"\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 4342\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1439607d-e48b-4530-91df-63ecc49f2275",
+          "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+          "request": {
+            "name": "Create and build a Blueprint from a RepositoryConnection Inspection.",
+            "description": {
+              "content": "Starts build of custom defined container Blueprint using a RepositoryConnection Inspection as a source container specification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "create_from_inspection"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"inspection_source\": {\n    \"inspection_id\": \"<string>\",\n    \"github_auth_token\": \"<string>\"\n  },\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c6bc9ec0-dcb6-4aef-a44f-7c25c9187a29",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "create_from_inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"inspection_source\": {\n    \"inspection_id\": \"<string>\",\n    \"github_auth_token\": \"<string>\"\n  },\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"build_complete\",\n  \"state\": \"created\",\n  \"create_time_ms\": 6127,\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"<string>\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"<string>\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"key_0\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\",\n          \"key_3\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"key_0\": \"<string>\"\n    },\n    \"build_args\": {\n      \"key_0\": \"<string>\"\n    },\n    \"secrets\": {\n      \"key_0\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": 2700,\n  \"failure_reason\": \"build_failed\",\n  \"base_blueprint_id\": \"string\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": false,\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"devbox_capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5bad0652-b9dd-4533-8baa-c48e69def31a",
+          "name": "List Public Blueprints.",
+          "request": {
+            "name": "List Public Blueprints.",
+            "description": {
+              "content": "List all public Blueprints that are available to all users.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "list_public"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by name"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by build status (queued, provisioning, building, failed, build_complete)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc1dfaca-e9c1-4e89-97ba-8602d697f696",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"blueprints\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"build_complete\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": 5666,\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\",\n          \"key_3\": \"<string>\"\n        },\n        \"build_args\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\"\n        },\n        \"secrets\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": 1975,\n      \"failure_reason\": \"out_of_disk\",\n      \"base_blueprint_id\": \"string\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\",\n            \"key_1\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": false,\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"devbox_capabilities\": [\n        \"unknown\",\n        \"docker_in_docker\"\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"build_complete\",\n      \"state\": \"deleted\",\n      \"create_time_ms\": 37,\n      \"parameters\": {\n        \"name\": \"<string>\",\n        \"dockerfile\": \"<string>\",\n        \"system_setup_commands\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"code_mounts\": [\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          },\n          {\n            \"repo_name\": \"<string>\",\n            \"repo_owner\": \"<string>\",\n            \"install_command\": \"<string>\",\n            \"git_ref\": \"<string>\",\n            \"token\": \"<string>\"\n          }\n        ],\n        \"launch_parameters\": {\n          \"launch_commands\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"resource_size_request\": \"<string>\",\n          \"available_ports\": [\n            \"<integer>\",\n            \"<integer>\"\n          ],\n          \"keep_alive_time_seconds\": \"<long>\",\n          \"after_idle\": {\n            \"idle_time_seconds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"on_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"custom_cpu_cores\": \"<integer>\",\n          \"custom_gb_memory\": \"<integer>\",\n          \"custom_disk_size\": \"<integer>\",\n          \"architecture\": \"<string>\",\n          \"user_parameters\": {\n            \"username\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"uid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"required_services\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"network_policy_id\": \"<string>\",\n          \"lifecycle\": {\n            \"after_idle\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"resume_triggers\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"file_mounts\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"base_blueprint_id\": \"<string>\",\n        \"base_blueprint_name\": \"<string>\",\n        \"services\": [\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"image\": \"<string>\",\n            \"credentials\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"port_mappings\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"options\": \"<string>\"\n          }\n        ],\n        \"metadata\": {\n          \"key_0\": \"<string>\"\n        },\n        \"build_args\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\"\n        },\n        \"secrets\": {\n          \"key_0\": \"<string>\"\n        },\n        \"build_context\": {\n          \"object_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"network_policy_id\": \"<string>\"\n      },\n      \"build_finish_time_ms\": 6612,\n      \"failure_reason\": \"out_of_disk\",\n      \"base_blueprint_id\": \"string\",\n      \"containerized_services\": [\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"image\": \"<string>\",\n          \"credentials\": {\n            \"username\": \"<string>\",\n            \"password\": \"<string>\"\n          },\n          \"env\": {\n            \"key_0\": \"<string>\",\n            \"key_1\": \"<string>\"\n          },\n          \"port_mappings\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"options\": \"<string>\"\n        }\n      ],\n      \"is_public\": false,\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"devbox_capabilities\": [\n        \"unknown\",\n        \"unknown\"\n      ]\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 3470\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0f36cdf5-7ec0-4d3d-8836-3cc7c925a915",
+          "name": "List available blueprint metadata keys.",
+          "request": {
+            "name": "List available blueprint metadata keys.",
+            "description": {
+              "content": "Returns a list of all available metadata keys that can be used for filtering blueprints.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "metadata",
+                "keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7d8be66-0b49-4d7c-8aed-1c1cbfffb48f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "metadata",
+                    "keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "693afced-babe-4451-868b-0481d96f4204",
+          "name": "List values for a specific blueprint metadata key.",
+          "request": {
+            "name": "List values for a specific blueprint metadata key.",
+            "description": {
+              "content": "Returns a list of all values that exist for a specific metadata key across all blueprints.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "metadata",
+                "keys",
+                ":key",
+                "values"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) The metadata key to get values for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "46323134-4bf5-49b4-b2f0-7b93de48e37b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"values\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff76ab27-4d9d-404a-8b40-f7416577a484",
+              "name": "Invalid metadata key provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be7ceb35-2143-4b98-864c-633e92a1d465",
+          "name": "Preview Dockerfile definition for a Blueprint.",
+          "request": {
+            "name": "Preview Dockerfile definition for a Blueprint.",
+            "description": {
+              "content": "Preview building a Blueprint with the specified configuration. You can take the resulting Dockerfile and test out your build using any local docker tooling.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"build_args\": {\n    \"key_0\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fc15625e-2f20-40ae-90ae-9dd826c0313f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"dockerfile\": \"<string>\",\n  \"system_setup_commands\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"code_mounts\": [\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    },\n    {\n      \"repo_name\": \"<string>\",\n      \"repo_owner\": \"<string>\",\n      \"install_command\": \"<string>\",\n      \"git_ref\": \"<string>\",\n      \"token\": \"<string>\"\n    }\n  ],\n  \"launch_parameters\": {\n    \"launch_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"resource_size_request\": \"<string>\",\n    \"available_ports\": [\n      \"<integer>\",\n      \"<integer>\"\n    ],\n    \"keep_alive_time_seconds\": \"<long>\",\n    \"after_idle\": {\n      \"idle_time_seconds\": \"<integer>\",\n      \"on_idle\": \"<string>\"\n    },\n    \"custom_cpu_cores\": \"<integer>\",\n    \"custom_gb_memory\": \"<integer>\",\n    \"custom_disk_size\": \"<integer>\",\n    \"architecture\": \"<string>\",\n    \"user_parameters\": {\n      \"username\": \"<string>\",\n      \"uid\": \"<integer>\"\n    },\n    \"required_services\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"network_policy_id\": \"<string>\",\n    \"lifecycle\": {\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"resume_triggers\": {\n        \"http\": \"<boolean>\",\n        \"axon_event\": \"<boolean>\"\n      }\n    }\n  },\n  \"file_mounts\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"base_blueprint_id\": \"<string>\",\n  \"base_blueprint_name\": \"<string>\",\n  \"services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"build_args\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"secrets\": {\n    \"key_0\": \"<string>\"\n  },\n  \"build_context\": {\n    \"object_id\": \"<string>\",\n    \"type\": \"object\"\n  },\n  \"network_policy_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"dockerfile\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1fb54023-f9a7-4a25-bad0-a15b9be8b258",
+          "name": "List available public blueprint metadata keys.",
+          "request": {
+            "name": "List available public blueprint metadata keys.",
+            "description": {
+              "content": "Returns a list of all available metadata keys from public blueprints only that can be used for filtering.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "public",
+                "metadata",
+                "keys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "33f14d6c-dbfb-48cd-b7d1-4e4df52c93af",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "public",
+                    "metadata",
+                    "keys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f9c3d777-ce25-423a-96b1-8f1bcfb6521a",
+          "name": "List values for a specific public blueprint metadata key.",
+          "request": {
+            "name": "List values for a specific public blueprint metadata key.",
+            "description": {
+              "content": "Returns a list of all values that exist for a specific metadata key across all public blueprints only.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                "public",
+                "metadata",
+                "keys",
+                ":key",
+                "values"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) The metadata key to get values for from public blueprints."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7b09be75-df6c-4fe4-911a-a53c9ceb8048",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "public",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for from public blueprints."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"values\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90d2fc8e-43cc-4b97-809b-e583ca6a190e",
+              "name": "Invalid metadata key provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    "public",
+                    "metadata",
+                    "keys",
+                    ":key",
+                    "values"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The metadata key to get values for from public blueprints."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "81925943-4c77-492e-8c3c-894635829a63",
+          "name": "Get a Blueprint.",
+          "request": {
+            "name": "Get a Blueprint.",
+            "description": {
+              "content": "Get the details of a previously created Blueprint including the build status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the Blueprint"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a5379c04-d299-4175-99ab-2bf7b240cf0e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Blueprint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"build_complete\",\n  \"state\": \"created\",\n  \"create_time_ms\": 6127,\n  \"parameters\": {\n    \"name\": \"<string>\",\n    \"dockerfile\": \"<string>\",\n    \"system_setup_commands\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"code_mounts\": [\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      },\n      {\n        \"repo_name\": \"<string>\",\n        \"repo_owner\": \"<string>\",\n        \"install_command\": \"<string>\",\n        \"git_ref\": \"<string>\",\n        \"token\": \"<string>\"\n      }\n    ],\n    \"launch_parameters\": {\n      \"launch_commands\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"resource_size_request\": \"<string>\",\n      \"available_ports\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"keep_alive_time_seconds\": \"<long>\",\n      \"after_idle\": {\n        \"idle_time_seconds\": \"<integer>\",\n        \"on_idle\": \"<string>\"\n      },\n      \"custom_cpu_cores\": \"<integer>\",\n      \"custom_gb_memory\": \"<integer>\",\n      \"custom_disk_size\": \"<integer>\",\n      \"architecture\": \"<string>\",\n      \"user_parameters\": {\n        \"username\": \"<string>\",\n        \"uid\": \"<integer>\"\n      },\n      \"required_services\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"network_policy_id\": \"<string>\",\n      \"lifecycle\": {\n        \"after_idle\": {\n          \"idle_time_seconds\": \"<integer>\",\n          \"on_idle\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"resume_triggers\": {\n          \"http\": \"<boolean>\",\n          \"axon_event\": \"<boolean>\"\n        }\n      }\n    },\n    \"file_mounts\": {\n      \"key_0\": \"<string>\"\n    },\n    \"base_blueprint_id\": \"<string>\",\n    \"base_blueprint_name\": \"<string>\",\n    \"services\": [\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\",\n          \"key_2\": \"<string>\",\n          \"key_3\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"image\": \"<string>\",\n        \"credentials\": {\n          \"username\": \"<string>\",\n          \"password\": \"<string>\"\n        },\n        \"env\": {\n          \"key_0\": \"<string>\",\n          \"key_1\": \"<string>\"\n        },\n        \"port_mappings\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"options\": \"<string>\"\n      }\n    ],\n    \"metadata\": {\n      \"key_0\": \"<string>\"\n    },\n    \"build_args\": {\n      \"key_0\": \"<string>\"\n    },\n    \"secrets\": {\n      \"key_0\": \"<string>\"\n    },\n    \"build_context\": {\n      \"object_id\": \"<string>\",\n      \"type\": \"object\"\n    },\n    \"network_policy_id\": \"<string>\"\n  },\n  \"build_finish_time_ms\": 2700,\n  \"failure_reason\": \"build_failed\",\n  \"base_blueprint_id\": \"string\",\n  \"containerized_services\": [\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"image\": \"<string>\",\n      \"credentials\": {\n        \"username\": \"<string>\",\n        \"password\": \"<string>\"\n      },\n      \"env\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"port_mappings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"options\": \"<string>\"\n    }\n  ],\n  \"is_public\": false,\n  \"metadata\": {\n    \"key_0\": \"string\"\n  },\n  \"devbox_capabilities\": [\n    \"unknown\",\n    \"unknown\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b43cce4-c193-4e84-897d-07762c866945",
+          "name": "Delete a Blueprint.",
+          "request": {
+            "name": "Delete a Blueprint.",
+            "description": {
+              "content": "Delete a previously created Blueprint. If a blueprint has dependent snapshots, it cannot be deleted. You can find them by querying: GET /v1/devboxes/disk_snapshots?source_blueprint_id={blueprint_id}.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                ":id",
+                "delete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the Blueprint"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "30412190-2641-420a-9705-056211a62bc5",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Blueprint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93a2265e-80f3-480b-9460-ed1bc227c330",
+              "name": "Blueprint has dependent snapshots that must be deleted first. Returns list of snapshot IDs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Blueprint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4cb1b821-5269-4213-a407-819a4fc4adf1",
+              "name": "Blueprint not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Blueprint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71aa9ca8-7ef2-48d0-81d6-0b10236936b9",
+          "name": "Get Blueprint build logs.",
+          "request": {
+            "name": "Get Blueprint build logs.",
+            "description": {
+              "content": "Get all logs from the building of a Blueprint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "blueprints",
+                ":id",
+                "logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the Blueprint"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "92ac4e97-3ca5-447b-94fc-2c9014de794f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "blueprints",
+                    ":id",
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the Blueprint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"blueprint_id\": \"string\",\n  \"logs\": [\n    {\n      \"level\": \"string\",\n      \"timestamp_ms\": 6472,\n      \"message\": \"string\"\n    },\n    {\n      \"level\": \"string\",\n      \"timestamp_ms\": 1515,\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.runloop.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "60d2d0bb-0535-4917-b63b-4937ca155fd9",
+    "name": "Runloop agents Blueprint API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Devbox-FileTools API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devbox-FileTools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download binary file contents from Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/download_file",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Download file contents of any type (binary, text, etc) from a specified path on the Devbox."
+        },
+        {
+          "info": {
+            "name": "Read text file contents from Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/read_file_contents",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read file contents from a file on a Devbox as a UTF-8. Note 'downloadFile' should be used for large files (greater than 100MB). Returns the file contents as a UTF-8 string."
+        },
+        {
+          "info": {
+            "name": "Upload binary file contents to Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/upload_file",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload file contents of any type (binary, text, etc) to a Devbox. Note this API is suitable for large files (larger than 100MB) and efficiently uploads files via multipart form data."
+        },
+        {
+          "info": {
+            "name": "Write text file contents to Devbox filesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/write_file_contents",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Write UTF-8 string contents to a file at path on the Devbox. Note for large files (larger than 100MB), the upload_file endpoint must be used."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

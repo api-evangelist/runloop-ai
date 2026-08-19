@@ -1,0 +1,186 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Runloop agents Devbox-Lifecycle API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devbox-Lifecycle",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Devbox and begin the boot process. The Devbox will initially launch in the 'provisioning' state while Runloop allocates the necessary infrastructure. It will transition to the 'initializing' state while the booted Devbox runs any Runloop or user defined set up scripts. Finally, the Devbox will transition to the 'running' state when it is ready for use."
+        },
+        {
+          "info": {
+            "name": "Get Devbox details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.runloop.ai/v1/devboxes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Get the latest details and status of a Devbox."
+        },
+        {
+          "info": {
+            "name": "Update a Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a devbox by doing a complete update the existing name,metadata fields. It does not patch partial values."
+        },
+        {
+          "info": {
+            "name": "Reset the idle timer of a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/keep_alive",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Send a 'Keep Alive' signal to a running Devbox that is configured to shutdown on idle so the idle time resets."
+        },
+        {
+          "info": {
+            "name": "Resume a suspended Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/resume",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Resume a suspended Devbox with the disk state captured as suspend time. Note that any previously running processes or daemons will need to be restarted using the Devbox shell tools."
+        },
+        {
+          "info": {
+            "name": "Shutdown a running Devbox.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/shutdown",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              },
+              {
+                "name": "force",
+                "value": "",
+                "type": "query",
+                "description": "If true, force shutdown even if snapshots are in progress. Defaults to false."
+              }
+            ]
+          },
+          "docs": "Shutdown a running Devbox. This will permanently stop the Devbox. If you want to save the state of the Devbox, you should take a snapshot before shutting down or should suspend the Devbox instead of shutting down. If the Devbox has any in-progress snapshots, the shutdown will be rejected with a 409 Conflict unless force=true is specified."
+        },
+        {
+          "info": {
+            "name": "Suspend a running Devbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/suspend",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ]
+          },
+          "docs": "Suspend a running Devbox and create a disk snapshot to enable resuming the Devbox later with the same disk. Note this will not snapshot memory state such as running processes."
+        },
+        {
+          "info": {
+            "name": "Wait for a Devbox to reach one of the specified statuses.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.runloop.ai/v1/devboxes/:id/wait_for_status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Devbox ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Polls the Devbox's status until it reaches one of the desired statuses or times out."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

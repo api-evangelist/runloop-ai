@@ -1,0 +1,1834 @@
+{
+  "item": [
+    {
+      "id": "f2129ea4-2883-41f5-b378-60e82c250838",
+      "name": "agents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4d59329b-afee-40b1-902d-395bb008f8e2",
+          "name": "Create an Agent.",
+          "request": {
+            "name": "Create an Agent.",
+            "description": {
+              "content": "Create a new Agent with a name and optional public visibility. The Agent will be assigned a unique ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c7024f67-55fb-48f4-bd46-13aa62f5f038",
+              "name": "Agent created successfully. Returns the Agent with metadata.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"create_time_ms\": 410,\n  \"is_public\": true,\n  \"version\": \"string\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0807509b-edab-447a-a513-033419f373c2",
+              "name": "Bad request. Invalid name or parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d00d248e-0c2e-45b5-b540-893ec48db567",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "296820e4-6fcc-4725-89f8-7ddd33d77c80",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c2da5cf0-ffab-4742-8294-4535407950d7",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"version\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f0ebebb-14eb-4911-be5e-3314e9eaee8a",
+          "name": "List Agents.",
+          "request": {
+            "name": "List Agents.",
+            "description": {
+              "content": "List all Agents for the authenticated account with pagination support.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter agents by name (partial match supported)."
+                },
+                {
+                  "disabled": false,
+                  "key": "is_public",
+                  "value": "<boolean>",
+                  "description": "Filter agents by public visibility."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search by agent ID or name."
+                },
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<string>",
+                  "description": "Filter by version. Use 'latest' to get the most recently created agent."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "30b256e4-fb75-4b44-af99-fcda460f101d",
+              "name": "Successfully retrieved list of Agents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_public",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agents\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"create_time_ms\": 5575,\n      \"is_public\": false,\n      \"version\": \"string\",\n      \"source\": {\n        \"type\": \"<string>\",\n        \"npm\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"pip\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"object\": {\n          \"object_id\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"git\": {\n          \"repository\": \"<string>\",\n          \"ref\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"create_time_ms\": 7876,\n      \"is_public\": true,\n      \"version\": \"string\",\n      \"source\": {\n        \"type\": \"<string>\",\n        \"npm\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"pip\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"object\": {\n          \"object_id\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"git\": {\n          \"repository\": \"<string>\",\n          \"ref\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      }\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 8678\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23838b40-04bc-485e-94d3-71f1b0b0e791",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_public",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3790b679-e095-473e-a6c9-491275eb3cbf",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_public",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "542d4a4f-c68d-48c7-9af6-a00466cc3820",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_public",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e46ea43-073d-45dc-91be-6b7a763ba7b4",
+          "name": "Get Devbox counts by Agent.",
+          "request": {
+            "name": "Get Devbox counts by Agent.",
+            "description": {
+              "content": "Returns devbox counts grouped by agent name. This endpoint efficiently aggregates devbox counts for all agents in a single request, avoiding N+1 query patterns.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                "devbox_counts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9c18594d-73da-4bb2-a018-630c7f5add6f",
+              "name": "Successfully retrieved devbox counts by agent name.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "devbox_counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"counts\": {\n    \"key_0\": 3379,\n    \"key_1\": 9367\n  },\n  \"total_count\": 5248\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b339c531-1914-4e9a-8909-5d36c97170af",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "devbox_counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90557dc2-2e06-472d-ac44-298f7114056d",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "devbox_counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "24f27d4a-8ee2-4139-8015-0757c225c147",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "devbox_counts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84cab47c-a3da-4c10-97f1-b2847e982878",
+          "name": "List Public Agents.",
+          "request": {
+            "name": "List Public Agents.",
+            "description": {
+              "content": "List all public Agents with pagination support.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                "list_public"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The limit of items to return. Default is 20. Max is 5000."
+                },
+                {
+                  "disabled": false,
+                  "key": "starting_after",
+                  "value": "<string>",
+                  "description": "Load the next page of data starting after the item with the given ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter agents by name (partial match supported)."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Search by agent ID or name."
+                },
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<string>",
+                  "description": "Filter by version. Use 'latest' to get the most recently created agent."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_count",
+                  "value": "<boolean>",
+                  "description": "If true (default), includes total_count in the response. Set to false to skip the count query for better performance on large datasets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "99dc304d-7f00-49a6-a6dc-e18c17bd764b",
+              "name": "Successfully retrieved list of public Agents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agents\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"create_time_ms\": 3567,\n      \"is_public\": false,\n      \"version\": \"string\",\n      \"source\": {\n        \"type\": \"<string>\",\n        \"npm\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"pip\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"object\": {\n          \"object_id\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"git\": {\n          \"repository\": \"<string>\",\n          \"ref\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"create_time_ms\": 7287,\n      \"is_public\": false,\n      \"version\": \"string\",\n      \"source\": {\n        \"type\": \"<string>\",\n        \"npm\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"pip\": {\n          \"package_name\": \"<string>\",\n          \"registry_url\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"object\": {\n          \"object_id\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"git\": {\n          \"repository\": \"<string>\",\n          \"ref\": \"<string>\",\n          \"agent_setup\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      }\n    }\n  ],\n  \"has_more\": false,\n  \"total_count\": 846\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d3676afa-b0bb-48d9-986b-5490dde33003",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "921f6dec-1200-4f2c-aeed-4d32160fd8e9",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "74bd193f-dfb2-45d6-811d-e09fd52b0f7e",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "list_public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "starting_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "version",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_count",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b54075e-5d14-4d27-8bc5-bee99de24988",
+          "name": "Get an Agent.",
+          "request": {
+            "name": "Get an Agent.",
+            "description": {
+              "content": "Retrieve a specific Agent by its unique identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the Agent to retrieve."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "39bc15a9-1e37-4ae6-bcfb-f1620d67c2d7",
+              "name": "Agent retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"create_time_ms\": 410,\n  \"is_public\": true,\n  \"version\": \"string\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"npm\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"pip\": {\n      \"package_name\": \"<string>\",\n      \"registry_url\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"object\": {\n      \"object_id\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"git\": {\n      \"repository\": \"<string>\",\n      \"ref\": \"<string>\",\n      \"agent_setup\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "516fdce9-4580-4cd7-89b0-e5c7af25f438",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "06af2c46-a950-4ba0-81be-c920efe9d8ab",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e52912d9-6952-449c-9de6-047de4edf576",
+              "name": "Agent not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1f341914-33c2-45cc-ad82-8434878bef81",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87a7a435-785f-43a3-af44-7dd468d17584",
+          "name": "Delete an Agent.",
+          "request": {
+            "name": "Delete an Agent.",
+            "description": {
+              "content": "Delete an Agent by its unique identifier. The Agent will be permanently removed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":id",
+                "delete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the Agent to delete."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "724a3b0b-6ae4-451d-a7cb-cc4d6194fb71",
+              "name": "Agent deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "807c1ea9-ec82-40aa-9290-e0af6ac2f4f6",
+              "name": "Unauthorized. Invalid or missing authentication.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e62a3725-de02-450f-b218-2caf66dcaba2",
+              "name": "Forbidden. Account does not have devbox capability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "615aa71e-ccd3-4a02-b840-d58b2e1eea09",
+              "name": "Agent not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "32d5d8c7-5129-4ae1-b818-365aa76d2f68",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":id",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the Agent to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.runloop.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f8876eee-ff33-4adf-93f6-cc7751fd9b41",
+    "name": "Runloop agents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.\n\nContact Support:\n Name: Runloop AI Support\n Email: support@runloop.ai",
+      "type": "text/plain"
+    }
+  }
+}
