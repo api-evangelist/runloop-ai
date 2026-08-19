@@ -1,5 +1,6 @@
 aid: runloop-ai
 url: https://raw.githubusercontent.com/api-evangelist/runloop-ai/refs/heads/main/apis.yml
+specificationVersion: '0.23'
 apis:
 - aid: runloop-ai:runloop-ai-agents-api
   name: Runloop agents API
