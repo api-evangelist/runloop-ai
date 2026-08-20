@@ -8,6 +8,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Agents
+  tags_raw:
   - agents
   properties:
   - type: OpenAPI
@@ -108,6 +110,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - APIKeys
+  tags_raw:
   - apikeys
   properties:
   - type: OpenAPI
@@ -308,6 +312,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Benchmarks
+  tags_raw:
   - Benchmark
   properties:
   - type: OpenAPI
@@ -408,6 +414,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Blueprints
+  tags_raw:
   - Blueprint
   properties:
   - type: OpenAPI
@@ -1411,6 +1419,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Execution
+  tags_raw:
   - executions
   properties:
   - type: OpenAPI
@@ -1711,6 +1721,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Network Policies
+  tags_raw:
   - network-policies
   properties:
   - type: OpenAPI
@@ -1811,6 +1823,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Objects
+  tags_raw:
   - objects
   properties:
   - type: OpenAPI
@@ -1910,7 +1924,8 @@ apis:
   description: The restricted_keys API from Runloop — 1 operation(s) for restricted_keys.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
-  tags:
+  tags: []
+  tags_raw:
   - restricted_keys
   properties:
   - type: OpenAPI
@@ -2211,6 +2226,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Secrets
+  tags_raw:
   - secrets
   properties:
   - type: OpenAPI
@@ -2311,6 +2328,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - Streaming
+  tags_raw:
   - streaming
   properties:
   - type: OpenAPI
@@ -2416,6 +2435,21 @@ description: >
   VPC deployment available for regulated workloads. Founded 2023 by Jonathan Wall (Google File System lead, Google
   Wallet co-founder, Index CTO acquired by Stripe).
 tags:
+  - Artificial Intelligence
+  - AI Agents
+  - Coding Agents
+  - Sandboxes
+  - Devboxes
+  - Code Execution
+  - Evaluation
+  - Benchmarks
+  - SWE-Bench
+  - MCP
+  - Snapshots
+  - MicroVM
+  - Enterprise
+  - SOC 2
+tags_raw:
   - AI
   - AI Agents
   - Coding Agents
