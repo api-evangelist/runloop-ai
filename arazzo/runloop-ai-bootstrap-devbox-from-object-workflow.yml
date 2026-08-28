@@ -12,11 +12,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: objectsApi
-  url: ../openapi/runloop-objects-api-openapi.yml
-  type: openapi
 - name: devboxApi
-  url: ../openapi/runloop-devbox-api-openapi.yml
+  url: ../openapi/runloop-ai-devbox-api-openapi.yml
+  type: openapi
+- name: objectsApi
+  url: ../openapi/runloop-ai-objects-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: bootstrap-devbox-from-object

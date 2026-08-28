@@ -13,10 +13,10 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: blueprintApi
-  url: ../openapi/runloop-blueprint-api-openapi.yml
+  url: ../openapi/runloop-ai-blueprint-api-openapi.yml
   type: openapi
 - name: devboxApi
-  url: ../openapi/runloop-devbox-api-openapi.yml
+  url: ../openapi/runloop-ai-devbox-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: build-blueprint-and-launch-devbox

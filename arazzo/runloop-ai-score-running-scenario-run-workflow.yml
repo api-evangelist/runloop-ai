@@ -11,7 +11,7 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: scenarioApi
-  url: ../openapi/runloop-scenario-api-openapi.yml
+  url: ../openapi/runloop-ai-scenario-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: score-running-scenario-run

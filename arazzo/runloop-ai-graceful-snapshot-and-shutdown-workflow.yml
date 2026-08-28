@@ -11,7 +11,7 @@ info:
   version: 1.0.0
 sourceDescriptions:
 - name: devboxApi
-  url: ../openapi/runloop-devbox-api-openapi.yml
+  url: ../openapi/runloop-ai-devbox-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: graceful-snapshot-and-shutdown
