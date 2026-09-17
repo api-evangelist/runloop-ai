@@ -116,108 +116,6 @@ apis:
     url: json-schema/runloop-restricted-key-schema.json
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
-- aid: runloop-ai:runloop-ai-apikeys-api
-  name: Runloop apikeys API
-  description: The apikeys API from Runloop — 1 operation(s) for apikeys.
-  humanURL: https://docs.runloop.ai/docs/devboxes/overview
-  baseURL: https://api.runloop.ai
-  tags:
-  - APIKeys
-  tags_raw:
-  - apikeys
-  properties:
-  - type: OpenAPI
-    url: openapi/runloop-ai-apikeys-api-openapi.yml
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/overview
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/lifecycle
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/execute-commands
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/files
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/named-shells
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/snapshots
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/start-stop
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/tunnels
-  - type: JSONSchema
-    url: json-schema/runloop-devbox-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-execution-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-snapshot-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-tunnel-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-launch-parameters-schema.json
-  - type: JSONStructure
-    url: json-structure/runloop-devbox-structure.json
-  - type: JSONLD
-    url: json-ld/runloop-context.jsonld
-  - type: Examples
-    url: examples/runloop-devbox-create-example.json
-  - type: Examples
-    url: examples/runloop-devbox-exec-example.json
-  - type: Examples
-    url: examples/runloop-snapshot-create-example.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/blueprints/overview
-  - type: JSONSchema
-    url: json-schema/runloop-blueprint-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/benchmarks/overview
-  - type: JSONSchema
-    url: json-schema/runloop-benchmark-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-benchmark-run-schema.json
-  - type: Examples
-    url: examples/runloop-benchmark-run-example.json
-  - type: JSONSchema
-    url: json-schema/runloop-scenario-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/agents/using-agents-api
-  - type: JSONSchema
-    url: json-schema/runloop-agent-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/axons/overview
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/axons/broker
-  - type: JSONSchema
-    url: json-schema/runloop-axon-schema.json
-  - type: Examples
-    url: examples/runloop-axon-subscribe-example.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/storage-objects/overview
-  - type: JSONSchema
-    url: json-schema/runloop-object-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/configuration/account-secrets
-  - type: JSONSchema
-    url: json-schema/runloop-secret-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/network-policies
-  - type: JSONSchema
-    url: json-schema/runloop-network-policy-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/agent-gateways
-  - type: JSONSchema
-    url: json-schema/runloop-gateway-config-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/tools/ai-tools
-  - type: JSONSchema
-    url: json-schema/runloop-mcp-config-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/api-reference/apikeys/create-api-key
-  - type: JSONSchema
-    url: json-schema/runloop-api-key-schema.json
-  - type: JSONSchema
-    url: json-schema/runloop-restricted-key-schema.json
-  - type: Documentation
-    url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-axons-api
   name: Runloop axons API
   description: The axons API from Runloop — 7 operation(s) for axons.
@@ -2346,6 +2244,106 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/runloop-ai-streaming-api-openapi.yml
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/overview
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/lifecycle
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/execute-commands
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/files
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/named-shells
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/snapshots
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/start-stop
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/tunnels
+  - type: JSONSchema
+    url: json-schema/runloop-devbox-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-execution-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-snapshot-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-tunnel-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-launch-parameters-schema.json
+  - type: JSONStructure
+    url: json-structure/runloop-devbox-structure.json
+  - type: JSONLD
+    url: json-ld/runloop-context.jsonld
+  - type: Examples
+    url: examples/runloop-devbox-create-example.json
+  - type: Examples
+    url: examples/runloop-devbox-exec-example.json
+  - type: Examples
+    url: examples/runloop-snapshot-create-example.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/blueprints/overview
+  - type: JSONSchema
+    url: json-schema/runloop-blueprint-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/benchmarks/overview
+  - type: JSONSchema
+    url: json-schema/runloop-benchmark-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-benchmark-run-schema.json
+  - type: Examples
+    url: examples/runloop-benchmark-run-example.json
+  - type: JSONSchema
+    url: json-schema/runloop-scenario-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/agents/using-agents-api
+  - type: JSONSchema
+    url: json-schema/runloop-agent-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/axons/overview
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/axons/broker
+  - type: JSONSchema
+    url: json-schema/runloop-axon-schema.json
+  - type: Examples
+    url: examples/runloop-axon-subscribe-example.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/storage-objects/overview
+  - type: JSONSchema
+    url: json-schema/runloop-object-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/configuration/account-secrets
+  - type: JSONSchema
+    url: json-schema/runloop-secret-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/network-policies
+  - type: JSONSchema
+    url: json-schema/runloop-network-policy-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/agent-gateways
+  - type: JSONSchema
+    url: json-schema/runloop-gateway-config-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/tools/ai-tools
+  - type: JSONSchema
+    url: json-schema/runloop-mcp-config-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/api-reference/apikeys/create-api-key
+  - type: JSONSchema
+    url: json-schema/runloop-api-key-schema.json
+  - type: JSONSchema
+    url: json-schema/runloop-restricted-key-schema.json
+  - type: Documentation
+    url: https://docs.runloop.ai/docs/devboxes/execution-logs
+- aid: runloop-ai:runloop-ai-api-keys-api
+  name: Runloop API Keys API
+  description: The API Keys API from Runloop — 1 operation(s) for api keys.
+  humanURL: https://docs.runloop.ai/docs/devboxes/overview
+  baseURL: https://api.runloop.ai
+  tags:
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/runloop-ai-api-keys-api-openapi.yml
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/overview
   - type: Documentation
