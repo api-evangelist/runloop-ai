@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents ScenarioScorer API
+  title: RunLoop Scenario Scorer API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - ScenarioScorer
-      summary: Create a custom scenario scorer.
+      summary: Create a custom scenario scorer
       description: Create a custom scenario scorer.
       operationId: createCustomScorer
       parameters: []
@@ -43,7 +43,7 @@ paths:
     get:
       tags:
       - ScenarioScorer
-      summary: List Scenario Scorers.
+      summary: List Scenario Scorers
       description: List all Scenario Scorers matching filter.
       operationId: listScenarioScorers
       parameters:
@@ -84,7 +84,7 @@ paths:
     post:
       tags:
       - ScenarioScorer
-      summary: Update a custom scenario scorer.
+      summary: Update a custom scenario scorer
       description: Update a scenario scorer.
       operationId: updateCustomScorer
       parameters:
@@ -113,7 +113,7 @@ paths:
     get:
       tags:
       - ScenarioScorer
-      summary: Retrieve Scenario Scorer.
+      summary: Retrieve Scenario Scorer
       description: Retrieve Scenario Scorer.
       operationId: retrieveScenarioScorers
       parameters:
@@ -135,19 +135,25 @@ paths:
       deprecated: false
 components:
   schemas:
-    CreateCustomScorerParams:
+    ScenarioScorersListView:
       type: object
       additionalProperties: false
       properties:
-        type:
-          type: string
-          description: Name of the type of custom scorer.
-        bash_script:
-          type: string
-          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
+        scorers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioScorerView'
+          description: List of ScenarioScorers matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
       required:
-      - type
-      - bash_script
+      - scorers
+      - has_more
     ScenarioScorerView:
       type: object
       additionalProperties: false
@@ -166,24 +172,19 @@ components:
       - id
       - type
       - bash_script
-    ScenarioScorersListView:
+    CreateCustomScorerParams:
       type: object
       additionalProperties: false
       properties:
-        scorers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScenarioScorerView'
-          description: List of ScenarioScorers matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type: integer
-          format: int32
-          nullable: true
+        type:
+          type: string
+          description: Name of the type of custom scorer.
+        bash_script:
+          type: string
+          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
       required:
-      - scorers
-      - has_more
+      - type
+      - bash_script
   securitySchemes:
     bearerAuth:
       scheme: bearer

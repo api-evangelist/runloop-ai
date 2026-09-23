@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents Devbox-ObservabilityTools API
+  title: RunLoop Devbox Observability Tools API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - Devbox-ObservabilityTools
-      summary: Get Devbox logs.
+      summary: Get Devbox logs
       description: Get all logs from a running or completed Devbox.
       operationId: listDevboxLogs
       parameters:
@@ -62,7 +62,7 @@ paths:
     get:
       tags:
       - Devbox-ObservabilityTools
-      summary: Live Tail Devbox Logs.
+      summary: Live Tail Devbox Logs
       description: Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed.
       operationId: tailDevboxLogs
       parameters:
@@ -105,7 +105,7 @@ paths:
     get:
       tags:
       - Devbox-ObservabilityTools
-      summary: Get resource usage for a Devbox.
+      summary: Get resource usage for a Devbox
       description: Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended.
       operationId: getDevboxResourceUsage
       parameters:
@@ -134,8 +134,9 @@ components:
       additionalProperties: false
       properties:
         cmd_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Identifier of the associated command the log is sourced from.
         level:
           type: string
@@ -145,21 +146,25 @@ components:
           format: int64
           description: Time of log (Unix timestamp milliseconds).
         shell_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The Shell name the cmd executed in.
         cmd:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The Command Executed
         message:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Log line message.
         exit_code:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: The Exit Code of the command
         source:
           $ref: '#/components/schemas/DevboxLogSource'
@@ -179,6 +184,15 @@ components:
           description: List of logs for the given devbox.
       required:
       - logs
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
     DevboxResourceUsageView:
       type: object
       additionalProperties: false
@@ -211,9 +225,10 @@ components:
           format: int64
           description: The devbox creation time in milliseconds since epoch.
         end_time_ms:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: The devbox end time in milliseconds since epoch, or null if still running.
         status:
           type: string
@@ -227,15 +242,6 @@ components:
       - disk_gb_seconds
       - start_time_ms
       - status
-    DevboxLogSource:
-      type: string
-      enum:
-      - setup_commands
-      - entrypoint
-      - exec
-      - files
-      - stats
-      - kmsg
   securitySchemes:
     bearerAuth:
       scheme: bearer

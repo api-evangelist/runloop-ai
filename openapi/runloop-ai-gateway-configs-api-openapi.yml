@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents gateway-configs API
+  title: RunLoop Gateway Configs API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - gateway-configs
-      summary: Create a GatewayConfig.
+      summary: Create a GatewayConfig
       description: Create a new GatewayConfig to proxy API requests through the agent gateway. The config specifies the target endpoint and how credentials should be applied.
       operationId: createGatewayConfig
       parameters: []
@@ -49,7 +49,7 @@ paths:
     get:
       tags:
       - gateway-configs
-      summary: List GatewayConfigs.
+      summary: List GatewayConfigs
       description: List all GatewayConfigs for the authenticated account, including system-provided configs like 'anthropic' and 'openai'.
       operationId: listGatewayConfigs
       parameters:
@@ -112,7 +112,7 @@ paths:
     get:
       tags:
       - gateway-configs
-      summary: Get a GatewayConfig.
+      summary: Get a GatewayConfig
       description: Get a specific GatewayConfig by its unique identifier.
       operationId: getGatewayConfig
       parameters:
@@ -143,7 +143,7 @@ paths:
     post:
       tags:
       - gateway-configs
-      summary: Update a GatewayConfig.
+      summary: Update a GatewayConfig
       description: Update an existing GatewayConfig. All fields are optional.
       operationId: updateGatewayConfig
       parameters:
@@ -183,7 +183,7 @@ paths:
     post:
       tags:
       - gateway-configs
-      summary: Delete a GatewayConfig.
+      summary: Delete a GatewayConfig
       description: Delete an existing GatewayConfig. This action is irreversible.
       operationId: deleteGatewayConfig
       parameters:
@@ -221,41 +221,10 @@ paths:
       deprecated: false
 components:
   schemas:
-    GatewayConfigView:
+    EmptyRecord:
       type: object
       additionalProperties: false
-      description: A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies the target endpoint and how credentials should be applied.
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the GatewayConfig.
-        account_id:
-          type: string
-          nullable: true
-          description: The account ID that owns this config.
-        name:
-          type: string
-          description: The human-readable name of the GatewayConfig. Unique per account (or globally for system configs).
-        endpoint:
-          type: string
-          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
-        auth_mechanism:
-          $ref: '#/components/schemas/AuthMechanismView'
-          description: How credentials should be applied to proxied requests.
-        description:
-          type: string
-          nullable: true
-          description: Optional description for this gateway configuration.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the GatewayConfig (Unix timestamp in milliseconds).
-      required:
-      - id
-      - name
-      - endpoint
-      - auth_mechanism
-      - create_time_ms
+      properties: {}
     GatewayConfigListView:
       type: object
       additionalProperties: false
@@ -270,9 +239,10 @@ components:
           type: boolean
           description: Whether there are more results available beyond this page.
         total_count:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: Total count of GatewayConfigs that match the query.
       required:
       - gateway_configs
@@ -292,37 +262,73 @@ components:
           $ref: '#/components/schemas/AuthMechanismView'
           description: How credentials should be applied to proxied requests. Specify the type ('header', 'bearer') and optional key field.
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Optional description for this gateway configuration.
       required:
       - name
       - endpoint
       - auth_mechanism
-    EmptyRecord:
+    GatewayConfigView:
       type: object
       additionalProperties: false
-      properties: {}
+      description: A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies the target endpoint and how credentials should be applied.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the GatewayConfig.
+        account_id:
+          type:
+          - string
+          - 'null'
+          description: The account ID that owns this config.
+        name:
+          type: string
+          description: The human-readable name of the GatewayConfig. Unique per account (or globally for system configs).
+        endpoint:
+          type: string
+          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: How credentials should be applied to proxied requests.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description for this gateway configuration.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the GatewayConfig (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - endpoint
+      - auth_mechanism
+      - create_time_ms
     GatewayConfigUpdateParameters:
       type: object
       additionalProperties: false
       description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will be updated.
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New name for the GatewayConfig. Must be unique within your account.
         endpoint:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New target endpoint URL (e.g., 'https://api.anthropic.com').
         auth_mechanism:
           $ref: '#/components/schemas/AuthMechanismView'
-          nullable: true
           description: New authentication mechanism for applying credentials to proxied requests.
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New description for this gateway configuration.
     AuthMechanismView:
       type: object
@@ -333,8 +339,9 @@ components:
           type: string
           description: 'The type of authentication mechanism: ''header'', ''bearer''.'
         key:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: 'For ''header'' type: the header name (e.g., ''x-api-key'').'
       required:
       - type

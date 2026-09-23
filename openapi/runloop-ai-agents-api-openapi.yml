@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents API
+  title: RunLoop Agents API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -14,13 +14,13 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: agents
+- name: Agents
 paths:
   /v1/agents:
     post:
       tags:
-      - agents
-      summary: Create an Agent.
+      - Agents
+      summary: Create an Agent
       description: Create a new Agent with a name and optional public visibility. The Agent will be assigned a unique ID.
       operationId: createAgent
       parameters: []
@@ -48,8 +48,8 @@ paths:
       deprecated: false
     get:
       tags:
-      - agents
-      summary: List Agents.
+      - Agents
+      summary: List Agents
       description: List all Agents for the authenticated account with pagination support.
       operationId: listAgents
       parameters:
@@ -127,8 +127,8 @@ paths:
   /v1/agents/devbox_counts:
     get:
       tags:
-      - agents
-      summary: Get Devbox counts by Agent.
+      - Agents
+      summary: Get Devbox counts by Agent
       description: Returns devbox counts grouped by agent name. This endpoint efficiently aggregates devbox counts for all agents in a single request, avoiding N+1 query patterns.
       operationId: getAgentDevboxCounts
       parameters: []
@@ -149,8 +149,8 @@ paths:
   /v1/agents/list_public:
     get:
       tags:
-      - agents
-      summary: List Public Agents.
+      - Agents
+      summary: List Public Agents
       description: List all public Agents with pagination support.
       operationId: listPublicAgents
       parameters:
@@ -220,8 +220,8 @@ paths:
   /v1/agents/{id}:
     get:
       tags:
-      - agents
-      summary: Get an Agent.
+      - Agents
+      summary: Get an Agent
       description: Retrieve a specific Agent by its unique identifier.
       operationId: getAgent
       parameters:
@@ -252,8 +252,8 @@ paths:
   /v1/agents/{id}/delete:
     post:
       tags:
-      - agents
-      summary: Delete an Agent.
+      - Agents
+      summary: Delete an Agent
       description: Delete an Agent by its unique identifier. The Agent will be permanently removed.
       operationId: deleteAgent
       parameters:
@@ -283,88 +283,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    AgentSource:
-      type: object
-      additionalProperties: false
-      description: Agent source configuration.
-      properties:
-        type:
-          type: string
-          description: 'Source type: npm, pip, object, or git'
-        npm:
-          $ref: '#/components/schemas/NpmSource'
-          nullable: true
-          description: NPM source configuration
-        pip:
-          $ref: '#/components/schemas/PipSource'
-          nullable: true
-          description: Pip source configuration
-        object:
-          $ref: '#/components/schemas/ObjectSource'
-          nullable: true
-          description: Object store source configuration
-        git:
-          $ref: '#/components/schemas/GitSource'
-          nullable: true
-          description: Git source configuration
-      required:
-      - type
-    ObjectSource:
-      type: object
-      additionalProperties: false
-      description: Object store agent source configuration.
-      properties:
-        object_id:
-          type: string
-          description: Object ID
-        agent_setup:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Setup commands to run after unpacking
-      required:
-      - object_id
-    NpmSource:
-      type: object
-      additionalProperties: false
-      description: NPM-based agent source configuration.
-      properties:
-        package_name:
-          type: string
-          description: NPM package name
-        registry_url:
-          type: string
-          nullable: true
-          description: NPM registry URL
-        agent_setup:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Setup commands to run after installation
-      required:
-      - package_name
-    GitSource:
-      type: object
-      additionalProperties: false
-      description: Git-based agent source configuration.
-      properties:
-        repository:
-          type: string
-          description: Git repository URL
-        ref:
-          type: string
-          nullable: true
-          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
-        agent_setup:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Setup commands to run after cloning
-      required:
-      - repository
     AgentListView:
       type: object
       additionalProperties: false
@@ -379,13 +297,71 @@ components:
           type: boolean
           description: Whether there are more Agents to fetch.
         total_count:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: The total count of Agents.
       required:
       - agents
       - has_more
+    AgentView:
+      type: object
+      additionalProperties: false
+      description: An Agent represents a registered AI agent entity.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the Agent.
+        name:
+          type: string
+          description: The name of the Agent.
+        version:
+          type:
+          - string
+          - 'null'
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Omitted for object sources or when not provided.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the Agent (Unix timestamp milliseconds).
+        is_public:
+          type: boolean
+          description: Whether the Agent is publicly accessible.
+        source:
+          $ref: '#/components/schemas/AgentSource'
+          description: The source configuration for the Agent.
+      required:
+      - id
+      - name
+      - create_time_ms
+      - is_public
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    AgentSource:
+      type: object
+      additionalProperties: false
+      description: Agent source configuration.
+      properties:
+        type:
+          type: string
+          description: 'Source type: npm, pip, object, or git'
+        npm:
+          $ref: '#/components/schemas/NpmSource'
+          description: NPM source configuration
+        pip:
+          $ref: '#/components/schemas/PipSource'
+          description: Pip source configuration
+        object:
+          $ref: '#/components/schemas/ObjectSource'
+          description: Object store source configuration
+        git:
+          $ref: '#/components/schemas/GitSource'
+          description: Git source configuration
+      required:
+      - type
     PipSource:
       type: object
       additionalProperties: false
@@ -395,35 +371,36 @@ components:
           type: string
           description: Pip package name
         registry_url:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Pip registry URL
         agent_setup:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
           description: Setup commands to run after installation
       required:
       - package_name
-    AgentCreateParameters:
+    ObjectSource:
       type: object
       additionalProperties: false
-      description: Parameters for creating a new Agent.
+      description: Object store agent source configuration.
       properties:
-        name:
+        object_id:
           type: string
-          description: The name of the Agent.
-        version:
-          type: string
-          nullable: true
-          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
-        source:
-          $ref: '#/components/schemas/AgentSource'
-          nullable: true
-          description: The source configuration for the Agent.
+          description: Object ID
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after unpacking
       required:
-      - name
+      - object_id
     AgentDevboxCountsView:
       type: object
       additionalProperties: false
@@ -442,41 +419,68 @@ components:
       required:
       - counts
       - total_count
-    EmptyRecord:
+    GitSource:
       type: object
       additionalProperties: false
-      properties: {}
-    AgentView:
-      type: object
-      additionalProperties: false
-      description: An Agent represents a registered AI agent entity.
+      description: Git-based agent source configuration.
       properties:
-        id:
+        repository:
           type: string
-          description: The unique identifier of the Agent.
+          description: Git repository URL
+        ref:
+          type:
+          - string
+          - 'null'
+          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after cloning
+      required:
+      - repository
+    AgentCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for creating a new Agent.
+      properties:
         name:
           type: string
           description: The name of the Agent.
         version:
-          type: string
-          nullable: true
-          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Omitted for object sources or when not provided.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: The creation time of the Agent (Unix timestamp milliseconds).
-        is_public:
-          type: boolean
-          description: Whether the Agent is publicly accessible.
+          type:
+          - string
+          - 'null'
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
         source:
           $ref: '#/components/schemas/AgentSource'
-          nullable: true
           description: The source configuration for the Agent.
       required:
-      - id
       - name
-      - create_time_ms
-      - is_public
+    NpmSource:
+      type: object
+      additionalProperties: false
+      description: NPM-based agent source configuration.
+      properties:
+        package_name:
+          type: string
+          description: NPM package name
+        registry_url:
+          type:
+          - string
+          - 'null'
+          description: NPM registry URL
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after installation
+      required:
+      - package_name
   securitySchemes:
     bearerAuth:
       scheme: bearer

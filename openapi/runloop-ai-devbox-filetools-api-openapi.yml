@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents Devbox-FileTools API
+  title: RunLoop Devbox File Tools API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - Devbox-FileTools
-      summary: Download binary file contents from Devbox filesystem.
+      summary: Download binary file contents from Devbox filesystem
       description: Download file contents of any type (binary, text, etc) from a specified path on the Devbox.
       operationId: devboxDownloadFile
       parameters:
@@ -63,7 +63,7 @@ paths:
     post:
       tags:
       - Devbox-FileTools
-      summary: Read text file contents from Devbox filesystem.
+      summary: Read text file contents from Devbox filesystem
       description: Read file contents from a file on a Devbox as a UTF-8. Note 'downloadFile' should be used for large files (greater than 100MB). Returns the file contents as a UTF-8 string.
       operationId: devboxReadFileContents
       parameters:
@@ -95,7 +95,7 @@ paths:
     post:
       tags:
       - Devbox-FileTools
-      summary: Upload binary file contents to Devbox filesystem.
+      summary: Upload binary file contents to Devbox filesystem
       description: Upload file contents of any type (binary, text, etc) to a Devbox. Note this API is suitable for large files (larger than 100MB) and efficiently uploads files via multipart form data.
       operationId: devboxUploadFile
       parameters:
@@ -127,7 +127,7 @@ paths:
     post:
       tags:
       - Devbox-FileTools
-      summary: Write text file contents to Devbox filesystem.
+      summary: Write text file contents to Devbox filesystem
       description: Write UTF-8 string contents to a file at path on the Devbox. Note for large files (larger than 100MB), the upload_file endpoint must be used.
       operationId: devboxWriteFileContents
       parameters:
@@ -157,6 +157,31 @@ paths:
       deprecated: false
 components:
   schemas:
+    DevboxReadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - file_path
+    FileUpload:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+        path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+      required:
+      - path
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
     DevboxWriteFileParameters:
       type: object
       additionalProperties: false
@@ -170,40 +195,6 @@ components:
       required:
       - file_path
       - contents
-    FileUpload:
-      type: object
-      additionalProperties: false
-      properties:
-        file:
-          type: string
-          format: binary
-        path:
-          type: string
-          description: The path to write the file to on the Devbox. Path is relative to user home directory.
-      required:
-      - path
-    DevboxReadFileParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        file_path:
-          type: string
-          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
-      required:
-      - file_path
-    DevboxDownloadFileParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        path:
-          type: string
-          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
-      required:
-      - path
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
     DevboxExecutionDetailView:
       type: object
       additionalProperties: false
@@ -222,14 +213,24 @@ components:
           format: int32
           description: Exit status of command execution.
         shell_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Shell name.
       required:
       - devbox_id
       - stdout
       - stderr
       - exit_status
+    DevboxDownloadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - path
   securitySchemes:
     bearerAuth:
       scheme: bearer

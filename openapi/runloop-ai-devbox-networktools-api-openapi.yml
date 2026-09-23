@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents Devbox-NetworkTools API
+  title: RunLoop Devbox Network Tools API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - Devbox-NetworkTools
-      summary: Create an ephemeral PTY tunnel for a running Devbox.
+      summary: Create an ephemeral PTY tunnel for a running Devbox
       description: Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in the Authorization header.
       operationId: createDevboxPtyTunnel
       parameters:
@@ -74,8 +74,8 @@ paths:
     post:
       tags:
       - Devbox-NetworkTools
-      summary: Enable a tunnel for a running Devbox.
-      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai
+      summary: Enable a tunnel for a running Devbox
+      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://{port}-{tunnel_key}.tunnel.runloop.ai
 
 
         Each Devbox can have one tunnel.'
@@ -111,7 +111,7 @@ paths:
     post:
       tags:
       - Devbox-NetworkTools
-      summary: Remove a tunnel from the Devbox.
+      summary: Remove a tunnel from the Devbox
       description: Remove an existing V2 tunnel from the Devbox.
       operationId: removeDevboxTunnel
       parameters:
@@ -135,11 +135,15 @@ paths:
       deprecated: false
 components:
   schemas:
-    TunnelAuthMode:
+    TunnelAuthModeView:
       type: string
       enum:
       - open
       - authenticated
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
     TunnelConfig:
       type: object
       additionalProperties: false
@@ -147,15 +151,16 @@ components:
       properties:
         auth_mode:
           $ref: '#/components/schemas/TunnelAuthMode'
-          nullable: true
           description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
         http_keep_alive:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
           description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
         wake_on_http:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
           description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
     PtyTunnelView:
       type: object
@@ -171,48 +176,6 @@ components:
       required:
       - tunnel_key
       - auth_token
-    TunnelView:
-      type: object
-      additionalProperties: false
-      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.
-
-        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
-      properties:
-        tunnel_key:
-          type: string
-          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
-        auth_mode:
-          $ref: '#/components/schemas/TunnelAuthModeView'
-          description: The authentication mode for the tunnel.
-        auth_token:
-          type: string
-          nullable: true
-          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the tunnel (Unix timestamp milliseconds).
-        http_keep_alive:
-          type: boolean
-          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer.
-        wake_on_http:
-          type: boolean
-          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
-      required:
-      - tunnel_key
-      - auth_mode
-      - create_time_ms
-      - http_keep_alive
-      - wake_on_http
-    TunnelAuthModeView:
-      type: string
-      enum:
-      - open
-      - authenticated
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
     DevboxCreateSshKeyView:
       type: object
       additionalProperties: false
@@ -234,6 +197,45 @@ components:
       - url
       - ssh_private_key
       - ssh_user
+    TunnelAuthMode:
+      type: string
+      enum:
+      - open
+      - authenticated
+    TunnelView:
+      type: object
+      additionalProperties: false
+      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.
+
+        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthModeView'
+          description: The authentication mode for the tunnel.
+        auth_token:
+          type:
+          - string
+          - 'null'
+          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the tunnel (Unix timestamp milliseconds).
+        http_keep_alive:
+          type: boolean
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer.
+        wake_on_http:
+          type: boolean
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
+      required:
+      - tunnel_key
+      - auth_mode
+      - create_time_ms
+      - http_keep_alive
+      - wake_on_http
   securitySchemes:
     bearerAuth:
       scheme: bearer

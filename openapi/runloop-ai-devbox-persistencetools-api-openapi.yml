@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents Devbox-PersistenceTools API
+  title: RunLoop Devbox Persistence Tools API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List disk snapshots of a Devbox.
+      summary: List disk snapshots of a Devbox
       description: List all snapshots of a Devbox while optionally filtering by Devbox ID, source Blueprint ID, and metadata.
       operationId: getDevboxDiskSnapshotList
       parameters:
@@ -95,7 +95,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List public disk snapshots.
+      summary: List public disk snapshots
       description: List all public disk snapshots that are available to all users.
       operationId: listPublicSnapshots
       parameters:
@@ -168,7 +168,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List available snapshot metadata keys.
+      summary: List available snapshot metadata keys
       description: Returns a list of all available metadata keys that can be used for filtering snapshots.
       operationId: getSnapshotMetadataKeys
       parameters: []
@@ -184,7 +184,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List values for a specific snapshot metadata key.
+      summary: List values for a specific snapshot metadata key
       description: Returns a list of all values that exist for a specific metadata key across all snapshots.
       operationId: getSnapshotMetadataValues
       parameters:
@@ -210,7 +210,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List available public snapshot metadata keys.
+      summary: List available public snapshot metadata keys
       description: Returns a list of all available metadata keys from public snapshots only that can be used for filtering.
       operationId: getPublicSnapshotMetadataKeys
       parameters: []
@@ -226,7 +226,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: List values for a specific public snapshot metadata key.
+      summary: List values for a specific public snapshot metadata key
       description: Returns a list of all values that exist for a specific metadata key across all public snapshots only.
       operationId: getPublicSnapshotMetadataValues
       parameters:
@@ -252,7 +252,7 @@ paths:
     post:
       tags:
       - Devbox-PersistenceTools
-      summary: Update metadata of Disk Snapshot.
+      summary: Update metadata of Disk Snapshot
       description: Updates disk snapshot metadata via update vs patch. The entire metadata will be replaced.
       operationId: updateDiskSnapshot
       parameters:
@@ -284,7 +284,7 @@ paths:
     post:
       tags:
       - Devbox-PersistenceTools
-      summary: Delete a disk snapshot of a Devbox.
+      summary: Delete a disk snapshot of a Devbox
       description: Delete a previously taken disk snapshot of a Devbox.
       operationId: deleteSnapshot
       parameters:
@@ -312,7 +312,7 @@ paths:
     get:
       tags:
       - Devbox-PersistenceTools
-      summary: Query the status of an asynchronous disk snapshot.
+      summary: Query the status of an asynchronous disk snapshot
       description: Get the current status of an asynchronous disk snapshot operation, including whether it is still in progress and any error messages if it failed.
       operationId: queryDiskSnapshotAsync
       parameters:
@@ -338,7 +338,7 @@ paths:
     post:
       tags:
       - Devbox-PersistenceTools
-      summary: Synchronously create a disk snapshot of a running Devbox.
+      summary: Synchronously create a disk snapshot of a running Devbox
       description: Create a disk snapshot of a devbox with the specified name and metadata to enable launching future Devboxes with the same disk state.
       operationId: createDiskSnapshot
       parameters:
@@ -370,7 +370,7 @@ paths:
     post:
       tags:
       - Devbox-PersistenceTools
-      summary: Start an asynchronous disk snapshot of a running Devbox.
+      summary: Start an asynchronous disk snapshot of a running Devbox
       description: Start an asynchronous disk snapshot of a devbox with the specified name and metadata. The snapshot operation will continue in the background and can be monitored using the query endpoint.
       operationId: createDiskSnapshotAsync
       parameters:
@@ -400,41 +400,25 @@ paths:
       deprecated: false
 components:
   schemas:
-    DevboxSnapshotRequest:
+    MetadataKeysView:
       type: object
       additionalProperties: false
       properties:
-        name:
-          type: string
-          nullable: true
-          description: (Optional) A user specified name to give the snapshot
-        metadata:
-          type: object
-          additionalProperties:
+        keys:
+          type: array
+          items:
             type: string
-          nullable: true
-          description: (Optional) Metadata used to describe the snapshot
-        commit_message:
-          type: string
-          nullable: true
-          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
-    DevboxSnapshotAsyncStatusView:
+    DevboxSnapshotStatus:
+      type: string
+      enum:
+      - in_progress
+      - error
+      - complete
+      - deleted
+    EmptyRecord:
       type: object
       additionalProperties: false
-      properties:
-        status:
-          $ref: '#/components/schemas/DevboxSnapshotStatus'
-          description: The current status of the snapshot operation.
-        snapshot:
-          $ref: '#/components/schemas/DevboxDiskSnapshotView'
-          nullable: true
-          description: The snapshot details if the operation completed successfully.
-        error_message:
-          type: string
-          nullable: true
-          description: Error message if the operation failed.
-      required:
-      - status
+      properties: {}
     DevboxDiskSnapshotListView:
       type: object
       additionalProperties: false
@@ -447,12 +431,40 @@ components:
         has_more:
           type: boolean
         total_count:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
       required:
       - snapshots
       - has_more
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    DevboxSnapshotAsyncStatusView:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxSnapshotStatus'
+          description: The current status of the snapshot operation.
+        snapshot:
+          $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: The snapshot details if the operation completed successfully.
+        error_message:
+          type:
+          - string
+          - 'null'
+          description: Error message if the operation failed.
+      required:
+      - status
     DevboxDiskSnapshotView:
       type: object
       additionalProperties: false
@@ -461,8 +473,9 @@ components:
           type: string
           description: The unique identifier of the snapshot.
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The custom name of the snapshot.
         create_time_ms:
           type: integer
@@ -477,52 +490,47 @@ components:
           type: string
           description: The source Devbox ID this snapshot was created from.
         source_blueprint_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The source Blueprint ID this snapshot was created from.
         commit_message:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The commit message of the snapshot (max 1000 characters).
         size_bytes:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: (Optional) The size of the snapshot in bytes, relative to the base blueprint.
       required:
       - id
       - create_time_ms
       - metadata
       - source_devbox_id
-    MetadataValuesView:
+    DevboxSnapshotRequest:
       type: object
       additionalProperties: false
       properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
             type: string
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    DevboxSnapshotStatus:
-      type: string
-      enum:
-      - in_progress
-      - error
-      - complete
-      - deleted
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type:
+          - string
+          - 'null'
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
   securitySchemes:
     bearerAuth:
       scheme: bearer

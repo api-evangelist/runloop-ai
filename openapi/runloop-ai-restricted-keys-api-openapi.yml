@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents restricted_keys API
+  title: RunLoop Restricted Keys API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - restricted_keys
-      summary: Create a restricted API key.
+      summary: Create a restricted API key
       description: Create a restricted API key with specific resource scopes. Use a standard API key (ak_) or a restricted key (rk_) with RESOURCE_TYPE_ACCOUNT write scope.
       operationId: createRestrictedKey
       parameters: []
@@ -42,32 +42,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    ApiResourceType:
-      type: string
-      enum:
-      - RESOURCE_TYPE_DEVBOXES
-      - RESOURCE_TYPE_BLUEPRINTS
-      - RESOURCE_TYPE_SNAPSHOTS
-      - RESOURCE_TYPE_BENCHMARKS
-      - RESOURCE_TYPE_SCENARIOS
-      - RESOURCE_TYPE_REPO_CONNECTIONS
-      - RESOURCE_TYPE_AGENTS
-      - RESOURCE_TYPE_OBJECTS
-      - RESOURCE_TYPE_ACCOUNT
-    RestrictedKeyCreateParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-        scopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeEntryView'
-        expires_at_ms:
-          type: integer
-          format: int64
-          nullable: true
     RestrictedKeyCreatedView:
       type: object
       additionalProperties: false
@@ -83,9 +57,25 @@ components:
           items:
             $ref: '#/components/schemas/ScopeEntryView'
         expires_at_ms:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
+    RestrictedKeyCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeEntryView'
+        expires_at_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
     ApiAccessLevel:
       type: string
       enum:
@@ -100,6 +90,18 @@ components:
           $ref: '#/components/schemas/ApiResourceType'
         access_level:
           $ref: '#/components/schemas/ApiAccessLevel'
+    ApiResourceType:
+      type: string
+      enum:
+      - RESOURCE_TYPE_DEVBOXES
+      - RESOURCE_TYPE_BLUEPRINTS
+      - RESOURCE_TYPE_SNAPSHOTS
+      - RESOURCE_TYPE_BENCHMARKS
+      - RESOURCE_TYPE_SCENARIOS
+      - RESOURCE_TYPE_REPO_CONNECTIONS
+      - RESOURCE_TYPE_AGENTS
+      - RESOURCE_TYPE_OBJECTS
+      - RESOURCE_TYPE_ACCOUNT
   securitySchemes:
     bearerAuth:
       scheme: bearer

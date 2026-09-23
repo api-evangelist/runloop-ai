@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents streaming API
+  title: RunLoop Streaming API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -14,14 +14,13 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: streaming
+- name: Streaming
 paths:
   /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stderr_updates:
     get:
       tags:
-      - streaming
+      - Streaming
       summary: Tails the stderr logs for the given execution with SSE streaming
-      description: Tails the stderr logs for the given execution with SSE streaming
       operationId: streamStdErrUpdates
       parameters:
       - name: devbox_id
@@ -64,9 +63,8 @@ paths:
   /v1/devboxes/{devbox_id}/executions/{execution_id}/stream_stdout_updates:
     get:
       tags:
-      - streaming
+      - Streaming
       summary: Tails the stdout logs for the given execution with SSE streaming
-      description: Tails the stdout logs for the given execution with SSE streaming
       operationId: streamStdOutUpdates
       parameters:
       - name: devbox_id

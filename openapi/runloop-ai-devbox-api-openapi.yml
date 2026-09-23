@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents Devbox API
+  title: RunLoop Devbox API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Create or reconnect to a PTY session.
+      summary: Create or reconnect to a PTY session
       description: 'Looks up the PTY session identified by the path session_name and either reconnects to the existing session or creates it if it does not yet exist. The session_name is a client-chosen session identifier, not an opaque server-issued ID. It must be non-empty (1..=256 chars) and use only ASCII letters, digits, ''-'' and ''_''. A newly created PTY session starts an interactive bash shell on the Devbox. Optional cols and rows query parameters apply an initial terminal size before any I/O; they must both be present and in the range 1..=1000 to take effect. The response returns a PtyConnectView containing connect_url (a server-relative path to the WebSocket data plane), idle_ttl_seconds (how long this session is retained after the last client disconnects), and the resulting cols/rows. The interactive byte stream itself is intentionally not modeled in OpenAPI; see the controller-level documentation for the WebSocket close-code conventions. The single-attach contract is enforced when a client opens the WebSocket data plane, not on this bootstrap call: bootstrap always succeeds for a valid session_name, even if another client is currently attached. Rejection of a second concurrent attach happens at WebSocket upgrade time. If the active client disconnects, the session is preserved for the idle TTL so a later connect using the same session_name resumes the same shell. After the TTL expires, after an explicit close control action, or after the underlying Devbox lifecycle replaces the PTY process (such as through suspend/resume), a later request with the same session_name creates a fresh PTY session without the previous shell state.
 
 
@@ -69,7 +69,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Send a control command to a PTY session.
+      summary: Send a control command to a PTY session
       description: 'Applies a PTY control operation to an existing session. The action field selects the operation; the other fields in PtyControlParameters are interpreted only when they are relevant to the chosen action.
 
 
@@ -115,7 +115,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Create a Devbox.
+      summary: Create a Devbox
       description: Create a Devbox and begin the boot process. The Devbox will initially launch in the 'provisioning' state while Runloop allocates the necessary infrastructure. It will transition to the 'initializing' state while the booted Devbox runs any Runloop or user defined set up scripts. Finally, the Devbox will transition to the 'running' state when it is ready for use.
       operationId: createDevbox
       parameters: []
@@ -136,7 +136,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List Devboxes.
+      summary: List Devboxes
       description: List all Devboxes while optionally filtering by status.
       operationId: listDevboxes
       parameters:
@@ -185,7 +185,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List disk snapshots of a Devbox.
+      summary: List disk snapshots of a Devbox
       description: List all snapshots of a Devbox while optionally filtering by Devbox ID, source Blueprint ID, and metadata.
       operationId: getDevboxDiskSnapshotList
       parameters:
@@ -260,7 +260,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List public disk snapshots.
+      summary: List public disk snapshots
       description: List all public disk snapshots that are available to all users.
       operationId: listPublicSnapshots
       parameters:
@@ -333,7 +333,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List available snapshot metadata keys.
+      summary: List available snapshot metadata keys
       description: Returns a list of all available metadata keys that can be used for filtering snapshots.
       operationId: getSnapshotMetadataKeys
       parameters: []
@@ -349,7 +349,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List values for a specific snapshot metadata key.
+      summary: List values for a specific snapshot metadata key
       description: Returns a list of all values that exist for a specific metadata key across all snapshots.
       operationId: getSnapshotMetadataValues
       parameters:
@@ -375,7 +375,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List available public snapshot metadata keys.
+      summary: List available public snapshot metadata keys
       description: Returns a list of all available metadata keys from public snapshots only that can be used for filtering.
       operationId: getPublicSnapshotMetadataKeys
       parameters: []
@@ -391,7 +391,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List values for a specific public snapshot metadata key.
+      summary: List values for a specific public snapshot metadata key
       description: Returns a list of all values that exist for a specific metadata key across all public snapshots only.
       operationId: getPublicSnapshotMetadataValues
       parameters:
@@ -417,7 +417,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Update metadata of Disk Snapshot.
+      summary: Update metadata of Disk Snapshot
       description: Updates disk snapshot metadata via update vs patch. The entire metadata will be replaced.
       operationId: updateDiskSnapshot
       parameters:
@@ -449,7 +449,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Delete a disk snapshot of a Devbox.
+      summary: Delete a disk snapshot of a Devbox
       description: Delete a previously taken disk snapshot of a Devbox.
       operationId: deleteSnapshot
       parameters:
@@ -477,7 +477,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Query the status of an asynchronous disk snapshot.
+      summary: Query the status of an asynchronous disk snapshot
       description: Get the current status of an asynchronous disk snapshot operation, including whether it is still in progress and any error messages if it failed.
       operationId: queryDiskSnapshotAsync
       parameters:
@@ -503,7 +503,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List available devbox metadata keys.
+      summary: List available devbox metadata keys
       description: Returns a list of all available metadata keys that can be used for filtering devboxes.
       operationId: getDevboxMetadataKeys
       parameters: []
@@ -519,7 +519,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: List values for a specific devbox metadata key.
+      summary: List values for a specific devbox metadata key
       description: Returns a list of all values that exist for a specific metadata key across all devboxes.
       operationId: getDevboxMetadataValues
       parameters:
@@ -545,7 +545,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Get status of an asynchronous execution on a Devbox.
+      summary: Get status of an asynchronous execution on a Devbox
       description: Get the latest status of a previously launched asynchronous execuction including stdout/error and the exit code if complete.
       operationId: queryAsyncCommand
       parameters:
@@ -627,7 +627,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Send Content to Std In for a running execution.
+      summary: Send Content to Std In for a running execution
       description: Send content to the Std In of a running execution.
       operationId: sendStdIn
       parameters:
@@ -667,7 +667,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Wait for an asynchronous execution to reach a specific status.
+      summary: Wait for an asynchronous execution to reach a specific status
       description: Polls the asynchronous execution's status until it reaches one of the desired statuses or times out. Max is 25 seconds.
       operationId: waitForCommandCompletion
       parameters:
@@ -719,7 +719,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Update a Devbox.
+      summary: Update a Devbox
       description: Updates a devbox by doing a complete update the existing name,metadata fields. It does not patch partial values.
       operationId: updateDevbox
       parameters:
@@ -748,7 +748,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Get Devbox details.
+      summary: Get Devbox details
       description: Get the latest details and status of a Devbox.
       operationId: getDevbox
       parameters:
@@ -772,7 +772,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Create an ephemeral PTY tunnel for a running Devbox.
+      summary: Create an ephemeral PTY tunnel for a running Devbox
       description: Create an ephemeral authenticated tunnel for terminal access to a running Devbox. This tunnel is not persisted on the Devbox and is generated fresh on each request. The returned auth_token must be passed as a Bearer token in the Authorization header.
       operationId: createDevboxPtyTunnel
       parameters:
@@ -826,7 +826,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Download binary file contents from Devbox filesystem.
+      summary: Download binary file contents from Devbox filesystem
       description: Download file contents of any type (binary, text, etc) from a specified path on the Devbox.
       operationId: devboxDownloadFile
       parameters:
@@ -869,8 +869,8 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Enable a tunnel for a running Devbox.
-      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://&#123;port&#125;-&#123;tunnel_key&#125;.tunnel.runloop.ai
+      summary: Enable a tunnel for a running Devbox
+      description: 'Enable a V2 tunnel for an existing running Devbox. Tunnels provide encrypted URL-based access to the Devbox without exposing internal IDs. The tunnel URL format is: https://{port}-{tunnel_key}.tunnel.runloop.ai
 
 
         Each Devbox can have one tunnel.'
@@ -980,7 +980,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: (Deprecated, please use /execute_async) Synchronously execute a shell command on a Devbox
+      summary: (Deprecated, please use /execute_async) Synchronously execute a shell command…
       description: 'Execute a bash command in the Devbox shell, await the command completion and return the output. Note: attach_stdin parameter is not supported for synchronous execution.'
       operationId: execSyncCommand
       parameters:
@@ -1010,7 +1010,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Reset the idle timer of a running Devbox.
+      summary: Reset the idle timer of a running Devbox
       description: Send a 'Keep Alive' signal to a running Devbox that is configured to shutdown on idle so the idle time resets.
       operationId: keepAliveDevbox
       parameters:
@@ -1034,7 +1034,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Get Devbox logs.
+      summary: Get Devbox logs
       description: Get all logs from a running or completed Devbox.
       operationId: listDevboxLogs
       parameters:
@@ -1076,7 +1076,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Live Tail Devbox Logs.
+      summary: Live Tail Devbox Logs
       description: Tail the logs for the given devbox. This will return past log entries and continue streaming from there. The stream will then continue to stream logs until the connection is closed.
       operationId: tailDevboxLogs
       parameters:
@@ -1119,7 +1119,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Read text file contents from Devbox filesystem.
+      summary: Read text file contents from Devbox filesystem
       description: Read file contents from a file on a Devbox as a UTF-8. Note 'downloadFile' should be used for large files (greater than 100MB). Returns the file contents as a UTF-8 string.
       operationId: devboxReadFileContents
       parameters:
@@ -1151,7 +1151,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Remove a tunnel from the Devbox.
+      summary: Remove a tunnel from the Devbox
       description: Remove an existing V2 tunnel from the Devbox.
       operationId: removeDevboxTunnel
       parameters:
@@ -1205,7 +1205,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Shutdown a running Devbox.
+      summary: Shutdown a running Devbox
       description: Shutdown a running Devbox. This will permanently stop the Devbox. If you want to save the state of the Devbox, you should take a snapshot before shutting down or should suspend the Devbox instead of shutting down. If the Devbox has any in-progress snapshots, the shutdown will be rejected with a 409 Conflict unless force=true is specified.
       operationId: shutdownDevbox
       parameters:
@@ -1239,7 +1239,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Synchronously create a disk snapshot of a running Devbox.
+      summary: Synchronously create a disk snapshot of a running Devbox
       description: Create a disk snapshot of a devbox with the specified name and metadata to enable launching future Devboxes with the same disk state.
       operationId: createDiskSnapshot
       parameters:
@@ -1271,7 +1271,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Start an asynchronous disk snapshot of a running Devbox.
+      summary: Start an asynchronous disk snapshot of a running Devbox
       description: Start an asynchronous disk snapshot of a devbox with the specified name and metadata. The snapshot operation will continue in the background and can be monitored using the query endpoint.
       operationId: createDiskSnapshotAsync
       parameters:
@@ -1331,7 +1331,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Upload binary file contents to Devbox filesystem.
+      summary: Upload binary file contents to Devbox filesystem
       description: Upload file contents of any type (binary, text, etc) to a Devbox. Note this API is suitable for large files (larger than 100MB) and efficiently uploads files via multipart form data.
       operationId: devboxUploadFile
       parameters:
@@ -1363,7 +1363,7 @@ paths:
     get:
       tags:
       - Devbox
-      summary: Get resource usage for a Devbox.
+      summary: Get resource usage for a Devbox
       description: Get resource usage metrics for a specific Devbox. Returns CPU, memory, and disk consumption calculated from the Devbox's lifecycle, excluding any suspended periods for CPU and memory. Disk usage includes the full elapsed time since storage is consumed even when suspended.
       operationId: getDevboxResourceUsage
       parameters:
@@ -1389,7 +1389,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Wait for a Devbox to reach one of the specified statuses.
+      summary: Wait for a Devbox to reach one of the specified statuses
       description: Polls the Devbox's status until it reaches one of the desired statuses or times out.
       operationId: waitForDevboxStatus
       parameters:
@@ -1425,7 +1425,7 @@ paths:
     post:
       tags:
       - Devbox
-      summary: Write text file contents to Devbox filesystem.
+      summary: Write text file contents to Devbox filesystem
       description: Write UTF-8 string contents to a file at path on the Devbox. Note for large files (larger than 100MB), the upload_file endpoint must be used.
       operationId: devboxWriteFileContents
       parameters:
@@ -1455,96 +1455,45 @@ paths:
       deprecated: false
 components:
   schemas:
-    GatewaySpecView:
+    UserParameters:
       type: object
       additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
       properties:
-        gateway_config_id:
+        username:
           type: string
-          description: The ID of the gateway config (e.g., gwc_123abc).
-        secret_id:
-          type: string
-          description: The ID of the secret containing the credential.
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
       required:
-      - gateway_config_id
-      - secret_id
-    DevboxSnapshotRequest:
+      - username
+      - uid
+    DevboxStartExecutionParameters:
       type: object
       additionalProperties: false
       properties:
-        name:
+        command_id:
           type: string
-          nullable: true
-          description: (Optional) A user specified name to give the snapshot
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: (Optional) Metadata used to describe the snapshot
-        commit_message:
+          description: The command ID in UUIDv7 string format for idempotency and tracking
+        command:
           type: string
-          nullable: true
-          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
-    CodeMountParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type: string
-          nullable: true
-          description: Installation command to install and setup repository.
-        git_ref:
-          type: string
-          nullable: true
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type: string
-          nullable: true
-          description: The authentication token necessary to pull repo.
+          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
+        optimistic_timeout:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Timeout in seconds to wait for command completion, up to 25 seconds. Defaults to 25 seconds. Operation is not killed.
       required:
-      - repo_name
-      - repo_owner
-    BrokerMountProtocol:
-      type: string
-      enum:
-      - acp
-      - claude_json
-    McpSpecView:
-      type: object
-      additionalProperties: false
-      properties:
-        mcp_config_id:
-          type: string
-          description: The ID of the MCP config (e.g., mcp_123abc).
-        secret_id:
-          type: string
-          description: The ID of the secret containing the credential.
-      required:
-      - mcp_config_id
-      - secret_id
-    PtyControlResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        session_name:
-          type: string
-        status:
-          type: string
-    DevboxKillExecutionRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        kill_process_group:
-          type: boolean
-          nullable: true
-          description: 'Whether to kill the entire process group (default: false). If true, kills all processes in the same process group as the target process.'
+      - command_id
+      - command
     PtyControlAction:
       type: string
       enum:
@@ -1565,6 +1514,194 @@ components:
       required:
       - tunnel_key
       - auth_token
+    DevboxWriteFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+        contents:
+          type: string
+          description: The UTF-8 string contents to write to the file.
+      required:
+      - file_path
+      - contents
+    DevboxKillExecutionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        kill_process_group:
+          type:
+          - boolean
+          - 'null'
+          description: 'Whether to kill the entire process group (default: false). If true, kills all processes in the same process group as the target process.'
+    DevboxSnapshotAsyncStatusView:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxSnapshotStatus'
+          description: The current status of the snapshot operation.
+        snapshot:
+          $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: The snapshot details if the operation completed successfully.
+        error_message:
+          type:
+          - string
+          - 'null'
+          description: Error message if the operation failed.
+      required:
+      - status
+    DevboxCapabilities:
+      type: string
+      enum:
+      - unknown
+      - docker_in_docker
+    DevboxSendStdInRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        text:
+          type:
+          - string
+          - 'null'
+          description: Text to send to std in of the running execution.
+        signal:
+          $ref: '#/components/schemas/SignalType'
+          description: Signal to send to std in of the running execution.
+    DevboxCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the Devbox.
+        environment_variables:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: (Optional) Environment variables used to configure your Devbox.
+        secrets:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: '(Optional) Map of environment variable names to secret names. The secret values will be securely injected as environment variables in the Devbox. Example: {"DB_PASS": "DATABASE_PASSWORD"} sets environment variable ''DB_PASS'' to the value of secret ''DATABASE_PASSWORD''.'
+        file_mounts:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Map of paths and file contents to write before setup. Use mounts instead.
+        entrypoint:
+          type:
+          - string
+          - 'null'
+          description: (Optional) When specified, the Devbox will run this script as its main executable. The devbox lifecycle will be bound to entrypoint, shutting down when the process is complete.
+        blueprint_id:
+          type:
+          - string
+          - 'null'
+          description: Blueprint ID to use for the Devbox. If none set, the Devbox will be created with the default Runloop Devbox image. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
+        blueprint_name:
+          type:
+          - string
+          - 'null'
+          description: Name of Blueprint to use for the Devbox. When set, this will load the latest successfully built Blueprint with the given name. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
+        repo_connection_id:
+          type:
+          - string
+          - 'null'
+          description: Repository connection id the devbox should source its base image from.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: Parameters to configure the resources and launch time behavior of the Devbox.
+        snapshot_id:
+          type:
+          - string
+          - 'null'
+          description: Snapshot ID to use for the Devbox. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the devbox for organization.
+        code_mounts:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CodeMountParameters'
+          description: A list of code mounts to be included in the Devbox. Use mounts instead.
+        mounts:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Mount'
+          description: A list of mounts to be included in the Devbox.
+        tunnel:
+          $ref: '#/components/schemas/TunnelConfig'
+          description: (Optional) Configuration for creating a V2 tunnel at Devbox launch time. When specified, a tunnel will be automatically provisioned and the tunnel details will be included in the Devbox response.
+        gateways:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            $ref: '#/components/schemas/GatewaySpec'
+          description: '(Optional) Agent gateway specifications for credential proxying. Map key is the environment variable prefix (e.g., ''GWS_ANTHROPIC''). The agent gateway will proxy requests to external APIs using the specified credential without exposing the real API key. Example: {''GWS_ANTHROPIC'': {''gateway'': ''anthropic'', ''secret'': ''my_claude_key''}}'
+        mcp:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            $ref: '#/components/schemas/McpSpec'
+          description: '[Beta] (Optional) MCP specifications for MCP server access. Map key is the environment variable name for the MCP token envelope. Each spec links an MCP config to a secret. The devbox will also receive RL_MCP_URL for the MCP hub endpoint. Example: {''MCP_SECRET'': {''mcp_config'': ''github-readonly'', ''secret'': ''MY_GITHUB_TOKEN''}}'
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
     DevboxDiskSnapshotView:
       type: object
       additionalProperties: false
@@ -1573,8 +1710,9 @@ components:
           type: string
           description: The unique identifier of the snapshot.
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The custom name of the snapshot.
         create_time_ms:
           type: integer
@@ -1589,330 +1727,26 @@ components:
           type: string
           description: The source Devbox ID this snapshot was created from.
         source_blueprint_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The source Blueprint ID this snapshot was created from.
         commit_message:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: (Optional) The commit message of the snapshot (max 1000 characters).
         size_bytes:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: (Optional) The size of the snapshot in bytes, relative to the base blueprint.
       required:
       - id
       - create_time_ms
       - metadata
       - source_devbox_id
-    DevboxView:
-      type: object
-      additionalProperties: false
-      description: A Devbox represents a virtual development environment. It is an isolated sandbox that can be given to agents and used to run arbitrary code such as AI generated code.
-      properties:
-        id:
-          type: string
-          description: The ID of the Devbox.
-        name:
-          type: string
-          nullable: true
-          description: The name of the Devbox.
-        status:
-          $ref: '#/components/schemas/DevboxViewStatus'
-          description: The current status of the Devbox.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the Devbox (Unix timestamp milliseconds).
-        end_time_ms:
-          type: integer
-          format: int64
-          nullable: true
-          description: The time the Devbox finished execution (Unix timestamp milliseconds). Present if the Devbox is in a terminal state.
-        initiator_type:
-          $ref: '#/components/schemas/InitiatorType'
-          description: The type of initiator that created the Devbox.
-        initiator_id:
-          type: string
-          nullable: true
-          description: The ID of the initiator that created the Devbox.
-        blueprint_id:
-          type: string
-          nullable: true
-          description: The Blueprint ID used in creation of the Devbox, if the devbox was created from a Blueprint.
-        snapshot_id:
-          type: string
-          nullable: true
-          description: The Snapshot ID used in creation of the Devbox, if the devbox was created from a Snapshot.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: The user defined Devbox metadata.
-        failure_reason:
-          $ref: '#/components/schemas/DevboxViewFailureReason'
-          nullable: true
-          description: The failure reason if the Devbox failed, if the Devbox has a 'failure' status.
-        shutdown_reason:
-          $ref: '#/components/schemas/DevboxViewShutdownReason'
-          nullable: true
-          description: The shutdown reason if the Devbox shutdown, if the Devbox has a 'shutdown' status.
-        launch_parameters:
-          $ref: '#/components/schemas/LaunchParameters'
-          description: The launch parameters used to create the Devbox.
-        capabilities:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxCapabilities'
-          description: A list of capability groups this devbox has access to.
-        state_transitions:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxStateTransition'
-          description: A list of state transitions in order with durations
-        tunnel:
-          $ref: '#/components/schemas/TunnelView'
-          nullable: true
-          description: V2 tunnel information if a tunnel was created at launch time or via the createTunnel API.
-        gateway_specs:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/GatewaySpecView'
-          nullable: true
-          description: Gateway specifications configured for this devbox. Map key is the environment variable prefix (e.g., 'GWS_ANTHROPIC').
-        mcp_specs:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/McpSpecView'
-          nullable: true
-          description: '[Beta] MCP specifications configured for this devbox. Map key is the environment variable name for the MCP token envelope. Each spec links an MCP config to a secret for MCP server access through the MCP hub.'
-      required:
-      - id
-      - status
-      - create_time_ms
-      - end_time_ms
-      - metadata
-      - launch_parameters
-      - capabilities
-      - state_transitions
-    IdleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        idle_time_seconds:
-          type: integer
-          format: int32
-          description: After idle_time_seconds, on_idle action will be taken.
-        on_idle:
-          $ref: '#/components/schemas/IdleAction'
-          description: Action to take after Devbox becomes idle.
-      required:
-      - idle_time_seconds
-      - on_idle
-    LaunchParameters:
-      type: object
-      additionalProperties: false
-      description: LaunchParameters enable you to customize the resources available to your Devbox as well as the environment set up that should be completed before the Devbox is marked as 'running'.
-      properties:
-        launch_commands:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Set of commands to be run at launch time, before the entrypoint process is run.
-        resource_size_request:
-          $ref: '#/components/schemas/ResourceSize'
-          nullable: true
-          description: 'Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL: 0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk. LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM, 16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size.'
-        available_ports:
-          type: array
-          items:
-            type: integer
-            format: int32
-          nullable: true
-          description: '[Deprecated] A list of ports to make available on the Devbox. This field is ignored.'
-        keep_alive_time_seconds:
-          type: integer
-          format: int64
-          nullable: true
-          description: Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours (172800 seconds).
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          nullable: true
-          description: Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds. If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead.
-        custom_cpu_cores:
-          type: integer
-          format: int32
-          nullable: true
-          description: Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16.
-        custom_gb_memory:
-          type: integer
-          format: int32
-          nullable: true
-          description: Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB.
-        custom_disk_size:
-          type: integer
-          format: int32
-          nullable: true
-          description: Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB.
-        architecture:
-          $ref: '#/components/schemas/Architecture'
-          nullable: true
-          description: The target architecture for the Devbox. If unset, defaults to x86_64.
-        user_parameters:
-          $ref: '#/components/schemas/UserParameters'
-          nullable: true
-          description: Specify the user for execution on Devbox. If not set, default `user` will be used.
-        required_services:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService must be specified in Blueprint to be started.
-        network_policy_id:
-          type: string
-          nullable: true
-          description: (Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden.
-        lifecycle:
-          $ref: '#/components/schemas/LifecycleConfigurationParameters'
-          nullable: true
-          description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
-    FileMount:
-      type: object
-      additionalProperties: false
-      properties:
-        target:
-          type: string
-          description: Target path where the file should be mounted.
-        content:
-          type: string
-          description: Content of the file to mount.
-        type:
-          type: string
-          enum:
-          - file_mount
-          default: file_mount
-      required:
-      - target
-      - content
-      - type
-    GatewaySpec:
-      type: object
-      additionalProperties: false
-      description: GatewaySpec links an agent gateway configuration to a secret for credential proxying in a devbox. The agent gateway will proxy requests to external APIs using the specified credential without exposing the real API key.
-      properties:
-        gateway:
-          type: string
-          description: The gateway config to use. Can be a gateway config ID (gwc_xxx) or name.
-        secret:
-          type: string
-          description: The secret containing the credential. Can be a secret ID or name.
-      required:
-      - gateway
-      - secret
-    DevboxStateTransition:
-      type: object
-      additionalProperties: false
-      properties:
-        status:
-          $ref: '#/components/schemas/DevboxViewStatus'
-        transition_time_ms:
-          $ref: '#/components/schemas/Number'
-          description: The time the status change occurred
-    TunnelAuthModeView:
-      type: string
-      enum:
-      - open
-      - authenticated
-    DevboxViewFailureReason:
-      type: string
-      enum:
-      - out_of_memory
-      - out_of_disk
-      - execution_failed
-      - health_check_failed
-      description: 'The category of failure experienced by the Devbox.
-
-
-        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
-
-        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.
-
-        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
-
-        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size.
-
-        '
-      x-enum-descriptions:
-        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
-        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.
-        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
-        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size.
-    DevboxExecutionStatus:
-      type: string
-      enum:
-      - queued
-      - running
-      - completed
-    DevboxSnapshotStatus:
-      type: string
-      enum:
-      - in_progress
-      - error
-      - complete
-      - deleted
-    DevboxAsyncExecutionDetailView:
-      type: object
-      additionalProperties: false
-      properties:
-        devbox_id:
-          type: string
-          description: Devbox id where command was executed.
-        execution_id:
-          type: string
-          description: Ephemeral id of the execution in progress.
-        status:
-          $ref: '#/components/schemas/DevboxExecutionStatus'
-          description: Current status of the execution.
-        shell_name:
-          type: string
-          nullable: true
-          description: Shell name.
-        stdout:
-          type: string
-          nullable: true
-          description: Standard out generated by command. This field will remain unset until the execution has completed.
-        stderr:
-          type: string
-          nullable: true
-          description: Standard error generated by command. This field will remain unset until the execution has completed.
-        exit_status:
-          type: integer
-          format: int32
-          nullable: true
-          description: Exit code of command execution. This field will remain unset until the execution has completed.
-        stdout_truncated:
-          type: boolean
-          nullable: true
-          description: Indicates whether the stdout was truncated due to size limits.
-        stderr_truncated:
-          type: boolean
-          nullable: true
-          description: Indicates whether the stderr was truncated due to size limits.
-      required:
-      - devbox_id
-      - execution_id
-      - status
-    DevboxDownloadFileParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        path:
-          type: string
-          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
-      required:
-      - path
     DevboxCreateSshKeyView:
       type: object
       additionalProperties: false
@@ -1934,23 +1768,268 @@ components:
       - url
       - ssh_private_key
       - ssh_user
-    TunnelConfig:
+    BrokerMount:
       type: object
       additionalProperties: false
-      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically provisioned.
       properties:
+        axon_id:
+          type: string
+          description: The ID of the axon event stream to mount onto the Devbox.
+        protocol:
+          $ref: '#/components/schemas/BrokerMountProtocol'
+          description: The protocol used by the broker to deliver events to the agent.
+        agent_binary:
+          type:
+          - string
+          - 'null'
+          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
+        working_directory:
+          type:
+          - string
+          - 'null'
+          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
+        launch_args:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess (acp, claude_json).
+        type:
+          type: string
+          enum:
+          - broker_mount
+          default: broker_mount
+      required:
+      - axon_id
+      - type
+    TunnelView:
+      type: object
+      additionalProperties: false
+      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.
+
+        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
+      properties:
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
         auth_mode:
-          $ref: '#/components/schemas/TunnelAuthMode'
-          nullable: true
-          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
+          $ref: '#/components/schemas/TunnelAuthModeView'
+          description: The authentication mode for the tunnel.
+        auth_token:
+          type:
+          - string
+          - 'null'
+          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the tunnel (Unix timestamp milliseconds).
         http_keep_alive:
           type: boolean
-          nullable: true
-          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer.
         wake_on_http:
           type: boolean
-          nullable: true
-          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
+      required:
+      - tunnel_key
+      - auth_mode
+      - create_time_ms
+      - http_keep_alive
+      - wake_on_http
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
+    CodeMountParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+      required:
+      - repo_name
+      - repo_owner
+    McpSpecView:
+      type: object
+      additionalProperties: false
+      properties:
+        mcp_config_id:
+          type: string
+          description: The ID of the MCP config (e.g., mcp_123abc).
+        secret_id:
+          type: string
+          description: The ID of the secret containing the credential.
+      required:
+      - mcp_config_id
+      - secret_id
+    SignalType:
+      type: string
+      enum:
+      - EOF
+      - INTERRUPT
+    DevboxLogsListView:
+      type: object
+      additionalProperties: false
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxLog'
+          description: List of logs for the given devbox.
+      required:
+      - logs
+    DevboxSendStdInResult:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command is executing.
+        execution_id:
+          type: string
+          description: Execution id that received the stdin.
+        success:
+          type: boolean
+          description: Whether the stdin was successfully sent.
+      required:
+      - devbox_id
+      - execution_id
+      - success
+    LaunchParameters:
+      type: object
+      additionalProperties: false
+      description: LaunchParameters enable you to customize the resources available to your Devbox as well as the environment set up that should be completed before the Devbox is marked as 'running'.
+      properties:
+        launch_commands:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Set of commands to be run at launch time, before the entrypoint process is run.
+        resource_size_request:
+          $ref: '#/components/schemas/ResourceSize'
+          description: 'Preset Devbox resources (vCPU, RAM in GiB, ephemeral disk in GiB). If not set, SMALL is used. X_SMALL: 0.5 vCPU, 1 GiB RAM, 4 GiB disk. SMALL: 1 vCPU, 2 GiB RAM, 4 GiB disk. MEDIUM: 2 vCPU, 4 GiB RAM, 8 GiB disk. LARGE: 2 vCPU, 8 GiB RAM, 16 GiB disk. X_LARGE: 4 vCPU, 16 GiB RAM, 16 GiB disk. XX_LARGE: 8 vCPU, 32 GiB RAM, 16 GiB disk. CUSTOM_SIZE: set custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size.'
+        available_ports:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+            format: int32
+          description: '[Deprecated] A list of ports to make available on the Devbox. This field is ignored.'
+        keep_alive_time_seconds:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Time in seconds after which Devbox will automatically shutdown. Default is 1 hour. Maximum is 48 hours (172800 seconds).
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If after_idle is set, Devbox will ignore keep_alive_time_seconds. If both after_idle and lifecycle.after_idle are set, they must have the same value. Use lifecycle.after_idle instead.
+        custom_cpu_cores:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Custom CPU cores. Must be 0.5, 1, or a multiple of 2. Max is 16.
+        custom_gb_memory:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Custom memory size in GiB. Must be 1 or a multiple of 2. Max is 64GiB.
+        custom_disk_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Custom disk size in GiB. Must be a multiple of 2. Min is 2GiB, max is 64GiB.
+        architecture:
+          $ref: '#/components/schemas/Architecture'
+          description: The target architecture for the Devbox. If unset, defaults to x86_64.
+        user_parameters:
+          $ref: '#/components/schemas/UserParameters'
+          description: Specify the user for execution on Devbox. If not set, default `user` will be used.
+        required_services:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: A list of ContainerizedService names to be started when a Devbox is created. A valid ContainerizedService must be specified in Blueprint to be started.
+        network_policy_id:
+          type:
+          - string
+          - 'null'
+          description: (Optional) ID of the network policy to apply to Devboxes launched with these parameters. When set on a Blueprint launch parameters, Devboxes created from it will inherit this policy unless explicitly overridden.
+        lifecycle:
+          $ref: '#/components/schemas/LifecycleConfigurationParameters'
+          description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    TunnelAuthMode:
+      type: string
+      enum:
+      - open
+      - authenticated
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          description: Triggers that can resume a suspended Devbox.
+    BrokerMountProtocol:
+      type: string
+      enum:
+      - acp
+      - claude_json
+    DevboxExecutionStatus:
+      type: string
+      enum:
+      - queued
+      - running
+      - completed
     DevboxWaitForStatusRequest:
       type: object
       additionalProperties: false
@@ -1961,17 +2040,108 @@ components:
             $ref: '#/components/schemas/DevboxViewStatus'
           description: The Devbox statuses to wait for. At least one status must be provided. The devbox will be returned as soon as it reaches any of the provided statuses.
         timeout_seconds:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: (Optional) Timeout in seconds to wait for the status, up to 30 seconds. Defaults to 10 seconds.
       required:
       - statuses
-    Architecture:
+    TunnelAuthModeView:
       type: string
       enum:
-      - x86_64
-      - arm64
+      - open
+      - authenticated
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxListView:
+      type: object
+      additionalProperties: false
+      properties:
+        devboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxView'
+          description: List of devboxes matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - devboxes
+      - has_more
+    DevboxDiskSnapshotListView:
+      type: object
+      additionalProperties: false
+      properties:
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: List of snapshots matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - snapshots
+      - has_more
+    CodeMount:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+        type:
+          type: string
+          enum:
+          - code_mount
+          default: code_mount
+      required:
+      - repo_name
+      - repo_owner
+      - type
+    McpSpec:
+      type: object
+      additionalProperties: false
+      description: '[Beta] McpSpec links an MCP configuration to a secret for MCP server access in a devbox. The MCP hub will proxy requests to upstream MCP servers using the specified credential, with tool-level access control based on the MCP config''s allowed_tools.'
+      properties:
+        mcp_config:
+          type: string
+          description: The MCP config to use. Can be an MCP config ID (mcp_xxx) or name.
+        secret:
+          type: string
+          description: The secret containing the MCP server credential. Can be a secret ID or name.
+      required:
+      - mcp_config
+      - secret
     DevboxViewStatus:
       type: string
       enum:
@@ -2012,51 +2182,72 @@ components:
         resuming: The Devbox disk is being loaded as part of booting a suspended Devbox.
         failure: The Devbox failed as part of booting or running user requested actions.
         shutdown: The Devbox was successfully shutdown and no more active compute is being used.
-    DevboxWriteFileParameters:
+    TunnelConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically provisioned.
+      properties:
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthMode'
+          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
+        http_keep_alive:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
+        wake_on_http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
+    DevboxAsyncExecutionDetailView:
       type: object
       additionalProperties: false
       properties:
-        file_path:
+        devbox_id:
           type: string
-          description: The path to write the file to on the Devbox. Path is relative to user home directory.
-        contents:
+          description: Devbox id where command was executed.
+        execution_id:
           type: string
-          description: The UTF-8 string contents to write to the file.
-      required:
-      - file_path
-      - contents
-    DevboxDiskSnapshotListView:
-      type: object
-      additionalProperties: false
-      properties:
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxDiskSnapshotView'
-          description: List of snapshots matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type: integer
+          description: Ephemeral id of the execution in progress.
+        status:
+          $ref: '#/components/schemas/DevboxExecutionStatus'
+          description: Current status of the execution.
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: Shell name.
+        stdout:
+          type:
+          - string
+          - 'null'
+          description: Standard out generated by command. This field will remain unset until the execution has completed.
+        stderr:
+          type:
+          - string
+          - 'null'
+          description: Standard error generated by command. This field will remain unset until the execution has completed.
+        exit_status:
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
+          description: Exit code of command execution. This field will remain unset until the execution has completed.
+        stdout_truncated:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the stdout was truncated due to size limits.
+        stderr_truncated:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the stderr was truncated due to size limits.
       required:
-      - snapshots
-      - has_more
-    McpSpec:
-      type: object
-      additionalProperties: false
-      description: '[Beta] McpSpec links an MCP configuration to a secret for MCP server access in a devbox. The MCP hub will proxy requests to upstream MCP servers using the specified credential, with tool-level access control based on the MCP config''s allowed_tools.'
-      properties:
-        mcp_config:
-          type: string
-          description: The MCP config to use. Can be an MCP config ID (mcp_xxx) or name.
-        secret:
-          type: string
-          description: The secret containing the MCP server credential. Can be a secret ID or name.
-      required:
-      - mcp_config
-      - secret
+      - devbox_id
+      - execution_id
+      - status
     MetadataValuesView:
       type: object
       additionalProperties: false
@@ -2067,169 +2258,56 @@ components:
           type: array
           items:
             type: string
-    SignalType:
-      type: string
-      enum:
-      - EOF
-      - INTERRUPT
-    DevboxUpdateParameters:
+    PtyControlResultView:
       type: object
       additionalProperties: false
       properties:
-        name:
+        session_name:
           type: string
-          nullable: true
-          description: (Optional) A user specified name to give the Devbox.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: User defined metadata to attach to the devbox for organization.
-    DevboxCapabilities:
-      type: string
-      enum:
-      - unknown
-      - docker_in_docker
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    DevboxLog:
+        status:
+          type: string
+    ObjectMount:
       type: object
       additionalProperties: false
       properties:
-        cmd_id:
+        object_id:
           type: string
-          nullable: true
-          description: Identifier of the associated command the log is sourced from.
-        level:
+          description: The ID of the object to write.
+        object_path:
           type: string
-          description: Log line severity level.
-        timestamp_ms:
-          type: integer
-          format: int64
-          description: Time of log (Unix timestamp milliseconds).
-        shell_name:
-          type: string
-          nullable: true
-          description: The Shell name the cmd executed in.
-        cmd:
-          type: string
-          nullable: true
-          description: The Command Executed
-        message:
-          type: string
-          nullable: true
-          description: Log line message.
-        exit_code:
-          type: integer
-          format: int32
-          nullable: true
-          description: The Exit Code of the command
-        source:
-          $ref: '#/components/schemas/DevboxLogSource'
-          description: The source of the log.
-      required:
-      - level
-      - timestamp_ms
-      - source
-    IdleAction:
-      type: string
-      enum:
-      - shutdown
-      - suspend
-      description: 'Action to take after Devbox idle timer is triggered.
-
-
-        shutdown: Shutdown the Devbox.
-
-        suspend: Suspend the Devbox.
-
-        '
-      x-enum-descriptions:
-        shutdown: Shutdown the Devbox.
-        suspend: Suspend the Devbox.
-    DevboxLogsListView:
-      type: object
-      additionalProperties: false
-      properties:
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxLog'
-          description: List of logs for the given devbox.
-      required:
-      - logs
-    BrokerMount:
-      type: object
-      additionalProperties: false
-      properties:
-        axon_id:
-          type: string
-          description: The ID of the axon event stream to mount onto the Devbox.
-        protocol:
-          $ref: '#/components/schemas/BrokerMountProtocol'
-          nullable: true
-          description: The protocol used by the broker to deliver events to the agent.
-        agent_binary:
-          type: string
-          nullable: true
-          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
-        working_directory:
-          type: string
-          nullable: true
-          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
-        launch_args:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess (acp, claude_json).
+          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
         type:
           type: string
           enum:
-          - broker_mount
-          default: broker_mount
+          - object_mount
+          default: object_mount
       required:
-      - axon_id
+      - object_id
+      - object_path
       - type
-    TunnelAuthMode:
-      type: string
-      enum:
-      - open
-      - authenticated
-    DevboxSendStdInRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        text:
-          type: string
-          nullable: true
-          description: Text to send to std in of the running execution.
-        signal:
-          $ref: '#/components/schemas/SignalType'
-          nullable: true
-          description: Signal to send to std in of the running execution.
     AgentMount:
       type: object
       additionalProperties: false
       properties:
         agent_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The ID of the agent to mount. Either agent_id or name must be set.
         agent_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string provided. Either agent id or name must be set
         agent_path:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g., /home/user/agent)
         auth_token:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Optional auth token for private repositories. Only used for git agents.
         type:
           type: string
@@ -2240,57 +2318,25 @@ components:
       - agent_id
       - agent_name
       - type
-    DevboxSnapshotAsyncStatusView:
+    FileMount:
       type: object
       additionalProperties: false
       properties:
-        status:
-          $ref: '#/components/schemas/DevboxSnapshotStatus'
-          description: The current status of the snapshot operation.
-        snapshot:
-          $ref: '#/components/schemas/DevboxDiskSnapshotView'
-          nullable: true
-          description: The snapshot details if the operation completed successfully.
-        error_message:
+        target:
           type: string
-          nullable: true
-          description: Error message if the operation failed.
+          description: Target path where the file should be mounted.
+        content:
+          type: string
+          description: Content of the file to mount.
+        type:
+          type: string
+          enum:
+          - file_mount
+          default: file_mount
       required:
-      - status
-    FileUpload:
-      type: object
-      additionalProperties: false
-      properties:
-        file:
-          type: string
-          format: binary
-        path:
-          type: string
-          description: The path to write the file to on the Devbox. Path is relative to user home directory.
-      required:
-      - path
-    DevboxStartExecutionParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        command_id:
-          type: string
-          description: The command ID in UUIDv7 string format for idempotency and tracking
-        command:
-          type: string
-          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
-        shell_name:
-          type: string
-          nullable: true
-          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
-        optimistic_timeout:
-          type: integer
-          format: int32
-          nullable: true
-          description: Timeout in seconds to wait for command completion, up to 25 seconds. Defaults to 25 seconds. Operation is not killed.
-      required:
-      - command_id
-      - command
+      - target
+      - content
+      - type
     DevboxWaitForCommandRequest:
       type: object
       additionalProperties: false
@@ -2301,107 +2347,13 @@ components:
             $ref: '#/components/schemas/DevboxExecutionStatus'
           description: The command execution statuses to wait for. At least one status must be provided. The command will be returned as soon as it reaches any of the provided statuses.
         timeout_seconds:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: (Optional) Timeout in seconds to wait for the status, up to 25 seconds. Defaults to 25 seconds.
       required:
       - statuses
-    UserParameters:
-      type: object
-      additionalProperties: false
-      description: Configuration for the Linux user in the Devbox environment.
-      properties:
-        username:
-          type: string
-          description: Username for the Linux user.
-        uid:
-          type: integer
-          format: int32
-          description: User ID (UID) for the Linux user. Must be a non-negative integer.
-      required:
-      - username
-      - uid
-    PtyControlParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        action:
-          $ref: '#/components/schemas/PtyControlAction'
-        cols:
-          type: integer
-          format: int32
-        rows:
-          type: integer
-          format: int32
-        signal:
-          type: string
-    Mount:
-      oneOf:
-      - $ref: '#/components/schemas/ObjectMount'
-      - $ref: '#/components/schemas/AgentMount'
-      - $ref: '#/components/schemas/CodeMount'
-      - $ref: '#/components/schemas/FileMount'
-      - $ref: '#/components/schemas/BrokerMount'
-      discriminator:
-        propertyName: type
-        mapping:
-          object_mount: '#/components/schemas/ObjectMount'
-          agent_mount: '#/components/schemas/AgentMount'
-          code_mount: '#/components/schemas/CodeMount'
-          file_mount: '#/components/schemas/FileMount'
-          broker_mount: '#/components/schemas/BrokerMount'
-    DevboxListView:
-      type: object
-      additionalProperties: false
-      properties:
-        devboxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxView'
-          description: List of devboxes matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type: integer
-          format: int32
-          nullable: true
-      required:
-      - devboxes
-      - has_more
-    InitiatorType:
-      type: string
-      enum:
-      - unknown
-      - api
-      - scenario
-      - scoring_validation
-    DevboxExecutionDetailView:
-      type: object
-      additionalProperties: false
-      properties:
-        devbox_id:
-          type: string
-          description: Devbox id where command was executed.
-        stdout:
-          type: string
-          description: Standard out generated by command.
-        stderr:
-          type: string
-          description: Standard error generated by command.
-        exit_status:
-          type: integer
-          format: int32
-          description: Exit status of command execution.
-        shell_name:
-          type: string
-          nullable: true
-          description: Shell name.
-      required:
-      - devbox_id
-      - stdout
-      - stderr
-      - exit_status
     DevboxResourceUsageView:
       type: object
       additionalProperties: false
@@ -2434,9 +2386,10 @@ components:
           format: int64
           description: The devbox creation time in milliseconds since epoch.
         end_time_ms:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: The devbox end time in milliseconds since epoch, or null if still running.
         status:
           type: string
@@ -2450,116 +2403,59 @@ components:
       - disk_gb_seconds
       - start_time_ms
       - status
-    LifecycleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
-      properties:
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          nullable: true
-          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
-        resume_triggers:
-          $ref: '#/components/schemas/ResumeTriggers'
-          nullable: true
-          description: Triggers that can resume a suspended Devbox.
-    DevboxCreateParameters:
+    GatewaySpecView:
       type: object
       additionalProperties: false
       properties:
-        name:
+        gateway_config_id:
           type: string
-          nullable: true
-          description: (Optional) A user specified name to give the Devbox.
-        environment_variables:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: (Optional) Environment variables used to configure your Devbox.
-        secrets:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: '(Optional) Map of environment variable names to secret names. The secret values will be securely injected as environment variables in the Devbox. Example: {"DB_PASS": "DATABASE_PASSWORD"} sets environment variable ''DB_PASS'' to the value of secret ''DATABASE_PASSWORD''.'
-        file_mounts:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: Map of paths and file contents to write before setup. Use mounts instead.
-        entrypoint:
+          description: The ID of the gateway config (e.g., gwc_123abc).
+        secret_id:
           type: string
-          nullable: true
-          description: (Optional) When specified, the Devbox will run this script as its main executable. The devbox lifecycle will be bound to entrypoint, shutting down when the process is complete.
-        blueprint_id:
-          type: string
-          nullable: true
-          description: Blueprint ID to use for the Devbox. If none set, the Devbox will be created with the default Runloop Devbox image. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
-        blueprint_name:
-          type: string
-          nullable: true
-          description: Name of Blueprint to use for the Devbox. When set, this will load the latest successfully built Blueprint with the given name. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
-        repo_connection_id:
-          type: string
-          nullable: true
-          description: Repository connection id the devbox should source its base image from.
-        launch_parameters:
-          $ref: '#/components/schemas/LaunchParameters'
-          nullable: true
-          description: Parameters to configure the resources and launch time behavior of the Devbox.
-        snapshot_id:
-          type: string
-          nullable: true
-          description: Snapshot ID to use for the Devbox. Only one of (Snapshot ID, Blueprint ID, Blueprint name) should be specified.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: User defined metadata to attach to the devbox for organization.
-        code_mounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeMountParameters'
-          nullable: true
-          description: A list of code mounts to be included in the Devbox. Use mounts instead.
-        mounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mount'
-          nullable: true
-          description: A list of mounts to be included in the Devbox.
-        tunnel:
-          $ref: '#/components/schemas/TunnelConfig'
-          nullable: true
-          description: (Optional) Configuration for creating a V2 tunnel at Devbox launch time. When specified, a tunnel will be automatically provisioned and the tunnel details will be included in the Devbox response.
-        gateways:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/GatewaySpec'
-          nullable: true
-          description: '(Optional) Agent gateway specifications for credential proxying. Map key is the environment variable prefix (e.g., ''GWS_ANTHROPIC''). The agent gateway will proxy requests to external APIs using the specified credential without exposing the real API key. Example: {''GWS_ANTHROPIC'': {''gateway'': ''anthropic'', ''secret'': ''my_claude_key''}}'
-        mcp:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/McpSpec'
-          nullable: true
-          description: '[Beta] (Optional) MCP specifications for MCP server access. Map key is the environment variable name for the MCP token envelope. Each spec links an MCP config to a secret. The devbox will also receive RL_MCP_URL for the MCP hub endpoint. Example: {''MCP_SECRET'': {''mcp_config'': ''github-readonly'', ''secret'': ''MY_GITHUB_TOKEN''}}'
-    ResumeTriggers:
+          description: The ID of the secret containing the credential.
+      required:
+      - gateway_config_id
+      - secret_id
+    DevboxStateTransition:
       type: object
       additionalProperties: false
-      description: Triggers that can resume a suspended Devbox.
       properties:
-        http:
-          type: boolean
-          nullable: true
-          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
-        axon_event:
-          type: boolean
-          nullable: true
-          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+        status:
+          $ref: '#/components/schemas/DevboxViewStatus'
+        transition_time_ms:
+          $ref: '#/components/schemas/Number'
+          description: The time the status change occurred
+    InitiatorType:
+      type: string
+      enum:
+      - unknown
+      - api
+      - scenario
+      - scoring_validation
+    DevboxViewFailureReason:
+      type: string
+      enum:
+      - out_of_memory
+      - out_of_disk
+      - execution_failed
+      - health_check_failed
+      description: 'The category of failure experienced by the Devbox.
+
+
+        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
+
+        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.
+
+        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
+
+        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size.
+
+        '
+      x-enum-descriptions:
+        out_of_memory: The Devbox ran out of memory at runtime. Use launch parameters to request a larger resource size.
+        out_of_disk: The Devbox ran out of disk at runtime. Please reach out to support for us to better support your use case.
+        execution_failed: The Devbox failed at runtime. Please use the dashboard to look at the logs of the failure.
+        health_check_failed: The Devbox failed its health checks. This may indicate resource utilization is close to the maximum. Consider requesting a larger resource size.
     DevboxCreateExecutionParameters:
       type: object
       additionalProperties: false
@@ -2568,93 +2464,54 @@ components:
           type: string
           description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
         shell_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
         attach_stdin:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
           description: Whether to attach stdin streaming for async commands. Not valid for execute_sync endpoint. Defaults to false if not specified.
       required:
       - command
-    DevboxViewShutdownReason:
-      type: string
-      enum:
-      - api_shutdown
-      - keep_alive_timeout
-      - entrypoint_exit
-      - idle
-      - ttl_expired
-      description: 'The reason that caused the transition of the Devbox to the shutown state.
-
-
-        api_shutdown: The Devbox shutdown due to API request.
-
-        entrypoint_exit: The Devbox entrypoint program completed.
-
-        idle: The Devbox shutdown due to configured action on idle configuration.
-
-        ttl_expired: The Devbox shutdown due to TTL expiration.
-
-        '
-      x-enum-descriptions:
-        api_shutdown: The Devbox shutdown due to API request.
-        entrypoint_exit: The Devbox entrypoint program completed.
-        idle: The Devbox shutdown due to configured action on idle configuration.
-        ttl_expired: The Devbox shutdown due to TTL expiration.
-    ResourceSize:
-      type: string
-      enum:
-      - X_SMALL
-      - SMALL
-      - MEDIUM
-      - LARGE
-      - X_LARGE
-      - XX_LARGE
-      - CUSTOM_SIZE
-      description: 'The size of the Devbox resources for Runloop to allocate.
-
-
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-
-        '
-      x-enum-descriptions:
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-    DevboxSendStdInResult:
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type:
+          - boolean
+          - 'null'
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    MetadataKeysView:
       type: object
       additionalProperties: false
       properties:
-        devbox_id:
+        keys:
+          type: array
+          items:
+            type: string
+    GatewaySpec:
+      type: object
+      additionalProperties: false
+      description: GatewaySpec links an agent gateway configuration to a secret for credential proxying in a devbox. The agent gateway will proxy requests to external APIs using the specified credential without exposing the real API key.
+      properties:
+        gateway:
           type: string
-          description: Devbox id where command is executing.
-        execution_id:
+          description: The gateway config to use. Can be a gateway config ID (gwc_xxx) or name.
+        secret:
           type: string
-          description: Execution id that received the stdin.
-        success:
-          type: boolean
-          description: Whether the stdin was successfully sent.
+          description: The secret containing the credential. Can be a secret ID or name.
       required:
-      - devbox_id
-      - execution_id
-      - success
+      - gateway
+      - secret
     DevboxReadFileParameters:
       type: object
       additionalProperties: false
@@ -2664,6 +2521,18 @@ components:
           description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
       required:
       - file_path
+    FileUpload:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+        path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+      required:
+      - path
     PtyConnectView:
       type: object
       additionalProperties: false
@@ -2692,101 +2561,13 @@ components:
       required:
       - created
       - attached
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    ObjectMount:
-      type: object
-      additionalProperties: false
-      properties:
-        object_id:
-          type: string
-          description: The ID of the object to write.
-        object_path:
-          type: string
-          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
-        type:
-          type: string
-          enum:
-          - object_mount
-          default: object_mount
-      required:
-      - object_id
-      - object_path
-      - type
-    TunnelView:
-      type: object
-      additionalProperties: false
-      description: 'A V2 tunnel provides secure HTTP access to services running on a Devbox. Tunnels allow external clients to reach web servers, APIs, or other HTTP services running inside a Devbox without requiring direct network access. Each tunnel is uniquely identified by an encrypted tunnel_key and can be configured for either open (public) or authenticated access.
-
-        Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai'
-      properties:
-        tunnel_key:
-          type: string
-          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
-        auth_mode:
-          $ref: '#/components/schemas/TunnelAuthModeView'
-          description: The authentication mode for the tunnel.
-        auth_token:
-          type: string
-          nullable: true
-          description: Bearer token for tunnel authentication. Only present when auth_mode is 'authenticated'.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the tunnel (Unix timestamp milliseconds).
-        http_keep_alive:
-          type: boolean
-          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer.
-        wake_on_http:
-          type: boolean
-          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume.
-      required:
-      - tunnel_key
-      - auth_mode
-      - create_time_ms
-      - http_keep_alive
-      - wake_on_http
-    CodeMount:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type: string
-          nullable: true
-          description: Installation command to install and setup repository.
-        git_ref:
-          type: string
-          nullable: true
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type: string
-          nullable: true
-          description: The authentication token necessary to pull repo.
-        type:
-          type: string
-          enum:
-          - code_mount
-          default: code_mount
-      required:
-      - repo_name
-      - repo_owner
-      - type
-    Number:
-      type: object
-      additionalProperties: false
-      properties: {}
+    DevboxSnapshotStatus:
+      type: string
+      enum:
+      - in_progress
+      - error
+      - complete
+      - deleted
     DevboxLogSource:
       type: string
       enum:
@@ -2796,6 +2577,289 @@ components:
       - files
       - stats
       - kmsg
+    Mount:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectMount'
+      - $ref: '#/components/schemas/AgentMount'
+      - $ref: '#/components/schemas/CodeMount'
+      - $ref: '#/components/schemas/FileMount'
+      - $ref: '#/components/schemas/BrokerMount'
+      discriminator:
+        propertyName: type
+        mapping:
+          object_mount: '#/components/schemas/ObjectMount'
+          agent_mount: '#/components/schemas/AgentMount'
+          code_mount: '#/components/schemas/CodeMount'
+          file_mount: '#/components/schemas/FileMount'
+          broker_mount: '#/components/schemas/BrokerMount'
+    DevboxView:
+      type: object
+      additionalProperties: false
+      description: A Devbox represents a virtual development environment. It is an isolated sandbox that can be given to agents and used to run arbitrary code such as AI generated code.
+      properties:
+        id:
+          type: string
+          description: The ID of the Devbox.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the Devbox.
+        status:
+          $ref: '#/components/schemas/DevboxViewStatus'
+          description: The current status of the Devbox.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the Devbox (Unix timestamp milliseconds).
+        end_time_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The time the Devbox finished execution (Unix timestamp milliseconds). Present if the Devbox is in a terminal state.
+        initiator_type:
+          $ref: '#/components/schemas/InitiatorType'
+          description: The type of initiator that created the Devbox.
+        initiator_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the initiator that created the Devbox.
+        blueprint_id:
+          type:
+          - string
+          - 'null'
+          description: The Blueprint ID used in creation of the Devbox, if the devbox was created from a Blueprint.
+        snapshot_id:
+          type:
+          - string
+          - 'null'
+          description: The Snapshot ID used in creation of the Devbox, if the devbox was created from a Snapshot.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: The user defined Devbox metadata.
+        failure_reason:
+          $ref: '#/components/schemas/DevboxViewFailureReason'
+          description: The failure reason if the Devbox failed, if the Devbox has a 'failure' status.
+        shutdown_reason:
+          $ref: '#/components/schemas/DevboxViewShutdownReason'
+          description: The shutdown reason if the Devbox shutdown, if the Devbox has a 'shutdown' status.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: The launch parameters used to create the Devbox.
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxCapabilities'
+          description: A list of capability groups this devbox has access to.
+        state_transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxStateTransition'
+          description: A list of state transitions in order with durations
+        tunnel:
+          $ref: '#/components/schemas/TunnelView'
+          description: V2 tunnel information if a tunnel was created at launch time or via the createTunnel API.
+        gateway_specs:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            $ref: '#/components/schemas/GatewaySpecView'
+          description: Gateway specifications configured for this devbox. Map key is the environment variable prefix (e.g., 'GWS_ANTHROPIC').
+        mcp_specs:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            $ref: '#/components/schemas/McpSpecView'
+          description: '[Beta] MCP specifications configured for this devbox. Map key is the environment variable name for the MCP token envelope. Each spec links an MCP config to a secret for MCP server access through the MCP hub.'
+      required:
+      - id
+      - status
+      - create_time_ms
+      - end_time_ms
+      - metadata
+      - launch_parameters
+      - capabilities
+      - state_transitions
+    Number:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxUpdateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the Devbox.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the devbox for organization.
+    DevboxLog:
+      type: object
+      additionalProperties: false
+      properties:
+        cmd_id:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the associated command the log is sourced from.
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: The Shell name the cmd executed in.
+        cmd:
+          type:
+          - string
+          - 'null'
+          description: The Command Executed
+        message:
+          type:
+          - string
+          - 'null'
+          description: Log line message.
+        exit_code:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: The Exit Code of the command
+        source:
+          $ref: '#/components/schemas/DevboxLogSource'
+          description: The source of the log.
+      required:
+      - level
+      - timestamp_ms
+      - source
+    PtyControlParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        action:
+          $ref: '#/components/schemas/PtyControlAction'
+        cols:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        signal:
+          type: string
+    DevboxExecutionDetailView:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command was executed.
+        stdout:
+          type: string
+          description: Standard out generated by command.
+        stderr:
+          type: string
+          description: Standard error generated by command.
+        exit_status:
+          type: integer
+          format: int32
+          description: Exit status of command execution.
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: Shell name.
+      required:
+      - devbox_id
+      - stdout
+      - stderr
+      - exit_status
+    DevboxDownloadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - path
+    DevboxViewShutdownReason:
+      type: string
+      enum:
+      - api_shutdown
+      - keep_alive_timeout
+      - entrypoint_exit
+      - idle
+      - ttl_expired
+      description: 'The reason that caused the transition of the Devbox to the shutown state.
+
+
+        api_shutdown: The Devbox shutdown due to API request.
+
+        entrypoint_exit: The Devbox entrypoint program completed.
+
+        idle: The Devbox shutdown due to configured action on idle configuration.
+
+        ttl_expired: The Devbox shutdown due to TTL expiration.
+
+        '
+      x-enum-descriptions:
+        api_shutdown: The Devbox shutdown due to API request.
+        entrypoint_exit: The Devbox entrypoint program completed.
+        idle: The Devbox shutdown due to configured action on idle configuration.
+        ttl_expired: The Devbox shutdown due to TTL expiration.
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    DevboxSnapshotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type:
+          - string
+          - 'null'
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
   securitySchemes:
     bearerAuth:
       scheme: bearer

@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents objects API
+  title: RunLoop Objects API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -14,13 +14,13 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: objects
+- name: Objects
 paths:
   /v1/objects:
     post:
       tags:
-      - objects
-      summary: Create an Object.
+      - Objects
+      summary: Create an Object
       description: Create a new Object with content and metadata. The Object will be assigned a unique ID.
       operationId: createObject
       parameters: []
@@ -48,8 +48,8 @@ paths:
       deprecated: false
     get:
       tags:
-      - objects
-      summary: List Objects.
+      - Objects
+      summary: List Objects
       description: List all Objects for the authenticated account with pagination support.
       operationId: listObjects
       parameters:
@@ -127,8 +127,8 @@ paths:
   /v1/objects/list_public:
     get:
       tags:
-      - objects
-      summary: List Public Objects.
+      - Objects
+      summary: List Public Objects
       description: List all public Objects with pagination support.
       operationId: listPublicObjects
       parameters:
@@ -206,8 +206,8 @@ paths:
   /v1/objects/metadata/keys:
     get:
       tags:
-      - objects
-      summary: List available object metadata keys.
+      - Objects
+      summary: List available object metadata keys
       description: Returns a list of all available metadata keys that can be used for filtering objects.
       operationId: getObjectMetadataKeys
       parameters: []
@@ -222,8 +222,8 @@ paths:
   /v1/objects/metadata/keys/{key}/values:
     get:
       tags:
-      - objects
-      summary: List values for a specific object metadata key.
+      - Objects
+      summary: List values for a specific object metadata key
       description: Returns a list of all values that exist for a specific metadata key across all objects.
       operationId: getObjectMetadataValues
       parameters:
@@ -248,8 +248,8 @@ paths:
   /v1/objects/{id}:
     get:
       tags:
-      - objects
-      summary: Get an Object.
+      - Objects
+      summary: Get an Object
       description: Retrieve a specific Object by its unique identifier.
       operationId: getObject
       parameters:
@@ -280,8 +280,8 @@ paths:
   /v1/objects/{id}/complete:
     post:
       tags:
-      - objects
-      summary: Complete Object Upload.
+      - Objects
+      summary: Complete Object Upload
       description: Mark an Object's upload as complete, transitioning it from UPLOADING to READ-only state.
       operationId: completeObject
       parameters:
@@ -320,8 +320,8 @@ paths:
   /v1/objects/{id}/delete:
     post:
       tags:
-      - objects
-      summary: Delete an Object.
+      - Objects
+      summary: Delete an Object
       description: Delete an existing Object by ID. This action is irreversible and will remove the Object and all its metadata.
       operationId: deleteObject
       parameters:
@@ -358,8 +358,8 @@ paths:
   /v1/objects/{id}/download:
     get:
       tags:
-      - objects
-      summary: Generate Download URL for Object.
+      - Objects
+      summary: Generate Download URL for Object
       description: Generate a presigned download URL for an Object. The URL will be valid for the specified duration.
       operationId: generateDownloadUrl
       parameters:
@@ -400,88 +400,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    ObjectView:
-      type: object
-      additionalProperties: false
-      description: An Object represents a stored data entity with metadata.
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the Object.
-        name:
-          type: string
-          description: The name of the Object.
-        state:
-          $ref: '#/components/schemas/ObjectState'
-          description: The current state of the Object.
-        size_bytes:
-          type: integer
-          format: int64
-          nullable: true
-          description: The size of the Object content in bytes (null until uploaded).
-        content_type:
-          $ref: '#/components/schemas/ContentType'
-          description: The content type of the Object.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: The creation time of the Object in milliseconds since epoch.
-        delete_after_time_ms:
-          type: integer
-          format: int64
-          nullable: true
-          description: The time after which the Object will be deleted in milliseconds since epoch.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: User defined metadata to attach to the Object for organization.
-        upload_url:
-          type: string
-          nullable: true
-          description: Presigned URL for uploading content to S3 (only present on create).
-      required:
-      - id
-      - name
-      - state
-      - content_type
-      - create_time_ms
-    ObjectCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters required to create a new Object.
-      properties:
-        name:
-          type: string
-          description: The name of the Object.
-        content_type:
-          $ref: '#/components/schemas/ContentType'
-          description: The content type of the Object.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: User defined metadata to attach to the object for organization.
-        ttl_ms:
-          type: integer
-          format: int64
-          nullable: true
-          description: Optional lifetime of the object in milliseconds, after which the object is automatically deleted. Time starts ticking after the object is created.
-      required:
-      - name
-      - content_type
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
     MetadataKeysView:
       type: object
       additionalProperties: false
@@ -499,27 +417,10 @@ components:
       - gzip
       - tar
       - tgz
-    ObjectDownloadUrlView:
-      type: object
-      additionalProperties: false
-      description: A response containing a presigned download URL for an Object.
-      properties:
-        download_url:
-          type: string
-          description: The presigned download URL for the Object.
-      required:
-      - download_url
     EmptyRecord:
       type: object
       additionalProperties: false
       properties: {}
-    ObjectState:
-      type: string
-      enum:
-      - UPLOADING
-      - READ_ONLY
-      - DELETED
-      - ERROR
     ObjectListView:
       type: object
       additionalProperties: false
@@ -534,13 +435,119 @@ components:
           type: boolean
           description: True if there are more results available beyond this page.
         total_count:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: Total number of Objects across all pages.
       required:
       - objects
       - has_more
+    ObjectDownloadUrlView:
+      type: object
+      additionalProperties: false
+      description: A response containing a presigned download URL for an Object.
+      properties:
+        download_url:
+          type: string
+          description: The presigned download URL for the Object.
+      required:
+      - download_url
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    ObjectView:
+      type: object
+      additionalProperties: false
+      description: An Object represents a stored data entity with metadata.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the Object.
+        name:
+          type: string
+          description: The name of the Object.
+        state:
+          $ref: '#/components/schemas/ObjectState'
+          description: The current state of the Object.
+        size_bytes:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The size of the Object content in bytes (null until uploaded).
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the Object in milliseconds since epoch.
+        delete_after_time_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The time after which the Object will be deleted in milliseconds since epoch.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the Object for organization.
+        upload_url:
+          type:
+          - string
+          - 'null'
+          description: Presigned URL for uploading content to S3 (only present on create).
+      required:
+      - id
+      - name
+      - state
+      - content_type
+      - create_time_ms
+    ObjectState:
+      type: string
+      enum:
+      - UPLOADING
+      - READ_ONLY
+      - DELETED
+      - ERROR
+    ObjectCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new Object.
+      properties:
+        name:
+          type: string
+          description: The name of the Object.
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the object for organization.
+        ttl_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Optional lifetime of the object in milliseconds, after which the object is automatically deleted. Time starts ticking after the object is created.
+      required:
+      - name
+      - content_type
   securitySchemes:
     bearerAuth:
       scheme: bearer

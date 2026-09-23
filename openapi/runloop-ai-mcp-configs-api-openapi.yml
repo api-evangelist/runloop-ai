@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Runloop agents mcp-configs API
+  title: RunLoop MCP Configs API
   version: '0.1'
-  description: Register, version, and mount Agents — packaged agent definitions sourced from Git, npm, pip, or storage objects that can be installed on Devboxes for fast, reproducible agent execution.
+  description: The RunLoop API spec that allows you to host lambda functions and Devboxes to enable scaled long running ai workflows.
   contact:
     name: Runloop AI Support
     url: https://runloop.ai
@@ -20,7 +20,7 @@ paths:
     post:
       tags:
       - mcp-configs
-      summary: '[Beta] Create an McpConfig.'
+      summary: '[Beta] Create an McpConfig'
       description: '[Beta] Create a new McpConfig to connect to an upstream MCP (Model Context Protocol) server. The config specifies the target endpoint and which tools are allowed.'
       operationId: createMcpConfig
       parameters: []
@@ -49,7 +49,7 @@ paths:
     get:
       tags:
       - mcp-configs
-      summary: '[Beta] List McpConfigs.'
+      summary: '[Beta] List McpConfigs'
       description: '[Beta] List all McpConfigs for the authenticated account.'
       operationId: listMcpConfigs
       parameters:
@@ -112,7 +112,7 @@ paths:
     get:
       tags:
       - mcp-configs
-      summary: '[Beta] Get an McpConfig.'
+      summary: '[Beta] Get an McpConfig'
       description: '[Beta] Get a specific McpConfig by its unique identifier.'
       operationId: getMcpConfig
       parameters:
@@ -143,7 +143,7 @@ paths:
     post:
       tags:
       - mcp-configs
-      summary: '[Beta] Update an McpConfig.'
+      summary: '[Beta] Update an McpConfig'
       description: '[Beta] Update an existing McpConfig. All fields are optional.'
       operationId: updateMcpConfig
       parameters:
@@ -183,7 +183,7 @@ paths:
     post:
       tags:
       - mcp-configs
-      summary: '[Beta] Delete an McpConfig.'
+      summary: '[Beta] Delete an McpConfig'
       description: '[Beta] Delete an existing McpConfig. This action is irreversible.'
       operationId: deleteMcpConfig
       parameters:
@@ -221,74 +221,37 @@ paths:
       deprecated: false
 components:
   schemas:
-    McpConfigCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters required to create a new McpConfig.
-      properties:
-        name:
-          type: string
-          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
-        endpoint:
-          type: string
-          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
-        allowed_tools:
-          type: array
-          items:
-            type: string
-          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools, [''github.search_*'', ''github.get_*''] for specific patterns.'
-        description:
-          type: string
-          nullable: true
-          description: Optional description for this MCP configuration.
-      required:
-      - name
-      - endpoint
-      - allowed_tools
-    McpConfigListView:
-      type: object
-      additionalProperties: false
-      description: A paginated list of McpConfigs.
-      properties:
-        mcp_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/McpConfigView'
-          description: The list of McpConfigs.
-        has_more:
-          type: boolean
-          description: Whether there are more results available beyond this page.
-        total_count:
-          type: integer
-          format: int32
-          nullable: true
-          description: Total count of McpConfigs that match the query.
-      required:
-      - mcp_configs
-      - has_more
     McpConfigUpdateParameters:
       type: object
       additionalProperties: false
       description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New name for the McpConfig. Must be unique within your account.
         endpoint:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New target MCP server endpoint URL.
         allowed_tools:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
           description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: New description for this MCP configuration.
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
     McpConfigView:
       type: object
       additionalProperties: false
@@ -309,8 +272,9 @@ components:
             type: string
           description: Glob patterns specifying which tools are allowed from this MCP server (e.g., ['github.search_*', 'github.get_*'] or ['*'] for all tools).
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: Optional description for this MCP configuration.
         create_time_ms:
           type: integer
@@ -322,10 +286,53 @@ components:
       - endpoint
       - allowed_tools
       - create_time_ms
-    EmptyRecord:
+    McpConfigCreateParameters:
       type: object
       additionalProperties: false
-      properties: {}
+      description: Parameters required to create a new McpConfig.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
+        endpoint:
+          type: string
+          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
+        allowed_tools:
+          type: array
+          items:
+            type: string
+          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools, [''github.search_*'', ''github.get_*''] for specific patterns.'
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description for this MCP configuration.
+      required:
+      - name
+      - endpoint
+      - allowed_tools
+    McpConfigListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of McpConfigs.
+      properties:
+        mcp_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/McpConfigView'
+          description: The list of McpConfigs.
+        has_more:
+          type: boolean
+          description: Whether there are more results available beyond this page.
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total count of McpConfigs that match the query.
+      required:
+      - mcp_configs
+      - has_more
   securitySchemes:
     bearerAuth:
       scheme: bearer
