@@ -154,6 +154,19 @@ components:
       required:
       - scorers
       - has_more
+    CreateCustomScorerParams:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: Name of the type of custom scorer.
+        bash_script:
+          type: string
+          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
+      required:
+      - type
+      - bash_script
     ScenarioScorerView:
       type: object
       additionalProperties: false
@@ -170,19 +183,6 @@ components:
           description: Bash script that takes in $RL_SCORER_CONTEXT as env variable and runs scoring.
       required:
       - id
-      - type
-      - bash_script
-    CreateCustomScorerParams:
-      type: object
-      additionalProperties: false
-      properties:
-        type:
-          type: string
-          description: Name of the type of custom scorer.
-        bash_script:
-          type: string
-          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
-      required:
       - type
       - bash_script
   securitySchemes:

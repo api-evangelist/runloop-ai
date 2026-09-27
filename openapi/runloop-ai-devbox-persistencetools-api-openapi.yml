@@ -415,10 +415,27 @@ components:
       - error
       - complete
       - deleted
-    EmptyRecord:
+    DevboxSnapshotRequest:
       type: object
       additionalProperties: false
-      properties: {}
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type:
+          - string
+          - 'null'
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
     DevboxDiskSnapshotListView:
       type: object
       additionalProperties: false
@@ -438,16 +455,6 @@ components:
       required:
       - snapshots
       - has_more
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
     DevboxSnapshotAsyncStatusView:
       type: object
       additionalProperties: false
@@ -465,6 +472,20 @@ components:
           description: Error message if the operation failed.
       required:
       - status
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
     DevboxDiskSnapshotView:
       type: object
       additionalProperties: false
@@ -510,27 +531,6 @@ components:
       - create_time_ms
       - metadata
       - source_devbox_id
-    DevboxSnapshotRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: (Optional) A user specified name to give the snapshot
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: (Optional) Metadata used to describe the snapshot
-        commit_message:
-          type:
-          - string
-          - 'null'
-          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
   securitySchemes:
     bearerAuth:
       scheme: bearer

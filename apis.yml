@@ -15,7 +15,7 @@ deliveryModel:
 specificationVersion: '0.23'
 apis:
 - aid: runloop-ai:runloop-ai-agents-api
-  name: Runloop agents API
+  name: Runloop Agents API
   description: The agents API from Runloop — 5 operation(s) for agents.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -117,7 +117,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-axons-api
-  name: Runloop axons API
+  name: Runloop Axons API
   description: The axons API from Runloop — 7 operation(s) for axons.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1324,7 +1324,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-executions-api
-  name: Runloop executions API
+  name: Runloop Executions API
   description: The executions API from Runloop — 2 operation(s) for executions.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1426,7 +1426,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-gateway-configs-api
-  name: Runloop gateway-configs API
+  name: Runloop Gateway Configs API
   description: The gateway-configs API from Runloop — 3 operation(s) for gateway-configs.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1526,7 +1526,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-mcp-configs-api
-  name: Runloop mcp-configs API
+  name: Runloop MCP Configs API
   description: The mcp-configs API from Runloop — 3 operation(s) for mcp-configs.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1626,7 +1626,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-network-policies-api
-  name: Runloop network-policies API
+  name: Runloop Network Policies API
   description: The network-policies API from Runloop — 3 operation(s) for network-policies.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1728,7 +1728,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-objects-api
-  name: Runloop objects API
+  name: Runloop Objects API
   description: The objects API from Runloop — 8 operation(s) for objects.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -1830,7 +1830,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-restricted-keys-api
-  name: Runloop restricted_keys API
+  name: Runloop Restricted Keys API
   description: The restricted_keys API from Runloop — 1 operation(s) for restricted_keys.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -2131,7 +2131,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-secrets-api
-  name: Runloop secrets API
+  name: Runloop Secrets API
   description: The secrets API from Runloop — 3 operation(s) for secrets.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -2233,7 +2233,7 @@ apis:
   - type: Documentation
     url: https://docs.runloop.ai/docs/devboxes/execution-logs
 - aid: runloop-ai:runloop-ai-streaming-api
-  name: Runloop streaming API
+  name: Runloop Streaming API
   description: The streaming API from Runloop — 2 operation(s) for streaming.
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
@@ -2340,8 +2340,6 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
-  - APIKeys
-  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
@@ -2496,11 +2494,6 @@ access: 3rd-Party
 created: '2026-05-25'
 modified: '2026-05-25'
 common:
-  - type: ParentCompany
-    url: https://apis.io/providers/stripe/
-    name: Stripe
-    x-relationship: acquired
-    x-evidence: "Founded 2023 by Jonathan Wall (Google File System lead, Google Wallet co-founder, Index CTO acquired by Stripe)."
   - type: AgenticAccess
     url: agentic-access/runloop-ai-agentic-access.yml
   - type: TrustCenter

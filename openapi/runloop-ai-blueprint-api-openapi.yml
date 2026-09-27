@@ -357,228 +357,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    UserParameters:
-      type: object
-      additionalProperties: false
-      description: Configuration for the Linux user in the Devbox environment.
-      properties:
-        username:
-          type: string
-          description: Username for the Linux user.
-        uid:
-          type: integer
-          format: int32
-          description: User ID (UID) for the Linux user. Must be a non-negative integer.
-      required:
-      - username
-      - uid
-    BlueprintView:
-      type: object
-      additionalProperties: false
-      description: Blueprints are ways to create customized starting points for Devboxes. They allow you to define custom starting points for Devboxes such that environment set up can be cached to improve Devbox boot times.
-      properties:
-        id:
-          type: string
-          description: The id of the Blueprint.
-        name:
-          type: string
-          description: The name of the Blueprint.
-        status:
-          $ref: '#/components/schemas/BlueprintBuildStatus'
-          description: The status of the Blueprint build.
-        state:
-          $ref: '#/components/schemas/BlueprintState'
-          description: The state of the Blueprint.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the Blueprint (Unix timestamp milliseconds).
-        build_finish_time_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Build completion time of the Blueprint (Unix timestamp milliseconds).
-        parameters:
-          $ref: '#/components/schemas/BlueprintBuildParameters'
-          description: The parameters used to create Blueprint.
-        failure_reason:
-          $ref: '#/components/schemas/BlueprintBuildFailureReason'
-          description: The failure reason if the Blueprint build failed, if any.
-        base_blueprint_id:
-          type:
-          - string
-          - 'null'
-          description: The ID of the base Blueprint.
-        containerized_services:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ContainerizedServiceView'
-          description: List of ContainerizedServices available in the Blueprint. Services can be explicitly started when creating a Devbox.
-        is_public:
-          type: boolean
-          description: Whether this Blueprint is publicly accessible to all users.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata associated with the blueprint.
-        devbox_capabilities:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/DevboxCapabilities'
-          description: Capabilities that will be available on Devbox.
-      required:
-      - id
-      - name
-      - status
-      - state
-      - create_time_ms
-      - parameters
-    DevboxCapabilities:
-      type: string
-      enum:
-      - unknown
-      - docker_in_docker
-    ResourceSize:
-      type: string
-      enum:
-      - X_SMALL
-      - SMALL
-      - MEDIUM
-      - LARGE
-      - X_LARGE
-      - XX_LARGE
-      - CUSTOM_SIZE
-      description: 'The size of the Devbox resources for Runloop to allocate.
-
-
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-
-        '
-      x-enum-descriptions:
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-    ContainerizedServiceView:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-          description: The name of the container service.
-        image:
-          type: string
-          description: The image of the container service.
-        credentials:
-          $ref: '#/components/schemas/Credentials'
-          description: The credentials of the container service.
-        env:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: The environment variables of the container service.
-        port_mappings:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The port mappings of the container service. Port mappings are in the format of <host_port>:<container_port>.
-        options:
-          type:
-          - string
-          - 'null'
-          description: Additional Docker container create options.
-      required:
-      - name
-      - image
-    BlueprintBuildLog:
-      type: object
-      additionalProperties: false
-      properties:
-        level:
-          type: string
-          description: Log line severity level.
-        timestamp_ms:
-          type: integer
-          format: int64
-          description: Time of log (Unix timestamp milliseconds).
-        message:
-          type: string
-          description: Log line message.
-      required:
-      - level
-      - timestamp_ms
-      - message
-    IdleAction:
-      type: string
-      enum:
-      - shutdown
-      - suspend
-      description: 'Action to take after Devbox idle timer is triggered.
-
-
-        shutdown: Shutdown the Devbox.
-
-        suspend: Suspend the Devbox.
-
-        '
-      x-enum-descriptions:
-        shutdown: Shutdown the Devbox.
-        suspend: Suspend the Devbox.
-    CodeMountParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type:
-          - string
-          - 'null'
-          description: Installation command to install and setup repository.
-        git_ref:
-          type:
-          - string
-          - 'null'
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type:
-          - string
-          - 'null'
-          description: The authentication token necessary to pull repo.
-      required:
-      - repo_name
-      - repo_owner
     LaunchParameters:
       type: object
       additionalProperties: false
@@ -650,50 +428,6 @@ components:
         lifecycle:
           $ref: '#/components/schemas/LifecycleConfigurationParameters'
           description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
-    BlueprintListView:
-      type: object
-      additionalProperties: false
-      properties:
-        blueprints:
-          type: array
-          items:
-            $ref: '#/components/schemas/BlueprintView'
-          description: List of blueprints matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - blueprints
-      - has_more
-    Architecture:
-      type: string
-      enum:
-      - x86_64
-      - arm64
-    BlueprintBuildFailureReason:
-      type: string
-      enum:
-      - out_of_memory
-      - out_of_disk
-      - build_failed
-      description: 'The cause of the failure of the Blueprint build.
-
-
-        out_of_memory: The build has run out of memory. Contact support if this is unexpected.
-
-        out_of_disk: The build has run out of disk. Contact support if this is unexpected.
-
-        build_failed: The build has failed. Use the dashboard to look at Blueprint build logs for more info.
-
-        '
-      x-enum-descriptions:
-        out_of_memory: The build has run out of memory. Contact support if this is unexpected.
-        out_of_disk: The build has run out of disk. Contact support if this is unexpected.
-        build_failed: The build has failed. Use the dashboard to look at Blueprint build logs for more info.
     InspectionSource:
       type: object
       additionalProperties: false
@@ -709,54 +443,6 @@ components:
           description: GitHub authentication token for accessing private repositories.
       required:
       - inspection_id
-    BuildContext:
-      oneOf:
-      - $ref: '#/components/schemas/ObjectContext'
-      discriminator:
-        propertyName: type
-        mapping:
-          object: '#/components/schemas/ObjectContext'
-    LifecycleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
-      properties:
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
-        resume_triggers:
-          $ref: '#/components/schemas/ResumeTriggers'
-          description: Triggers that can resume a suspended Devbox.
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
-    ObjectContext:
-      type: object
-      additionalProperties: false
-      description: A build context backed by an Object.
-      properties:
-        object_id:
-          type: string
-          description: The ID of an object, whose contents are to be used as a build context.
-        type:
-          type: string
-          enum:
-          - object
-          default: object
-      required:
-      - object_id
-      - type
     BlueprintPreviewView:
       type: object
       additionalProperties: false
@@ -766,62 +452,96 @@ components:
           description: The Dockerfile contents that will built.
       required:
       - dockerfile
-    BlueprintState:
-      type: string
-      enum:
-      - created
-      - deleted
-    ResumeTriggers:
-      type: object
-      additionalProperties: false
-      description: Triggers that can resume a suspended Devbox.
-      properties:
-        http:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
-        axon_event:
-          type:
-          - boolean
-          - 'null'
-          description: When true, axon events targeting a suspended Devbox will trigger a resume.
-    MetadataKeysView:
+    ContainerizedServiceView:
       type: object
       additionalProperties: false
       properties:
-        keys:
-          type: array
+        name:
+          type: string
+          description: The name of the container service.
+        image:
+          type: string
+          description: The image of the container service.
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+          description: The credentials of the container service.
+        env:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: The environment variables of the container service.
+        port_mappings:
+          type:
+          - array
+          - 'null'
           items:
             type: string
-    BlueprintBuildStatus:
+          description: The port mappings of the container service. Port mappings are in the format of <host_port>:<container_port>.
+        options:
+          type:
+          - string
+          - 'null'
+          description: Additional Docker container create options.
+      required:
+      - name
+      - image
+    DevboxCapabilities:
       type: string
       enum:
-      - queued
-      - provisioning
-      - building
-      - failed
-      - build_complete
-      description: 'The status of the Blueprint build.
-
-
-        queued: Blueprint is queued waiting for build capacity to become available.
-
-        provisioning: Allocating and booting the necessary infrastructure resources to create the Blueprint image.
-
-        building: Building the Blueprint image.
-
-        failed: Blueprint image failed to build. See the logs on the dashboard.
-
-        build_complete: Blueprint image completed build. You can now use the ID to create Devboxes.
-
-        '
-      x-enum-descriptions:
-        queued: Blueprint is queued waiting for build capacity to become available.
-        provisioning: Allocating and booting the necessary infrastructure resources to create the Blueprint image.
-        building: Building the Blueprint image.
-        failed: Blueprint image failed to build. See the logs on the dashboard.
-        build_complete: Blueprint image completed build. You can now use the ID to create Devboxes.
+      - unknown
+      - docker_in_docker
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    Credentials:
+      type: object
+      additionalProperties: false
+      properties:
+        username:
+          type: string
+          description: The username of the container service.
+        password:
+          type: string
+          description: The password of the container service.
+      required:
+      - username
+      - password
+    BlueprintBuildLog:
+      type: object
+      additionalProperties: false
+      properties:
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        message:
+          type: string
+          description: Log line message.
+      required:
+      - level
+      - timestamp_ms
+      - message
+    UserParameters:
+      type: object
+      additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
+      properties:
+        username:
+          type: string
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+      required:
+      - username
+      - uid
     BlueprintBuildFromInspectionParameters:
       type: object
       additionalProperties: false
@@ -871,6 +591,235 @@ components:
       required:
       - name
       - inspection_source
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type:
+          - boolean
+          - 'null'
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    BlueprintView:
+      type: object
+      additionalProperties: false
+      description: Blueprints are ways to create customized starting points for Devboxes. They allow you to define custom starting points for Devboxes such that environment set up can be cached to improve Devbox boot times.
+      properties:
+        id:
+          type: string
+          description: The id of the Blueprint.
+        name:
+          type: string
+          description: The name of the Blueprint.
+        status:
+          $ref: '#/components/schemas/BlueprintBuildStatus'
+          description: The status of the Blueprint build.
+        state:
+          $ref: '#/components/schemas/BlueprintState'
+          description: The state of the Blueprint.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the Blueprint (Unix timestamp milliseconds).
+        build_finish_time_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Build completion time of the Blueprint (Unix timestamp milliseconds).
+        parameters:
+          $ref: '#/components/schemas/BlueprintBuildParameters'
+          description: The parameters used to create Blueprint.
+        failure_reason:
+          $ref: '#/components/schemas/BlueprintBuildFailureReason'
+          description: The failure reason if the Blueprint build failed, if any.
+        base_blueprint_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the base Blueprint.
+        containerized_services:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ContainerizedServiceView'
+          description: List of ContainerizedServices available in the Blueprint. Services can be explicitly started when creating a Devbox.
+        is_public:
+          type: boolean
+          description: Whether this Blueprint is publicly accessible to all users.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata associated with the blueprint.
+        devbox_capabilities:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/DevboxCapabilities'
+          description: Capabilities that will be available on Devbox.
+      required:
+      - id
+      - name
+      - status
+      - state
+      - create_time_ms
+      - parameters
+    BlueprintBuildLogsListView:
+      type: object
+      additionalProperties: false
+      properties:
+        blueprint_id:
+          type: string
+          description: ID of the Blueprint.
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlueprintBuildLog'
+          description: List of logs generated during Blueprint build.
+      required:
+      - blueprint_id
+      - logs
+    BlueprintState:
+      type: string
+      enum:
+      - created
+      - deleted
+    BlueprintListView:
+      type: object
+      additionalProperties: false
+      properties:
+        blueprints:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlueprintView'
+          description: List of blueprints matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - blueprints
+      - has_more
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    CodeMountParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+      required:
+      - repo_name
+      - repo_owner
+    BuildContext:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectContext'
+      discriminator:
+        propertyName: type
+        mapping:
+          object: '#/components/schemas/ObjectContext'
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    ObjectContext:
+      type: object
+      additionalProperties: false
+      description: A build context backed by an Object.
+      properties:
+        object_id:
+          type: string
+          description: The ID of an object, whose contents are to be used as a build context.
+        type:
+          type: string
+          enum:
+          - object
+          default: object
+      required:
+      - object_id
+      - type
+    BlueprintBuildStatus:
+      type: string
+      enum:
+      - queued
+      - provisioning
+      - building
+      - failed
+      - build_complete
+      description: 'The status of the Blueprint build.
+
+
+        queued: Blueprint is queued waiting for build capacity to become available.
+
+        provisioning: Allocating and booting the necessary infrastructure resources to create the Blueprint image.
+
+        building: Building the Blueprint image.
+
+        failed: Blueprint image failed to build. See the logs on the dashboard.
+
+        build_complete: Blueprint image completed build. You can now use the ID to create Devboxes.
+
+        '
+      x-enum-descriptions:
+        queued: Blueprint is queued waiting for build capacity to become available.
+        provisioning: Allocating and booting the necessary infrastructure resources to create the Blueprint image.
+        building: Building the Blueprint image.
+        failed: Blueprint image failed to build. See the logs on the dashboard.
+        build_complete: Blueprint image completed build. You can now use the ID to create Devboxes.
     BlueprintBuildParameters:
       type: object
       additionalProperties: false
@@ -955,48 +904,99 @@ components:
           description: (Optional) ID of the network policy to apply during blueprint build. This restricts network access during the build process. This does not affect devboxes created from this blueprint; if you want devboxes created from this blueprint to inherit the network policy, set the network_policy_id on the blueprint launch parameters.
       required:
       - name
-    Credentials:
+    BlueprintBuildFailureReason:
+      type: string
+      enum:
+      - out_of_memory
+      - out_of_disk
+      - build_failed
+      description: 'The cause of the failure of the Blueprint build.
+
+
+        out_of_memory: The build has run out of memory. Contact support if this is unexpected.
+
+        out_of_disk: The build has run out of disk. Contact support if this is unexpected.
+
+        build_failed: The build has failed. Use the dashboard to look at Blueprint build logs for more info.
+
+        '
+      x-enum-descriptions:
+        out_of_memory: The build has run out of memory. Contact support if this is unexpected.
+        out_of_disk: The build has run out of disk. Contact support if this is unexpected.
+        build_failed: The build has failed. Use the dashboard to look at Blueprint build logs for more info.
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          description: Triggers that can resume a suspended Devbox.
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
+    MetadataValuesView:
       type: object
       additionalProperties: false
       properties:
-        username:
+        key:
           type: string
-          description: The username of the container service.
-        password:
-          type: string
-          description: The password of the container service.
-      required:
-      - username
-      - password
-    IdleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        idle_time_seconds:
-          type: integer
-          format: int32
-          description: After idle_time_seconds, on_idle action will be taken.
-        on_idle:
-          $ref: '#/components/schemas/IdleAction'
-          description: Action to take after Devbox becomes idle.
-      required:
-      - idle_time_seconds
-      - on_idle
-    BlueprintBuildLogsListView:
-      type: object
-      additionalProperties: false
-      properties:
-        blueprint_id:
-          type: string
-          description: ID of the Blueprint.
-        logs:
+        values:
           type: array
           items:
-            $ref: '#/components/schemas/BlueprintBuildLog'
-          description: List of logs generated during Blueprint build.
-      required:
-      - blueprint_id
-      - logs
+            type: string
   securitySchemes:
     bearerAuth:
       scheme: bearer

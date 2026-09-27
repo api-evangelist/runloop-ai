@@ -221,33 +221,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    McpConfigUpdateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: New name for the McpConfig. Must be unique within your account.
-        endpoint:
-          type:
-          - string
-          - 'null'
-          description: New target MCP server endpoint URL.
-        allowed_tools:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
-        description:
-          type:
-          - string
-          - 'null'
-          description: New description for this MCP configuration.
     EmptyRecord:
       type: object
       additionalProperties: false
@@ -333,6 +306,33 @@ components:
       required:
       - mcp_configs
       - has_more
+    McpConfigUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: New name for the McpConfig. Must be unique within your account.
+        endpoint:
+          type:
+          - string
+          - 'null'
+          description: New target MCP server endpoint URL.
+        allowed_tools:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
+        description:
+          type:
+          - string
+          - 'null'
+          description: New description for this MCP configuration.
   securitySchemes:
     bearerAuth:
       scheme: bearer

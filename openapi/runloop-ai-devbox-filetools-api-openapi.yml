@@ -166,35 +166,6 @@ components:
           description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
       required:
       - file_path
-    FileUpload:
-      type: object
-      additionalProperties: false
-      properties:
-        file:
-          type: string
-          format: binary
-        path:
-          type: string
-          description: The path to write the file to on the Devbox. Path is relative to user home directory.
-      required:
-      - path
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    DevboxWriteFileParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        file_path:
-          type: string
-          description: The path to write the file to on the Devbox. Path is relative to user home directory.
-        contents:
-          type: string
-          description: The UTF-8 string contents to write to the file.
-      required:
-      - file_path
-      - contents
     DevboxExecutionDetailView:
       type: object
       additionalProperties: false
@@ -222,6 +193,19 @@ components:
       - stdout
       - stderr
       - exit_status
+    DevboxWriteFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
+        contents:
+          type: string
+          description: The UTF-8 string contents to write to the file.
+      required:
+      - file_path
+      - contents
     DevboxDownloadFileParameters:
       type: object
       additionalProperties: false
@@ -229,6 +213,22 @@ components:
         path:
           type: string
           description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - path
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    FileUpload:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+        path:
+          type: string
+          description: The path to write the file to on the Devbox. Path is relative to user home directory.
       required:
       - path
   securitySchemes:

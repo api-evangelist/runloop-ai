@@ -400,69 +400,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    ContentType:
-      type: string
-      enum:
-      - unspecified
-      - text
-      - binary
-      - gzip
-      - tar
-      - tgz
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    ObjectListView:
-      type: object
-      additionalProperties: false
-      description: A paginated list of Objects.
-      properties:
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/ObjectView'
-          description: List of Object entities.
-        has_more:
-          type: boolean
-          description: True if there are more results available beyond this page.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total number of Objects across all pages.
-      required:
-      - objects
-      - has_more
-    ObjectDownloadUrlView:
-      type: object
-      additionalProperties: false
-      description: A response containing a presigned download URL for an Object.
-      properties:
-        download_url:
-          type: string
-          description: The presigned download URL for the Object.
-      required:
-      - download_url
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
     ObjectView:
       type: object
       additionalProperties: false
@@ -514,13 +451,46 @@ components:
       - state
       - content_type
       - create_time_ms
-    ObjectState:
-      type: string
-      enum:
-      - UPLOADING
-      - READ_ONLY
-      - DELETED
-      - ERROR
+    ObjectListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of Objects.
+      properties:
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectView'
+          description: List of Object entities.
+        has_more:
+          type: boolean
+          description: True if there are more results available beyond this page.
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of Objects across all pages.
+      required:
+      - objects
+      - has_more
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    ObjectDownloadUrlView:
+      type: object
+      additionalProperties: false
+      description: A response containing a presigned download URL for an Object.
+      properties:
+        download_url:
+          type: string
+          description: The presigned download URL for the Object.
+      required:
+      - download_url
     ObjectCreateParameters:
       type: object
       additionalProperties: false
@@ -548,6 +518,36 @@ components:
       required:
       - name
       - content_type
+    ObjectState:
+      type: string
+      enum:
+      - UPLOADING
+      - READ_ONLY
+      - DELETED
+      - ERROR
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    ContentType:
+      type: string
+      enum:
+      - unspecified
+      - text
+      - binary
+      - gzip
+      - tar
+      - tgz
   securitySchemes:
     bearerAuth:
       scheme: bearer

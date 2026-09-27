@@ -221,10 +221,118 @@ paths:
       deprecated: false
 components:
   schemas:
-    EmptyRecord:
+    EgressRulesView:
       type: object
       additionalProperties: false
-      properties: {}
+      description: Egress (outbound) network rules for a NetworkPolicy.
+      properties:
+        allow_all:
+          type: boolean
+          description: If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies.
+        allow_devbox_to_devbox:
+          type: boolean
+          description: If true, allows traffic between the account's own devboxes via tunnels.
+        allowed_hostnames:
+          type: array
+          items:
+            type: string
+          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com'']. Empty list with allow_all=false means no network access (DENY_ALL behavior).'
+        allow_agent_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the agent gateway for credential proxying.
+        allow_mcp_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the MCP hub for MCP server access.
+      required:
+      - allow_all
+      - allow_devbox_to_devbox
+      - allowed_hostnames
+      - allow_agent_gateway
+      - allow_mcp_gateway
+    NetworkPolicyCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new NetworkPolicy.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the NetworkPolicy. Must be unique within the account.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description for the NetworkPolicy.
+        allow_all:
+          type:
+          - boolean
+          - 'null'
+          description: (Optional) If true, all egress traffic is allowed (ALLOW_ALL policy). Defaults to false.
+        allow_devbox_to_devbox:
+          type:
+          - boolean
+          - 'null'
+          description: (Optional) If true, allows traffic between the account's own devboxes via tunnels. Defaults to false. If allow_all is true, this is automatically set to true.
+        allowed_hostnames:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: '(Optional) DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
+        allow_agent_gateway:
+          type:
+          - boolean
+          - 'null'
+          description: (Optional) If true, allows devbox egress to the agent gateway for credential proxying. Defaults to false.
+        allow_mcp_gateway:
+          type:
+          - boolean
+          - 'null'
+          description: (Optional) If true, allows devbox egress to the MCP hub for MCP server access. Defaults to false.
+      required:
+      - name
+    NetworkPolicyUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing NetworkPolicy. All fields are optional.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: Updated human-readable name for the NetworkPolicy.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Updated description for the NetworkPolicy.
+        allow_all:
+          type:
+          - boolean
+          - 'null'
+          description: If true, all egress traffic is allowed (ALLOW_ALL policy).
+        allow_devbox_to_devbox:
+          type:
+          - boolean
+          - 'null'
+          description: If true, allows traffic between the account's own devboxes via tunnels.
+        allowed_hostnames:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'Updated DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
+        allow_agent_gateway:
+          type:
+          - boolean
+          - 'null'
+          description: If true, allows devbox egress to the agent gateway.
+        allow_mcp_gateway:
+          type:
+          - boolean
+          - 'null'
+          description: If true, allows devbox egress to the MCP hub.
     NetworkPolicyListView:
       type: object
       additionalProperties: false
@@ -280,118 +388,10 @@ components:
       - egress
       - create_time_ms
       - update_time_ms
-    NetworkPolicyUpdateParameters:
+    EmptyRecord:
       type: object
       additionalProperties: false
-      description: Parameters for updating an existing NetworkPolicy. All fields are optional.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: Updated human-readable name for the NetworkPolicy.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Updated description for the NetworkPolicy.
-        allow_all:
-          type:
-          - boolean
-          - 'null'
-          description: If true, all egress traffic is allowed (ALLOW_ALL policy).
-        allow_devbox_to_devbox:
-          type:
-          - boolean
-          - 'null'
-          description: If true, allows traffic between the account's own devboxes via tunnels.
-        allowed_hostnames:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'Updated DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
-        allow_agent_gateway:
-          type:
-          - boolean
-          - 'null'
-          description: If true, allows devbox egress to the agent gateway.
-        allow_mcp_gateway:
-          type:
-          - boolean
-          - 'null'
-          description: If true, allows devbox egress to the MCP hub.
-    NetworkPolicyCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters required to create a new NetworkPolicy.
-      properties:
-        name:
-          type: string
-          description: The human-readable name for the NetworkPolicy. Must be unique within the account.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Optional description for the NetworkPolicy.
-        allow_all:
-          type:
-          - boolean
-          - 'null'
-          description: (Optional) If true, all egress traffic is allowed (ALLOW_ALL policy). Defaults to false.
-        allow_devbox_to_devbox:
-          type:
-          - boolean
-          - 'null'
-          description: (Optional) If true, allows traffic between the account's own devboxes via tunnels. Defaults to false. If allow_all is true, this is automatically set to true.
-        allowed_hostnames:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: '(Optional) DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org''].'
-        allow_agent_gateway:
-          type:
-          - boolean
-          - 'null'
-          description: (Optional) If true, allows devbox egress to the agent gateway for credential proxying. Defaults to false.
-        allow_mcp_gateway:
-          type:
-          - boolean
-          - 'null'
-          description: (Optional) If true, allows devbox egress to the MCP hub for MCP server access. Defaults to false.
-      required:
-      - name
-    EgressRulesView:
-      type: object
-      additionalProperties: false
-      description: Egress (outbound) network rules for a NetworkPolicy.
-      properties:
-        allow_all:
-          type: boolean
-          description: If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies.
-        allow_devbox_to_devbox:
-          type: boolean
-          description: If true, allows traffic between the account's own devboxes via tunnels.
-        allowed_hostnames:
-          type: array
-          items:
-            type: string
-          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com'']. Empty list with allow_all=false means no network access (DENY_ALL behavior).'
-        allow_agent_gateway:
-          type: boolean
-          description: If true, allows devbox egress to the agent gateway for credential proxying.
-        allow_mcp_gateway:
-          type: boolean
-          description: If true, allows devbox egress to the MCP hub for MCP server access.
-      required:
-      - allow_all
-      - allow_devbox_to_devbox
-      - allowed_hostnames
-      - allow_agent_gateway
-      - allow_mcp_gateway
+      properties: {}
   securitySchemes:
     bearerAuth:
       scheme: bearer

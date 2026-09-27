@@ -129,50 +129,15 @@ paths:
       deprecated: false
 components:
   schemas:
-    DevboxLog:
-      type: object
-      additionalProperties: false
-      properties:
-        cmd_id:
-          type:
-          - string
-          - 'null'
-          description: Identifier of the associated command the log is sourced from.
-        level:
-          type: string
-          description: Log line severity level.
-        timestamp_ms:
-          type: integer
-          format: int64
-          description: Time of log (Unix timestamp milliseconds).
-        shell_name:
-          type:
-          - string
-          - 'null'
-          description: The Shell name the cmd executed in.
-        cmd:
-          type:
-          - string
-          - 'null'
-          description: The Command Executed
-        message:
-          type:
-          - string
-          - 'null'
-          description: Log line message.
-        exit_code:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: The Exit Code of the command
-        source:
-          $ref: '#/components/schemas/DevboxLogSource'
-          description: The source of the log.
-      required:
-      - level
-      - timestamp_ms
-      - source
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
     DevboxLogsListView:
       type: object
       additionalProperties: false
@@ -184,15 +149,6 @@ components:
           description: List of logs for the given devbox.
       required:
       - logs
-    DevboxLogSource:
-      type: string
-      enum:
-      - setup_commands
-      - entrypoint
-      - exec
-      - files
-      - stats
-      - kmsg
     DevboxResourceUsageView:
       type: object
       additionalProperties: false
@@ -242,6 +198,50 @@ components:
       - disk_gb_seconds
       - start_time_ms
       - status
+    DevboxLog:
+      type: object
+      additionalProperties: false
+      properties:
+        cmd_id:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the associated command the log is sourced from.
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: The Shell name the cmd executed in.
+        cmd:
+          type:
+          - string
+          - 'null'
+          description: The Command Executed
+        message:
+          type:
+          - string
+          - 'null'
+          description: Log line message.
+        exit_code:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: The Exit Code of the command
+        source:
+          $ref: '#/components/schemas/DevboxLogSource'
+          description: The source of the log.
+      required:
+      - level
+      - timestamp_ms
+      - source
   securitySchemes:
     bearerAuth:
       scheme: bearer

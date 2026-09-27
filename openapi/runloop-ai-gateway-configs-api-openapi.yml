@@ -221,32 +221,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    GatewayConfigListView:
-      type: object
-      additionalProperties: false
-      description: A paginated list of GatewayConfigs.
-      properties:
-        gateway_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/GatewayConfigView'
-          description: The list of GatewayConfigs.
-        has_more:
-          type: boolean
-          description: Whether there are more results available beyond this page.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total count of GatewayConfigs that match the query.
-      required:
-      - gateway_configs
-      - has_more
     GatewayConfigCreateParameters:
       type: object
       additionalProperties: false
@@ -270,43 +244,28 @@ components:
       - name
       - endpoint
       - auth_mechanism
-    GatewayConfigView:
+    GatewayConfigListView:
       type: object
       additionalProperties: false
-      description: A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies the target endpoint and how credentials should be applied.
+      description: A paginated list of GatewayConfigs.
       properties:
-        id:
-          type: string
-          description: The unique identifier of the GatewayConfig.
-        account_id:
+        gateway_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayConfigView'
+          description: The list of GatewayConfigs.
+        has_more:
+          type: boolean
+          description: Whether there are more results available beyond this page.
+        total_count:
           type:
-          - string
+          - integer
           - 'null'
-          description: The account ID that owns this config.
-        name:
-          type: string
-          description: The human-readable name of the GatewayConfig. Unique per account (or globally for system configs).
-        endpoint:
-          type: string
-          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
-        auth_mechanism:
-          $ref: '#/components/schemas/AuthMechanismView'
-          description: How credentials should be applied to proxied requests.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Optional description for this gateway configuration.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: Creation time of the GatewayConfig (Unix timestamp in milliseconds).
+          format: int32
+          description: Total count of GatewayConfigs that match the query.
       required:
-      - id
-      - name
-      - endpoint
-      - auth_mechanism
-      - create_time_ms
+      - gateway_configs
+      - has_more
     GatewayConfigUpdateParameters:
       type: object
       additionalProperties: false
@@ -345,6 +304,47 @@ components:
           description: 'For ''header'' type: the header name (e.g., ''x-api-key'').'
       required:
       - type
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    GatewayConfigView:
+      type: object
+      additionalProperties: false
+      description: A GatewayConfig defines a configuration for proxying API requests through the agent gateway. It specifies the target endpoint and how credentials should be applied.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the GatewayConfig.
+        account_id:
+          type:
+          - string
+          - 'null'
+          description: The account ID that owns this config.
+        name:
+          type: string
+          description: The human-readable name of the GatewayConfig. Unique per account (or globally for system configs).
+        endpoint:
+          type: string
+          description: The target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: How credentials should be applied to proxied requests.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description for this gateway configuration.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: Creation time of the GatewayConfig (Unix timestamp in milliseconds).
+      required:
+      - id
+      - name
+      - endpoint
+      - auth_mechanism
+      - create_time_ms
   securitySchemes:
     bearerAuth:
       scheme: bearer

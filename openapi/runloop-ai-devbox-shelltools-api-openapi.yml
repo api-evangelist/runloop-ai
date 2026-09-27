@@ -391,7 +391,7 @@ paths:
       deprecated: true
 components:
   schemas:
-    PtyConnectView:
+    PtyControlResultView:
       type: object
       additionalProperties: false
       properties:
@@ -399,78 +399,6 @@ components:
           type: string
         status:
           type: string
-        protocol_version:
-          type: string
-        connect_url:
-          type: string
-        created:
-          type: boolean
-        attached:
-          type: boolean
-        cols:
-          type: integer
-          format: int32
-        rows:
-          type: integer
-          format: int32
-        idle_ttl_seconds:
-          type: integer
-          format: int64
-      required:
-      - created
-      - attached
-    DevboxStartExecutionParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        command_id:
-          type: string
-          description: The command ID in UUIDv7 string format for idempotency and tracking
-        command:
-          type: string
-          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
-        shell_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
-        optimistic_timeout:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Timeout in seconds to wait for command completion, up to 25 seconds. Defaults to 25 seconds. Operation is not killed.
-      required:
-      - command_id
-      - command
-    SignalType:
-      type: string
-      enum:
-      - EOF
-      - INTERRUPT
-    DevboxSendStdInResult:
-      type: object
-      additionalProperties: false
-      properties:
-        devbox_id:
-          type: string
-          description: Devbox id where command is executing.
-        execution_id:
-          type: string
-          description: Execution id that received the stdin.
-        success:
-          type: boolean
-          description: Whether the stdin was successfully sent.
-      required:
-      - devbox_id
-      - execution_id
-      - success
-    PtyControlAction:
-      type: string
-      enum:
-      - resize
-      - signal
-      - close
     DevboxAsyncExecutionDetailView:
       type: object
       additionalProperties: false
@@ -519,6 +447,35 @@ components:
       - devbox_id
       - execution_id
       - status
+    SignalType:
+      type: string
+      enum:
+      - EOF
+      - INTERRUPT
+    DevboxStartExecutionParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        command_id:
+          type: string
+          description: The command ID in UUIDv7 string format for idempotency and tracking
+        command:
+          type: string
+          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
+        optimistic_timeout:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Timeout in seconds to wait for command completion, up to 25 seconds. Defaults to 25 seconds. Operation is not killed.
+      required:
+      - command_id
+      - command
     DevboxKillExecutionRequest:
       type: object
       additionalProperties: false
@@ -528,7 +485,7 @@ components:
           - boolean
           - 'null'
           description: 'Whether to kill the entire process group (default: false). If true, kills all processes in the same process group as the target process.'
-    PtyControlResultView:
+    PtyConnectView:
       type: object
       additionalProperties: false
       properties:
@@ -536,6 +493,45 @@ components:
           type: string
         status:
           type: string
+        protocol_version:
+          type: string
+        connect_url:
+          type: string
+        created:
+          type: boolean
+        attached:
+          type: boolean
+        cols:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        idle_ttl_seconds:
+          type: integer
+          format: int64
+      required:
+      - created
+      - attached
+    DevboxCreateExecutionParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        command:
+          type: string
+          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
+        shell_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
+        attach_stdin:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to attach stdin streaming for async commands. Not valid for execute_sync endpoint. Defaults to false if not specified.
+      required:
+      - command
     DevboxExecutionDetailView:
       type: object
       additionalProperties: false
@@ -563,32 +559,6 @@ components:
       - stdout
       - stderr
       - exit_status
-    DevboxSendStdInRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        text:
-          type:
-          - string
-          - 'null'
-          description: Text to send to std in of the running execution.
-        signal:
-          $ref: '#/components/schemas/SignalType'
-          description: Signal to send to std in of the running execution.
-    PtyControlParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        action:
-          $ref: '#/components/schemas/PtyControlAction'
-        cols:
-          type: integer
-          format: int32
-        rows:
-          type: integer
-          format: int32
-        signal:
-          type: string
     DevboxWaitForCommandRequest:
       type: object
       additionalProperties: false
@@ -606,31 +576,61 @@ components:
           description: (Optional) Timeout in seconds to wait for the status, up to 25 seconds. Defaults to 25 seconds.
       required:
       - statuses
-    DevboxCreateExecutionParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        command:
-          type: string
-          description: The command to execute via the Devbox shell. By default, commands are run from the user home directory unless shell_name is specified. If shell_name is specified the command is run from the directory based on the recent state of the persistent shell.
-        shell_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the persistent shell to create or use if already created. When using a persistent shell, the command will run from the directory at the end of the previous command and environment variables will be preserved.
-        attach_stdin:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to attach stdin streaming for async commands. Not valid for execute_sync endpoint. Defaults to false if not specified.
-      required:
-      - command
     DevboxExecutionStatus:
       type: string
       enum:
       - queued
       - running
       - completed
+    DevboxSendStdInResult:
+      type: object
+      additionalProperties: false
+      properties:
+        devbox_id:
+          type: string
+          description: Devbox id where command is executing.
+        execution_id:
+          type: string
+          description: Execution id that received the stdin.
+        success:
+          type: boolean
+          description: Whether the stdin was successfully sent.
+      required:
+      - devbox_id
+      - execution_id
+      - success
+    PtyControlAction:
+      type: string
+      enum:
+      - resize
+      - signal
+      - close
+    PtyControlParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        action:
+          $ref: '#/components/schemas/PtyControlAction'
+        cols:
+          type: integer
+          format: int32
+        rows:
+          type: integer
+          format: int32
+        signal:
+          type: string
+    DevboxSendStdInRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        text:
+          type:
+          - string
+          - 'null'
+          description: Text to send to std in of the running execution.
+        signal:
+          $ref: '#/components/schemas/SignalType'
+          description: Signal to send to std in of the running execution.
   securitySchemes:
     bearerAuth:
       scheme: bearer
