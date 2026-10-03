@@ -40,6 +40,17 @@ paths:
       deprecated: false
 components:
   schemas:
+    ApiKeyCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        expires_at_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
     ApiKeyCreatedView:
       type: object
       additionalProperties: false
@@ -49,17 +60,6 @@ components:
         name:
           type: string
         key_secret:
-          type: string
-        expires_at_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-    ApiKeyCreateParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
           type: string
         expires_at_ms:
           type:

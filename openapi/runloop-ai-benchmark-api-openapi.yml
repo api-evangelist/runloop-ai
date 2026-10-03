@@ -974,105 +974,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    AgentMount:
-      type: object
-      additionalProperties: false
-      properties:
-        agent_id:
-          type:
-          - string
-          - 'null'
-          description: The ID of the agent to mount. Either agent_id or name must be set.
-        agent_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string provided. Either agent id or name must be set
-        agent_path:
-          type:
-          - string
-          - 'null'
-          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g., /home/user/agent)
-        auth_token:
-          type:
-          - string
-          - 'null'
-          description: Optional auth token for private repositories. Only used for git agents.
-        type:
-          type: string
-          enum:
-          - agent_mount
-          default: agent_mount
-      required:
-      - agent_id
-      - agent_name
-      - type
-    BenchmarkRunView:
-      type: object
-      additionalProperties: false
-      description: A BenchmarkRunView represents a run of a complete set of Scenarios, organized under a Benchmark or created by a BenchmarkJob.
-      properties:
-        id:
-          type: string
-          description: The ID of the BenchmarkRun.
-        benchmark_id:
-          type:
-          - string
-          - 'null'
-          description: The ID of the Benchmark definition. Present if run was created from a benchmark definition.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the BenchmarkRun.
-        start_time_ms:
-          type: integer
-          format: int64
-          description: The time the benchmark run execution started (Unix timestamp milliseconds).
-        duration_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: The duration for the BenchmarkRun to complete.
-        state:
-          $ref: '#/components/schemas/BenchmarkRunState'
-          description: The state of the BenchmarkRun.
-        score:
-          type:
-          - number
-          - 'null'
-          format: float
-          description: The final score across the BenchmarkRun, present once completed. Calculated as sum of scenario scores / number of scenario runs.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the benchmark run for organization.
-        purpose:
-          type:
-          - string
-          - 'null'
-          description: Purpose of the run.
-        environment_variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Environment variables used to run the benchmark.
-        secrets_provided:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: 'User secrets used to run the benchmark. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' on all scenario devboxes to the value of the secret ''DATABASE_PASSWORD''.'
-      required:
-      - id
-      - start_time_ms
-      - state
-      - metadata
     BenchmarkJobListView:
       type: object
       additionalProperties: false
@@ -1092,6 +993,450 @@ components:
       required:
       - jobs
       - has_more
+    BenchmarkStatus:
+      type: string
+      enum:
+      - active
+      - archived
+    MetadataValuesView:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    UserParameters:
+      type: object
+      additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
+      properties:
+        username:
+          type: string
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+      required:
+      - username
+      - uid
+    AstGrepScoringFunction:
+      type: object
+      additionalProperties: false
+      description: AstGrepScoringFunction utilizes structured coach search for scoring.
+      properties:
+        lang:
+          type: string
+          description: The language of the pattern.
+        search_directory:
+          type: string
+          description: The path to search.
+        pattern:
+          type: string
+          description: AST pattern to match. Pattern will be passed to ast-grep using the commandline surround by double quotes ("), so make sure to use proper escaping (for example, \$\$\$).
+        type:
+          type: string
+          enum:
+          - ast_grep_scorer
+          default: ast_grep_scorer
+      required:
+      - search_directory
+      - pattern
+      - type
+    ScoringContract:
+      type: object
+      additionalProperties: false
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
+      properties:
+        scoring_function_parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringFunction'
+          description: A list of scoring functions used to evaluate the Scenario.
+      required:
+      - scoring_function_parameters
+    JobSpec:
+      type: object
+      additionalProperties: false
+      description: Job specification describing scenarios and execution configuration
+      properties:
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          description: List of scenario IDs to execute
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          description: Orchestrator configuration
+        agent_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations for this job
+      required:
+      - scenario_ids
+      - agent_configs
+    ScenarioDefinitionStatus:
+      type: string
+      enum:
+      - active
+      - archived
+    BenchmarkDefJobSource:
+      type: object
+      additionalProperties: false
+      description: Benchmark definition job source
+      properties:
+        benchmark_id:
+          type: string
+          description: The ID of the benchmark definition
+        benchmark_name:
+          type:
+          - string
+          - 'null'
+          description: Optional user-provided name for the benchmark definition
+        type:
+          type: string
+          enum:
+          - benchmark
+          default: benchmark
+      required:
+      - benchmark_id
+      - type
+    FileMount:
+      type: object
+      additionalProperties: false
+      properties:
+        target:
+          type: string
+          description: Target path where the file should be mounted.
+        content:
+          type: string
+          description: Content of the file to mount.
+        type:
+          type: string
+          enum:
+          - file_mount
+          default: file_mount
+      required:
+      - target
+      - content
+      - type
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+    HarborJobSource:
+      type: object
+      additionalProperties: false
+      description: Harbor job source with inline YAML configuration
+      properties:
+        inline_yaml:
+          type: string
+          description: The Harbor job configuration as inline YAML content
+        type:
+          type: string
+          enum:
+          - harbor
+          default: harbor
+      required:
+      - inline_yaml
+      - type
+    ScenarioState:
+      type: string
+      enum:
+      - COMPLETED
+      - FAILED
+      - TIMEOUT
+      - CANCELED
+    CodeMount:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+        type:
+          type: string
+          enum:
+          - code_mount
+          default: code_mount
+      required:
+      - repo_name
+      - repo_owner
+      - type
+    BenchmarkUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: BenchmarkUpdateParameters contain the set of parameters to update a Benchmark. All fields are optional - null fields preserve existing values, provided fields replace entirely.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The unique name of the Benchmark. Cannot be blank.
+        scenario_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The Scenario IDs that make up the Benchmark. Pass in empty list to clear.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the benchmark. Pass in empty map to clear.
+        required_environment_variables:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Environment variables required to run the benchmark. If any required variables are not supplied, the benchmark will fail to start. Pass in empty list to clear.
+        required_secret_names:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail to start. Pass in empty list to clear.
+        attribution:
+          type:
+          - string
+          - 'null'
+          description: Attribution information for the benchmark. Pass in empty string to clear.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Detailed description of the benchmark. Pass in empty string to clear.
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    ScoringFunction:
+      type: object
+      additionalProperties: false
+      description: ScoringFunction specifies a method of scoring a Scenario.
+      properties:
+        name:
+          type: string
+          description: Name of scoring function. Names must only contain [a-zA-Z0-9_-].
+        scorer:
+          $ref: '#/components/schemas/BuiltInScoringFunction'
+          description: The scoring function to use for evaluating this scenario. The type field determines which built-in function to use.
+        weight:
+          type: number
+          format: float
+          description: Weight to apply to scoring function score. Weights of all scoring functions should sum to 1.0.
+      required:
+      - name
+      - scorer
+      - weight
+    ObjectMount:
+      type: object
+      additionalProperties: false
+      properties:
+        object_id:
+          type: string
+          description: The ID of the object to write.
+        object_path:
+          type: string
+          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
+        type:
+          type: string
+          enum:
+          - object_mount
+          default: object_mount
+      required:
+      - object_id
+      - object_path
+      - type
+    BenchmarkDefinitionView:
+      type: object
+      additionalProperties: false
+      description: A BenchmarkDefinitionView represents a grouped set of Scenarios that together form a Benchmark.
+      properties:
+        id:
+          type: string
+          description: The ID of the Benchmark.
+        name:
+          type: string
+          description: The name of the Benchmark.
+        scenarioIds:
+          type: array
+          items:
+            type: string
+          description: List of Scenario IDs that make up the benchmark.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the benchmark for organization.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          description: Required environment variables used to run the benchmark. If any required environment variables are missing, the benchmark will fail to start.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          description: Required secrets used to run the benchmark. If any required secrets are missing, the benchmark will fail to start.
+        is_public:
+          type: boolean
+          description: Whether this benchmark is public.
+        attribution:
+          type: string
+          description: Attribution information for the benchmark.
+        description:
+          type: string
+          description: Detailed description of the benchmark.
+        status:
+          $ref: '#/components/schemas/BenchmarkStatus'
+          description: Whether the benchmark is active or archived. Archived benchmarks are excluded from listings and cannot be run.
+      required:
+      - id
+      - name
+      - scenarioIds
+      - metadata
+      - status
+    CustomScoringFunction:
+      type: object
+      additionalProperties: false
+      description: CustomScoringFunction is a custom, user defined scoring function.
+      properties:
+        custom_scorer_type:
+          type: string
+          description: Type of the scoring function, previously registered with Runloop.
+        scorer_params:
+          type:
+          - object
+          - 'null'
+          description: Additional JSON structured context to pass to the scoring function.
+        type:
+          type: string
+          enum:
+          - custom_scorer
+          default: custom_scorer
+      required:
+      - custom_scorer_type
+      - type
+    JobOrchestratorConfig:
+      type: object
+      additionalProperties: false
+      description: Orchestrator configuration for benchmark job execution
+      properties:
+        n_concurrent_trials:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: 'Number of concurrent trials to run (default: 1). Controls parallelism for scenario execution. Default is 1.'
+        n_attempts:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: 'Number of retry attempts on failure (default: 0). This is the retry policy for failed scenarios. Default is 0.'
+        timeout_multiplier:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: 'Timeout multiplier for retries (default: 1.0). Each retry will multiply the timeout by this factor.'
+        quiet:
+          type:
+          - boolean
+          - 'null'
+          description: 'Suppress verbose output (default: false)'
+    Mount:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectMount'
+      - $ref: '#/components/schemas/AgentMount'
+      - $ref: '#/components/schemas/CodeMount'
+      - $ref: '#/components/schemas/FileMount'
+      - $ref: '#/components/schemas/BrokerMount'
+      discriminator:
+        propertyName: type
+        mapping:
+          object_mount: '#/components/schemas/ObjectMount'
+          agent_mount: '#/components/schemas/AgentMount'
+          code_mount: '#/components/schemas/CodeMount'
+          file_mount: '#/components/schemas/FileMount'
+          broker_mount: '#/components/schemas/BrokerMount'
+    HarborJobSpec:
+      type: object
+      additionalProperties: false
+      description: Harbor-based job specification with inline YAML configuration.
+      properties:
+        inline_yaml:
+          type: string
+          description: The Harbor job configuration as inline YAML content.
+        type:
+          type: string
+          enum:
+          - harbor
+          default: harbor
+      required:
+      - inline_yaml
+      - type
     LaunchParameters:
       type: object
       additionalProperties: false
@@ -1163,210 +1508,12 @@ components:
         lifecycle:
           $ref: '#/components/schemas/LifecycleConfigurationParameters'
           description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
-    BenchmarkDefinitionJobSpec:
-      type: object
-      additionalProperties: false
-      description: Specifies a benchmark definition with runtime configuration. The benchmark definition's scenarios will be executed using the provided agent and orchestrator configurations.
-      properties:
-        benchmark_id:
-          type: string
-          description: ID of the benchmark definition to run. The scenarios from this benchmark will be executed.
-        agent_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobAgentConfig'
-          description: Agent configurations to use for this run. Must specify at least one agent.
-        orchestrator_config:
-          $ref: '#/components/schemas/JobOrchestratorConfig'
-          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
-        type:
-          type: string
-          enum:
-          - benchmark
-          default: benchmark
-      required:
-      - benchmark_id
-      - agent_configs
-      - type
-    ScenarioDefinitionView:
-      type: object
-      additionalProperties: false
-      description: A ScenarioDefinitionView represents a repeatable AI coding evaluation test, complete with initial environment and scoring contract.
-      properties:
-        id:
-          type: string
-          description: The ID of the Scenario.
-        name:
-          type: string
-          description: The name of the Scenario.
-        environment:
-          $ref: '#/components/schemas/ScenarioEnvironment'
-          description: The Environment in which the Scenario is run.
-        input_context:
-          $ref: '#/components/schemas/InputContext'
-          description: The input context for the Scenario.
-        scoring_contract:
-          $ref: '#/components/schemas/ScoringContract'
-          description: The scoring contract for the Scenario.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the scenario for organization.
-        reference_output:
-          type:
-          - string
-          - 'null'
-          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment.
-        required_environment_variables:
-          type: array
-          items:
-            type: string
-          description: Environment variables required to run the scenario. If any required environment variables are missing, the scenario will fail to start.
-        required_secret_names:
-          type: array
-          items:
-            type: string
-          description: Environment variables required to run the scenario. If any required secrets are missing, the scenario will fail to start.
-        is_public:
-          type: boolean
-          description: Whether this scenario is public.
-        validation_type:
-          $ref: '#/components/schemas/ValidationType'
-          description: Validation strategy.
-        scorer_timeout_sec:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
-        status:
-          $ref: '#/components/schemas/ScenarioDefinitionStatus'
-          description: Whether the scenario is active or archived. Archived scenarios are excluded from listings and cannot be updated.
-      required:
-      - id
-      - name
-      - input_context
-      - scoring_contract
-      - metadata
-      - status
-    FileMount:
-      type: object
-      additionalProperties: false
-      properties:
-        target:
-          type: string
-          description: Target path where the file should be mounted.
-        content:
-          type: string
-          description: Content of the file to mount.
-        type:
-          type: string
-          enum:
-          - file_mount
-          default: file_mount
-      required:
-      - target
-      - content
-      - type
-    BenchmarkUpdateParameters:
-      type: object
-      additionalProperties: false
-      description: BenchmarkUpdateParameters contain the set of parameters to update a Benchmark. All fields are optional - null fields preserve existing values, provided fields replace entirely.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: The unique name of the Benchmark. Cannot be blank.
-        scenario_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The Scenario IDs that make up the Benchmark. Pass in empty list to clear.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the benchmark. Pass in empty map to clear.
-        required_environment_variables:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Environment variables required to run the benchmark. If any required variables are not supplied, the benchmark will fail to start. Pass in empty list to clear.
-        required_secret_names:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail to start. Pass in empty list to clear.
-        attribution:
-          type:
-          - string
-          - 'null'
-          description: Attribution information for the benchmark. Pass in empty string to clear.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Detailed description of the benchmark. Pass in empty string to clear.
-    CodeMount:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type:
-          - string
-          - 'null'
-          description: Installation command to install and setup repository.
-        git_ref:
-          type:
-          - string
-          - 'null'
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type:
-          - string
-          - 'null'
-          description: The authentication token necessary to pull repo.
-        type:
-          type: string
-          enum:
-          - code_mount
-          default: code_mount
-      required:
-      - repo_name
-      - repo_owner
-      - type
-    HarborJobSource:
-      type: object
-      additionalProperties: false
-      description: Harbor job source with inline YAML configuration
-      properties:
-        inline_yaml:
-          type: string
-          description: The Harbor job configuration as inline YAML content
-        type:
-          type: string
-          enum:
-          - harbor
-          default: harbor
-      required:
-      - inline_yaml
-      - type
+    ScoringFunctionResultViewState:
+      type: string
+      enum:
+      - unknown
+      - complete
+      - error
     BenchmarkOutcomeView:
       type: object
       additionalProperties: false
@@ -1419,23 +1566,6 @@ components:
       - n_failed
       - n_timeout
       - scenario_outcomes
-    BuiltInScoringFunction:
-      oneOf:
-      - $ref: '#/components/schemas/AstGrepScoringFunction'
-      - $ref: '#/components/schemas/BashScriptScoringFunction'
-      - $ref: '#/components/schemas/CommandScoringFunction'
-      - $ref: '#/components/schemas/CustomScoringFunction'
-      - $ref: '#/components/schemas/PythonScriptScoringFunction'
-      - $ref: '#/components/schemas/TestBasedScoringFunction'
-      discriminator:
-        propertyName: type
-        mapping:
-          ast_grep_scorer: '#/components/schemas/AstGrepScoringFunction'
-          bash_script_scorer: '#/components/schemas/BashScriptScoringFunction'
-          command_scorer: '#/components/schemas/CommandScoringFunction'
-          custom_scorer: '#/components/schemas/CustomScoringFunction'
-          python_script_scorer: '#/components/schemas/PythonScriptScoringFunction'
-          test_based_scorer: '#/components/schemas/TestBasedScoringFunction'
     JobSource:
       oneOf:
       - $ref: '#/components/schemas/HarborJobSource'
@@ -1447,242 +1577,112 @@ components:
           harbor: '#/components/schemas/HarborJobSource'
           benchmark: '#/components/schemas/BenchmarkDefJobSource'
           scenarios: '#/components/schemas/ScenariosJobSource'
-    JobOrchestratorConfig:
+    CommandScoringFunction:
       type: object
       additionalProperties: false
-      description: Orchestrator configuration for benchmark job execution
+      description: CommandScoringFunction executes a single command and checks the result.The output of the command will be printed. Scoring will passed if the command returns status code 0, otherwise it will be failed.
       properties:
-        n_concurrent_trials:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: 'Number of concurrent trials to run (default: 1). Controls parallelism for scenario execution. Default is 1.'
-        n_attempts:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: 'Number of retry attempts on failure (default: 0). This is the retry policy for failed scenarios. Default is 0.'
-        timeout_multiplier:
-          type:
-          - number
-          - 'null'
-          format: float
-          description: 'Timeout multiplier for retries (default: 1.0). Each retry will multiply the timeout by this factor.'
-        quiet:
-          type:
-          - boolean
-          - 'null'
-          description: 'Suppress verbose output (default: false)'
-    BenchmarkDefJobSource:
-      type: object
-      additionalProperties: false
-      description: Benchmark definition job source
-      properties:
-        benchmark_id:
+        command:
           type: string
-          description: The ID of the benchmark definition
-        benchmark_name:
-          type:
-          - string
-          - 'null'
-          description: Optional user-provided name for the benchmark definition
+          description: The command to execute.
         type:
           type: string
           enum:
-          - benchmark
-          default: benchmark
-      required:
-      - benchmark_id
-      - type
-    ExternalApiAgentConfig:
-      type: object
-      additionalProperties: false
-      description: Configuration for externally-driven benchmark runs via API
-      properties:
-        info:
-          type:
-          - string
-          - 'null'
-          description: Placeholder for future external agent metadata
-        type:
-          type: string
-          enum:
-          - external_api
-          default: external_api
+          - command_scorer
+          default: command_scorer
       required:
       - type
-    BashScriptScoringFunction:
+    FailureReason:
       type: object
       additionalProperties: false
-      description: BashScriptScoringFunction is a scoring function specified by a bash script that will be run in the context of your environment.
+      description: Information about why a scenario execution failed
       properties:
-        bash_script:
+        exception_type:
           type: string
-          description: A single bash script that sets up the environment, scores, and prints the final score to standard out. Score should be a float between 0.0 and 1.0, and look like "score=[0.0..1.0].
-        type:
+          description: The exception class name (e.g., 'TimeoutException', 'AgentTimeoutError')
+        exception_message:
           type: string
-          enum:
-          - bash_script_scorer
-          default: bash_script_scorer
+          description: The exception message providing context
       required:
-      - type
-    CustomScoringFunction:
+      - exception_type
+      - exception_message
+    BenchmarkCreateParameters:
       type: object
       additionalProperties: false
-      description: CustomScoringFunction is a custom, user defined scoring function.
+      description: BenchmarkCreateParameters contain the set of parameters to create a Benchmark.
       properties:
-        custom_scorer_type:
-          type: string
-          description: Type of the scoring function, previously registered with Runloop.
-        scorer_params:
-          type:
-          - object
-          - 'null'
-          description: Additional JSON structured context to pass to the scoring function.
-        type:
-          type: string
-          enum:
-          - custom_scorer
-          default: custom_scorer
-      required:
-      - custom_scorer_type
-      - type
-    PythonScriptScoringFunction:
-      type: object
-      additionalProperties: false
-      description: PythonScriptScoringFunction will run a python script in the context of your environment as a ScoringFunction.
-      properties:
-        requirements_contents:
-          type:
-          - string
-          - 'null'
-          description: Package dependencies to be installed. The requirements should be a valid requirements.txt file.
-        python_script:
-          type: string
-          description: Python script to be run. The script should output the score to standard out as a float between 0.0 and 1.0.
-        python_version_constraint:
-          type:
-          - string
-          - 'null'
-          description: Python version  to run scoring. Default is "==3.12.10"
-        type:
-          type: string
-          enum:
-          - python_script_scorer
-          default: python_script_scorer
-      required:
-      - python_script
-      - type
-    ValidationType:
-      type: string
-      enum:
-      - UNSPECIFIED
-      - FORWARD
-      - REVERSE
-      - EVALUATION
-    JobAgentEnvironment:
-      type: object
-      additionalProperties: false
-      description: Environment configuration for an agent in a benchmark job
-      properties:
-        environment_variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Environment variables to set when launching the agent.
-        secrets:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Secrets to inject as environment variables when launching the agent. Map of environment variable names to secret IDs.
-    BenchmarkDefinitionView:
-      type: object
-      additionalProperties: false
-      description: A BenchmarkDefinitionView represents a grouped set of Scenarios that together form a Benchmark.
-      properties:
-        id:
-          type: string
-          description: The ID of the Benchmark.
         name:
           type: string
-          description: The name of the Benchmark.
-        scenarioIds:
-          type: array
+          description: The unique name of the Benchmark.
+        scenario_ids:
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          description: List of Scenario IDs that make up the benchmark.
+          description: The Scenario IDs that make up the Benchmark.
         metadata:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties:
             type: string
-          description: User defined metadata to attach to the benchmark for organization.
+          description: User defined metadata to attach to the benchmark.
         required_environment_variables:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          description: Required environment variables used to run the benchmark. If any required environment variables are missing, the benchmark will fail to start.
+          description: Environment variables required to run the benchmark. If any required variables are not supplied, the benchmark will fail to start.
         required_secret_names:
           type: array
           items:
             type: string
-          description: Required secrets used to run the benchmark. If any required secrets are missing, the benchmark will fail to start.
-        is_public:
-          type: boolean
-          description: Whether this benchmark is public.
+          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail to start.
         attribution:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Attribution information for the benchmark.
         description:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Detailed description of the benchmark.
-        status:
-          $ref: '#/components/schemas/BenchmarkStatus'
-          description: Whether the benchmark is active or archived. Archived benchmarks are excluded from listings and cannot be run.
       required:
-      - id
       - name
-      - scenarioIds
-      - metadata
-      - status
-    UserParameters:
+    InputContext:
       type: object
       additionalProperties: false
-      description: Configuration for the Linux user in the Devbox environment.
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
       properties:
-        username:
+        problem_statement:
           type: string
-          description: Username for the Linux user.
-        uid:
-          type: integer
-          format: int32
-          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+          description: The problem statement for the Scenario.
+        additional_context:
+          type:
+          - object
+          - 'null'
+          description: Additional JSON structured input context.
       required:
-      - username
-      - uid
-    ScenariosJobSource:
-      type: object
-      additionalProperties: false
-      description: Scenarios job source with a list of scenario definition IDs
-      properties:
-        scenario_ids:
-          type: array
-          items:
-            type: string
-          description: List of scenario definition IDs to execute
-        type:
-          type: string
-          enum:
-          - scenarios
-          default: scenarios
-      required:
-      - scenario_ids
-      - type
+      - problem_statement
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
     ScenarioRunListView:
       type: object
       additionalProperties: false
@@ -1702,278 +1702,104 @@ components:
       required:
       - runs
       - has_more
-    CommandScoringFunction:
+    ScoringFunctionResultView:
       type: object
       additionalProperties: false
-      description: CommandScoringFunction executes a single command and checks the result.The output of the command will be printed. Scoring will passed if the command returns status code 0, otherwise it will be failed.
+      description: A ScoringFunctionResultView represents the result of running a single scoring function on a given input context.
       properties:
-        command:
+        score:
+          type: number
+          format: float
+          description: Final score for the given scoring function.
+        scoring_function_name:
           type: string
-          description: The command to execute.
-        type:
+          description: Scoring function name that ran.
+        output:
           type: string
-          enum:
-          - command_scorer
-          default: command_scorer
-      required:
-      - type
-    BenchmarkRunListView:
-      type: object
-      additionalProperties: false
-      properties:
-        runs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BenchmarkRunView'
-          description: List of BenchmarkRuns matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - runs
-      - has_more
-    InProgressRunView:
-      type: object
-      additionalProperties: false
-      description: A lightweight view of a benchmark run currently in progress, showing basic execution details without full outcome data.
-      properties:
-        benchmark_run_id:
-          type: string
-          description: The ID of the benchmark run.
-        agent_config:
-          $ref: '#/components/schemas/RunAgentConfig'
-          description: Agent configuration used for this run. Specifies whether the run was driven by an external API agent or a job-defined agent.
+          description: Log output of the scoring function.
         state:
-          $ref: '#/components/schemas/BenchmarkRunState'
-          description: The current state of the run.
-        start_time_ms:
-          type: integer
-          format: int64
-          description: Start time (Unix milliseconds).
-        duration_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Duration so far in milliseconds.
+          $ref: '#/components/schemas/ScoringFunctionResultViewState'
+          description: The state of the scoring function application.
       required:
-      - benchmark_run_id
+      - score
+      - scoring_function_name
+      - output
       - state
-      - start_time_ms
-    ResumeTriggers:
-      type: object
-      additionalProperties: false
-      description: Triggers that can resume a suspended Devbox.
-      properties:
-        http:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
-        axon_event:
-          type:
-          - boolean
-          - 'null'
-          description: When true, axon events targeting a suspended Devbox will trigger a resume.
-    Architecture:
-      type: string
-      enum:
-      - x86_64
-      - arm64
-    RunProfile:
+    BuiltInScoringFunction:
+      oneOf:
+      - $ref: '#/components/schemas/AstGrepScoringFunction'
+      - $ref: '#/components/schemas/BashScriptScoringFunction'
+      - $ref: '#/components/schemas/CommandScoringFunction'
+      - $ref: '#/components/schemas/CustomScoringFunction'
+      - $ref: '#/components/schemas/PythonScriptScoringFunction'
+      - $ref: '#/components/schemas/TestBasedScoringFunction'
+      discriminator:
+        propertyName: type
+        mapping:
+          ast_grep_scorer: '#/components/schemas/AstGrepScoringFunction'
+          bash_script_scorer: '#/components/schemas/BashScriptScoringFunction'
+          command_scorer: '#/components/schemas/CommandScoringFunction'
+          custom_scorer: '#/components/schemas/CustomScoringFunction'
+          python_script_scorer: '#/components/schemas/PythonScriptScoringFunction'
+          test_based_scorer: '#/components/schemas/TestBasedScoringFunction'
+    BenchmarkScenarioUpdateParameters:
       type: object
       additionalProperties: false
       properties:
-        purpose:
-          type:
-          - string
-          - 'null'
-          description: Purpose of the run.
-        envVars:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: 'Mapping of Environment Variable to Value. May be shown in devbox logging. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' to the value ''DATABASE_PASSWORD_VALUE''.'
-        secrets:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: 'Mapping of Environment Variable to User Secret Name. Never shown in devbox logging. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' to the value of the secret ''DATABASE_PASSWORD''.'
-        launchParameters:
-          $ref: '#/components/schemas/LaunchParameters'
-          description: Additional runtime LaunchParameters to apply after the devbox starts.
-        mounts:
+        scenarios_to_add:
           type:
           - array
           - 'null'
           items:
-            $ref: '#/components/schemas/Mount'
-          description: A list of mounts to be included in the scenario run.
-    ScoringFunctionResultViewState:
-      type: string
-      enum:
-      - unknown
-      - complete
-      - error
-    InputContext:
-      type: object
-      additionalProperties: false
-      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
-      properties:
-        problem_statement:
-          type: string
-          description: The problem statement for the Scenario.
-        additional_context:
+            type: string
+          description: Scenario IDs to add to the Benchmark.
+        scenarios_to_remove:
           type:
-          - object
+          - array
           - 'null'
-          description: Additional JSON structured input context.
-      required:
-      - problem_statement
-    BrokerMountProtocol:
+          items:
+            type: string
+          description: Scenario IDs to remove from the Benchmark.
+    BenchmarkRunState:
       type: string
       enum:
-      - acp
-      - claude_json
-    HarborJobSpec:
+      - running
+      - canceled
+      - completed
+      - failed
+    MetadataKeysView:
       type: object
       additionalProperties: false
-      description: Harbor-based job specification with inline YAML configuration.
       properties:
-        inline_yaml:
-          type: string
-          description: The Harbor job configuration as inline YAML content.
-        type:
-          type: string
-          enum:
-          - harbor
-          default: harbor
-      required:
-      - inline_yaml
-      - type
-    ScenarioDefinitionJobSpec:
-      type: object
-      additionalProperties: false
-      description: Specifies a set of scenarios with runtime configuration. The  scenarios will be executed using the provided agent and orchestrator configurations.
-      properties:
-        scenario_ids:
+        keys:
           type: array
           items:
             type: string
-          description: List of scenario IDs to execute
-        agent_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobAgentConfig'
-          description: Agent configurations to use for this run. Must specify at least one agent.
-        orchestrator_config:
-          $ref: '#/components/schemas/JobOrchestratorConfig'
-          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
+    ScenarioRunState:
+      type: string
+      enum:
+      - running
+      - scoring
+      - scored
+      - completed
+      - canceled
+      - timeout
+      - failed
+    BashScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: BashScriptScoringFunction is a scoring function specified by a bash script that will be run in the context of your environment.
+      properties:
+        bash_script:
+          type: string
+          description: A single bash script that sets up the environment, scores, and prints the final score to standard out. Score should be a float between 0.0 and 1.0, and look like "score=[0.0..1.0].
         type:
           type: string
           enum:
-          - scenarios
-          default: scenarios
+          - bash_script_scorer
+          default: bash_script_scorer
       required:
-      - scenario_ids
-      - agent_configs
       - type
-    JobSpec:
-      type: object
-      additionalProperties: false
-      description: Job specification describing scenarios and execution configuration
-      properties:
-        scenario_ids:
-          type: array
-          items:
-            type: string
-          description: List of scenario IDs to execute
-        orchestrator_config:
-          $ref: '#/components/schemas/JobOrchestratorConfig'
-          description: Orchestrator configuration
-        agent_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobAgentConfig'
-          description: Agent configurations for this job
-      required:
-      - scenario_ids
-      - agent_configs
-    BenchmarkDefinitionListView:
-      type: object
-      additionalProperties: false
-      properties:
-        benchmarks:
-          type: array
-          items:
-            $ref: '#/components/schemas/BenchmarkDefinitionView'
-          description: List of Benchmarks matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - benchmarks
-      - has_more
-    Mount:
-      oneOf:
-      - $ref: '#/components/schemas/ObjectMount'
-      - $ref: '#/components/schemas/AgentMount'
-      - $ref: '#/components/schemas/CodeMount'
-      - $ref: '#/components/schemas/FileMount'
-      - $ref: '#/components/schemas/BrokerMount'
-      discriminator:
-        propertyName: type
-        mapping:
-          object_mount: '#/components/schemas/ObjectMount'
-          agent_mount: '#/components/schemas/AgentMount'
-          code_mount: '#/components/schemas/CodeMount'
-          file_mount: '#/components/schemas/FileMount'
-          broker_mount: '#/components/schemas/BrokerMount'
-    FailureReason:
-      type: object
-      additionalProperties: false
-      description: Information about why a scenario execution failed
-      properties:
-        exception_type:
-          type: string
-          description: The exception class name (e.g., 'TimeoutException', 'AgentTimeoutError')
-        exception_message:
-          type: string
-          description: The exception message providing context
-      required:
-      - exception_type
-      - exception_message
-    ScenarioDefinitionListView:
-      type: object
-      additionalProperties: false
-      properties:
-        scenarios:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScenarioDefinitionView'
-          description: List of Scenarios matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - scenarios
-      - has_more
     BrokerMount:
       type: object
       additionalProperties: false
@@ -2009,19 +1835,258 @@ components:
       required:
       - axon_id
       - type
-    MetadataKeysView:
+    TestFile:
       type: object
       additionalProperties: false
       properties:
-        keys:
+        file_path:
+          type: string
+          description: Path to write content of the test file, relative to your environment's working directory
+        file_contents:
+          type: string
+          description: Content of the test file
+    ScenarioDefinitionListView:
+      type: object
+      additionalProperties: false
+      properties:
+        scenarios:
           type: array
           items:
+            $ref: '#/components/schemas/ScenarioDefinitionView'
+          description: List of Scenarios matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - scenarios
+      - has_more
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          description: Triggers that can resume a suspended Devbox.
+    BenchmarkRunView:
+      type: object
+      additionalProperties: false
+      description: A BenchmarkRunView represents a run of a complete set of Scenarios, organized under a Benchmark or created by a BenchmarkJob.
+      properties:
+        id:
+          type: string
+          description: The ID of the BenchmarkRun.
+        benchmark_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the Benchmark definition. Present if run was created from a benchmark definition.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the BenchmarkRun.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The time the benchmark run execution started (Unix timestamp milliseconds).
+        duration_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The duration for the BenchmarkRun to complete.
+        state:
+          $ref: '#/components/schemas/BenchmarkRunState'
+          description: The state of the BenchmarkRun.
+        score:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: The final score across the BenchmarkRun, present once completed. Calculated as sum of scenario scores / number of scenario runs.
+        metadata:
+          type: object
+          additionalProperties:
             type: string
-    ScenarioDefinitionStatus:
+          description: User defined metadata to attach to the benchmark run for organization.
+        purpose:
+          type:
+          - string
+          - 'null'
+          description: Purpose of the run.
+        environment_variables:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Environment variables used to run the benchmark.
+        secrets_provided:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: 'User secrets used to run the benchmark. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' on all scenario devboxes to the value of the secret ''DATABASE_PASSWORD''.'
+      required:
+      - id
+      - start_time_ms
+      - state
+      - metadata
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type:
+          - boolean
+          - 'null'
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    TestBasedScoringFunction:
+      type: object
+      additionalProperties: false
+      description: TestBasedScoringFunction writes test files to disk and executes a test command to verify the solution.
+      properties:
+        test_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestFile'
+          description: List of test files to create
+        test_command:
+          type: string
+          description: The command to execute for running the tests
+        type:
+          type: string
+          enum:
+          - test_based_scorer
+          default: test_based_scorer
+      required:
+      - type
+    BenchmarkJobState:
       type: string
       enum:
-      - active
-      - archived
+      - initializing
+      - queued
+      - running
+      - completed
+      - failed
+      - cancelled
+      - timeout
+    AgentMount:
+      type: object
+      additionalProperties: false
+      properties:
+        agent_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the agent to mount. Either agent_id or name must be set.
+        agent_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string provided. Either agent id or name must be set
+        agent_path:
+          type:
+          - string
+          - 'null'
+          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g., /home/user/agent)
+        auth_token:
+          type:
+          - string
+          - 'null'
+          description: Optional auth token for private repositories. Only used for git agents.
+        type:
+          type: string
+          enum:
+          - agent_mount
+          default: agent_mount
+      required:
+      - agent_id
+      - agent_name
+      - type
+    BrokerMountProtocol:
+      type: string
+      enum:
+      - acp
+      - claude_json
+    BenchmarkDefinitionListView:
+      type: object
+      additionalProperties: false
+      properties:
+        benchmarks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkDefinitionView'
+          description: List of Benchmarks matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - benchmarks
+      - has_more
+    BenchmarkDefinitionJobSpec:
+      type: object
+      additionalProperties: false
+      description: Specifies a benchmark definition with runtime configuration. The benchmark definition's scenarios will be executed using the provided agent and orchestrator configurations.
+      properties:
+        benchmark_id:
+          type: string
+          description: ID of the benchmark definition to run. The scenarios from this benchmark will be executed.
+        agent_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations to use for this run. Must specify at least one agent.
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
+        type:
+          type: string
+          enum:
+          - benchmark
+          default: benchmark
+      required:
+      - benchmark_id
+      - agent_configs
+      - type
+    JobAgentEnvironment:
+      type: object
+      additionalProperties: false
+      description: Environment configuration for an agent in a benchmark job
+      properties:
+        environment_variables:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Environment variables to set when launching the agent.
+        secrets:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Secrets to inject as environment variables when launching the agent. Map of environment variable names to secret IDs.
     ScenarioRunView:
       type: object
       additionalProperties: false
@@ -2092,211 +2157,6 @@ components:
       - devbox_id
       - state
       - metadata
-    BenchmarkCreateParameters:
-      type: object
-      additionalProperties: false
-      description: BenchmarkCreateParameters contain the set of parameters to create a Benchmark.
-      properties:
-        name:
-          type: string
-          description: The unique name of the Benchmark.
-        scenario_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The Scenario IDs that make up the Benchmark.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the benchmark.
-        required_environment_variables:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Environment variables required to run the benchmark. If any required variables are not supplied, the benchmark will fail to start.
-        required_secret_names:
-          type: array
-          items:
-            type: string
-          description: Secrets required to run the benchmark with (environment variable name will be mapped to the your user secret by name). If any of these secrets are not provided or the mapping is incorrect, the benchmark will fail to start.
-        attribution:
-          type:
-          - string
-          - 'null'
-          description: Attribution information for the benchmark.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Detailed description of the benchmark.
-      required:
-      - name
-    IdleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        idle_time_seconds:
-          type: integer
-          format: int32
-          description: After idle_time_seconds, on_idle action will be taken.
-        on_idle:
-          $ref: '#/components/schemas/IdleAction'
-          description: Action to take after Devbox becomes idle.
-      required:
-      - idle_time_seconds
-      - on_idle
-    ScoringFunction:
-      type: object
-      additionalProperties: false
-      description: ScoringFunction specifies a method of scoring a Scenario.
-      properties:
-        name:
-          type: string
-          description: Name of scoring function. Names must only contain [a-zA-Z0-9_-].
-        scorer:
-          $ref: '#/components/schemas/BuiltInScoringFunction'
-          description: The scoring function to use for evaluating this scenario. The type field determines which built-in function to use.
-        weight:
-          type: number
-          format: float
-          description: Weight to apply to scoring function score. Weights of all scoring functions should sum to 1.0.
-      required:
-      - name
-      - scorer
-      - weight
-    ScoringContract:
-      type: object
-      additionalProperties: false
-      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
-      properties:
-        scoring_function_parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScoringFunction'
-          description: A list of scoring functions used to evaluate the Scenario.
-      required:
-      - scoring_function_parameters
-    ScenarioRunState:
-      type: string
-      enum:
-      - running
-      - scoring
-      - scored
-      - completed
-      - canceled
-      - timeout
-      - failed
-    ScoringContractResultView:
-      type: object
-      additionalProperties: false
-      description: A ScoringContractResultView represents the result of running all scoring functions on a given input context.
-      properties:
-        score:
-          type: number
-          format: float
-          description: Total score for all scoring contracts. This will be a value between 0 and 1.
-        scoring_function_results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScoringFunctionResultView'
-          description: List of all individual scoring function results.
-      required:
-      - score
-      - scoring_function_results
-    ScenarioEnvironment:
-      type: object
-      additionalProperties: false
-      description: ScenarioEnvironmentParameters specify the environment in which a Scenario will be run.
-      properties:
-        blueprint_id:
-          type:
-          - string
-          - 'null'
-          description: Use the blueprint with matching ID.
-        snapshot_id:
-          type:
-          - string
-          - 'null'
-          description: Use the snapshot with matching ID.
-        launch_parameters:
-          $ref: '#/components/schemas/LaunchParameters'
-          description: Optional launch parameters to apply to the devbox environment at launch.
-        working_directory:
-          type:
-          - string
-          - 'null'
-          description: The working directory where the agent is expected to fulfill the scenario. Scoring functions also run from the working directory.
-    TestFile:
-      type: object
-      additionalProperties: false
-      properties:
-        file_path:
-          type: string
-          description: Path to write content of the test file, relative to your environment's working directory
-        file_contents:
-          type: string
-          description: Content of the test file
-    BenchmarkJobCreateParameters:
-      type: object
-      additionalProperties: false
-      description: BenchmarkJobCreateParameters contain the set of parameters to create a BenchmarkJob.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the BenchmarkJob. If not provided, name will be generated based on target dataset.
-        spec:
-          $ref: '#/components/schemas/BenchmarkJobSpec'
-          description: The job specification. Exactly one spec type must be set.
-    BenchmarkJobState:
-      type: string
-      enum:
-      - initializing
-      - queued
-      - running
-      - completed
-      - failed
-      - cancelled
-      - timeout
-    StartBenchmarkRunParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        benchmark_id:
-          type: string
-          description: ID of the Benchmark to run.
-        run_name:
-          type:
-          - string
-          - 'null'
-          description: Display name of the run.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the benchmark run for organization.
-        runProfile:
-          $ref: '#/components/schemas/RunProfile'
-          description: Runtime configuration to use for this benchmark run
-      required:
-      - benchmark_id
-    BenchmarkRunState:
-      type: string
-      enum:
-      - running
-      - canceled
-      - completed
-      - failed
     RunAgentConfig:
       oneOf:
       - $ref: '#/components/schemas/ExternalApiAgentConfig'
@@ -2306,6 +2166,24 @@ components:
         mapping:
           external_api: '#/components/schemas/ExternalApiAgentConfig'
           job_agent: '#/components/schemas/JobAgentConfig'
+    ScenariosJobSource:
+      type: object
+      additionalProperties: false
+      description: Scenarios job source with a list of scenario definition IDs
+      properties:
+        scenario_ids:
+          type: array
+          items:
+            type: string
+          description: List of scenario definition IDs to execute
+        type:
+          type: string
+          enum:
+          - scenarios
+          default: scenarios
+      required:
+      - scenario_ids
+      - type
     JobAgentConfig:
       type: object
       additionalProperties: false
@@ -2348,76 +2226,131 @@ components:
       required:
       - name
       - type
-    ScoringFunctionResultView:
-      type: object
-      additionalProperties: false
-      description: A ScoringFunctionResultView represents the result of running a single scoring function on a given input context.
-      properties:
-        score:
-          type: number
-          format: float
-          description: Final score for the given scoring function.
-        scoring_function_name:
-          type: string
-          description: Scoring function name that ran.
-        output:
-          type: string
-          description: Log output of the scoring function.
-        state:
-          $ref: '#/components/schemas/ScoringFunctionResultViewState'
-          description: The state of the scoring function application.
-      required:
-      - score
-      - scoring_function_name
-      - output
-      - state
-    BenchmarkStatus:
+    ValidationType:
       type: string
       enum:
-      - active
-      - archived
-    TestBasedScoringFunction:
+      - UNSPECIFIED
+      - FORWARD
+      - REVERSE
+      - EVALUATION
+    ExternalApiAgentConfig:
       type: object
       additionalProperties: false
-      description: TestBasedScoringFunction writes test files to disk and executes a test command to verify the solution.
+      description: Configuration for externally-driven benchmark runs via API
       properties:
-        test_files:
-          type: array
-          items:
-            $ref: '#/components/schemas/TestFile'
-          description: List of test files to create
-        test_command:
-          type: string
-          description: The command to execute for running the tests
+        info:
+          type:
+          - string
+          - 'null'
+          description: Placeholder for future external agent metadata
         type:
           type: string
           enum:
-          - test_based_scorer
-          default: test_based_scorer
+          - external_api
+          default: external_api
       required:
       - type
-    AstGrepScoringFunction:
+    IdleConfigurationParameters:
       type: object
       additionalProperties: false
-      description: AstGrepScoringFunction utilizes structured coach search for scoring.
       properties:
-        lang:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    ScenarioDefinitionView:
+      type: object
+      additionalProperties: false
+      description: A ScenarioDefinitionView represents a repeatable AI coding evaluation test, complete with initial environment and scoring contract.
+      properties:
+        id:
           type: string
-          description: The language of the pattern.
-        search_directory:
+          description: The ID of the Scenario.
+        name:
           type: string
-          description: The path to search.
-        pattern:
+          description: The name of the Scenario.
+        environment:
+          $ref: '#/components/schemas/ScenarioEnvironment'
+          description: The Environment in which the Scenario is run.
+        input_context:
+          $ref: '#/components/schemas/InputContext'
+          description: The input context for the Scenario.
+        scoring_contract:
+          $ref: '#/components/schemas/ScoringContract'
+          description: The scoring contract for the Scenario.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario for organization.
+        reference_output:
+          type:
+          - string
+          - 'null'
+          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment.
+        required_environment_variables:
+          type: array
+          items:
+            type: string
+          description: Environment variables required to run the scenario. If any required environment variables are missing, the scenario will fail to start.
+        required_secret_names:
+          type: array
+          items:
+            type: string
+          description: Environment variables required to run the scenario. If any required secrets are missing, the scenario will fail to start.
+        is_public:
+          type: boolean
+          description: Whether this scenario is public.
+        validation_type:
+          $ref: '#/components/schemas/ValidationType'
+          description: Validation strategy.
+        scorer_timeout_sec:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
+        status:
+          $ref: '#/components/schemas/ScenarioDefinitionStatus'
+          description: Whether the scenario is active or archived. Archived scenarios are excluded from listings and cannot be updated.
+      required:
+      - id
+      - name
+      - input_context
+      - scoring_contract
+      - metadata
+      - status
+    PythonScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: PythonScriptScoringFunction will run a python script in the context of your environment as a ScoringFunction.
+      properties:
+        requirements_contents:
+          type:
+          - string
+          - 'null'
+          description: Package dependencies to be installed. The requirements should be a valid requirements.txt file.
+        python_script:
           type: string
-          description: AST pattern to match. Pattern will be passed to ast-grep using the commandline surround by double quotes ("), so make sure to use proper escaping (for example, \$\$\$).
+          description: Python script to be run. The script should output the score to standard out as a float between 0.0 and 1.0.
+        python_version_constraint:
+          type:
+          - string
+          - 'null'
+          description: Python version  to run scoring. Default is "==3.12.10"
         type:
           type: string
           enum:
-          - ast_grep_scorer
-          default: ast_grep_scorer
+          - python_script_scorer
+          default: python_script_scorer
       required:
-      - search_directory
-      - pattern
+      - python_script
       - type
     ScenarioOutcomeView:
       type: object
@@ -2457,99 +2390,30 @@ components:
       - scenario_definition_id
       - scenario_name
       - state
-    BenchmarkJobSpec:
-      oneOf:
-      - $ref: '#/components/schemas/HarborJobSpec'
-      - $ref: '#/components/schemas/BenchmarkDefinitionJobSpec'
-      - $ref: '#/components/schemas/ScenarioDefinitionJobSpec'
-      discriminator:
-        propertyName: type
-        mapping:
-          harbor: '#/components/schemas/HarborJobSpec'
-          benchmark: '#/components/schemas/BenchmarkDefinitionJobSpec'
-          scenarios: '#/components/schemas/ScenarioDefinitionJobSpec'
-    LifecycleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
-      properties:
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
-        resume_triggers:
-          $ref: '#/components/schemas/ResumeTriggers'
-          description: Triggers that can resume a suspended Devbox.
-    ResourceSize:
-      type: string
-      enum:
-      - X_SMALL
-      - SMALL
-      - MEDIUM
-      - LARGE
-      - X_LARGE
-      - XX_LARGE
-      - CUSTOM_SIZE
-      description: 'The size of the Devbox resources for Runloop to allocate.
-
-
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-
-        '
-      x-enum-descriptions:
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-    ObjectMount:
+    StartBenchmarkRunParameters:
       type: object
       additionalProperties: false
       properties:
-        object_id:
+        benchmark_id:
           type: string
-          description: The ID of the object to write.
-        object_path:
-          type: string
-          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
-        type:
-          type: string
-          enum:
-          - object_mount
-          default: object_mount
+          description: ID of the Benchmark to run.
+        run_name:
+          type:
+          - string
+          - 'null'
+          description: Display name of the run.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the benchmark run for organization.
+        runProfile:
+          $ref: '#/components/schemas/RunProfile'
+          description: Runtime configuration to use for this benchmark run
       required:
-      - object_id
-      - object_path
-      - type
-    IdleAction:
-      type: string
-      enum:
-      - shutdown
-      - suspend
-      description: 'Action to take after Devbox idle timer is triggered.
-
-
-        shutdown: Shutdown the Devbox.
-
-        suspend: Suspend the Devbox.
-
-        '
-      x-enum-descriptions:
-        shutdown: Shutdown the Devbox.
-        suspend: Suspend the Devbox.
+      - benchmark_id
     BenchmarkJobView:
       type: object
       additionalProperties: false
@@ -2598,41 +2462,177 @@ components:
       - name
       - state
       - create_time_ms
-    MetadataValuesView:
+    ScenarioEnvironment:
+      type: object
+      additionalProperties: false
+      description: ScenarioEnvironmentParameters specify the environment in which a Scenario will be run.
+      properties:
+        blueprint_id:
+          type:
+          - string
+          - 'null'
+          description: Use the blueprint with matching ID.
+        snapshot_id:
+          type:
+          - string
+          - 'null'
+          description: Use the snapshot with matching ID.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: Optional launch parameters to apply to the devbox environment at launch.
+        working_directory:
+          type:
+          - string
+          - 'null'
+          description: The working directory where the agent is expected to fulfill the scenario. Scoring functions also run from the working directory.
+    ScoringContractResultView:
+      type: object
+      additionalProperties: false
+      description: A ScoringContractResultView represents the result of running all scoring functions on a given input context.
+      properties:
+        score:
+          type: number
+          format: float
+          description: Total score for all scoring contracts. This will be a value between 0 and 1.
+        scoring_function_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringFunctionResultView'
+          description: List of all individual scoring function results.
+      required:
+      - score
+      - scoring_function_results
+    BenchmarkRunListView:
       type: object
       additionalProperties: false
       properties:
-        key:
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkRunView'
+          description: List of BenchmarkRuns matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - runs
+      - has_more
+    BenchmarkJobCreateParameters:
+      type: object
+      additionalProperties: false
+      description: BenchmarkJobCreateParameters contain the set of parameters to create a BenchmarkJob.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the BenchmarkJob. If not provided, name will be generated based on target dataset.
+        spec:
+          $ref: '#/components/schemas/BenchmarkJobSpec'
+          description: The job specification. Exactly one spec type must be set.
+    InProgressRunView:
+      type: object
+      additionalProperties: false
+      description: A lightweight view of a benchmark run currently in progress, showing basic execution details without full outcome data.
+      properties:
+        benchmark_run_id:
           type: string
-        values:
+          description: The ID of the benchmark run.
+        agent_config:
+          $ref: '#/components/schemas/RunAgentConfig'
+          description: Agent configuration used for this run. Specifies whether the run was driven by an external API agent or a job-defined agent.
+        state:
+          $ref: '#/components/schemas/BenchmarkRunState'
+          description: The current state of the run.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: Start time (Unix milliseconds).
+        duration_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Duration so far in milliseconds.
+      required:
+      - benchmark_run_id
+      - state
+      - start_time_ms
+    BenchmarkJobSpec:
+      oneOf:
+      - $ref: '#/components/schemas/HarborJobSpec'
+      - $ref: '#/components/schemas/BenchmarkDefinitionJobSpec'
+      - $ref: '#/components/schemas/ScenarioDefinitionJobSpec'
+      discriminator:
+        propertyName: type
+        mapping:
+          harbor: '#/components/schemas/HarborJobSpec'
+          benchmark: '#/components/schemas/BenchmarkDefinitionJobSpec'
+          scenarios: '#/components/schemas/ScenarioDefinitionJobSpec'
+    RunProfile:
+      type: object
+      additionalProperties: false
+      properties:
+        purpose:
+          type:
+          - string
+          - 'null'
+          description: Purpose of the run.
+        envVars:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: 'Mapping of Environment Variable to Value. May be shown in devbox logging. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' to the value ''DATABASE_PASSWORD_VALUE''.'
+        secrets:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: 'Mapping of Environment Variable to User Secret Name. Never shown in devbox logging. Example: {"DB_PASS": "DATABASE_PASSWORD"} would set the environment variable ''DB_PASS'' to the value of the secret ''DATABASE_PASSWORD''.'
+        launchParameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: Additional runtime LaunchParameters to apply after the devbox starts.
+        mounts:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Mount'
+          description: A list of mounts to be included in the scenario run.
+    ScenarioDefinitionJobSpec:
+      type: object
+      additionalProperties: false
+      description: Specifies a set of scenarios with runtime configuration. The  scenarios will be executed using the provided agent and orchestrator configurations.
+      properties:
+        scenario_ids:
           type: array
           items:
             type: string
-    ScenarioState:
-      type: string
-      enum:
-      - COMPLETED
-      - FAILED
-      - TIMEOUT
-      - CANCELED
-    BenchmarkScenarioUpdateParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        scenarios_to_add:
-          type:
-          - array
-          - 'null'
+          description: List of scenario IDs to execute
+        agent_configs:
+          type: array
           items:
-            type: string
-          description: Scenario IDs to add to the Benchmark.
-        scenarios_to_remove:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Scenario IDs to remove from the Benchmark.
+            $ref: '#/components/schemas/JobAgentConfig'
+          description: Agent configurations to use for this run. Must specify at least one agent.
+        orchestrator_config:
+          $ref: '#/components/schemas/JobOrchestratorConfig'
+          description: Orchestrator configuration (optional overrides). If not provided, default values will be used.
+        type:
+          type: string
+          enum:
+          - scenarios
+          default: scenarios
+      required:
+      - scenario_ids
+      - agent_configs
+      - type
   securitySchemes:
     bearerAuth:
       scheme: bearer

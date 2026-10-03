@@ -283,6 +283,103 @@ paths:
       deprecated: false
 components:
   schemas:
+    AgentSource:
+      type: object
+      additionalProperties: false
+      description: Agent source configuration.
+      properties:
+        type:
+          type: string
+          description: 'Source type: npm, pip, object, or git'
+        npm:
+          $ref: '#/components/schemas/NpmSource'
+          description: NPM source configuration
+        pip:
+          $ref: '#/components/schemas/PipSource'
+          description: Pip source configuration
+        object:
+          $ref: '#/components/schemas/ObjectSource'
+          description: Object store source configuration
+        git:
+          $ref: '#/components/schemas/GitSource'
+          description: Git source configuration
+      required:
+      - type
+    AgentCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for creating a new Agent.
+      properties:
+        name:
+          type: string
+          description: The name of the Agent.
+        version:
+          type:
+          - string
+          - 'null'
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
+        source:
+          $ref: '#/components/schemas/AgentSource'
+          description: The source configuration for the Agent.
+      required:
+      - name
+    PipSource:
+      type: object
+      additionalProperties: false
+      description: Pip-based agent source configuration.
+      properties:
+        package_name:
+          type: string
+          description: Pip package name
+        registry_url:
+          type:
+          - string
+          - 'null'
+          description: Pip registry URL
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after installation
+      required:
+      - package_name
+    AgentDevboxCountsView:
+      type: object
+      additionalProperties: false
+      description: Devbox counts grouped by agent name. Used to efficiently fetch devbox counts for multiple agents in a single request.
+      properties:
+        counts:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Map of agent name to devbox count. Each key is an agent name, and the value is the count of devboxes associated with that agent.
+        total_count:
+          type: integer
+          format: int32
+          description: Total count of devboxes across all agents in the result.
+      required:
+      - counts
+      - total_count
+    ObjectSource:
+      type: object
+      additionalProperties: false
+      description: Object store agent source configuration.
+      properties:
+        object_id:
+          type: string
+          description: Object ID
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after unpacking
+      required:
+      - object_id
     AgentView:
       type: object
       additionalProperties: false
@@ -314,28 +411,6 @@ components:
       - name
       - create_time_ms
       - is_public
-    GitSource:
-      type: object
-      additionalProperties: false
-      description: Git-based agent source configuration.
-      properties:
-        repository:
-          type: string
-          description: Git repository URL
-        ref:
-          type:
-          - string
-          - 'null'
-          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
-        agent_setup:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Setup commands to run after cloning
-      required:
-      - repository
     NpmSource:
       type: object
       additionalProperties: false
@@ -358,42 +433,10 @@ components:
           description: Setup commands to run after installation
       required:
       - package_name
-    AgentCreateParameters:
+    EmptyRecord:
       type: object
       additionalProperties: false
-      description: Parameters for creating a new Agent.
-      properties:
-        name:
-          type: string
-          description: The name of the Agent.
-        version:
-          type:
-          - string
-          - 'null'
-          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
-        source:
-          $ref: '#/components/schemas/AgentSource'
-          description: The source configuration for the Agent.
-      required:
-      - name
-    AgentDevboxCountsView:
-      type: object
-      additionalProperties: false
-      description: Devbox counts grouped by agent name. Used to efficiently fetch devbox counts for multiple agents in a single request.
-      properties:
-        counts:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int32
-          description: Map of agent name to devbox count. Each key is an agent name, and the value is the count of devboxes associated with that agent.
-        total_count:
-          type: integer
-          format: int32
-          description: Total count of devboxes across all agents in the result.
-      required:
-      - counts
-      - total_count
+      properties: {}
     AgentListView:
       type: object
       additionalProperties: false
@@ -416,71 +459,28 @@ components:
       required:
       - agents
       - has_more
-    PipSource:
+    GitSource:
       type: object
       additionalProperties: false
-      description: Pip-based agent source configuration.
+      description: Git-based agent source configuration.
       properties:
-        package_name:
+        repository:
           type: string
-          description: Pip package name
-        registry_url:
+          description: Git repository URL
+        ref:
           type:
           - string
           - 'null'
-          description: Pip registry URL
+          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
         agent_setup:
           type:
           - array
           - 'null'
           items:
             type: string
-          description: Setup commands to run after installation
+          description: Setup commands to run after cloning
       required:
-      - package_name
-    ObjectSource:
-      type: object
-      additionalProperties: false
-      description: Object store agent source configuration.
-      properties:
-        object_id:
-          type: string
-          description: Object ID
-        agent_setup:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Setup commands to run after unpacking
-      required:
-      - object_id
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    AgentSource:
-      type: object
-      additionalProperties: false
-      description: Agent source configuration.
-      properties:
-        type:
-          type: string
-          description: 'Source type: npm, pip, object, or git'
-        npm:
-          $ref: '#/components/schemas/NpmSource'
-          description: NPM source configuration
-        pip:
-          $ref: '#/components/schemas/PipSource'
-          description: Pip source configuration
-        object:
-          $ref: '#/components/schemas/ObjectSource'
-          description: Object store source configuration
-        git:
-          $ref: '#/components/schemas/GitSource'
-          description: Git source configuration
-      required:
-      - type
+      - repository
   securitySchemes:
     bearerAuth:
       scheme: bearer

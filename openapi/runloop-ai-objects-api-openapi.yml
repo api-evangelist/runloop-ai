@@ -400,79 +400,16 @@ paths:
       deprecated: false
 components:
   schemas:
-    ObjectView:
+    MetadataValuesView:
       type: object
       additionalProperties: false
-      description: An Object represents a stored data entity with metadata.
       properties:
-        id:
+        key:
           type: string
-          description: The unique identifier of the Object.
-        name:
-          type: string
-          description: The name of the Object.
-        state:
-          $ref: '#/components/schemas/ObjectState'
-          description: The current state of the Object.
-        size_bytes:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: The size of the Object content in bytes (null until uploaded).
-        content_type:
-          $ref: '#/components/schemas/ContentType'
-          description: The content type of the Object.
-        create_time_ms:
-          type: integer
-          format: int64
-          description: The creation time of the Object in milliseconds since epoch.
-        delete_after_time_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: The time after which the Object will be deleted in milliseconds since epoch.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the Object for organization.
-        upload_url:
-          type:
-          - string
-          - 'null'
-          description: Presigned URL for uploading content to S3 (only present on create).
-      required:
-      - id
-      - name
-      - state
-      - content_type
-      - create_time_ms
-    ObjectListView:
-      type: object
-      additionalProperties: false
-      description: A paginated list of Objects.
-      properties:
-        objects:
+        values:
           type: array
           items:
-            $ref: '#/components/schemas/ObjectView'
-          description: List of Object entities.
-        has_more:
-          type: boolean
-          description: True if there are more results available beyond this page.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total number of Objects across all pages.
-      required:
-      - objects
-      - has_more
+            type: string
     MetadataKeysView:
       type: object
       additionalProperties: false
@@ -525,20 +462,6 @@ components:
       - READ_ONLY
       - DELETED
       - ERROR
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    MetadataValuesView:
-      type: object
-      additionalProperties: false
-      properties:
-        key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
     ContentType:
       type: string
       enum:
@@ -548,6 +471,83 @@ components:
       - gzip
       - tar
       - tgz
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    ObjectListView:
+      type: object
+      additionalProperties: false
+      description: A paginated list of Objects.
+      properties:
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectView'
+          description: List of Object entities.
+        has_more:
+          type: boolean
+          description: True if there are more results available beyond this page.
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of Objects across all pages.
+      required:
+      - objects
+      - has_more
+    ObjectView:
+      type: object
+      additionalProperties: false
+      description: An Object represents a stored data entity with metadata.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the Object.
+        name:
+          type: string
+          description: The name of the Object.
+        state:
+          $ref: '#/components/schemas/ObjectState'
+          description: The current state of the Object.
+        size_bytes:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The size of the Object content in bytes (null until uploaded).
+        content_type:
+          $ref: '#/components/schemas/ContentType'
+          description: The content type of the Object.
+        create_time_ms:
+          type: integer
+          format: int64
+          description: The creation time of the Object in milliseconds since epoch.
+        delete_after_time_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The time after which the Object will be deleted in milliseconds since epoch.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the Object for organization.
+        upload_url:
+          type:
+          - string
+          - 'null'
+          description: Presigned URL for uploading content to S3 (only present on create).
+      required:
+      - id
+      - name
+      - state
+      - content_type
+      - create_time_ms
   securitySchemes:
     bearerAuth:
       scheme: bearer

@@ -221,6 +221,29 @@ paths:
       deprecated: false
 components:
   schemas:
+    GatewayConfigUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will be updated.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: New name for the GatewayConfig. Must be unique within your account.
+        endpoint:
+          type:
+          - string
+          - 'null'
+          description: New target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: New authentication mechanism for applying credentials to proxied requests.
+        description:
+          type:
+          - string
+          - 'null'
+          description: New description for this gateway configuration.
     GatewayConfigCreateParameters:
       type: object
       additionalProperties: false
@@ -266,29 +289,6 @@ components:
       required:
       - gateway_configs
       - has_more
-    GatewayConfigUpdateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will be updated.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: New name for the GatewayConfig. Must be unique within your account.
-        endpoint:
-          type:
-          - string
-          - 'null'
-          description: New target endpoint URL (e.g., 'https://api.anthropic.com').
-        auth_mechanism:
-          $ref: '#/components/schemas/AuthMechanismView'
-          description: New authentication mechanism for applying credentials to proxied requests.
-        description:
-          type:
-          - string
-          - 'null'
-          description: New description for this gateway configuration.
     AuthMechanismView:
       type: object
       additionalProperties: false

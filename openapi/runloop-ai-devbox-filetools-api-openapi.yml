@@ -157,15 +157,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    DevboxReadFileParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        file_path:
-          type: string
-          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
-      required:
-      - file_path
     DevboxExecutionDetailView:
       type: object
       additionalProperties: false
@@ -215,10 +206,6 @@ components:
           description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
       required:
       - path
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
     FileUpload:
       type: object
       additionalProperties: false
@@ -231,6 +218,19 @@ components:
           description: The path to write the file to on the Devbox. Path is relative to user home directory.
       required:
       - path
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxReadFileParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: The path on the Devbox filesystem to read the file from. Path is relative to user home directory.
+      required:
+      - file_path
   securitySchemes:
     bearerAuth:
       scheme: bearer

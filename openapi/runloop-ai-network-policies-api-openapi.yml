@@ -221,34 +221,28 @@ paths:
       deprecated: false
 components:
   schemas:
-    EgressRulesView:
+    NetworkPolicyListView:
       type: object
       additionalProperties: false
-      description: Egress (outbound) network rules for a NetworkPolicy.
+      description: A list of NetworkPolicies with pagination information.
       properties:
-        allow_all:
-          type: boolean
-          description: If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies.
-        allow_devbox_to_devbox:
-          type: boolean
-          description: If true, allows traffic between the account's own devboxes via tunnels.
-        allowed_hostnames:
+        network_policies:
           type: array
           items:
-            type: string
-          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com'']. Empty list with allow_all=false means no network access (DENY_ALL behavior).'
-        allow_agent_gateway:
+            $ref: '#/components/schemas/NetworkPolicyView'
+          description: The list of NetworkPolicies.
+        has_more:
           type: boolean
-          description: If true, allows devbox egress to the agent gateway for credential proxying.
-        allow_mcp_gateway:
-          type: boolean
-          description: If true, allows devbox egress to the MCP hub for MCP server access.
+          description: Whether there are more results available.
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total count of items in this response.
       required:
-      - allow_all
-      - allow_devbox_to_devbox
-      - allowed_hostnames
-      - allow_agent_gateway
-      - allow_mcp_gateway
+      - network_policies
+      - has_more
     NetworkPolicyCreateParameters:
       type: object
       additionalProperties: false
@@ -333,28 +327,10 @@ components:
           - boolean
           - 'null'
           description: If true, allows devbox egress to the MCP hub.
-    NetworkPolicyListView:
+    EmptyRecord:
       type: object
       additionalProperties: false
-      description: A list of NetworkPolicies with pagination information.
-      properties:
-        network_policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkPolicyView'
-          description: The list of NetworkPolicies.
-        has_more:
-          type: boolean
-          description: Whether there are more results available.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total count of items in this response.
-      required:
-      - network_policies
-      - has_more
+      properties: {}
     NetworkPolicyView:
       type: object
       additionalProperties: false
@@ -388,10 +364,34 @@ components:
       - egress
       - create_time_ms
       - update_time_ms
-    EmptyRecord:
+    EgressRulesView:
       type: object
       additionalProperties: false
-      properties: {}
+      description: Egress (outbound) network rules for a NetworkPolicy.
+      properties:
+        allow_all:
+          type: boolean
+          description: If true, all egress traffic is allowed and other fields are ignored. Used for ALLOW_ALL policies.
+        allow_devbox_to_devbox:
+          type: boolean
+          description: If true, allows traffic between the account's own devboxes via tunnels.
+        allowed_hostnames:
+          type: array
+          items:
+            type: string
+          description: 'DNS-based allow list with wildcard support. Examples: [''github.com'', ''*.npmjs.org'', ''api.openai.com'']. Empty list with allow_all=false means no network access (DENY_ALL behavior).'
+        allow_agent_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the agent gateway for credential proxying.
+        allow_mcp_gateway:
+          type: boolean
+          description: If true, allows devbox egress to the MCP hub for MCP server access.
+      required:
+      - allow_all
+      - allow_devbox_to_devbox
+      - allowed_hostnames
+      - allow_agent_gateway
+      - allow_mcp_gateway
   securitySchemes:
     bearerAuth:
       scheme: bearer

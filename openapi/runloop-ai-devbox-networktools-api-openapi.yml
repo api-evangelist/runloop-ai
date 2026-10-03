@@ -174,24 +174,20 @@ components:
       enum:
       - open
       - authenticated
-    TunnelConfig:
+    PtyTunnelView:
       type: object
       additionalProperties: false
-      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically provisioned.
+      description: 'An ephemeral PTY tunnel providing authenticated terminal access to a Devbox. These tunnels are not stored on the Devbox and are generated fresh on each request. Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai with Authorization: Bearer {auth_token}'
       properties:
-        auth_mode:
-          $ref: '#/components/schemas/TunnelAuthMode'
-          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
-        http_keep_alive:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
-        wake_on_http:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
+        tunnel_key:
+          type: string
+          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
+        auth_token:
+          type: string
+          description: Bearer token for tunnel authentication. Always required for PTY tunnels.
+      required:
+      - tunnel_key
+      - auth_token
     TunnelAuthMode:
       type: string
       enum:
@@ -218,24 +214,28 @@ components:
       - url
       - ssh_private_key
       - ssh_user
+    TunnelConfig:
+      type: object
+      additionalProperties: false
+      description: Configuration for creating a V2 tunnel. When specified at Devbox creation, a tunnel will be automatically provisioned.
+      properties:
+        auth_mode:
+          $ref: '#/components/schemas/TunnelAuthMode'
+          description: Authentication mode for the tunnel. Defaults to 'public' if not specified.
+        http_keep_alive:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic through the tunnel counts as activity for idle lifecycle policies, resetting the idle timer. Defaults to true if not specified.
+        wake_on_http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended devbox will automatically trigger a resume. Defaults to false if not specified. Prefer lifecycle.resume_triggers.http on launch_parameters for new integrations. If both are set, lifecycle.resume_triggers.http takes precedence.
     EmptyRecord:
       type: object
       additionalProperties: false
       properties: {}
-    PtyTunnelView:
-      type: object
-      additionalProperties: false
-      description: 'An ephemeral PTY tunnel providing authenticated terminal access to a Devbox. These tunnels are not stored on the Devbox and are generated fresh on each request. Usage: https://{port}-{tunnel_key}.tunnel.runloop.ai with Authorization: Bearer {auth_token}'
-      properties:
-        tunnel_key:
-          type: string
-          description: 'The encrypted tunnel key used to construct the tunnel URL. URL format: https://{port}-{tunnel_key}.tunnel.runloop.{domain}'
-        auth_token:
-          type: string
-          description: Bearer token for tunnel authentication. Always required for PTY tunnels.
-      required:
-      - tunnel_key
-      - auth_token
   securitySchemes:
     bearerAuth:
       scheme: bearer

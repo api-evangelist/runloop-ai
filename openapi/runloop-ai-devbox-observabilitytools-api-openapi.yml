@@ -129,26 +129,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    DevboxLogSource:
-      type: string
-      enum:
-      - setup_commands
-      - entrypoint
-      - exec
-      - files
-      - stats
-      - kmsg
-    DevboxLogsListView:
-      type: object
-      additionalProperties: false
-      properties:
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxLog'
-          description: List of logs for the given devbox.
-      required:
-      - logs
     DevboxResourceUsageView:
       type: object
       additionalProperties: false
@@ -242,6 +222,26 @@ components:
       - level
       - timestamp_ms
       - source
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
+    DevboxLogsListView:
+      type: object
+      additionalProperties: false
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxLog'
+          description: List of logs for the given devbox.
+      required:
+      - logs
   securitySchemes:
     bearerAuth:
       scheme: bearer
