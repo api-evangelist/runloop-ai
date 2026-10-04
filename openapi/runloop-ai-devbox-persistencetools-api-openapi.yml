@@ -400,6 +400,82 @@ paths:
       deprecated: false
 components:
   schemas:
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    DevboxDiskSnapshotListView:
+      type: object
+      additionalProperties: false
+      properties:
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: List of snapshots matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - snapshots
+      - has_more
+    DevboxSnapshotStatus:
+      type: string
+      enum:
+      - in_progress
+      - error
+      - complete
+      - deleted
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    DevboxSnapshotAsyncStatusView:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          $ref: '#/components/schemas/DevboxSnapshotStatus'
+          description: The current status of the snapshot operation.
+        snapshot:
+          $ref: '#/components/schemas/DevboxDiskSnapshotView'
+          description: The snapshot details if the operation completed successfully.
+        error_message:
+          type:
+          - string
+          - 'null'
+          description: Error message if the operation failed.
+      required:
+      - status
+    DevboxSnapshotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: (Optional) A user specified name to give the snapshot
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: (Optional) Metadata used to describe the snapshot
+        commit_message:
+          type:
+          - string
+          - 'null'
+          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
     DevboxDiskSnapshotView:
       type: object
       additionalProperties: false
@@ -455,82 +531,6 @@ components:
           type: array
           items:
             type: string
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    DevboxSnapshotAsyncStatusView:
-      type: object
-      additionalProperties: false
-      properties:
-        status:
-          $ref: '#/components/schemas/DevboxSnapshotStatus'
-          description: The current status of the snapshot operation.
-        snapshot:
-          $ref: '#/components/schemas/DevboxDiskSnapshotView'
-          description: The snapshot details if the operation completed successfully.
-        error_message:
-          type:
-          - string
-          - 'null'
-          description: Error message if the operation failed.
-      required:
-      - status
-    DevboxSnapshotRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: (Optional) A user specified name to give the snapshot
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: (Optional) Metadata used to describe the snapshot
-        commit_message:
-          type:
-          - string
-          - 'null'
-          description: (Optional) Commit message associated with the snapshot (max 1000 characters)
-    DevboxSnapshotStatus:
-      type: string
-      enum:
-      - in_progress
-      - error
-      - complete
-      - deleted
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
-    DevboxDiskSnapshotListView:
-      type: object
-      additionalProperties: false
-      properties:
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/DevboxDiskSnapshotView'
-          description: List of snapshots matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - snapshots
-      - has_more
   securitySchemes:
     bearerAuth:
       scheme: bearer

@@ -222,15 +222,6 @@ components:
       - level
       - timestamp_ms
       - source
-    DevboxLogSource:
-      type: string
-      enum:
-      - setup_commands
-      - entrypoint
-      - exec
-      - files
-      - stats
-      - kmsg
     DevboxLogsListView:
       type: object
       additionalProperties: false
@@ -242,6 +233,15 @@ components:
           description: List of logs for the given devbox.
       required:
       - logs
+    DevboxLogSource:
+      type: string
+      enum:
+      - setup_commands
+      - entrypoint
+      - exec
+      - files
+      - stats
+      - kmsg
   securitySchemes:
     bearerAuth:
       scheme: bearer

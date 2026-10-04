@@ -42,23 +42,11 @@ paths:
       deprecated: false
 components:
   schemas:
-    ScopeEntryView:
+    RestrictedKeyCreateParameters:
       type: object
       additionalProperties: false
       properties:
-        resource_type:
-          $ref: '#/components/schemas/ApiResourceType'
-        access_level:
-          $ref: '#/components/schemas/ApiAccessLevel'
-    RestrictedKeyCreatedView:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: string
         name:
-          type: string
-        key_secret:
           type: string
         scopes:
           type: array
@@ -69,11 +57,15 @@ components:
           - integer
           - 'null'
           format: int64
-    RestrictedKeyCreateParameters:
+    RestrictedKeyCreatedView:
       type: object
       additionalProperties: false
       properties:
+        id:
+          type: string
         name:
+          type: string
+        key_secret:
           type: string
         scopes:
           type: array
@@ -96,6 +88,14 @@ components:
       - RESOURCE_TYPE_AGENTS
       - RESOURCE_TYPE_OBJECTS
       - RESOURCE_TYPE_ACCOUNT
+    ScopeEntryView:
+      type: object
+      additionalProperties: false
+      properties:
+        resource_type:
+          $ref: '#/components/schemas/ApiResourceType'
+        access_level:
+          $ref: '#/components/schemas/ApiAccessLevel'
     ApiAccessLevel:
       type: string
       enum:

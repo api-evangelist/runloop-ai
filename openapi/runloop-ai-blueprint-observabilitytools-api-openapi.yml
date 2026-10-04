@@ -86,6 +86,59 @@ components:
       required:
       - username
       - uid
+    BlueprintBuildLog:
+      type: object
+      additionalProperties: false
+      properties:
+        level:
+          type: string
+          description: Log line severity level.
+        timestamp_ms:
+          type: integer
+          format: int64
+          description: Time of log (Unix timestamp milliseconds).
+        message:
+          type: string
+          description: Log line message.
+      required:
+      - level
+      - timestamp_ms
+      - message
+    ContainerizedServiceView:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: The name of the container service.
+        image:
+          type: string
+          description: The image of the container service.
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+          description: The credentials of the container service.
+        env:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: The environment variables of the container service.
+        port_mappings:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The port mappings of the container service. Port mappings are in the format of <host_port>:<container_port>.
+        options:
+          type:
+          - string
+          - 'null'
+          description: Additional Docker container create options.
+      required:
+      - name
+      - image
     BlueprintBuildParameters:
       type: object
       additionalProperties: false
@@ -170,6 +223,17 @@ components:
           description: (Optional) ID of the network policy to apply during blueprint build. This restricts network access during the build process. This does not affect devboxes created from this blueprint; if you want devboxes created from this blueprint to inherit the network policy, set the network_policy_id on the blueprint launch parameters.
       required:
       - name
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          description: Triggers that can resume a suspended Devbox.
     Credentials:
       type: object
       additionalProperties: false
@@ -183,6 +247,79 @@ components:
       required:
       - username
       - password
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type:
+          - boolean
+          - 'null'
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
+    CodeMountParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+      required:
+      - repo_name
+      - repo_owner
+    ObjectContext:
+      type: object
+      additionalProperties: false
+      description: A build context backed by an Object.
+      properties:
+        object_id:
+          type: string
+          description: The ID of an object, whose contents are to be used as a build context.
+        type:
+          type: string
+          enum:
+          - object
+          default: object
+      required:
+      - object_id
+      - type
     LaunchParameters:
       type: object
       additionalProperties: false
@@ -254,20 +391,6 @@ components:
         lifecycle:
           $ref: '#/components/schemas/LifecycleConfigurationParameters'
           description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
-    IdleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        idle_time_seconds:
-          type: integer
-          format: int32
-          description: After idle_time_seconds, on_idle action will be taken.
-        on_idle:
-          $ref: '#/components/schemas/IdleAction'
-          description: Action to take after Devbox becomes idle.
-      required:
-      - idle_time_seconds
-      - on_idle
     BlueprintPreviewView:
       type: object
       additionalProperties: false
@@ -277,22 +400,21 @@ components:
           description: The Dockerfile contents that will built.
       required:
       - dockerfile
-    ObjectContext:
+    BlueprintBuildLogsListView:
       type: object
       additionalProperties: false
-      description: A build context backed by an Object.
       properties:
-        object_id:
+        blueprint_id:
           type: string
-          description: The ID of an object, whose contents are to be used as a build context.
-        type:
-          type: string
-          enum:
-          - object
-          default: object
+          description: ID of the Blueprint.
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlueprintBuildLog'
+          description: List of logs generated during Blueprint build.
       required:
-      - object_id
-      - type
+      - blueprint_id
+      - logs
     Architecture:
       type: string
       enum:
@@ -334,78 +456,6 @@ components:
         X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
         XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
         CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-    LifecycleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
-      properties:
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
-        resume_triggers:
-          $ref: '#/components/schemas/ResumeTriggers'
-          description: Triggers that can resume a suspended Devbox.
-    ResumeTriggers:
-      type: object
-      additionalProperties: false
-      description: Triggers that can resume a suspended Devbox.
-      properties:
-        http:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
-        axon_event:
-          type:
-          - boolean
-          - 'null'
-          description: When true, axon events targeting a suspended Devbox will trigger a resume.
-    BlueprintBuildLog:
-      type: object
-      additionalProperties: false
-      properties:
-        level:
-          type: string
-          description: Log line severity level.
-        timestamp_ms:
-          type: integer
-          format: int64
-          description: Time of log (Unix timestamp milliseconds).
-        message:
-          type: string
-          description: Log line message.
-      required:
-      - level
-      - timestamp_ms
-      - message
-    CodeMountParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type:
-          - string
-          - 'null'
-          description: Installation command to install and setup repository.
-        git_ref:
-          type:
-          - string
-          - 'null'
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type:
-          - string
-          - 'null'
-          description: The authentication token necessary to pull repo.
-      required:
-      - repo_name
-      - repo_owner
     IdleAction:
       type: string
       enum:
@@ -422,56 +472,6 @@ components:
       x-enum-descriptions:
         shutdown: Shutdown the Devbox.
         suspend: Suspend the Devbox.
-    BlueprintBuildLogsListView:
-      type: object
-      additionalProperties: false
-      properties:
-        blueprint_id:
-          type: string
-          description: ID of the Blueprint.
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BlueprintBuildLog'
-          description: List of logs generated during Blueprint build.
-      required:
-      - blueprint_id
-      - logs
-    ContainerizedServiceView:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-          description: The name of the container service.
-        image:
-          type: string
-          description: The image of the container service.
-        credentials:
-          $ref: '#/components/schemas/Credentials'
-          description: The credentials of the container service.
-        env:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: The environment variables of the container service.
-        port_mappings:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The port mappings of the container service. Port mappings are in the format of <host_port>:<container_port>.
-        options:
-          type:
-          - string
-          - 'null'
-          description: Additional Docker container create options.
-      required:
-      - name
-      - image
   securitySchemes:
     bearerAuth:
       scheme: bearer

@@ -221,6 +221,31 @@ paths:
       deprecated: false
 components:
   schemas:
+    McpConfigCreateParameters:
+      type: object
+      additionalProperties: false
+      description: Parameters required to create a new McpConfig.
+      properties:
+        name:
+          type: string
+          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
+        endpoint:
+          type: string
+          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
+        allowed_tools:
+          type: array
+          items:
+            type: string
+          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools, [''github.search_*'', ''github.get_*''] for specific patterns.'
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description for this MCP configuration.
+      required:
+      - name
+      - endpoint
+      - allowed_tools
     McpConfigListView:
       type: object
       additionalProperties: false
@@ -243,33 +268,6 @@ components:
       required:
       - mcp_configs
       - has_more
-    McpConfigUpdateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: New name for the McpConfig. Must be unique within your account.
-        endpoint:
-          type:
-          - string
-          - 'null'
-          description: New target MCP server endpoint URL.
-        allowed_tools:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
-        description:
-          type:
-          - string
-          - 'null'
-          description: New description for this MCP configuration.
     McpConfigView:
       type: object
       additionalProperties: false
@@ -304,35 +302,37 @@ components:
       - endpoint
       - allowed_tools
       - create_time_ms
-    EmptyRecord:
+    McpConfigUpdateParameters:
       type: object
       additionalProperties: false
-      properties: {}
-    McpConfigCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters required to create a new McpConfig.
+      description: Parameters for updating an existing McpConfig. All fields are optional - only specified fields will be updated.
       properties:
         name:
-          type: string
-          description: The human-readable name for the McpConfig. Must be unique within your account. The first segment before '-' is used as the service name for tool routing (e.g., 'github-readonly' uses 'github' as the service name).
+          type:
+          - string
+          - 'null'
+          description: New name for the McpConfig. Must be unique within your account.
         endpoint:
-          type: string
-          description: The target MCP server endpoint URL (e.g., 'https://mcp.example.com').
+          type:
+          - string
+          - 'null'
+          description: New target MCP server endpoint URL.
         allowed_tools:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          description: 'Glob patterns specifying which tools are allowed from this MCP server. Examples: [''*''] for all tools, [''github.search_*'', ''github.get_*''] for specific patterns.'
+          description: 'New glob patterns specifying which tools are allowed. Examples: [''*''] for all tools, [''github.search_*''] for specific patterns.'
         description:
           type:
           - string
           - 'null'
-          description: Optional description for this MCP configuration.
-      required:
-      - name
-      - endpoint
-      - allowed_tools
+          description: New description for this MCP configuration.
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
   securitySchemes:
     bearerAuth:
       scheme: bearer

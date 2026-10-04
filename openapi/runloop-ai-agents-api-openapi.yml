@@ -283,46 +283,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    AgentSource:
-      type: object
-      additionalProperties: false
-      description: Agent source configuration.
-      properties:
-        type:
-          type: string
-          description: 'Source type: npm, pip, object, or git'
-        npm:
-          $ref: '#/components/schemas/NpmSource'
-          description: NPM source configuration
-        pip:
-          $ref: '#/components/schemas/PipSource'
-          description: Pip source configuration
-        object:
-          $ref: '#/components/schemas/ObjectSource'
-          description: Object store source configuration
-        git:
-          $ref: '#/components/schemas/GitSource'
-          description: Git source configuration
-      required:
-      - type
-    AgentCreateParameters:
-      type: object
-      additionalProperties: false
-      description: Parameters for creating a new Agent.
-      properties:
-        name:
-          type: string
-          description: The name of the Agent.
-        version:
-          type:
-          - string
-          - 'null'
-          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
-        source:
-          $ref: '#/components/schemas/AgentSource'
-          description: The source configuration for the Agent.
-      required:
-      - name
     PipSource:
       type: object
       additionalProperties: false
@@ -345,6 +305,23 @@ components:
           description: Setup commands to run after installation
       required:
       - package_name
+    ObjectSource:
+      type: object
+      additionalProperties: false
+      description: Object store agent source configuration.
+      properties:
+        object_id:
+          type: string
+          description: Object ID
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after unpacking
+      required:
+      - object_id
     AgentDevboxCountsView:
       type: object
       additionalProperties: false
@@ -363,23 +340,24 @@ components:
       required:
       - counts
       - total_count
-    ObjectSource:
+    AgentCreateParameters:
       type: object
       additionalProperties: false
-      description: Object store agent source configuration.
+      description: Parameters for creating a new Agent.
       properties:
-        object_id:
+        name:
           type: string
-          description: Object ID
-        agent_setup:
+          description: The name of the Agent.
+        version:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            type: string
-          description: Setup commands to run after unpacking
+          description: Optional version identifier for the Agent. For npm/pip sources this is typically a semver string (e.g. '2.0.65'). For git sources it can be a branch or tag. Semantics are user-defined for object sources.
+        source:
+          $ref: '#/components/schemas/AgentSource'
+          description: The source configuration for the Agent.
       required:
-      - object_id
+      - name
     AgentView:
       type: object
       additionalProperties: false
@@ -433,6 +411,50 @@ components:
           description: Setup commands to run after installation
       required:
       - package_name
+    AgentSource:
+      type: object
+      additionalProperties: false
+      description: Agent source configuration.
+      properties:
+        type:
+          type: string
+          description: 'Source type: npm, pip, object, or git'
+        npm:
+          $ref: '#/components/schemas/NpmSource'
+          description: NPM source configuration
+        pip:
+          $ref: '#/components/schemas/PipSource'
+          description: Pip source configuration
+        object:
+          $ref: '#/components/schemas/ObjectSource'
+          description: Object store source configuration
+        git:
+          $ref: '#/components/schemas/GitSource'
+          description: Git source configuration
+      required:
+      - type
+    GitSource:
+      type: object
+      additionalProperties: false
+      description: Git-based agent source configuration.
+      properties:
+        repository:
+          type: string
+          description: Git repository URL
+        ref:
+          type:
+          - string
+          - 'null'
+          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
+        agent_setup:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Setup commands to run after cloning
+      required:
+      - repository
     EmptyRecord:
       type: object
       additionalProperties: false
@@ -459,28 +481,6 @@ components:
       required:
       - agents
       - has_more
-    GitSource:
-      type: object
-      additionalProperties: false
-      description: Git-based agent source configuration.
-      properties:
-        repository:
-          type: string
-          description: Git repository URL
-        ref:
-          type:
-          - string
-          - 'null'
-          description: Optional Git ref (branch/tag/commit), defaults to main/HEAD
-        agent_setup:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Setup commands to run after cloning
-      required:
-      - repository
   securitySchemes:
     bearerAuth:
       scheme: bearer

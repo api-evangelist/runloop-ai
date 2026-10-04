@@ -221,29 +221,28 @@ paths:
       deprecated: false
 components:
   schemas:
-    GatewayConfigUpdateParameters:
+    GatewayConfigListView:
       type: object
       additionalProperties: false
-      description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will be updated.
+      description: A paginated list of GatewayConfigs.
       properties:
-        name:
+        gateway_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayConfigView'
+          description: The list of GatewayConfigs.
+        has_more:
+          type: boolean
+          description: Whether there are more results available beyond this page.
+        total_count:
           type:
-          - string
+          - integer
           - 'null'
-          description: New name for the GatewayConfig. Must be unique within your account.
-        endpoint:
-          type:
-          - string
-          - 'null'
-          description: New target endpoint URL (e.g., 'https://api.anthropic.com').
-        auth_mechanism:
-          $ref: '#/components/schemas/AuthMechanismView'
-          description: New authentication mechanism for applying credentials to proxied requests.
-        description:
-          type:
-          - string
-          - 'null'
-          description: New description for this gateway configuration.
+          format: int32
+          description: Total count of GatewayConfigs that match the query.
+      required:
+      - gateway_configs
+      - has_more
     GatewayConfigCreateParameters:
       type: object
       additionalProperties: false
@@ -267,47 +266,29 @@ components:
       - name
       - endpoint
       - auth_mechanism
-    GatewayConfigListView:
+    GatewayConfigUpdateParameters:
       type: object
       additionalProperties: false
-      description: A paginated list of GatewayConfigs.
+      description: Parameters for updating an existing GatewayConfig. All fields are optional - only specified fields will be updated.
       properties:
-        gateway_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/GatewayConfigView'
-          description: The list of GatewayConfigs.
-        has_more:
-          type: boolean
-          description: Whether there are more results available beyond this page.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total count of GatewayConfigs that match the query.
-      required:
-      - gateway_configs
-      - has_more
-    AuthMechanismView:
-      type: object
-      additionalProperties: false
-      description: Defines how credentials are applied to HTTP requests when proxying through the gateway.
-      properties:
-        type:
-          type: string
-          description: 'The type of authentication mechanism: ''header'', ''bearer''.'
-        key:
+        name:
           type:
           - string
           - 'null'
-          description: 'For ''header'' type: the header name (e.g., ''x-api-key'').'
-      required:
-      - type
-    EmptyRecord:
-      type: object
-      additionalProperties: false
-      properties: {}
+          description: New name for the GatewayConfig. Must be unique within your account.
+        endpoint:
+          type:
+          - string
+          - 'null'
+          description: New target endpoint URL (e.g., 'https://api.anthropic.com').
+        auth_mechanism:
+          $ref: '#/components/schemas/AuthMechanismView'
+          description: New authentication mechanism for applying credentials to proxied requests.
+        description:
+          type:
+          - string
+          - 'null'
+          description: New description for this gateway configuration.
     GatewayConfigView:
       type: object
       additionalProperties: false
@@ -345,6 +326,25 @@ components:
       - endpoint
       - auth_mechanism
       - create_time_ms
+    EmptyRecord:
+      type: object
+      additionalProperties: false
+      properties: {}
+    AuthMechanismView:
+      type: object
+      additionalProperties: false
+      description: Defines how credentials are applied to HTTP requests when proxying through the gateway.
+      properties:
+        type:
+          type: string
+          description: 'The type of authentication mechanism: ''header'', ''bearer''.'
+        key:
+          type:
+          - string
+          - 'null'
+          description: 'For ''header'' type: the header name (e.g., ''x-api-key'').'
+      required:
+      - type
   securitySchemes:
     bearerAuth:
       scheme: bearer

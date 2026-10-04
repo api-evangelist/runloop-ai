@@ -696,354 +696,148 @@ paths:
       deprecated: false
 components:
   schemas:
-    MetadataValuesView:
+    ScoringContractResultView:
       type: object
       additionalProperties: false
+      description: A ScoringContractResultView represents the result of running all scoring functions on a given input context.
       properties:
-        key:
-          type: string
-        values:
+        score:
+          type: number
+          format: float
+          description: Total score for all scoring contracts. This will be a value between 0 and 1.
+        scoring_function_results:
           type: array
           items:
-            type: string
-    UserParameters:
-      type: object
-      additionalProperties: false
-      description: Configuration for the Linux user in the Devbox environment.
-      properties:
-        username:
-          type: string
-          description: Username for the Linux user.
-        uid:
-          type: integer
-          format: int32
-          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+            $ref: '#/components/schemas/ScoringFunctionResultView'
+          description: List of all individual scoring function results.
       required:
-      - username
-      - uid
-    AstGrepScoringFunction:
+      - score
+      - scoring_function_results
+    ScenarioEnvironment:
       type: object
       additionalProperties: false
-      description: AstGrepScoringFunction utilizes structured coach search for scoring.
+      description: ScenarioEnvironmentParameters specify the environment in which a Scenario will be run.
       properties:
-        lang:
-          type: string
-          description: The language of the pattern.
-        search_directory:
-          type: string
-          description: The path to search.
-        pattern:
-          type: string
-          description: AST pattern to match. Pattern will be passed to ast-grep using the commandline surround by double quotes ("), so make sure to use proper escaping (for example, \$\$\$).
-        type:
-          type: string
-          enum:
-          - ast_grep_scorer
-          default: ast_grep_scorer
-      required:
-      - search_directory
-      - pattern
-      - type
-    ScoringContract:
+        blueprint_id:
+          type:
+          - string
+          - 'null'
+          description: Use the blueprint with matching ID.
+        snapshot_id:
+          type:
+          - string
+          - 'null'
+          description: Use the snapshot with matching ID.
+        launch_parameters:
+          $ref: '#/components/schemas/LaunchParameters'
+          description: Optional launch parameters to apply to the devbox environment at launch.
+        working_directory:
+          type:
+          - string
+          - 'null'
+          description: The working directory where the agent is expected to fulfill the scenario. Scoring functions also run from the working directory.
+    ScenarioRunView:
       type: object
       additionalProperties: false
-      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
-      properties:
-        scoring_function_parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScoringFunction'
-          description: A list of scoring functions used to evaluate the Scenario.
-      required:
-      - scoring_function_parameters
-    ScenarioDefinitionStatus:
-      type: string
-      enum:
-      - active
-      - archived
-    ScenarioScorerView:
-      type: object
-      additionalProperties: false
-      description: A ScenarioScorerView represents a custom scoring function for a Scenario.
+      description: A ScenarioRunView represents a single run of a Scenario on a Devbox. When completed, the ScenarioRun will contain the final score and output of the run.
       properties:
         id:
           type: string
-          description: ID for the scenario scorer.
-        type:
-          type: string
-          description: Name of the type of scenario scorer.
-        bash_script:
-          type: string
-          description: Bash script that takes in $RL_SCORER_CONTEXT as env variable and runs scoring.
-      required:
-      - id
-      - type
-      - bash_script
-    FileMount:
-      type: object
-      additionalProperties: false
-      properties:
-        target:
-          type: string
-          description: Target path where the file should be mounted.
-        content:
-          type: string
-          description: Content of the file to mount.
-        type:
-          type: string
-          enum:
-          - file_mount
-          default: file_mount
-      required:
-      - target
-      - content
-      - type
-    ScenarioUpdateParameters:
-      type: object
-      additionalProperties: false
-      description: ScenarioUpdateParameters contain the set of parameters to update a Scenario. All fields are optional - null fields preserve existing values, provided fields replace entirely.
-      properties:
+          description: ID of the ScenarioRun.
         name:
           type:
           - string
           - 'null'
-          description: Name of the scenario. Cannot be blank.
-        input_context:
-          $ref: '#/components/schemas/InputContextUpdate'
-          description: The input context for the Scenario.
-        scoring_contract:
-          $ref: '#/components/schemas/ScoringContractUpdate'
-          description: The scoring contract for the Scenario.
-        environment_parameters:
-          $ref: '#/components/schemas/ScenarioEnvironment'
-          description: The Environment in which the Scenario will run.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the scenario. Pass in empty map to clear.
-        required_environment_variables:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Environment variables required to run the scenario. Pass in empty list to clear.
-        required_secret_names:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Secrets required to run the scenario. Pass in empty list to clear.
-        reference_output:
-          type:
-          - string
-          - 'null'
-          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment. Pass in empty string to clear.
-        validation_type:
-          $ref: '#/components/schemas/ValidationType'
-          description: Validation strategy. Pass in empty string to clear.
-        scorer_timeout_sec:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
-    ResourceSize:
-      type: string
-      enum:
-      - X_SMALL
-      - SMALL
-      - MEDIUM
-      - LARGE
-      - X_LARGE
-      - XX_LARGE
-      - CUSTOM_SIZE
-      description: 'The size of the Devbox resources for Runloop to allocate.
-
-
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-
-        '
-      x-enum-descriptions:
-        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
-        SMALL: 1 cpu x 2GiB memory x 4GiB disk
-        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
-        LARGE: 2 cpu x 8GiB memory x 16GiB disk
-        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
-        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
-        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
-    CodeMount:
-      type: object
-      additionalProperties: false
-      properties:
-        repo_name:
-          type: string
-          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
-        repo_owner:
-          type: string
-          description: The owner of the repo.
-        install_command:
-          type:
-          - string
-          - 'null'
-          description: Installation command to install and setup repository.
-        git_ref:
-          type:
-          - string
-          - 'null'
-          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
-        token:
-          type:
-          - string
-          - 'null'
-          description: The authentication token necessary to pull repo.
-        type:
-          type: string
-          enum:
-          - code_mount
-          default: code_mount
-      required:
-      - repo_name
-      - repo_owner
-      - type
-    Architecture:
-      type: string
-      enum:
-      - x86_64
-      - arm64
-    ScoringFunction:
-      type: object
-      additionalProperties: false
-      description: ScoringFunction specifies a method of scoring a Scenario.
-      properties:
-        name:
-          type: string
-          description: Name of scoring function. Names must only contain [a-zA-Z0-9_-].
-        scorer:
-          $ref: '#/components/schemas/BuiltInScoringFunction'
-          description: The scoring function to use for evaluating this scenario. The type field determines which built-in function to use.
-        weight:
-          type: number
-          format: float
-          description: Weight to apply to scoring function score. Weights of all scoring functions should sum to 1.0.
-      required:
-      - name
-      - scorer
-      - weight
-    ObjectMount:
-      type: object
-      additionalProperties: false
-      properties:
-        object_id:
-          type: string
-          description: The ID of the object to write.
-        object_path:
-          type: string
-          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
-        type:
-          type: string
-          enum:
-          - object_mount
-          default: object_mount
-      required:
-      - object_id
-      - object_path
-      - type
-    CustomScoringFunction:
-      type: object
-      additionalProperties: false
-      description: CustomScoringFunction is a custom, user defined scoring function.
-      properties:
-        custom_scorer_type:
-          type: string
-          description: Type of the scoring function, previously registered with Runloop.
-        scorer_params:
-          type:
-          - object
-          - 'null'
-          description: Additional JSON structured context to pass to the scoring function.
-        type:
-          type: string
-          enum:
-          - custom_scorer
-          default: custom_scorer
-      required:
-      - custom_scorer_type
-      - type
-    InputContextUpdate:
-      type: object
-      additionalProperties: false
-      properties:
-        problem_statement:
-          type:
-          - string
-          - 'null'
-          description: The problem statement for the Scenario.
-        additional_context:
-          type:
-          - object
-          - 'null'
-          description: Additional JSON structured input context.
-    StartScenarioRunParameters:
-      type: object
-      additionalProperties: false
-      properties:
+          description: Optional name of ScenarioRun.
         scenario_id:
           type: string
-          description: ID of the Scenario to run.
-        run_name:
-          type:
-          - string
-          - 'null'
-          description: Display name of the run.
+          description: ID of the Scenario that has been run.
+        devbox_id:
+          type: string
+          description: ID of the Devbox on which the Scenario is running.
         benchmark_run_id:
           type:
           - string
           - 'null'
-          description: Benchmark to associate the run.
+          description: ID of the BenchmarkRun that this Scenario is associated with, if any.
+        scoring_contract_result:
+          $ref: '#/components/schemas/ScoringContractResultView'
+          description: The scoring result of the ScenarioRun.
+        start_time_ms:
+          type: integer
+          format: int64
+          description: The time that the scenario started
+        duration_ms:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Duration scenario took to run.
+        state:
+          $ref: '#/components/schemas/ScenarioRunState'
+          description: The state of the ScenarioRun.
         metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario run for organization.
+        purpose:
+          type:
+          - string
+          - 'null'
+          description: Purpose of the ScenarioRun.
+        environment_variables:
           type:
           - object
           - 'null'
           additionalProperties:
             type: string
-          description: User defined metadata to attach to the run for organization.
-        runProfile:
-          $ref: '#/components/schemas/RunProfile'
-          description: Runtime configuration to use for this benchmark run
+          description: Environment variables used to run the scenario.
+        secrets_provided:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User secrets used to run the scenario.
       required:
+      - id
       - scenario_id
-    Mount:
+      - devbox_id
+      - state
+      - metadata
+    BuiltInScoringFunction:
       oneOf:
-      - $ref: '#/components/schemas/ObjectMount'
-      - $ref: '#/components/schemas/AgentMount'
-      - $ref: '#/components/schemas/CodeMount'
-      - $ref: '#/components/schemas/FileMount'
-      - $ref: '#/components/schemas/BrokerMount'
+      - $ref: '#/components/schemas/AstGrepScoringFunction'
+      - $ref: '#/components/schemas/BashScriptScoringFunction'
+      - $ref: '#/components/schemas/CommandScoringFunction'
+      - $ref: '#/components/schemas/CustomScoringFunction'
+      - $ref: '#/components/schemas/PythonScriptScoringFunction'
+      - $ref: '#/components/schemas/TestBasedScoringFunction'
       discriminator:
         propertyName: type
         mapping:
-          object_mount: '#/components/schemas/ObjectMount'
-          agent_mount: '#/components/schemas/AgentMount'
-          code_mount: '#/components/schemas/CodeMount'
-          file_mount: '#/components/schemas/FileMount'
-          broker_mount: '#/components/schemas/BrokerMount'
+          ast_grep_scorer: '#/components/schemas/AstGrepScoringFunction'
+          bash_script_scorer: '#/components/schemas/BashScriptScoringFunction'
+          command_scorer: '#/components/schemas/CommandScoringFunction'
+          custom_scorer: '#/components/schemas/CustomScoringFunction'
+          python_script_scorer: '#/components/schemas/PythonScriptScoringFunction'
+          test_based_scorer: '#/components/schemas/TestBasedScoringFunction'
+    ResumeTriggers:
+      type: object
+      additionalProperties: false
+      description: Triggers that can resume a suspended Devbox.
+      properties:
+        http:
+          type:
+          - boolean
+          - 'null'
+          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
+        axon_event:
+          type:
+          - boolean
+          - 'null'
+          description: When true, axon events targeting a suspended Devbox will trigger a resume.
     LaunchParameters:
       type: object
       additionalProperties: false
@@ -1115,487 +909,25 @@ components:
         lifecycle:
           $ref: '#/components/schemas/LifecycleConfigurationParameters'
           description: Lifecycle configuration for idle and resume behavior. Configure idle policy via lifecycle.after_idle (if both this and the top-level after_idle are set, they must match) and resume triggers via lifecycle.resume_triggers.
-    ScoringFunctionResultViewState:
-      type: string
-      enum:
-      - unknown
-      - complete
-      - error
-    CommandScoringFunction:
+    ScoringFunction:
       type: object
       additionalProperties: false
-      description: CommandScoringFunction executes a single command and checks the result.The output of the command will be printed. Scoring will passed if the command returns status code 0, otherwise it will be failed.
-      properties:
-        command:
-          type: string
-          description: The command to execute.
-        type:
-          type: string
-          enum:
-          - command_scorer
-          default: command_scorer
-      required:
-      - type
-    InputContext:
-      type: object
-      additionalProperties: false
-      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
-      properties:
-        problem_statement:
-          type: string
-          description: The problem statement for the Scenario.
-        additional_context:
-          type:
-          - object
-          - 'null'
-          description: Additional JSON structured input context.
-      required:
-      - problem_statement
-    CreateCustomScorerParams:
-      type: object
-      additionalProperties: false
-      properties:
-        type:
-          type: string
-          description: Name of the type of custom scorer.
-        bash_script:
-          type: string
-          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
-      required:
-      - type
-      - bash_script
-    ScenarioCreateParameters:
-      type: object
-      additionalProperties: false
+      description: ScoringFunction specifies a method of scoring a Scenario.
       properties:
         name:
           type: string
-          description: Name of the scenario.
-        input_context:
-          $ref: '#/components/schemas/InputContext'
-          description: The input context for the Scenario.
-        scoring_contract:
-          $ref: '#/components/schemas/ScoringContract'
-          description: The scoring contract for the Scenario.
-        environment_parameters:
-          $ref: '#/components/schemas/ScenarioEnvironment'
-          description: The Environment in which the Scenario will run.
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the scenario for organization.
-        reference_output:
-          type:
-          - string
-          - 'null'
-          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment.
-        required_environment_variables:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Environment variables required to run the scenario. If these variables are not provided, the scenario will fail to start.
-        required_secret_names:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Secrets required to run the scenario (user secret name to scenario required secret name). If these secrets are not provided or the mapping is incorrect, the scenario will fail to start.
-        validation_type:
-          $ref: '#/components/schemas/ValidationType'
-          description: Validation strategy.
-        scorer_timeout_sec:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
-      required:
-      - name
-      - input_context
-      - scoring_contract
-    ScoringContractUpdate:
-      type: object
-      additionalProperties: false
-      properties:
-        scoring_function_parameters:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ScoringFunction'
-          description: A list of scoring functions used to evaluate the Scenario.
-    BuiltInScoringFunction:
-      oneOf:
-      - $ref: '#/components/schemas/AstGrepScoringFunction'
-      - $ref: '#/components/schemas/BashScriptScoringFunction'
-      - $ref: '#/components/schemas/CommandScoringFunction'
-      - $ref: '#/components/schemas/CustomScoringFunction'
-      - $ref: '#/components/schemas/PythonScriptScoringFunction'
-      - $ref: '#/components/schemas/TestBasedScoringFunction'
-      discriminator:
-        propertyName: type
-        mapping:
-          ast_grep_scorer: '#/components/schemas/AstGrepScoringFunction'
-          bash_script_scorer: '#/components/schemas/BashScriptScoringFunction'
-          command_scorer: '#/components/schemas/CommandScoringFunction'
-          custom_scorer: '#/components/schemas/CustomScoringFunction'
-          python_script_scorer: '#/components/schemas/PythonScriptScoringFunction'
-          test_based_scorer: '#/components/schemas/TestBasedScoringFunction'
-    ScenarioRunListView:
-      type: object
-      additionalProperties: false
-      properties:
-        runs:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScenarioRunView'
-          description: List of ScenarioRuns matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - runs
-      - has_more
-    ScoringFunctionResultView:
-      type: object
-      additionalProperties: false
-      description: A ScoringFunctionResultView represents the result of running a single scoring function on a given input context.
-      properties:
-        score:
+          description: Name of scoring function. Names must only contain [a-zA-Z0-9_-].
+        scorer:
+          $ref: '#/components/schemas/BuiltInScoringFunction'
+          description: The scoring function to use for evaluating this scenario. The type field determines which built-in function to use.
+        weight:
           type: number
           format: float
-          description: Final score for the given scoring function.
-        scoring_function_name:
-          type: string
-          description: Scoring function name that ran.
-        output:
-          type: string
-          description: Log output of the scoring function.
-        state:
-          $ref: '#/components/schemas/ScoringFunctionResultViewState'
-          description: The state of the scoring function application.
+          description: Weight to apply to scoring function score. Weights of all scoring functions should sum to 1.0.
       required:
-      - score
-      - scoring_function_name
-      - output
-      - state
-    IdleAction:
-      type: string
-      enum:
-      - shutdown
-      - suspend
-      description: 'Action to take after Devbox idle timer is triggered.
-
-
-        shutdown: Shutdown the Devbox.
-
-        suspend: Suspend the Devbox.
-
-        '
-      x-enum-descriptions:
-        shutdown: Shutdown the Devbox.
-        suspend: Suspend the Devbox.
-    MetadataKeysView:
-      type: object
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-    ScenarioRunState:
-      type: string
-      enum:
-      - running
-      - scoring
-      - scored
-      - completed
-      - canceled
-      - timeout
-      - failed
-    BashScriptScoringFunction:
-      type: object
-      additionalProperties: false
-      description: BashScriptScoringFunction is a scoring function specified by a bash script that will be run in the context of your environment.
-      properties:
-        bash_script:
-          type: string
-          description: A single bash script that sets up the environment, scores, and prints the final score to standard out. Score should be a float between 0.0 and 1.0, and look like "score=[0.0..1.0].
-        type:
-          type: string
-          enum:
-          - bash_script_scorer
-          default: bash_script_scorer
-      required:
-      - type
-    BrokerMount:
-      type: object
-      additionalProperties: false
-      properties:
-        axon_id:
-          type: string
-          description: The ID of the axon event stream to mount onto the Devbox.
-        protocol:
-          $ref: '#/components/schemas/BrokerMountProtocol'
-          description: The protocol used by the broker to deliver events to the agent.
-        agent_binary:
-          type:
-          - string
-          - 'null'
-          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
-        working_directory:
-          type:
-          - string
-          - 'null'
-          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
-        launch_args:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess (acp, claude_json).
-        type:
-          type: string
-          enum:
-          - broker_mount
-          default: broker_mount
-      required:
-      - axon_id
-      - type
-    TestFile:
-      type: object
-      additionalProperties: false
-      properties:
-        file_path:
-          type: string
-          description: Path to write content of the test file, relative to your environment's working directory
-        file_contents:
-          type: string
-          description: Content of the test file
-    ScenarioDefinitionListView:
-      type: object
-      additionalProperties: false
-      properties:
-        scenarios:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScenarioDefinitionView'
-          description: List of Scenarios matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - scenarios
-      - has_more
-    TestBasedScoringFunction:
-      type: object
-      additionalProperties: false
-      description: TestBasedScoringFunction writes test files to disk and executes a test command to verify the solution.
-      properties:
-        test_files:
-          type: array
-          items:
-            $ref: '#/components/schemas/TestFile'
-          description: List of test files to create
-        test_command:
-          type: string
-          description: The command to execute for running the tests
-        type:
-          type: string
-          enum:
-          - test_based_scorer
-          default: test_based_scorer
-      required:
-      - type
-    LifecycleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
-      properties:
-        after_idle:
-          $ref: '#/components/schemas/IdleConfigurationParameters'
-          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
-        resume_triggers:
-          $ref: '#/components/schemas/ResumeTriggers'
-          description: Triggers that can resume a suspended Devbox.
-    ResumeTriggers:
-      type: object
-      additionalProperties: false
-      description: Triggers that can resume a suspended Devbox.
-      properties:
-        http:
-          type:
-          - boolean
-          - 'null'
-          description: When true, HTTP traffic to a suspended Devbox via tunnel will trigger a resume.
-        axon_event:
-          type:
-          - boolean
-          - 'null'
-          description: When true, axon events targeting a suspended Devbox will trigger a resume.
-    ScenarioScorersListView:
-      type: object
-      additionalProperties: false
-      properties:
-        scorers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScenarioScorerView'
-          description: List of ScenarioScorers matching filter.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - scorers
-      - has_more
-    AgentMount:
-      type: object
-      additionalProperties: false
-      properties:
-        agent_id:
-          type:
-          - string
-          - 'null'
-          description: The ID of the agent to mount. Either agent_id or name must be set.
-        agent_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string provided. Either agent id or name must be set
-        agent_path:
-          type:
-          - string
-          - 'null'
-          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g., /home/user/agent)
-        auth_token:
-          type:
-          - string
-          - 'null'
-          description: Optional auth token for private repositories. Only used for git agents.
-        type:
-          type: string
-          enum:
-          - agent_mount
-          default: agent_mount
-      required:
-      - agent_id
-      - agent_name
-      - type
-    BrokerMountProtocol:
-      type: string
-      enum:
-      - acp
-      - claude_json
-    ScenarioRunView:
-      type: object
-      additionalProperties: false
-      description: A ScenarioRunView represents a single run of a Scenario on a Devbox. When completed, the ScenarioRun will contain the final score and output of the run.
-      properties:
-        id:
-          type: string
-          description: ID of the ScenarioRun.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Optional name of ScenarioRun.
-        scenario_id:
-          type: string
-          description: ID of the Scenario that has been run.
-        devbox_id:
-          type: string
-          description: ID of the Devbox on which the Scenario is running.
-        benchmark_run_id:
-          type:
-          - string
-          - 'null'
-          description: ID of the BenchmarkRun that this Scenario is associated with, if any.
-        scoring_contract_result:
-          $ref: '#/components/schemas/ScoringContractResultView'
-          description: The scoring result of the ScenarioRun.
-        start_time_ms:
-          type: integer
-          format: int64
-          description: The time that the scenario started
-        duration_ms:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Duration scenario took to run.
-        state:
-          $ref: '#/components/schemas/ScenarioRunState'
-          description: The state of the ScenarioRun.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: User defined metadata to attach to the scenario run for organization.
-        purpose:
-          type:
-          - string
-          - 'null'
-          description: Purpose of the ScenarioRun.
-        environment_variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Environment variables used to run the scenario.
-        secrets_provided:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: User secrets used to run the scenario.
-      required:
-      - id
-      - scenario_id
-      - devbox_id
-      - state
-      - metadata
-    ValidationType:
-      type: string
-      enum:
-      - UNSPECIFIED
-      - FORWARD
-      - REVERSE
-      - EVALUATION
-    IdleConfigurationParameters:
-      type: object
-      additionalProperties: false
-      properties:
-        idle_time_seconds:
-          type: integer
-          format: int32
-          description: After idle_time_seconds, on_idle action will be taken.
-        on_idle:
-          $ref: '#/components/schemas/IdleAction'
-          description: Action to take after Devbox becomes idle.
-      required:
-      - idle_time_seconds
-      - on_idle
+      - name
+      - scorer
+      - weight
     ScenarioDefinitionView:
       type: object
       additionalProperties: false
@@ -1658,72 +990,223 @@ components:
       - scoring_contract
       - metadata
       - status
-    PythonScriptScoringFunction:
+    MetadataValuesView:
       type: object
       additionalProperties: false
-      description: PythonScriptScoringFunction will run a python script in the context of your environment as a ScoringFunction.
       properties:
-        requirements_contents:
-          type:
-          - string
-          - 'null'
-          description: Package dependencies to be installed. The requirements should be a valid requirements.txt file.
-        python_script:
+        key:
           type: string
-          description: Python script to be run. The script should output the score to standard out as a float between 0.0 and 1.0.
-        python_version_constraint:
+        values:
+          type: array
+          items:
+            type: string
+    TestFile:
+      type: object
+      additionalProperties: false
+      properties:
+        file_path:
+          type: string
+          description: Path to write content of the test file, relative to your environment's working directory
+        file_contents:
+          type: string
+          description: Content of the test file
+    StartScenarioRunParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        scenario_id:
+          type: string
+          description: ID of the Scenario to run.
+        run_name:
           type:
           - string
           - 'null'
-          description: Python version  to run scoring. Default is "==3.12.10"
+          description: Display name of the run.
+        benchmark_run_id:
+          type:
+          - string
+          - 'null'
+          description: Benchmark to associate the run.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the run for organization.
+        runProfile:
+          $ref: '#/components/schemas/RunProfile'
+          description: Runtime configuration to use for this benchmark run
+      required:
+      - scenario_id
+    BrokerMountProtocol:
+      type: string
+      enum:
+      - acp
+      - claude_json
+    ScoringContract:
+      type: object
+      additionalProperties: false
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
+      properties:
+        scoring_function_parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoringFunction'
+          description: A list of scoring functions used to evaluate the Scenario.
+      required:
+      - scoring_function_parameters
+    CustomScoringFunction:
+      type: object
+      additionalProperties: false
+      description: CustomScoringFunction is a custom, user defined scoring function.
+      properties:
+        custom_scorer_type:
+          type: string
+          description: Type of the scoring function, previously registered with Runloop.
+        scorer_params:
+          type:
+          - object
+          - 'null'
+          description: Additional JSON structured context to pass to the scoring function.
         type:
           type: string
           enum:
-          - python_script_scorer
-          default: python_script_scorer
+          - custom_scorer
+          default: custom_scorer
       required:
-      - python_script
+      - custom_scorer_type
       - type
-    ScenarioEnvironment:
+    ScoringFunctionResultView:
       type: object
       additionalProperties: false
-      description: ScenarioEnvironmentParameters specify the environment in which a Scenario will be run.
-      properties:
-        blueprint_id:
-          type:
-          - string
-          - 'null'
-          description: Use the blueprint with matching ID.
-        snapshot_id:
-          type:
-          - string
-          - 'null'
-          description: Use the snapshot with matching ID.
-        launch_parameters:
-          $ref: '#/components/schemas/LaunchParameters'
-          description: Optional launch parameters to apply to the devbox environment at launch.
-        working_directory:
-          type:
-          - string
-          - 'null'
-          description: The working directory where the agent is expected to fulfill the scenario. Scoring functions also run from the working directory.
-    ScoringContractResultView:
-      type: object
-      additionalProperties: false
-      description: A ScoringContractResultView represents the result of running all scoring functions on a given input context.
+      description: A ScoringFunctionResultView represents the result of running a single scoring function on a given input context.
       properties:
         score:
           type: number
           format: float
-          description: Total score for all scoring contracts. This will be a value between 0 and 1.
-        scoring_function_results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScoringFunctionResultView'
-          description: List of all individual scoring function results.
+          description: Final score for the given scoring function.
+        scoring_function_name:
+          type: string
+          description: Scoring function name that ran.
+        output:
+          type: string
+          description: Log output of the scoring function.
+        state:
+          $ref: '#/components/schemas/ScoringFunctionResultViewState'
+          description: The state of the scoring function application.
       required:
       - score
-      - scoring_function_results
+      - scoring_function_name
+      - output
+      - state
+    ScoringFunctionResultViewState:
+      type: string
+      enum:
+      - unknown
+      - complete
+      - error
+    ScenarioUpdateParameters:
+      type: object
+      additionalProperties: false
+      description: ScenarioUpdateParameters contain the set of parameters to update a Scenario. All fields are optional - null fields preserve existing values, provided fields replace entirely.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the scenario. Cannot be blank.
+        input_context:
+          $ref: '#/components/schemas/InputContextUpdate'
+          description: The input context for the Scenario.
+        scoring_contract:
+          $ref: '#/components/schemas/ScoringContractUpdate'
+          description: The scoring contract for the Scenario.
+        environment_parameters:
+          $ref: '#/components/schemas/ScenarioEnvironment'
+          description: The Environment in which the Scenario will run.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario. Pass in empty map to clear.
+        required_environment_variables:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Environment variables required to run the scenario. Pass in empty list to clear.
+        required_secret_names:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Secrets required to run the scenario. Pass in empty list to clear.
+        reference_output:
+          type:
+          - string
+          - 'null'
+          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment. Pass in empty string to clear.
+        validation_type:
+          $ref: '#/components/schemas/ValidationType'
+          description: Validation strategy. Pass in empty string to clear.
+        scorer_timeout_sec:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
+    MetadataKeysView:
+      type: object
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          items:
+            type: string
+    ScenarioScorersListView:
+      type: object
+      additionalProperties: false
+      properties:
+        scorers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioScorerView'
+          description: List of ScenarioScorers matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - scorers
+      - has_more
+    TestBasedScoringFunction:
+      type: object
+      additionalProperties: false
+      description: TestBasedScoringFunction writes test files to disk and executes a test command to verify the solution.
+      properties:
+        test_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestFile'
+          description: List of test files to create
+        test_command:
+          type: string
+          description: The command to execute for running the tests
+        type:
+          type: string
+          enum:
+          - test_based_scorer
+          default: test_based_scorer
+      required:
+      - type
     RunProfile:
       type: object
       additionalProperties: false
@@ -1757,6 +1240,523 @@ components:
           items:
             $ref: '#/components/schemas/Mount'
           description: A list of mounts to be included in the scenario run.
+    CreateCustomScorerParams:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          description: Name of the type of custom scorer.
+        bash_script:
+          type: string
+          description: Bash script for the custom scorer taking context as a json object $RL_SCORER_CONTEXT.
+      required:
+      - type
+      - bash_script
+    ScenarioScorerView:
+      type: object
+      additionalProperties: false
+      description: A ScenarioScorerView represents a custom scoring function for a Scenario.
+      properties:
+        id:
+          type: string
+          description: ID for the scenario scorer.
+        type:
+          type: string
+          description: Name of the type of scenario scorer.
+        bash_script:
+          type: string
+          description: Bash script that takes in $RL_SCORER_CONTEXT as env variable and runs scoring.
+      required:
+      - id
+      - type
+      - bash_script
+    ObjectMount:
+      type: object
+      additionalProperties: false
+      properties:
+        object_id:
+          type: string
+          description: The ID of the object to write.
+        object_path:
+          type: string
+          description: The path to write the object on the Devbox. Use absolute path of object (ie /home/user/object.txt, or directory if archive /home/user/archive_dir)
+        type:
+          type: string
+          enum:
+          - object_mount
+          default: object_mount
+      required:
+      - object_id
+      - object_path
+      - type
+    AstGrepScoringFunction:
+      type: object
+      additionalProperties: false
+      description: AstGrepScoringFunction utilizes structured coach search for scoring.
+      properties:
+        lang:
+          type: string
+          description: The language of the pattern.
+        search_directory:
+          type: string
+          description: The path to search.
+        pattern:
+          type: string
+          description: AST pattern to match. Pattern will be passed to ast-grep using the commandline surround by double quotes ("), so make sure to use proper escaping (for example, \$\$\$).
+        type:
+          type: string
+          enum:
+          - ast_grep_scorer
+          default: ast_grep_scorer
+      required:
+      - search_directory
+      - pattern
+      - type
+    UserParameters:
+      type: object
+      additionalProperties: false
+      description: Configuration for the Linux user in the Devbox environment.
+      properties:
+        username:
+          type: string
+          description: Username for the Linux user.
+        uid:
+          type: integer
+          format: int32
+          description: User ID (UID) for the Linux user. Must be a non-negative integer.
+      required:
+      - username
+      - uid
+    BashScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: BashScriptScoringFunction is a scoring function specified by a bash script that will be run in the context of your environment.
+      properties:
+        bash_script:
+          type: string
+          description: A single bash script that sets up the environment, scores, and prints the final score to standard out. Score should be a float between 0.0 and 1.0, and look like "score=[0.0..1.0].
+        type:
+          type: string
+          enum:
+          - bash_script_scorer
+          default: bash_script_scorer
+      required:
+      - type
+    CodeMount:
+      type: object
+      additionalProperties: false
+      properties:
+        repo_name:
+          type: string
+          description: The name of the repo to mount. By default, code will be mounted at /home/user/{repo_name}.
+        repo_owner:
+          type: string
+          description: The owner of the repo.
+        install_command:
+          type:
+          - string
+          - 'null'
+          description: Installation command to install and setup repository.
+        git_ref:
+          type:
+          - string
+          - 'null'
+          description: Optional git ref (branch or tag) to checkout. Defaults to the repository default branch.
+        token:
+          type:
+          - string
+          - 'null'
+          description: The authentication token necessary to pull repo.
+        type:
+          type: string
+          enum:
+          - code_mount
+          default: code_mount
+      required:
+      - repo_name
+      - repo_owner
+      - type
+    ScenarioRunState:
+      type: string
+      enum:
+      - running
+      - scoring
+      - scored
+      - completed
+      - canceled
+      - timeout
+      - failed
+    ScenarioRunListView:
+      type: object
+      additionalProperties: false
+      properties:
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioRunView'
+          description: List of ScenarioRuns matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - runs
+      - has_more
+    LifecycleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      description: Lifecycle configuration for Devbox idle and resume behavior. Configure idle policy via after_idle and resume triggers via resume_triggers.
+      properties:
+        after_idle:
+          $ref: '#/components/schemas/IdleConfigurationParameters'
+          description: Configure Devbox lifecycle based on idle activity. If both this and the top-level after_idle are set, they must have the same value. Prefer this field for new integrations.
+        resume_triggers:
+          $ref: '#/components/schemas/ResumeTriggers'
+          description: Triggers that can resume a suspended Devbox.
+    ScenarioCreateParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: Name of the scenario.
+        input_context:
+          $ref: '#/components/schemas/InputContext'
+          description: The input context for the Scenario.
+        scoring_contract:
+          $ref: '#/components/schemas/ScoringContract'
+          description: The scoring contract for the Scenario.
+        environment_parameters:
+          $ref: '#/components/schemas/ScenarioEnvironment'
+          description: The Environment in which the Scenario will run.
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: User defined metadata to attach to the scenario for organization.
+        reference_output:
+          type:
+          - string
+          - 'null'
+          description: A string representation of the reference output to solve the scenario. Commonly can be the result of a git diff or a sequence of command actions to apply to the environment.
+        required_environment_variables:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Environment variables required to run the scenario. If these variables are not provided, the scenario will fail to start.
+        required_secret_names:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Secrets required to run the scenario (user secret name to scenario required secret name). If these secrets are not provided or the mapping is incorrect, the scenario will fail to start.
+        validation_type:
+          $ref: '#/components/schemas/ValidationType'
+          description: Validation strategy.
+        scorer_timeout_sec:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Timeout for scoring in seconds. Default 30 minutes (1800s).
+      required:
+      - name
+      - input_context
+      - scoring_contract
+    PythonScriptScoringFunction:
+      type: object
+      additionalProperties: false
+      description: PythonScriptScoringFunction will run a python script in the context of your environment as a ScoringFunction.
+      properties:
+        requirements_contents:
+          type:
+          - string
+          - 'null'
+          description: Package dependencies to be installed. The requirements should be a valid requirements.txt file.
+        python_script:
+          type: string
+          description: Python script to be run. The script should output the score to standard out as a float between 0.0 and 1.0.
+        python_version_constraint:
+          type:
+          - string
+          - 'null'
+          description: Python version  to run scoring. Default is "==3.12.10"
+        type:
+          type: string
+          enum:
+          - python_script_scorer
+          default: python_script_scorer
+      required:
+      - python_script
+      - type
+    ScoringContractUpdate:
+      type: object
+      additionalProperties: false
+      properties:
+        scoring_function_parameters:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ScoringFunction'
+          description: A list of scoring functions used to evaluate the Scenario.
+    AgentMount:
+      type: object
+      additionalProperties: false
+      properties:
+        agent_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the agent to mount. Either agent_id or name must be set.
+        agent_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the agent to mount. Returns the most recent agent with a matching name if no agent id string provided. Either agent id or name must be set
+        agent_path:
+          type:
+          - string
+          - 'null'
+          description: Path to mount the agent on the Devbox. Required for git and object agents. Use absolute path (e.g., /home/user/agent)
+        auth_token:
+          type:
+          - string
+          - 'null'
+          description: Optional auth token for private repositories. Only used for git agents.
+        type:
+          type: string
+          enum:
+          - agent_mount
+          default: agent_mount
+      required:
+      - agent_id
+      - agent_name
+      - type
+    ScenarioDefinitionStatus:
+      type: string
+      enum:
+      - active
+      - archived
+    Architecture:
+      type: string
+      enum:
+      - x86_64
+      - arm64
+    ValidationType:
+      type: string
+      enum:
+      - UNSPECIFIED
+      - FORWARD
+      - REVERSE
+      - EVALUATION
+    IdleAction:
+      type: string
+      enum:
+      - shutdown
+      - suspend
+      description: 'Action to take after Devbox idle timer is triggered.
+
+
+        shutdown: Shutdown the Devbox.
+
+        suspend: Suspend the Devbox.
+
+        '
+      x-enum-descriptions:
+        shutdown: Shutdown the Devbox.
+        suspend: Suspend the Devbox.
+    CommandScoringFunction:
+      type: object
+      additionalProperties: false
+      description: CommandScoringFunction executes a single command and checks the result.The output of the command will be printed. Scoring will passed if the command returns status code 0, otherwise it will be failed.
+      properties:
+        command:
+          type: string
+          description: The command to execute.
+        type:
+          type: string
+          enum:
+          - command_scorer
+          default: command_scorer
+      required:
+      - type
+    Mount:
+      oneOf:
+      - $ref: '#/components/schemas/ObjectMount'
+      - $ref: '#/components/schemas/AgentMount'
+      - $ref: '#/components/schemas/CodeMount'
+      - $ref: '#/components/schemas/FileMount'
+      - $ref: '#/components/schemas/BrokerMount'
+      discriminator:
+        propertyName: type
+        mapping:
+          object_mount: '#/components/schemas/ObjectMount'
+          agent_mount: '#/components/schemas/AgentMount'
+          code_mount: '#/components/schemas/CodeMount'
+          file_mount: '#/components/schemas/FileMount'
+          broker_mount: '#/components/schemas/BrokerMount'
+    IdleConfigurationParameters:
+      type: object
+      additionalProperties: false
+      properties:
+        idle_time_seconds:
+          type: integer
+          format: int32
+          description: After idle_time_seconds, on_idle action will be taken.
+        on_idle:
+          $ref: '#/components/schemas/IdleAction'
+          description: Action to take after Devbox becomes idle.
+      required:
+      - idle_time_seconds
+      - on_idle
+    BrokerMount:
+      type: object
+      additionalProperties: false
+      properties:
+        axon_id:
+          type: string
+          description: The ID of the axon event stream to mount onto the Devbox.
+        protocol:
+          $ref: '#/components/schemas/BrokerMountProtocol'
+          description: The protocol used by the broker to deliver events to the agent.
+        agent_binary:
+          type:
+          - string
+          - 'null'
+          description: Binary to launch the agent (e.g., 'opencode'). Used by protocols that launch a subprocess (acp, claude_json).
+        working_directory:
+          type:
+          - string
+          - 'null'
+          description: Working directory in which to launch the agent binary. Defaults to the home directory if not specified.
+        launch_args:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Arguments to pass to the agent command (e.g., ['acp']). Used by protocols that launch a subprocess (acp, claude_json).
+        type:
+          type: string
+          enum:
+          - broker_mount
+          default: broker_mount
+      required:
+      - axon_id
+      - type
+    InputContext:
+      type: object
+      additionalProperties: false
+      description: InputContextView specifies the problem statement along with all additional context for a Scenario.
+      properties:
+        problem_statement:
+          type: string
+          description: The problem statement for the Scenario.
+        additional_context:
+          type:
+          - object
+          - 'null'
+          description: Additional JSON structured input context.
+      required:
+      - problem_statement
+    ScenarioDefinitionListView:
+      type: object
+      additionalProperties: false
+      properties:
+        scenarios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioDefinitionView'
+          description: List of Scenarios matching filter.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - scenarios
+      - has_more
+    FileMount:
+      type: object
+      additionalProperties: false
+      properties:
+        target:
+          type: string
+          description: Target path where the file should be mounted.
+        content:
+          type: string
+          description: Content of the file to mount.
+        type:
+          type: string
+          enum:
+          - file_mount
+          default: file_mount
+      required:
+      - target
+      - content
+      - type
+    ResourceSize:
+      type: string
+      enum:
+      - X_SMALL
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - X_LARGE
+      - XX_LARGE
+      - CUSTOM_SIZE
+      description: 'The size of the Devbox resources for Runloop to allocate.
+
+
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+
+        '
+      x-enum-descriptions:
+        X_SMALL: 0.5 cpu x 1GiB memory x 4GiB disk
+        SMALL: 1 cpu x 2GiB memory x 4GiB disk
+        MEDIUM: 2 cpu x 4GiB memory x 8GiB disk
+        LARGE: 2 cpu x 8GiB memory x 16GiB disk
+        X_LARGE: 4 cpu x 16GiB memory x 16GiB disk
+        XX_LARGE: 8 cpu x 32GiB memory x 16GiB disk
+        CUSTOM_SIZE: To choose a custom size, set this enum and also the custom_cpu_cores, custom_gb_memory, and optionally custom_disk_size in launch parameters. CPU must be 0.5, 1, or a multiple of 2 (max 16). Memory must be 1 or a multiple of 2 (max 64GiB). Disk must be a multiple of 2 (min 2GiB, max 64GiB). The cpu:memory ratio must be between 1:2 and 1:8 inclusive.
+    InputContextUpdate:
+      type: object
+      additionalProperties: false
+      properties:
+        problem_statement:
+          type:
+          - string
+          - 'null'
+          description: The problem statement for the Scenario.
+        additional_context:
+          type:
+          - object
+          - 'null'
+          description: Additional JSON structured input context.
   securitySchemes:
     bearerAuth:
       scheme: bearer

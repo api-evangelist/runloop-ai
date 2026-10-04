@@ -297,126 +297,21 @@ paths:
       deprecated: false
 components:
   schemas:
-    PublishParams:
+    AxonCreateParams:
       type: object
       additionalProperties: false
       properties:
-        source:
-          type: string
-          description: The source of the event (e.g. github, slack).
-        event_type:
-          type: string
-          description: The event type (e.g. push, pull_request).
-        origin:
-          $ref: '#/components/schemas/PublishEventOrigin'
-          description: Event origin.
-        payload:
-          type: string
-          description: Event payload.
-      required:
-      - source
-      - event_type
-      - origin
-      - payload
-    AxonEventListView:
-      type: object
-      additionalProperties: false
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/AxonEventView'
-          description: List of axon events.
-        has_more:
-          type: boolean
-        total_count:
+        name:
           type:
-          - integer
+          - string
           - 'null'
-          format: int32
-      required:
-      - events
-      - has_more
-    AxonListView:
-      type: object
-      additionalProperties: false
-      properties:
-        axons:
-          type: array
-          items:
-            $ref: '#/components/schemas/AxonView'
-          description: List of active axons.
-        has_more:
-          type: boolean
-        total_count:
-          type:
-          - integer
-          - 'null'
-          format: int32
-      required:
-      - axons
-      - has_more
-    SqlBatchParams:
-      type: object
-      additionalProperties: false
-      properties:
-        statements:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlStatementParams'
-          description: The SQL statements to execute atomically within a transaction.
-      required:
-      - statements
+          description: (Optional) Name for the axon.
     PublishEventOrigin:
       type: string
       enum:
       - EXTERNAL_EVENT
       - AGENT_EVENT
       - USER_EVENT
-    SqlStepResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        success:
-          $ref: '#/components/schemas/SqlQueryResultView'
-          description: Result on success.
-        error:
-          $ref: '#/components/schemas/SqlStepErrorView'
-          description: Error on failure.
-    SqlStepErrorView:
-      type: object
-      additionalProperties: false
-      properties:
-        message:
-          type: string
-          description: Error message.
-      required:
-      - message
-    SqlStatementParams:
-      type: object
-      additionalProperties: false
-      properties:
-        sql:
-          type: string
-          description: SQL query with ?-style positional placeholders.
-        params:
-          type: array
-          items:
-            type: object
-          description: Positional parameter bindings for ? placeholders.
-      required:
-      - sql
-    SqlBatchResultView:
-      type: object
-      additionalProperties: false
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlStepResultView'
-          description: One result per statement, in order.
-      required:
-      - results
     AxonEventView:
       type: object
       additionalProperties: false
@@ -452,6 +347,59 @@ components:
       - source
       - event_type
       - payload
+    SqlQueryResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlColumnMetaView'
+          description: Column metadata.
+        rows:
+          type: array
+          items:
+            type: object
+          description: Result rows (empty for non-SELECT statements).
+        meta:
+          $ref: '#/components/schemas/SqlResultMetaView'
+          description: Execution metadata.
+      required:
+      - columns
+      - rows
+      - meta
+    SqlBatchParams:
+      type: object
+      additionalProperties: false
+      properties:
+        statements:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlStatementParams'
+          description: The SQL statements to execute atomically within a transaction.
+      required:
+      - statements
+    PublishParams:
+      type: object
+      additionalProperties: false
+      properties:
+        source:
+          type: string
+          description: The source of the event (e.g. github, slack).
+        event_type:
+          type: string
+          description: The event type (e.g. push, pull_request).
+        origin:
+          $ref: '#/components/schemas/PublishEventOrigin'
+          description: Event origin.
+        payload:
+          type: string
+          description: Event payload.
+      required:
+      - source
+      - event_type
+      - origin
+      - payload
     AxonEventOrigin:
       type: string
       enum:
@@ -459,19 +407,78 @@ components:
       - AGENT_EVENT
       - USER_EVENT
       - SYSTEM_EVENT
-    SqlColumnMetaView:
+    SqlStepErrorView:
       type: object
       additionalProperties: false
       properties:
-        name:
+        message:
           type: string
-          description: Column name or alias.
-        type:
-          type: string
-          description: Declared type (TEXT, INTEGER, REAL, BLOB, or empty).
+          description: Error message.
       required:
-      - name
-      - type
+      - message
+    AxonListView:
+      type: object
+      additionalProperties: false
+      properties:
+        axons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxonView'
+          description: List of active axons.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - axons
+      - has_more
+    SqlStatementParams:
+      type: object
+      additionalProperties: false
+      properties:
+        sql:
+          type: string
+          description: SQL query with ?-style positional placeholders.
+        params:
+          type: array
+          items:
+            type: object
+          description: Positional parameter bindings for ? placeholders.
+      required:
+      - sql
+    SqlBatchResultView:
+      type: object
+      additionalProperties: false
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SqlStepResultView'
+          description: One result per statement, in order.
+      required:
+      - results
+    AxonView:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The axon identifier.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the axon.
+        created_at_ms:
+          type: integer
+          format: int64
+          description: Creation time in milliseconds since epoch.
+      required:
+      - id
+      - created_at_ms
     SqlResultMetaView:
       type: object
       additionalProperties: false
@@ -506,55 +513,48 @@ components:
       required:
       - sequence
       - timestamp_ms
-    AxonCreateParams:
+    AxonEventListView:
+      type: object
+      additionalProperties: false
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxonEventView'
+          description: List of axon events.
+        has_more:
+          type: boolean
+        total_count:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      required:
+      - events
+      - has_more
+    SqlColumnMetaView:
       type: object
       additionalProperties: false
       properties:
         name:
-          type:
-          - string
-          - 'null'
-          description: (Optional) Name for the axon.
-    AxonView:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
           type: string
-          description: The axon identifier.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the axon.
-        created_at_ms:
-          type: integer
-          format: int64
-          description: Creation time in milliseconds since epoch.
+          description: Column name or alias.
+        type:
+          type: string
+          description: Declared type (TEXT, INTEGER, REAL, BLOB, or empty).
       required:
-      - id
-      - created_at_ms
-    SqlQueryResultView:
+      - name
+      - type
+    SqlStepResultView:
       type: object
       additionalProperties: false
       properties:
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/SqlColumnMetaView'
-          description: Column metadata.
-        rows:
-          type: array
-          items:
-            type: object
-          description: Result rows (empty for non-SELECT statements).
-        meta:
-          $ref: '#/components/schemas/SqlResultMetaView'
-          description: Execution metadata.
-      required:
-      - columns
-      - rows
-      - meta
+        success:
+          $ref: '#/components/schemas/SqlQueryResultView'
+          description: Result on success.
+        error:
+          $ref: '#/components/schemas/SqlStepErrorView'
+          description: Error on failure.
   securitySchemes:
     bearerAuth:
       scheme: bearer
