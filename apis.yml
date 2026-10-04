@@ -2340,6 +2340,8 @@ apis:
   humanURL: https://docs.runloop.ai/docs/devboxes/overview
   baseURL: https://api.runloop.ai
   tags:
+  - APIKeys
+  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
@@ -2494,6 +2496,9 @@ access: 3rd-Party
 created: '2026-05-25'
 modified: '2026-05-25'
 common:
+  - type: CapabilityMap
+    url: capabilities/runloop-ai-capability-edges.yml
+    name: Runloop Business Capability Map
   - type: AgenticAccess
     url: agentic-access/runloop-ai-agentic-access.yml
   - type: TrustCenter
